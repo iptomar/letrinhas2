@@ -38,7 +38,7 @@ define(function (require) {
           img.src = url;
           document.body.appendChild(img);
         });
-      
+
 
 
        },

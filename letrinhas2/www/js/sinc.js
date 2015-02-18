@@ -4,10 +4,26 @@ var alunos_local2 = new PouchDB('alunos_local2', {
   adapter: 'websql'
 });
 
+
+var escolas_local2 = new PouchDB('escolas_local2', {
+  adapter: 'websql'
+});
+
 var rep = PouchDB.replicate('http://127.0.0.1:5984/alunos', 'alunos_local2', {
   live: true,
   batch_size: 200
 });
+
+var repEscolas = PouchDB.replicate('http://127.0.0.1:5984/escolas', 'escolas_local2', {
+  live: true,
+  batch_size: 100
+});
+
+repEscolas.on('change', function(info) {
+  console.log(info);
+});
+
+
 
 rep.on('change', function(info) {
   console.log(info);
@@ -23,29 +39,6 @@ rep.on('error', function(err) {
 });
 
 
-$(document).ready(function() {
-  $('#sname').keypress(function(event) {
-    if (event.which == 13) {
-      $("#output").html('');
-      $("#output").append('Running query ' + $('#sname').val() + '...</br>');
-      alunos_local2.info().then(function(info) {
-        $("#output").append('Documentos: ' + info.doc_count + '</br>');
-      });
-
-      alunos_local2.get($('#sname').val(), function(err, data) {
-        if (err) console.log(err);
-        $("#output").append('</br>');
-        $("#output").append(JSON.stringify(data));
-      });
-
-      alunos_local2.getAttachment($('#sname').val(), 'rabbit.png', function(err, data) {
-        console.log(data);
-
-        var url = URL.createObjectURL(data);
-        var img = document.createElement('img');
-        img.src = url;
-        document.body.appendChild(img);
-      });
-    }
-  });
+repEscolas.on('error', function(err) {
+  console.log(err);
 });

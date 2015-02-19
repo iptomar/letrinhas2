@@ -20,21 +20,6 @@ define(function (require) {
     },
 
 
-    loaduser: function(e) {
-      app.navigate('/summary', {
-        trigger: true
-      });
-      window.location.reload();
-    },
-
-    clickMenu: function(e) {
-      var cl = document.body.classList;
-      if (cl.contains('left-nav')) {
-          cl.remove('left-nav');
-      } else {
-          cl.add('left-nav');
-      }
-    },
 
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');

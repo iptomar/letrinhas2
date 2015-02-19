@@ -1,18 +1,17 @@
-define(function (require) {
+define(function(require) {
 
   "use strict";
 
-  var $         = require('jquery'),
-      _         = require('underscore'),
-      Backbone  = require('backbone'),
-      tpl       = require('text!tpl/login.html'),
+  var $ = require('jquery'),
+    _ = require('underscore'),
+    Backbone = require('backbone'),
+    tpl = require('text!tpl/login.html'),
 
-      template = _.template(tpl);
+    template = _.template(tpl);
 
   return Backbone.View.extend({
 
-    initialize: function() {
-    },
+    initialize: function() {},
 
     events: {
       "click #btn_login": "clickLogin",
@@ -26,12 +25,12 @@ define(function (require) {
 
 
     clickLogin: function(e) {
-      app.navigate('/summary', {
+      app.navigate('/promotions', {
         trigger: true
       });
     },
 
-    render: function () {
+    render: function() {
       this.$el.html(template());
       return this;
     }

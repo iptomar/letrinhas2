@@ -6,6 +6,7 @@ var enunciados = nano.use('enunciados');
 var alunos = nano.use('alunos');
 
 
+
 var imgData = require('fs').readFileSync('rabbit.png');
 
 function insertAluno(counteri) {
@@ -26,10 +27,11 @@ function insertAluno(counteri) {
     } else {
       console.log('Aluno ' + counteri + ' failed');
     }
-    if (counteri < 1500) {
+    if (counteri < 200) {
       insertAluno(counteri+1);
     }
   });
 }
+
 
 insertAluno(0);

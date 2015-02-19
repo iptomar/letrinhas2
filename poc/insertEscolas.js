@@ -4,9 +4,10 @@ var professores = nano.use('professores');
 var escolas = nano.use('escolas');
 var enunciados = nano.use('enunciados');
 var alunos = nano.use('alunos');
+var imgData = require('fs').readFileSync('escola.png');
 
 
-function insertEscola(counter) {
+function insertEscola(counter, uids) {
   var escola = {
     'nome': 'escolaxpto',
     'logotipo': 'path',
@@ -35,19 +36,33 @@ function insertEscola(counter) {
   }
 
 
-  escola.nome = 'EscolaNome' + counter;
-  escolas.insert(escola, function(err, body) {
+  nano.request({db: "_uuids"}, function(_,uuids){
+      var ids = uuids['uuids'][0];
+      escola.nome = 'escola'+ counter;
+
+  escolas.multipart.insert(escola, [{
+    name: 'escola.png',
+    data: imgData,
+    content_type: 'image/png'
+  }], ids , function(err, body) {
     if (!err) {
-      console.log('Escola ' + escola.nome + ' inserted');
+      console.log('Escola ' + escola.nome  + ' inserted');
+    } else {
+      console.log('Escola ' + escola.nome  + ' failed' + err);
     }
+
     if(counter < 15) {
-      insertEscola(counter+1);
+      insertEscola(counter+1, 1);
+
+
     }
   });
 
+});
 }
 
 insertEscola(0);
+
 
 /*
 var obj = db.get('dockerode', function(err, body) {

@@ -60,20 +60,9 @@ define(function(require) {
 
     summary: function() {
       var self = this;
-      require(["app/views/summary", "app/views/menu"], function(SummaryView, MenuView) {
-        var view = new SummaryView({
-          model: window.user
-        });
+      require(["app/views/summary"], function(PromotionsView) {
+        var view = new PromotionsView();
         self.showView(view);
-
-        if (!self.menuView) {
-          self.menuView = new MenuView({
-            el: $header,
-            model: window.user
-          });
-          self.menuView.delegateEvents();
-          self.menuView.render();
-        }
       });
     },
 

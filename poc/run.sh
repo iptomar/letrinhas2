@@ -6,5 +6,5 @@ node insertEscolas.js
 node insertProfessores.js
 node insertEnunciados.js
 
-cd ./web
-http-server ./
+#!cd ./web
+#!http-server ./

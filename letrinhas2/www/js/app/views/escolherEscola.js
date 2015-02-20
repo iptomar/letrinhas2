@@ -44,32 +44,28 @@ define(function(require) {
         var url;
 
 
-        carname = "</br><center><table border='1'><tr>";
+        var $container = $('#outputEscolas');
 
-        var colum = 0;
         for (i = 0; i < val; i++) {
 
           var aves = data.rows[i].doc;
           //  console.log(aves._attachments['escola.png'].data);
 
-          //  console.log(aves);
-          if (colum < 3) {
-            //  carname += "<td>";
-            carname += "<td width='400'> <button id=" + aves._id + " type='button' class='btn btn-info btn-lg btn-block btn-escola'><img src='data:image/png;base64," + aves._attachments['escola.png'].data + "'class='pull-left'/>" + aves.nome + "</button> ";
-            carname += "</td>";
-          } else {
-            colum = 0;
-            carname += "</tr><tr>";
-            carname += "<td> <button id=" + aves._id + " type='button' class='btn btn-info btn-lg btn-block btn-escola'><img src='data:image/png;base64," + aves._attachments['escola.png'].data + "'class='pull-left'/>" + aves.nome + "</button> ";
-            carname += "</td>";
-          }
-          colum++;
+
+          var $btn = $(
+              '<div class="col-sm-4">' +
+                  '<div class="thumbnail">' +
+                      '<div class="caption">' +
+                          "<button id='" + aves._id + "' type='button' class='btn btn-info btn-lg btn-block btn-escola' >"+
+                          "<img src='data:image/png;base64," + aves._attachments['escola.png'].data + "'class='pull-left'/>" + aves.nome  + "</button>" +
+                      '</div>' +
+                  '</div>' +
+              '</div>');
+
+
+              $btn.appendTo($container);
+
         }
-
-        carname += "</tr></table></center>";
-        $("#outputEscolas").append(carname);
-
-        var $container = $('#outputEscolas');
 
 
         $container.on('click', '.btn-escola', function(ev) {

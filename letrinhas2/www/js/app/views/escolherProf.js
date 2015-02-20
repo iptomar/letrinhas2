@@ -11,6 +11,11 @@ define(function(require) {
 
   return Backbone.View.extend({
 
+    highlight: function(e) {
+      $('.side-nav__list__item').removeClass('is-active');
+      $(e.target).parent().addClass('is-active');
+    },
+
     initialize: function() {
 
       var escolaId = window.localStorage.getItem ("EscolaSelecionadaID");
@@ -39,10 +44,14 @@ define(function(require) {
                    if (err2) console.log(err2);
                     var url = URL.createObjectURL(DataImg);
 
-                    console.log(url);
-
-
-                  var $btn = $( "<button id='" + datax._id + "' type='button' class='btn btn-info btn-lg btn-block btn-escola' ><img src='" + url + "' class='pull-left'/>" + datax.nome + "</button> ");
+                    var $btn = $(
+                        '<div class="col-sm-4">' +
+                            '<div class="thumbnail">' +
+                                '<div class="caption">' +
+                                    "<button id='" + datax._id + "' type='button' class='btn btn-info btn-lg btn-block btn-escola' ><img src='" + url + "' class='pull-left'/>" + datax.nome + "</button>" +
+                                '</div>' +
+                            '</div>' +
+                        '</div>');
 
                     $btn.appendTo($container);
                 });
@@ -57,8 +66,25 @@ define(function(require) {
 
     events: {
       "click #btnTeste": "clickTeste",
-
+      "click #BackButtonEP": "clickBackButtonEP",
     },
+
+
+    clickBackButtonEP: function(e) {
+      var self = this;
+      if (Backbone.history.fragment != 'escolherEscola') {
+        utils.loader(function() {
+          e.preventDefault();
+          self.highlight(e);
+          app.navigate('/escolherEscola', {
+            trigger: true
+          });
+        });
+      }
+    },
+
+
+
 
     clickTeste: function(e) {
 

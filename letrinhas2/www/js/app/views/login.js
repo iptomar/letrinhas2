@@ -11,7 +11,9 @@ define(function(require) {
 
   return Backbone.View.extend({
 
-    initialize: function() {},
+    initialize: function() {
+
+    },
 
     events: {
       "click #btn_login": "clickLogin",

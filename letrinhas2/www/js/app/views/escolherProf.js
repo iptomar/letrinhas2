@@ -32,6 +32,28 @@ define(function(require) {
       });
 
 
+        escolas_local2.get(escolaId, function(err, data) {
+          if (err) console.log(err);
+
+        for (var i = 0; i < data.professores.length; i++) {
+          var abc = data.professores[i].id;
+          professores_local2.get(abc, function(errx, datax) {
+             if (errx) console.log(errx);
+
+              $("#outputProfs").append(datax.nome);
+              $("#outputProfs").append('</br>');
+              $("#outputProfs").append('</br>');
+
+    
+           });
+
+        }
+        //
+
+
+
+        });
+
     },
 
 

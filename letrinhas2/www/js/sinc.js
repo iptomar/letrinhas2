@@ -9,6 +9,11 @@ var escolas_local2 = new PouchDB('escolas_local2', {
   adapter: 'websql'
 });
 
+var professores_local2 = new PouchDB('professores_local2', {
+  adapter: 'websql'
+});
+
+
 var rep = PouchDB.replicate('http://127.0.0.1:5984/alunos', 'alunos_local2', {
   live: true,
   batch_size: 200
@@ -19,7 +24,16 @@ var repEscolas = PouchDB.replicate('http://127.0.0.1:5984/escolas', 'escolas_loc
   batch_size: 100
 });
 
+var repProfessores = PouchDB.replicate('http://127.0.0.1:5984/professores', 'professores_local2', {
+  live: true,
+  batch_size: 100
+});
+
 repEscolas.on('change', function(info) {
+  console.log(info);
+});
+
+repProfessores.on('change', function(info) {
   console.log(info);
 });
 
@@ -40,5 +54,10 @@ rep.on('error', function(err) {
 
 
 repEscolas.on('error', function(err) {
+  console.log(err);
+});
+
+
+repProfessores.on('error', function(err) {
   console.log(err);
 });

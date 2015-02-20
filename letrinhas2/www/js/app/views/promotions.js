@@ -44,9 +44,6 @@ define(function(require) {
         var url;
 
 
-
-
-
         carname = "</br><center><table border='1'><tr>";
 
         var colum = 0;

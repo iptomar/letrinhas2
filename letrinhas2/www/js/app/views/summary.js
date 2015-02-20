@@ -32,7 +32,7 @@ define(function(require) {
 
       escolas_local2.getAttachment('a1ccde05f2732ea1f57e3fb2c92cf872', 'escola.png', function(err, data) {
 
-    //  alunos_local2.getAttachment($('#sname').val(), 'rabbit.png', function(err, data) {
+
         console.log(data);
 
         var url = URL.createObjectURL(data);

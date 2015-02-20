@@ -42,7 +42,8 @@ define(function(require) {
       "": "login",
       "login": "login",
       "summary": "summary",
-      "promotions": "promotions"
+      "promotions": "promotions",
+      "escolherProf": "escolherProf"
     },
 
     boot: function() {
@@ -60,11 +61,20 @@ define(function(require) {
 
     summary: function() {
       var self = this;
-      require(["app/views/summary"], function(PromotionsView) {
-        var view = new PromotionsView();
+      require(["app/views/summary"], function(SummaryView) {
+        var view = new SummaryView();
         self.showView(view);
       });
     },
+
+    escolherProf: function() {
+      var self = this;
+      require(["app/views/escolherProf"], function(EscolherProfView) {
+        var view = new EscolherProfView();
+        self.showView(view);
+      });
+    },
+
 
     login: function() {
       var self = this;

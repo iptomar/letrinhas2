@@ -18,7 +18,7 @@ function insertProfessor(counter) {
   professores.insert(prof, function(err, body) {
     if (err) throw err;
     console.log('Professor ' + prof._id + ' inserted');
-    if(counter < 10) {
+    if(counter < 20) {
       insertProfessor(counter+1);
     }
   });

@@ -30,12 +30,22 @@ define(function(require) {
         $("#output").append(JSON.stringify(data));
       });
 
-      alunos_local2.getAttachment($('#sname').val(), 'rabbit.png', function(err, data) {
+      escolas_local2.getAttachment('a1ccde05f2732ea1f57e3fb2c92cf872', 'escola.png', function(err, data) {
+
+    //  alunos_local2.getAttachment($('#sname').val(), 'rabbit.png', function(err, data) {
         console.log(data);
 
         var url = URL.createObjectURL(data);
       //  var img = document.createElement('img');
         //img.src = url;
+
+
+
+
+
+
+
+
         document.querySelector("#imagex").src = url;
 
       });

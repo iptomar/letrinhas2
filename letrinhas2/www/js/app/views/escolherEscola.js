@@ -7,7 +7,7 @@ define(function(require) {
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    tpl = require('text!tpl/promotions.html'),
+    tpl = require('text!tpl/escolherEscola.html'),
     classList = require('classList.min'),
 
     template = _.template(tpl);
@@ -97,6 +97,22 @@ define(function(require) {
 
     events: {
       "click #btnNEXT": "clickNEXT",
+      "click #BackButtonEE": "clickBackButtonEE",
+
+    },
+
+
+    clickBackButtonEE: function(e) {
+      var self = this;
+      if (Backbone.history.fragment != 'login') {
+        utils.loader(function() {
+          e.preventDefault();
+          self.highlight(e);
+          app.navigate('/login', {
+            trigger: true
+          });
+        });
+      }
     },
 
 

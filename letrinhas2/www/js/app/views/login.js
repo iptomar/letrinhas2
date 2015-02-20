@@ -6,10 +6,16 @@ define(function(require) {
     _ = require('underscore'),
     Backbone = require('backbone'),
     tpl = require('text!tpl/login.html'),
+    classList = require('classList.min'),
 
     template = _.template(tpl);
 
   return Backbone.View.extend({
+
+    highlight: function(e) {
+      $('.side-nav__list__item').removeClass('is-active');
+      $(e.target).parent().addClass('is-active');
+    },
 
     initialize: function() {
 
@@ -27,7 +33,7 @@ define(function(require) {
 
 
     clickLogin: function(e) {
-      app.navigate('/promotions', {
+      app.navigate('/escolherEscola', {
         trigger: true
       });
     },

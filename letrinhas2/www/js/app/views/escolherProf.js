@@ -18,39 +18,36 @@ define(function(require) {
       console.log(escolaId);
       console.log(escolaNome);
 
-      escolas_local2.getAttachment(escolaId, 'escola.png', function(err, data) {
 
-      //  var url = URL.createObjectURL(data);
-
-        //console.log(url);
-
-      //  document.querySelector("#qwerty").src = url;
-
-       document.querySelector("#outputProfs").innerHTML  = "<h3>"+escolaNome+"</h3>";
-
-
-      });
 
 
         escolas_local2.get(escolaId, function(err, data) {
           if (err) console.log(err);
+
+          document.querySelector("#outputProfs").innerHTML  = "<h4>Escola Selecionada:  ---[ "+escolaNome+" ]---</h4>";
+
+          var $container = $('#outputProfs');
 
         for (var i = 0; i < data.professores.length; i++) {
           var abc = data.professores[i].id;
           professores_local2.get(abc, function(errx, datax) {
              if (errx) console.log(errx);
 
-              $("#outputProfs").append(datax.nome);
-              $("#outputProfs").append('</br>');
-              $("#outputProfs").append('</br>');
 
-    
+              console.log(datax._id);
+              professores_local2.getAttachment(datax._id, 'prof.png', function(err2, DataImg) {
+                   if (err2) console.log(err2);
+                    var url = URL.createObjectURL(DataImg);
+
+                    console.log(url);
+
+
+                  var $btn = $( "<button id='" + datax._id + "' type='button' class='btn btn-info btn-lg btn-block btn-escola' ><img src='" + url + "' class='pull-left'/>" + datax.nome + "</button> ");
+
+                    $btn.appendTo($container);
+                });
            });
-
         }
-        //
-
-
 
         });
 

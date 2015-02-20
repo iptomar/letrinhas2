@@ -42,7 +42,7 @@ define(function(require) {
       "": "login",
       "login": "login",
       "summary": "summary",
-      "promotions": "promotions",
+      "escolherEscola": "escolherEscola",
       "escolherProf": "escolherProf"
     },
 
@@ -51,10 +51,10 @@ define(function(require) {
       this.showView(bootView);
     },
 
-    promotions: function() {
+    escolherEscola: function() {
       var self = this;
-      require(["app/views/promotions"], function(PromotionsView) {
-        var view = new PromotionsView();
+      require(["app/views/escolherEscola"], function(EscolherEscolaView) {
+        var view = new EscolherEscolaView();
         self.showView(view);
       });
     },
@@ -78,11 +78,6 @@ define(function(require) {
 
     login: function() {
       var self = this;
-      if (this.menuView) {
-        this.menuView.unbind();
-        this.menuView.undelegateEvents();
-        this.menuView = undefined;
-      }
       require(["app/views/login"], function(LoginView) {
         $header.html('');
         $body.html('');

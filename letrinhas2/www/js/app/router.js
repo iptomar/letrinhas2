@@ -47,7 +47,7 @@ define(function(require) {
       "escolherTurma": "escolherTurma",
       "escolherAluno": "escolherAluno",
       "menuTipoOpcao": "menuTipoOpcao",
-
+      "escolherDisciplina": "escolherDisciplina",
 
     },
 
@@ -55,6 +55,15 @@ define(function(require) {
       var bootView = new BootView();
       this.showView(bootView);
     },
+
+    escolherDisciplina: function() {
+      var self = this;
+      require(["app/views/escolherDisciplina"], function(EscolherDisciplinaView) {
+        var view = new EscolherDisciplinaView();
+        self.showView(view);
+      });
+    },
+
 
     escolherEscola: function() {
       var self = this;

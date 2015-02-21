@@ -18,8 +18,8 @@ define(function(require) {
 
         initialize: function() {
 
-          var profId = window.localStorage.getItem("EscolaProfSelecID");
-          var profNome = window.localStorage.getItem("EscolaProfSelecNome");
+          var profId = window.localStorage.getItem("ProfSelecID");
+          var profNome = window.localStorage.getItem("ProfSelecNome");
           var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
           var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
           var turmaId = window.localStorage.getItem("TurmaSelecID");
@@ -90,13 +90,8 @@ define(function(require) {
                     });
                   }
                 });
-
-
-
               });
             },
-
-
 
             events: {
               "click #btnTeste": "clickTeste",

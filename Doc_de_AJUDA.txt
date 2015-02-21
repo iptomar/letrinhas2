@@ -1,0 +1,37 @@
+--------------------------Resumo-----------------------------------------------------
+Não vale a pena instalarem o visual studio, além de ser pesado, não é atraves dele que vão fazer qualquer visual.
+
+As API graficas que usamos é: http://getbootstrap.com/   - no proprio site encontra-se os seus docs.
+Sempre que precisamos de algo mais grafico vamos por esta opção. Tudo é feito a mão linha por linha.
+Não existe coisas como o android de arrastar objectos e faz-se um botão. 
+
+Tudo mudou. Tal como o javascript mudou, ou não estamos apenas a trabalhar com javascript.
+Estamos a usar jquery, backbone, json, mais tarde cordova. E a parte de couchDb.
+
+Não têm que aprender cordova já, tudo o que está feito é com zero de Cordova!!!
+Temos problemas até lá chegar. E bastantes duvidas.
+Tal como vocês eu sou um nabo nestas tecnologias muitas delas estou a ver pela primeira vez. Farto-me de pesquisar e algumas coisas sei que são de uma maneira que funcionam, mas nem sei se são a forma mais correcta e porque é que algumas coisas são assim.
+
+Estou no mesmo patamar que vocês a unica diferença é que não tenho trabalhado de dia. Muitas coisas assim não sei explicar ou dizer pk se faz desta forma e não de outra.
+
+IDE para trabalhar é o sublineText ou o ATOM, não existe nada de muito melhor quando se está a falar nestas tecnologias.
+Não existe codigos automaticos com uns cliques, e não existe visual com arrastar coisas. Tudo isto desta forma funciona perfeitamente e adapta-se a todas as resoluções fica tudo direito e bonito, simples mas elegante.
+
+Foi testado no tablet,  para testar no tablet é preciso mudar varias configurações do server, e os ips no codigo da app.
+Aparentemente o tablet consegue executar bem, mas não uma grande fluidez, pode se dizer que pode parecer menos fluido que o nativo em android. Mas isso já foi dito pelo professor Pedro e não existe coisas perfeitas. A sinc inicial so com 200 alunos e 20 profs mais 20 escolas algo assim, 
+torna-se muito pesada para o tablet, naquele periodo o tablet fica ali a mastigar. Mas isto é pensar que cada tablet ade ser sincronizado na totalidade uma vez ou duas por ano.
+
+Foi encontrado problemas ainda com a sincronização o prof deve saber como resolver. Tudo funciona mas as vezes é necessário fazer refresh a pagina ou entrar e sair da app para que sincronize mesmo tudo ao inicio.
+
+
+Todo o debug, pelo menos por agora sem o cordova é feito no browser, mais propriamente no chrome "botão direito do rato--> inspecionar elemento" e lá têm varias opções desde a consola onde aparece os debugs e erros aos recursos da bd etc. 
+
+Explicação das pastas do projeto:
+Dentro da pasta POC existe um run.bat ou run para mac, destina-se a preencher a base de dados CouchDB. Apenas isso termos umas estrutura de dados e as tabelas.
+
+Dentro da pasta letrinhas2, é o meu projeto para testes- é onde todo o projeto esta a começar a ganhar forma.  existe um ficheiro "executeAppServerWindows.bat" que serve para em windows arrancar o projeto para a web para se poder testar e fazer debug, depois no browser entra-se no link "http://127.0.0.1:8080/" e aparece a nossa app letrinhas a correr.
+
+ Dentro da pasta Prints-Docs - Encontra-se doc com duvidas e prints em foto da app a correr num tablet (Para se correr num tablet é preciso compilar via linha de comandos, e fazer alterações);
+
+Caso alguém queira começar pelo inicio e em perceber as coisas têm um projeto em cordova web, que o prof fez commit na segunda feira dentro da pasta "Projecto de Exemplo do Professor" e um exemplo de PouchDB em "\poc\web".
+

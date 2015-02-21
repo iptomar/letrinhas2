@@ -5,7 +5,7 @@ define(function(require) {
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    tpl = require('text!tpl/menuTipoOpcao.html'),
+    tpl = require('text!tpl/escolherDisciplina.html'),
 
     template = _.template(tpl);
 
@@ -32,38 +32,15 @@ define(function(require) {
 
 
     events: {
-      "click #BackButtonMO": "clickBackButtonMO",
-      "click #btnRealizarTeste": "clickBtnRealizarTeste",
-      "click #btnCorrigirTeste": "clickBtnCorrigirTeste",
-      "click #btnConsultarTeste": "clickBtnConsultarTeste",
+      "click #BackButtonED": "clickBackButtonED",
+
     },
 
 
-    clickBackButtonMO: function(e) {
+    clickBackButtonED: function(e) {
       window.history.back();
     },
 
-    clickBtnRealizarTeste: function(e) {
-      var self = this;
-      if (Backbone.history.fragment != 'escolherDisciplina') {
-        utils.loader(function() {
-          e.preventDefault();
-
-
-          app.navigate('/escolherDisciplina', {
-            trigger: true
-          });
-        });
-      }
-    },
-
-    clickBtnCorrigirTeste: function(e) {
-    //  window.history.back();
-    },
-
-    clickBtnConsultarTeste: function(e) {
-      //window.history.back();
-    },
 
 
     render: function() {

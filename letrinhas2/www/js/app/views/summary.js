@@ -30,7 +30,7 @@ define(function(require) {
         $("#output").append(JSON.stringify(data));
       });
 
-      escolas_local2.getAttachment('a1ccde05f2732ea1f57e3fb2c92cf872', 'escola.png', function(err, data) {
+      alunos_local2.getAttachment($('#sname').val(), 'aluno.png', function(err, data) {
 
 
         console.log(data);

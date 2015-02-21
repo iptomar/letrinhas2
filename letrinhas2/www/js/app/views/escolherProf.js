@@ -68,8 +68,8 @@ define(function(require) {
           if (Backbone.history.fragment != 'escolherTurma') {
             utils.loader(function() {
               ev.preventDefault();
-             window.localStorage.setItem("EscolaProfSelecNome", $btn[0].innerText + ''); //enviar variavel
-             window.localStorage.setItem("EscolaProfSelecID", $btn[0].id + ''); //enviar variavel
+             window.localStorage.setItem("ProfSelecNome", $btn[0].innerText + ''); //enviar variavel
+             window.localStorage.setItem("ProfSelecID", $btn[0].id + ''); //enviar variavel
 
               app.navigate('/escolherTurma', {
                 trigger: true
@@ -92,16 +92,7 @@ define(function(require) {
 
 
     clickBackButtonEP: function(e) {
-      var self = this;
-      if (Backbone.history.fragment != 'escolherEscola') {
-        utils.loader(function() {
-          e.preventDefault();
-          self.highlight(e);
-          app.navigate('/escolherEscola', {
-            trigger: true
-          });
-        });
-      }
+      window.history.back();
     },
 
 

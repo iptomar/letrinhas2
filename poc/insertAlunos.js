@@ -7,21 +7,21 @@ var alunos = nano.use('alunos');
 
 
 
-var imgData = require('fs').readFileSync('rabbit.png');
+var imgData = require('fs').readFileSync('aluno.png');
 
 function insertAluno(counteri) {
   var aluno = {
-    'nome': 'Joao',
+    'nome': 'Joao'+counteri,
     'numero': counteri,
     'photo': 'path',
     'estado': true
   };
 
   alunos.multipart.insert(aluno, [{
-    name: 'rabbit.png',
+    name: 'aluno.png',
     data: imgData,
     content_type: 'image/png'
-  }], aluno.nome + counteri, function(err, body) {
+  }], aluno.nome, function(err, body) {
     if (!err) {
       console.log('Aluno ' + counteri + ' inserted');
     } else {

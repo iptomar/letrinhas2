@@ -18,8 +18,8 @@ define(function(require) {
 
      initialize: function() {
 
-      var profId = window.localStorage.getItem ("EscolaProfSelecID");
-      var profNome = window.localStorage.getItem ("EscolaProfSelecNome");
+      var profId = window.localStorage.getItem ("ProfSelecID");
+      var profNome = window.localStorage.getItem ("ProfSelecNome");
       var escolaNome = window.localStorage.getItem ("EscolaSelecionadaNome");
       var escolaId = window.localStorage.getItem ("EscolaSelecionadaID");
 
@@ -60,13 +60,13 @@ define(function(require) {
       $container.on('click', '.btn-turma', function(ev) {
         var $btn = $(this); // O jQuery passa o btn clicado pelo this
         var self = this;
-        if (Backbone.history.fragment != 'escolherTurma') {
+        if (Backbone.history.fragment != 'escolherAluno') {
           utils.loader(function() {
             ev.preventDefault();
-        //   window.localStorage.setItem("EscolaProfSelecNome", $btn[0].innerText + ''); //enviar variavel
-          // window.localStorage.setItem("EscolaProfSelecID", $btn[0].id + ''); //enviar variavel
+            window.localStorage.setItem("TurmaSelecNome", $btn[0].innerText + ''); //enviar variavel
+            window.localStorage.setItem("TurmaSelecID", $btn[0].id + ''); //enviar variavel
 
-            app.navigate('/escolherTurma', {
+            app.navigate('/escolherAluno', {
               trigger: true
             });
           });
@@ -87,16 +87,7 @@ define(function(require) {
 
 
     clickBackButtonET: function(e) {
-      var self = this;
-      if (Backbone.history.fragment != 'escolherProf') {
-        utils.loader(function() {
-          e.preventDefault();
-          self.highlight(e);
-          app.navigate('/escolherProf', {
-            trigger: true
-          });
-        });
-      }
+      window.history.back();
     },
 
 

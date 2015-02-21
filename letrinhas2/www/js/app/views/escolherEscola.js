@@ -92,16 +92,7 @@ define(function(require) {
 
 
     clickBackButtonEE: function(e) {
-      var self = this;
-      if (Backbone.history.fragment != 'login') {
-        utils.loader(function() {
-          e.preventDefault();
-          self.highlight(e);
-          app.navigate('/login', {
-            trigger: true
-          });
-        });
-      }
+      window.history.back();
     },
 
 

@@ -44,7 +44,8 @@ define(function(require) {
       "summary": "summary",
       "escolherEscola": "escolherEscola",
       "escolherProf": "escolherProf",
-      "escolherTurma": "escolherTurma"
+      "escolherTurma": "escolherTurma",
+      "escolherAluno": "escolherAluno"
     },
 
     boot: function() {
@@ -68,6 +69,13 @@ define(function(require) {
       });
     },
 
+    escolherAluno: function() {
+      var self = this;
+      require(["app/views/escolherAluno"], function(EscolherAlunoView) {
+        var view = new EscolherAlunoView();
+        self.showView(view);
+      });
+    },
 
 
     summary: function() {

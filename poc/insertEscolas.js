@@ -17,7 +17,14 @@ function insertEscola(counter, uids) {
   };
 
   for (var i = 0; i < 20; i++) {
+
+ nano.request({db: "_uuids"}, function(_,uuids){
+      var ids = uuids['uuids'][0];
+    
+
+
     var turma = {
+      'id': ids,
       'ano': 1,
       'anoLectivo': 2014,
       'nome': 'turma A',
@@ -32,6 +39,7 @@ function insertEscola(counter, uids) {
       });
     }
     escola.turmas.push(turma);
+    });
   }
 
   for (var z = 0; z < 4; z++) {

@@ -36,7 +36,7 @@ define(function(require) {
       }, function(err, data) {
         if (err) console.log(err);
 
-        console.log(data);
+      //  console.log(data);
         var val = data.total_rows;
         var i = 0;
         var y = 0;
@@ -48,44 +48,37 @@ define(function(require) {
 
         for (i = 0; i < val; i++) {
 
-          var aves = data.rows[i].doc;
-          //  console.log(aves._attachments['escola.png'].data);
-
+          var docsEscolas = data.rows[i].doc;
 
           var $btn = $(
-              '<div class="col-sm-4">' +
-                  '<div class="thumbnail">' +
-                      '<div class="caption">' +
-                          "<button id='" + aves._id + "' type='button' class='btn btn-info btn-lg btn-block btn-escola' >"+
-                          "<img src='data:image/png;base64," + aves._attachments['escola.png'].data + "'class='pull-left'/>" + aves.nome  + "</button>" +
-                      '</div>' +
-                  '</div>' +
-              '</div>');
+            '<div class="col-sm-4">' +
+            '<div class="thumbnail" style="height:160px;">' +
+            '<div class="caption"> ' +
+            "<button id='" + docsEscolas._id + "' type='button' class='btn btn-info btn-lg btn-block btn-escola' >" +
+            "<img style='height:100px;' src='data:image/png;base64," + docsEscolas._attachments['escola.png'].data + "'class='pull-left'/>" + docsEscolas.nome + "</button>" +
+            '</div>' +
+            '</div></br>' +
+            '</div>');
 
-
-              $btn.appendTo($container);
+          $btn.appendTo($container);
 
         }
 
 
         $container.on('click', '.btn-escola', function(ev) {
           var $btn = $(this); // O jQuery passa o btn clicado pelo this
-
-          console.log($btn);
           var self = this;
           if (Backbone.history.fragment != 'escolherProf') {
             utils.loader(function() {
               ev.preventDefault();
-              window.localStorage.setItem("EscolaSelecionadaNome",$btn[0].innerText+''); //enviar variavel
-              window.localStorage.setItem("EscolaSelecionadaID",$btn[0].id+''); //enviar variavel
+              window.localStorage.setItem("EscolaSelecionadaNome", $btn[0].innerText + ''); //enviar variavel
+              window.localStorage.setItem("EscolaSelecionadaID", $btn[0].id + ''); //enviar variavel
 
               app.navigate('/escolherProf', {
                 trigger: true
               });
             });
           }
-
-
         });
 
       });

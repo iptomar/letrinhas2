@@ -20,16 +20,18 @@ define(function(require) {
 
       var escolaId = window.localStorage.getItem ("EscolaSelecionadaID");
       var escolaNome = window.localStorage.getItem ("EscolaSelecionadaNome");
-      console.log(escolaId);
-      console.log(escolaNome);
-
-
-
+    //  console.log(escolaId);
+    //  console.log(escolaNome);
 
         escolas_local2.get(escolaId, function(err, data) {
           if (err) console.log(err);
 
-          document.querySelector("#outputProfs").innerHTML  = "<h4>Escola Selecionada:  ---[ "+escolaNome+" ]---</h4>";
+          document.querySelector("#outputProfs").innerHTML  =
+          '<div class="panel panel-default">'+
+            '<div class="panel-body">'+
+            '<center>---[  <b> '+escolaNome+' </b>  ]---</center>'+
+              '</div>'+
+              '</div>';
 
           var $container = $('#outputProfs');
 
@@ -39,24 +41,43 @@ define(function(require) {
              if (errx) console.log(errx);
 
 
-              console.log(datax._id);
+            //  console.log(datax._id);
               professores_local2.getAttachment(datax._id, 'prof.png', function(err2, DataImg) {
                    if (err2) console.log(err2);
                     var url = URL.createObjectURL(DataImg);
 
                     var $btn = $(
-                        '<div class="col-sm-4">' +
-                            '<div class="thumbnail">' +
+                        '<div class="col-md-4">' +
+                            '<div class="thumbnail" style="height:160px;"  >' +
                                 '<div class="caption">' +
-                                    "<button id='" + datax._id + "' type='button' class='btn btn-info btn-lg btn-block btn-escola' ><img src='" + url + "' class='pull-left'/>" + datax.nome + "</button>" +
+                                    "<button id='" + datax._id + "' type='button' class='btn btn-info btn-lg btn-block btn-professor' >"+
+                                    "<img style='height:100px;' src='" + url + "' class='pull-left'/>" + datax.nome + "</button>" +
                                 '</div>' +
-                            '</div>' +
+                            '</div></br>' +
                         '</div>');
 
                     $btn.appendTo($container);
                 });
            });
         }
+
+
+        $container.on('click', '.btn-professor', function(ev) {
+          var $btn = $(this); // O jQuery passa o btn clicado pelo this
+          var self = this;
+          if (Backbone.history.fragment != 'escolherTurma') {
+            utils.loader(function() {
+              ev.preventDefault();
+             window.localStorage.setItem("EscolaProfSelecNome", $btn[0].innerText + ''); //enviar variavel
+             window.localStorage.setItem("EscolaProfSelecID", $btn[0].id + ''); //enviar variavel
+
+              app.navigate('/escolherTurma', {
+                trigger: true
+              });
+            });
+          }
+        });
+
 
         });
 

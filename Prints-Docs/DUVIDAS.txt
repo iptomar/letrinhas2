@@ -1,0 +1,11 @@
+|||--------------------------------------------------------------DUVIDAS-------------------------------------||
+
+Base de dados turmas- Leva ID?
+                    - Têm ligação ao professor ou basta saber que aquela turma é da escola? quais as vantagens de estar ligado ao prof?
+
+
+Letrinhas2 teste - Problemas com a sincronização: -aparentemente a primeira vez não sincroniza tudo nem esta pronto para usar dados
+                                                  - É necessário refresh a pagina para voltar a sincronizar o resto das DB
+                                                  - Bloquear tablet na primeira inicialização? como?
+                                                  - Tablet leva um grande esforço na primeira sincronização apenas com 200 alunos e uns 2 profs e turmas, mas  no entanto é apenas a primeira inicialização de replicação!
+                                                  

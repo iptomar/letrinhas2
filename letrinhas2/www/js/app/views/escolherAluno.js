@@ -75,6 +75,23 @@ define(function(require) {
                   }
 
                 }
+                $container.on('click', '.btn-aluno', function(ev) {
+                  var $btn = $(this); // O jQuery passa o btn clicado pelo this
+                  var self = this;
+                  if (Backbone.history.fragment != 'menuTipoOpcao') {
+                    utils.loader(function() {
+                      ev.preventDefault();
+                      window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
+                      window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
+
+                      app.navigate('/menuTipoOpcao', {
+                        trigger: true
+                      });
+                    });
+                  }
+                });
+
+
 
               });
             },

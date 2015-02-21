@@ -27,11 +27,6 @@ define(function(require) {
       "click #img_click": "imgclick"
     },
 
-    imgclick: function(e) {
-      console.log('click');
-    },
-
-
     clickLogin: function(e) {
       app.navigate('/escolherEscola', {
         trigger: true

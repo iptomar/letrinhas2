@@ -45,7 +45,10 @@ define(function(require) {
       "escolherEscola": "escolherEscola",
       "escolherProf": "escolherProf",
       "escolherTurma": "escolherTurma",
-      "escolherAluno": "escolherAluno"
+      "escolherAluno": "escolherAluno",
+      "menuTipoOpcao": "menuTipoOpcao",
+
+
     },
 
     boot: function() {
@@ -57,6 +60,14 @@ define(function(require) {
       var self = this;
       require(["app/views/escolherEscola"], function(EscolherEscolaView) {
         var view = new EscolherEscolaView();
+        self.showView(view);
+      });
+    },
+
+    menuTipoOpcao: function() {
+      var self = this;
+      require(["app/views/menuTipoOpcao"], function(MenuTipoOpcaoView) {
+        var view = new MenuTipoOpcaoView();
         self.showView(view);
       });
     },

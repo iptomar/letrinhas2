@@ -22,13 +22,21 @@ define(function(require) {
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
       var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
       //// Vai buscar o doc da escola selecionada ///
+
+      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+        if (err2)  console.log(err2);
+        var url = URL.createObjectURL(DataImg);
+        $('#lbNomeProf').text(profNome);
+        $('#imgProf').attr("src",url);
+      });
+
+
       escolas_local2.get(escolaId, function(err, data) {
         if (err) console.log(err);
-
         document.querySelector("#outputTurmas").innerHTML =
           '<div class="panel panel-default">' +
           '<div class="panel-body">' +
-          '<center>---[<b>   ' + escolaNome + '  ---> ' + profNome + '  </b>]---</center>' +
+          '<center style=" font-size: 120%;">[ '+escolaNome + ' ]</center>' +
           '</div>' +
           '</div>';
 

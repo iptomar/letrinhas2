@@ -25,13 +25,23 @@ define(function(require) {
           var turmaId = window.localStorage.getItem("TurmaSelecID");
           var turmaNome = window.localStorage.getItem("TurmaSelecNome");
 
+
+          professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+            if (err2)  console.log(err2);
+            var url = URL.createObjectURL(DataImg);
+            $('#lbNomeProf').text(profNome);
+            $('#imgProf').attr("src",url);
+          });
+
+
+
           /// Vai buscar todas as escolas da base de dados //
           escolas_local2.get(escolaId, function(err, escolaDoc) {
               if (err) console.log(err);
               document.querySelector("#outputAlunos").innerHTML =
                 '<div class="panel panel-default">' +
                 '<div class="panel-body">' +
-                '<center>---[<b>   ' + escolaNome + '  ---> ' + profNome + ' ---> ' + turmaNome + '  </b>]---</center>' +
+                '<center style=" font-size: 120%;">[ '+turmaNome + ' ]</center>' +
                 '</div>' +
                 '</div>';
               var $container = $('#outputAlunos'); //Adiciona ao Div

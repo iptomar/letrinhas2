@@ -15,7 +15,7 @@
 *:not(input):not(textarea) {
   -webkit-user-select: none;
   /* disable selection/Copy of UIWebView */
-  
+
   -webkit-touch-callout: none;
   /* disable the IOS popup when long-press on a link */
 }
@@ -450,7 +450,7 @@ table.dataTable th:active {
 .spinner {
   height: 36px;
   /* width needs to be double the height */
-  
+
   width: 72px;
   border: 3px solid #1E8CE2;
   border-bottom: 0;

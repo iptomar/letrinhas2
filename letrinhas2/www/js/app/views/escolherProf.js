@@ -18,9 +18,10 @@ define(function(require) {
       $('.side-nav__list__item').removeClass('is-active');
       $(e.target).parent().addClass('is-active');
     },
-
     /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
+
+
       ////Carrega dados da janela anterior////
       var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
@@ -32,7 +33,7 @@ define(function(require) {
         document.querySelector("#outputProfs").innerHTML =
           '<div class="panel panel-default">' +
           '<div class="panel-body">' +
-          '<center>---[  <b> ' + escolaNome + ' </b>  ]---</center>' +
+          '<center style=" font-size: 120%;">[ '+escolaNome + ' ]</center>' +
           '</div>' +
           '</div>';
 
@@ -101,7 +102,6 @@ define(function(require) {
             });
           });
         }
-
       } else {
         $('#labelErr').text("PIN errado!");
       }

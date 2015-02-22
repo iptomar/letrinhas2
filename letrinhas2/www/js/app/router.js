@@ -1,5 +1,5 @@
+///////// ONDE SE CONFIGURA AS ROTAS DE NAVEGACAO ////////////
 define(function(require) {
-
   "use strict";
 
   var $ = require('jquery');

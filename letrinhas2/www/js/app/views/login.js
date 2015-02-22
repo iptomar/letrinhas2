@@ -7,7 +7,6 @@ define(function(require) {
     Backbone = require('backbone'),
     tpl = require('text!tpl/login.html'),
     classList = require('classList.min'),
-
     template = _.template(tpl);
 
   return Backbone.View.extend({
@@ -18,9 +17,9 @@ define(function(require) {
     },
 
     initialize: function() {
-
     },
 
+    //Eventos Click
     events: {
       "click #btn_login": "clickLogin",
       "click #btn_qrcode": "qrreader",
@@ -37,7 +36,5 @@ define(function(require) {
       this.$el.html(template());
       return this;
     }
-
   });
-
 });

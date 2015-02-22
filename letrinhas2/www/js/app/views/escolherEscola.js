@@ -1,18 +1,12 @@
 define(function(require) {
 
   "use strict";
-
-
-
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
     tpl = require('text!tpl/escolherEscola.html'),
     classList = require('classList.min'),
-
     template = _.template(tpl);
-
-
 
   return Backbone.View.extend({
 
@@ -21,6 +15,7 @@ define(function(require) {
       $(e.target).parent().addClass('is-active');
     },
 
+    /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
       $("#outputEscolas").html('');
       $("#outputEscolas").append('Running query Joao1000 ...</br>');
@@ -28,28 +23,18 @@ define(function(require) {
         $("#outputEscolas").append('Documentos: ' + info.doc_count + '</br>');
       });
 
-
-
+      /// Vai buscar todas as escolas da base de dados //
       escolas_local2.allDocs({
         include_docs: true,
         attachments: true
       }, function(err, data) {
         if (err) console.log(err);
 
-      //  console.log(data);
-        var val = data.total_rows;
-        var i = 0;
-        var y = 0;
-        var carname = "";
-        var url;
-
-
+        //Vai buscar o div de output Dinamico
         var $container = $('#outputEscolas');
 
-        for (i = 0; i < val; i++) {
-
+        for (var i = 0; i < data.total_rows; i++) {
           var docsEscolas = data.rows[i].doc;
-
           var $btn = $(
             '<div class="col-sm-4">' +
             '<div class="thumbnail" style="height:160px;">' +
@@ -59,12 +44,10 @@ define(function(require) {
             '</div>' +
             '</div></br>' +
             '</div>');
-
-          $btn.appendTo($container);
-
+          $btn.appendTo($container);  //Adiciona ao Div
         }
 
-
+        //// Analisa todos os botoes do div e aqueles que forem botoes de escola escuta o evento click//
         $container.on('click', '.btn-escola', function(ev) {
           var $btn = $(this); // O jQuery passa o btn clicado pelo this
           var self = this;
@@ -73,7 +56,6 @@ define(function(require) {
               ev.preventDefault();
               window.localStorage.setItem("EscolaSelecionadaNome", $btn[0].innerText + ''); //enviar variavel
               window.localStorage.setItem("EscolaSelecionadaID", $btn[0].id + ''); //enviar variavel
-
               app.navigate('/escolherProf', {
                 trigger: true
               });
@@ -84,18 +66,15 @@ define(function(require) {
       });
     },
 
+    //Eventos Click
     events: {
       "click #btnNEXT": "clickNEXT",
       "click #BackButtonEE": "clickBackButtonEE",
-
     },
-
 
     clickBackButtonEE: function(e) {
       window.history.back();
     },
-
-
 
 
     clickNEXT: function(e) {
@@ -112,34 +91,9 @@ define(function(require) {
     },
 
     render: function() {
-      //this.$el.html(template(this.model.toJSON()));
       this.$el.html(template({}));
-
-      return this;
-    }
-
-
-  });
-
-
-  return Backbone.View.extend({
-    events: {
-      "click #img_click": "imgclick"
-    },
-
-    imgclick: function(e) {
-      console.log('click')
-    },
-
-    render: function() {
-      this.$el.html(template());
       return this;
     }
 
   });
-
 });
-
-function myFunction() {
-
-}

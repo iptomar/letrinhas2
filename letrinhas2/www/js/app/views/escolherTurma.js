@@ -6,25 +6,22 @@ define(function(require) {
     _ = require('underscore'),
     Backbone = require('backbone'),
     tpl = require('text!tpl/escolherTurma.html'),
-
     template = _.template(tpl);
 
   return Backbone.View.extend({
-
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
       $(e.target).parent().addClass('is-active');
     },
 
+    /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
-
+      /// Vai buscar todas as escolas da base de dados //
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
       var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
-
-
-
+      //// Vai buscar o doc da escola selecionada ///
       escolas_local2.get(escolaId, function(err, data) {
         if (err) console.log(err);
 
@@ -38,8 +35,6 @@ define(function(require) {
         var $container = $('#outputTurmas');
 
         for (var i = 0; i < data.turmas.length; i++) {
-
-
           var $btn = $(
             '<div class="col-md-4">' +
             '<div class="thumbnail" style="height:100px;"  >' +
@@ -50,13 +45,10 @@ define(function(require) {
             '</div>' +
             '</div></br>' +
             '</div>');
-
-          $btn.appendTo($container);
-
-
+          $btn.appendTo($container); //Adiciona ao Div
         }
 
-
+        //// Analisa todos os botoes do div e aqueles que forem botoes de turma escuta o evento click//
         $container.on('click', '.btn-turma', function(ev) {
           var $btn = $(this); // O jQuery passa o btn clicado pelo this
           var self = this;
@@ -65,7 +57,6 @@ define(function(require) {
               ev.preventDefault();
               window.localStorage.setItem("TurmaSelecNome", $btn[0].innerText + ''); //enviar variavel
               window.localStorage.setItem("TurmaSelecID", $btn[0].id + ''); //enviar variavel
-
               app.navigate('/escolherAluno', {
                 trigger: true
               });
@@ -73,11 +64,8 @@ define(function(require) {
           }
         });
       });
-
     },
-
-
-
+    //Eventos Click
     events: {
       "click #btnTeste": "clickTeste",
       "click #BackButtonET": "clickBackButtonET",
@@ -91,7 +79,5 @@ define(function(require) {
       this.$el.html(template({}));
       return this;
     }
-
   });
-
 });

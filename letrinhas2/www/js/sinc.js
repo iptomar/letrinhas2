@@ -1,5 +1,4 @@
-
-
+//// Script de Replicacao da Base de dados CouchDb para PouchDb  //////
 //##########################################################################
 var rep = PouchDB.replicate('http://127.0.0.1:5984/alunos', 'alunos_local2', {
   live: true,

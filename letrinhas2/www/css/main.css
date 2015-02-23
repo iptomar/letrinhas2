@@ -4,6 +4,19 @@
   overflow-y: scroll;
   background-color: white;
 }
+
+.input-large_PIN {
+  height: 48px;
+  font-size: 20px !important;
+}
+.btn_mineLarge{
+  height: 100px;
+}
+.btn_mine-MediumLarge{
+  height: 67px;
+  width:150px;
+}
+
 .chart {
   width: 100%;
   margin-top: 5px;

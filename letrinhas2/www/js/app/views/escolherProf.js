@@ -65,13 +65,18 @@ define(function(require) {
 
         //// Analisa todos os botoes do div e aqueles que forem botoes de Prof escuta o evento click//
         $container.on('click', '.btn-professor', function(ev) {
+          ev.stopPropagation(); ev.preventDefault();
           var $btn = $(this); // O jQuery passa o btn clicado pelo this
           $('#labelErr').text("");  //limpa campos
           $('#inputPIN').val("");   //limpa campos
-          $('#myModal').modal("show");
           nomeProfAux = $btn[0].innerText;
           idProfAux = $btn[0].id;
           pinProfAux = $btn[0].name;
+          $('#myModal').modal("show");
+          $('#myModal').on('shown.bs.modal', function () {
+          $('#inputPIN').select();
+          $('#inputPIN').focus();
+          });
         });
       });
     },
@@ -112,6 +117,7 @@ define(function(require) {
     },
 
     click: function(e) {
+      e.stopPropagation(); e.preventDefault();
       console.log('click');
     },
 

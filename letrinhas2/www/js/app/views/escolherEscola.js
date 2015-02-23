@@ -39,8 +39,9 @@ define(function(require) {
             '<div class="col-sm-4">' +
             '<div class="thumbnail" style="height:160px;">' +
             '<div class="caption"> ' +
-            "<button id='" + docsEscolas._id + "' type='button' class='btn btn-info btn-lg btn-block btn-escola' >" +
-            "<img style='height:100px;' src='data:image/png;base64," + docsEscolas._attachments['escola.png'].data + "'class='pull-left'/>" + docsEscolas.nome + "</button>" +
+            "<button id='" + docsEscolas._id + "' type='button' name='"+docsEscolas.nome+"' class='btn btn-info btn-lg btn-block btn-escola' >" +
+            " <img style='height:60px;' src='data:image/png;base64," + docsEscolas._attachments['escola.png'].data + "'><p>"+ docsEscolas.nome +"</p> " +
+            '</button>'+
             '</div>' +
             '</div></br>' +
             '</div>');
@@ -49,11 +50,13 @@ define(function(require) {
 
         //// Analisa todos os botoes do div e aqueles que forem botoes de escola escuta o evento click//
         $container.on('click', '.btn-escola', function(ev) {
+          ev.stopPropagation(); ev.preventDefault();
           var $btn = $(this); // O jQuery passa o btn clicado pelo this
           var self = this;
           if (Backbone.history.fragment != 'escolherProf') {
             utils.loader(function() {
               ev.preventDefault();
+              console.log($btn[0].name )
               window.localStorage.setItem("EscolaSelecionadaNome", $btn[0].innerText + ''); //enviar variavel
               window.localStorage.setItem("EscolaSelecionadaID", $btn[0].id + ''); //enviar variavel
               app.navigate('/escolherProf', {
@@ -73,6 +76,7 @@ define(function(require) {
     },
 
     clickBackButtonEE: function(e) {
+      e.stopPropagation(); e.preventDefault();
       window.history.back();
     },
 

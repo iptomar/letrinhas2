@@ -48,6 +48,8 @@ define(function(require) {
       "escolherAluno": "escolherAluno",
       "menuTipoOpcao": "menuTipoOpcao",
       "escolherDisciplina": "escolherDisciplina",
+      "escolherTipoTeste": "escolherTipoTeste",
+
 
     },
 
@@ -55,6 +57,15 @@ define(function(require) {
       var bootView = new BootView();
       this.showView(bootView);
     },
+
+    escolherTipoTeste: function() {
+      var self = this;
+      require(["app/views/escolherTipoTeste"], function(EscolherTipoTesteView) {
+        var view = new EscolherTipoTesteView();
+        self.showView(view);
+      });
+    },
+
 
     escolherDisciplina: function() {
       var self = this;

@@ -27,6 +27,7 @@ define(function(require) {
     },
 
     clickLogin: function(e) {
+      e.stopPropagation(); e.preventDefault();
       app.navigate('/escolherEscola', {
         trigger: true
       });

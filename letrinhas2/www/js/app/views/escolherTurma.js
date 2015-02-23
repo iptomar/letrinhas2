@@ -58,6 +58,7 @@ define(function(require) {
 
         //// Analisa todos os botoes do div e aqueles que forem botoes de turma escuta o evento click//
         $container.on('click', '.btn-turma', function(ev) {
+          ev.stopPropagation(); ev.preventDefault();
           var $btn = $(this); // O jQuery passa o btn clicado pelo this
           var self = this;
           if (Backbone.history.fragment != 'escolherAluno') {
@@ -80,6 +81,7 @@ define(function(require) {
     },
 
     clickBackButtonET: function(e) {
+      e.stopPropagation(); e.preventDefault();
       window.history.back();
     },
 

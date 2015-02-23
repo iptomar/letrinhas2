@@ -1,5 +1,6 @@
 define(function(require) {
-
+//// 1 -Portugues  2- Matematica
+///  3 -EstudoMeio 4- Ingles
   "use strict";
 
   var $ = require('jquery'),
@@ -34,7 +35,6 @@ define(function(require) {
         $('#imgProf').attr("src",url);
       });
 
-
       alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
         if (err2)  console.log(err2);
         var url = URL.createObjectURL(DataImg);
@@ -58,19 +58,63 @@ define(function(require) {
     },
 
     clickbtnSelecPortugues: function(e) {
-      console.log("pt");
+      e.stopPropagation(); e.preventDefault();
+      window.localStorage.setItem("TipoDiscSelecionado", '1'); //enviar variavel 1 -Portugues
+      var self = this;
+      if (Backbone.history.fragment != 'escolherTipoTeste') {
+        utils.loader(function() {
+          e.preventDefault();
+          self.highlight(e);
+          app.navigate('/escolherTipoTeste', {
+            trigger: true
+          });
+        });
+      }
     },
 
     clickbtnSelecMate: function(e) {
-      console.log("mate");
+      e.stopPropagation(); e.preventDefault();
+      window.localStorage.setItem("TipoDiscSelecionado", '2'); //enviar variavel 2- Matematica
+      var self = this;
+      if (Backbone.history.fragment != 'escolherTipoTeste') {
+        utils.loader(function() {
+          e.preventDefault();
+          self.highlight(e);
+          app.navigate('/escolherTipoTeste', {
+            trigger: true
+          });
+        });
+      }
     },
 
     clickbtnSelecEstuMeio: function(e) {
-      console.log("estudomeio");
+      e.stopPropagation(); e.preventDefault();
+      window.localStorage.setItem("TipoDiscSelecionado", '3'); //enviar variavel 3 -EstudoMeio
+      var self = this;
+      if (Backbone.history.fragment != 'escolherTipoTeste') {
+        utils.loader(function() {
+          e.preventDefault();
+          self.highlight(e);
+          app.navigate('/escolherTipoTeste', {
+            trigger: true
+          });
+        });
+      }
     },
 
     clickbtnSelecIngles: function(e) {
-      console.log("ingles");
+      e.stopPropagation(); e.preventDefault();
+      window.localStorage.setItem("TipoDiscSelecionado", '4'); //enviar variavel 4- Ingles
+      var self = this;
+      if (Backbone.history.fragment != 'escolherTipoTeste') {
+        utils.loader(function() {
+          e.preventDefault();
+          self.highlight(e);
+          app.navigate('/escolherTipoTeste', {
+            trigger: true
+          });
+        });
+      }
     },
 
     render: function() {

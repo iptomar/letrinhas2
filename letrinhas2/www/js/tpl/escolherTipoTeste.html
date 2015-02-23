@@ -1,15 +1,13 @@
 <section>
-
   <div class="globalcontent">
-
     <div class="topcoat-navigation-bar">
       <div class="topcoat-navigation-bar__item left quarter">
-        <button id="BackButtonMO" type="button" class="btn btn-default btn-lg">
+        <button id="BackButtonETT" type="button" class="btn btn-default btn-lg">
           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Voltar
         </button>
         </div>
       <div class="topcoat-navigation-bar__item center half">
-          <h1 class="topcoat-navigation-bar__title">Escolher Opção</h1>
+          <h1 class="topcoat-navigation-bar__title">Escolher tipo de Teste</h1>
       </div>
       <div class="topcoat-navigation-bar__item right quarter">
         <label id="lbNomeProf" style="color:#FFFFF;">Professor</label>
@@ -17,13 +15,12 @@
         </div>
   </div>
 
-
    <nav class="navbar navbar-default navbar-fixed-bottom " style=" background: #3399CC; color:#FFFFFF; ">
      <div class="nav navbar-nav navbar-left">
          <label id="lbNomeTurma" style="color:#FFFFF;">Turma</label>
      </div>
       <div class="nav navbar-nav navbar-right">
-          <label id="lbNomeAluno" style="color:#FFFFF;">Aluno</label>
+          <label id="lbNomeAluno" style="color:#FFFFFF;">Aluno</label>
           <img id="imgAluno" src="img/RealizarTestes.png" style='height:44px;'>
       </div>
   </nav>
@@ -36,32 +33,41 @@
     </div>
 
     <div class="container">
+      <div class="panel panel-default">
+      <div class="panel-body">
+        <center>
+      <img id="imgDisciplinaIcon" style='height:44px;'>
+       <label id="labelDisciplina" style="color:#000000;"></label>
+     </center>
+      </div>
+      </div>
+
+
     </br>
     </br>
       <div class="row">
     <div class="col-md-4">
-      <button id="btnRealizarTeste"  type="button" class="btn btn-info btn-lg btn-block">
-        <img src="img/RealizarTestes.png" style='height:155px;'>
-        <p>Realizar Teste</p>
+      <button id="btnTesteLeituraPalav"  type="button" class="btn btn-info btn-lg btn-block">
+        <img src="img/testLista.png" style='height:155px;'>
+        <p>Leitura de Palavras</p>
       </button>
     </div>
 
     <div class="col-md-4">
-      <button  id="btnCorrigirTeste" type="button" class="btn btn-info btn-lg btn-block">
-        <img src="img/Corrigir.png"  style='height:155px;'>
-        <p>Corrigir Teste</p>
+      <button  id="btnTesteLeituraTextos" type="button" class="btn btn-info btn-lg btn-block">
+        <img src="img/testeTexto.png"  style='height:155px;'>
+        <p>Leitura de Textos</p>
       </button>
     </div>
 
     <div class="col-md-4">
-      <button id="btnConsultarTeste" type="button" class="btn btn-info btn-lg btn-block">
-        <img src="img/resultados.png"  style='height:155px;' >
-        <p>Consultar Resultados</p>
+      <button id="btnTesteLeituraMultimedia" type="button" class="btn btn-info btn-lg btn-block">
+        <img src="img/testMul.png"  style='height:155px;' >
+        <p>Testes Multimedia</p>
       </button>
     </div>
   </div>
   </div>
 
   </div>
-
 </section>

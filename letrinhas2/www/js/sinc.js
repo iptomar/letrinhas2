@@ -1,18 +1,22 @@
 //// Script de Replicacao da Base de dados CouchDb para PouchDb  //////
 //##########################################################################
-var rep = PouchDB.replicate('http://127.0.0.1:5984/alunos', 'alunos_local2', {
+
+var rep = PouchDB.replicate('http://192.168.1.2:5984/alunos', 'alunos_local2', {
+//var rep = PouchDB.replicate('http://127.0.0.1:5984/alunos', 'alunos_local2', {
   live: true,
   batch_size: 200,
   retry: true
 });
 
-var repEscolas = PouchDB.replicate('http://127.0.0.1:5984/escolas', 'escolas_local2', {
+var repEscolas = PouchDB.replicate('http://192.168.1.2:5984/escolas', 'escolas_local2', {
+//var repEscolas = PouchDB.replicate('http://127.0.0.1:5984/escolas', 'escolas_local2', {
   live: true,
   batch_size: 200,
   retry: true
 });
 
-var repProfessores = PouchDB.replicate('http://127.0.0.1:5984/professores', 'professores_local2', {
+var repProfessores = PouchDB.replicate('http://192.168.1.2:5984/professores', 'professores_local2', {
+//var repProfessores = PouchDB.replicate('http://127.0.0.1:5984/professores', 'professores_local2', {
   live: true,
   batch_size: 200,
   retry: true

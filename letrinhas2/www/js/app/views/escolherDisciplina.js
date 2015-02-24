@@ -59,7 +59,7 @@ define(function(require) {
 
     clickbtnSelecPortugues: function(e) {
       e.stopPropagation(); e.preventDefault();
-      window.localStorage.setItem("TipoDiscSelecionado", '1'); //enviar variavel 1 -Portugues
+      window.localStorage.setItem("DiscplinaSelecionada", '1'); //enviar variavel 1 -Portugues
       var self = this;
       if (Backbone.history.fragment != 'escolherTipoTeste') {
         utils.loader(function() {
@@ -74,7 +74,7 @@ define(function(require) {
 
     clickbtnSelecMate: function(e) {
       e.stopPropagation(); e.preventDefault();
-      window.localStorage.setItem("TipoDiscSelecionado", '2'); //enviar variavel 2- Matematica
+      window.localStorage.setItem("DiscplinaSelecionada", '2'); //enviar variavel 2- Matematica
       var self = this;
       if (Backbone.history.fragment != 'escolherTipoTeste') {
         utils.loader(function() {
@@ -89,7 +89,7 @@ define(function(require) {
 
     clickbtnSelecEstuMeio: function(e) {
       e.stopPropagation(); e.preventDefault();
-      window.localStorage.setItem("TipoDiscSelecionado", '3'); //enviar variavel 3 -EstudoMeio
+      window.localStorage.setItem("DiscplinaSelecionada", '3'); //enviar variavel 3 -EstudoMeio
       var self = this;
       if (Backbone.history.fragment != 'escolherTipoTeste') {
         utils.loader(function() {
@@ -104,7 +104,7 @@ define(function(require) {
 
     clickbtnSelecIngles: function(e) {
       e.stopPropagation(); e.preventDefault();
-      window.localStorage.setItem("TipoDiscSelecionado", '4'); //enviar variavel 4- Ingles
+      window.localStorage.setItem("DiscplinaSelecionada", '4'); //enviar variavel 4- Ingles
       var self = this;
       if (Backbone.history.fragment != 'escolherTipoTeste') {
         utils.loader(function() {

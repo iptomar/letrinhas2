@@ -4,7 +4,7 @@ node init.js
 node insertAlunos.js
 node insertEscolas.js
 node insertProfessores.js
-node insertEnunciados.js
+node insertTestes.js
 
 #!cd ./web
 #!http-server ./

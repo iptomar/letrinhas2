@@ -47,7 +47,7 @@ define(function(require) {
             '<div class="col-md-4">' +
             '<div class="thumbnail" style="height:100px;"  >' +
             '<div class="caption">' +
-            "<button id='" + data.turmas[i].id + "' type='button' style='height:65px;' class='btn btn-info btn-lg btn-block btn-turma' >" +
+            '<button id="' + data.turmas[i]._id + '" type="button" style="height:65px;"" class="btn btn-info btn-lg btn-block btn-turma" >' +
             '  <span class="glyphicon glyphicon-list-alt" ></span>   ' +
             data.turmas[i].ano + " - " + data.turmas[i].nome + "</button>" +
             '</div>' +

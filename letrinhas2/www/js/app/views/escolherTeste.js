@@ -5,11 +5,10 @@ define(function(require) {
   ////multimedia - Teste multimedia
 
   "use strict";
-
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    tpl = require('text!tpl/escolherTipoTeste.html'),
+    tpl = require('text!tpl/escolherTeste.html'),
     template = _.template(tpl);
 
   return Backbone.View.extend({
@@ -20,7 +19,7 @@ define(function(require) {
     },
 
     initialize: function() {
-
+      ////Carrega dados da janela anterior////
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
@@ -30,20 +29,24 @@ define(function(require) {
       var turmaId = window.localStorage.getItem("TurmaSelecID");
       var turmaNome = window.localStorage.getItem("TurmaSelecNome");
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
+      var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
 
       professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
         if (err2)  console.log(err2);
         var url = URL.createObjectURL(DataImg);
+        $('#lbNomeTurma').text("  ["+turmaNome+"  ]");
         if (discplinaSelecionada == '1'){$('#labelDisciplina').text("Português");  $('#imgDisciplinaIcon').attr("src","img/portugues.png");}
         if (discplinaSelecionada == '2'){$('#labelDisciplina').text("Matemática"); $('#imgDisciplinaIcon').attr("src","img/mate.png");}
         if (discplinaSelecionada == '3'){$('#labelDisciplina').text("Estudo do Meio"); $('#imgDisciplinaIcon').attr("src","img/estudoMeio.png");}
         if (discplinaSelecionada == '4'){$('#labelDisciplina').text("Inglês"); $('#imgDisciplinaIcon').attr("src","img/ingles.png");}
 
-        $('#lbNomeTurma').text("  ["+turmaNome+"  ]");
+        if (tipoTesteSelecionado == 'texto'){$('#titleEscolherTeste').text("Escolher Teste de Leitura de Palavras");}
+        if (tipoTesteSelecionado == 'lista'){$('#titleEscolherTeste').text("Escolher Teste de Leitura de Textos");}
+        if (tipoTesteSelecionado == 'multimedia'){$('#titleEscolherTeste').text("Escolher Teste Multimedia");}
+
         $('#lbNomeProf').text(profNome);
         $('#imgProf').attr("src",url);
       });
-
 
       alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
         if (err2)  console.log(err2);
@@ -52,67 +55,64 @@ define(function(require) {
         $('#imgAluno').attr("src",url);
       });
 
+
+      function map(doc) {
+        if (doc.disciplina === 4 && doc.tipoTeste === 'texto') {
+          emit(doc);
+        }
+      }
+
+      testes_local2.query({map: map}, {reduce: false}, function(errx, response) {
+        if (errx)  console.log(errx);
+        var $container = $('#outputTestes');
+        for (var i = 0; i < response.rows.length; i++) {
+         var   idTest =  response.rows[i].key;
+
+        var $btn = $(
+          '<div class="col-sm-20">' +
+          '<button id="' + idTest._id+ '" type="button" style="height:65px;"" class="btn btn-info btn-lg btn-block btn-turma" >' +
+          '  <span class="glyphicon glyphicon-file" ></span>   ' +
+          idTest.titulo + "</button>" +
+          '</div>');
+        $btn.appendTo($container); //Adiciona ao Div
+      }
+      });
     },
 
 
 
     events: {
-      "click #BackButtonETT": "clickBackButtonETT",
-      "click #btnTesteLeituraPalav": "clickbtnTesteLeituraPalav",
-      "click #btnTesteLeituraTextos": "clickbtnTesteLeituraTextos",
-      "click #btnTesteLeituraMultimedia": "clickbtnTesteLeituraMultimedia",
+      "click #BackButtonEscTest": "clickBackButtonEscTest",
+      "click #btnRealizarTeste": "clickBtnRealizarTeste",
+      "click #btnCorrigirTeste": "clickBtnCorrigirTeste",
+      "click #btnConsultarTeste": "clickBtnConsultarTeste",
     },
 
 
-    clickBackButtonETT: function(e) {
-      e.stopPropagation(); e.preventDefault();
+    clickBackButtonEscTest: function(e) {
       window.history.back();
     },
 
-    clickbtnTesteLeituraPalav: function(ev) {
-      ev.stopPropagation(); ev.preventDefault();
-      var $btn = $(this); // O jQuery passa o btn clicado pelo this
+    clickBtnRealizarTeste: function(e) {
       var self = this;
-      if (Backbone.history.fragment != 'escolherTeste') {
+      if (Backbone.history.fragment != 'escolherDisciplina') {
         utils.loader(function() {
-          ev.preventDefault();
-          window.localStorage.setItem("TipoTesteSelecionado", 'lista'); //enviar variavel
-          app.navigate('/escolherTeste', {
+          e.preventDefault();
+
+
+          app.navigate('/escolherDisciplina', {
             trigger: true
           });
         });
       }
     },
 
-    clickbtnTesteLeituraTextos: function(ev) {
-      ev.stopPropagation(); ev.preventDefault();
-      var $btn = $(this); // O jQuery passa o btn clicado pelo this
-      var self = this;
-      if (Backbone.history.fragment != 'escolherTeste') {
-        utils.loader(function() {
-          ev.preventDefault();
-          window.localStorage.setItem("TipoTesteSelecionado", 'texto'); //enviar variavel
-          app.navigate('/escolherTeste', {
-            trigger: true
-          });
-        });
-      }
+    clickBtnCorrigirTeste: function(e) {
+    //  window.history.back();
     },
 
-    clickbtnTesteLeituraMultimedia: function(ev) {
-      ev.stopPropagation(); ev.preventDefault();
-      var $btn = $(this); // O jQuery passa o btn clicado pelo this
-      var self = this;
-      if (Backbone.history.fragment != 'escolherTeste') {
-        utils.loader(function() {
-          ev.preventDefault();
-          console.log($btn[0].name )
-          window.localStorage.setItem("TipoTesteSelecionado", 'multimedia'); //enviar variavel
-          app.navigate('/escolherTeste', {
-            trigger: true
-          });
-        });
-      }
+    clickBtnConsultarTeste: function(e) {
+      //window.history.back();
     },
 
 

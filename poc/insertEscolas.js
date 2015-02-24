@@ -20,11 +20,11 @@ function insertEscola(counter, uids) {
 
  nano.request({db: "_uuids"}, function(_,uuids){
       var ids = uuids['uuids'][0];
-    
+
 
 
     var turma = {
-      'id': ids,
+      '_id': ids,
       'ano': 1,
       'anoLectivo': 2014,
       'nome': 'turma A',

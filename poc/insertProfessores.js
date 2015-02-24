@@ -2,9 +2,8 @@ var nano = require('nano')('http://127.0.0.1:5984');
 
 var professores = nano.use('professores');
 var escolas = nano.use('escolas');
-var enunciados = nano.use('enunciados');
+var testes = nano.use('testes');
 var alunos = nano.use('alunos');
-
 var imgData = require('fs').readFileSync('prof.png');
 
 function insertProfessor(counter) {

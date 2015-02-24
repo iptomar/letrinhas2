@@ -45,6 +45,8 @@ define(function(require) {
           professores_local2.get(abc, function(errx, profDoc) {
             if (errx) console.log(errx);
              /////Anexos de fotos dos professores ///
+
+
             professores_local2.getAttachment(profDoc._id, 'prof.png', function(err2, DataImg) {
               if (err2) console.log(err2);
               var url = URL.createObjectURL(DataImg);

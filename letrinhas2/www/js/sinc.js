@@ -2,77 +2,168 @@
 //##########################################################################
 
 var alunos_local2 = new PouchDB('alunos_local2');
-
 var escolas_local2 = new PouchDB('escolas_local2');
-
 var professores_local2 = new PouchDB('professores_local2');
-
 var testes_local2 = new PouchDB('testes_local2');
 
+var triger1= false;
+var triger2= false;
+var triger3= false;
+var triger4= false;
 
+function myfunction(){
+if (triger1 == true && triger2 == true && triger3 == true && triger4 == true )
+$("#btn_login").removeClass( "disabled" );
+}
+
+
+
+function sinEscolasForev(){
 var repEscolas = PouchDB.sync('http://192.168.1.2:5984/escolas', 'escolas_local2', {
-//var repEscolas = PouchDB.replicate('http://127.0.0.1:5984/escolas', 'escolas_local2', {
-  live: true,
-  batch_size: 100,
-  retry: true
+    live: true,
+    batch_size: 100,
+    retry: true
+  }).on('change', function(info) {
+    console.log("Escolas " + info);
+  }).on('error', function(err) {
+    console.log("EscolasERRO " + info);
+  });
+}
+
+
+
+function sinAlunosForev(){
+  var repAlunos = PouchDB.sync('http://192.168.1.2:5984/alunos', 'alunos_local2', {
+      live: true,
+      batch_size: 400,
+      retry: true
+    }).on('change', function(info) {
+      console.log("Alunos " + info);
+    }).on('error', function(err) {
+      console.log("AlunosERRO " + info);
+    });
+}
+
+function sinProfsForev(){
+  var repProfs = PouchDB.sync('http://192.168.1.2:5984/professores', 'professores_local2', {
+      live: true,
+      batch_size: 200,
+      retry: true
+    }).on('change', function(info) {
+      console.log("Profs " + info);
+    }).on('error', function(err) {
+      console.log("ProfsERRO " + info);
+    });
+}
+
+function sinTestesForev(){
+  var repProfs = PouchDB.sync('http://192.168.1.2:5984/testes', 'testes_local2', {
+      live: true,
+      batch_size: 200,
+      retry: true
+    }).on('change', function(info) {
+      console.log("Testes " + info);
+    }).on('error', function(err) {
+      console.log("TestesERRO " + info);
+    });
+}
+
+
+escolas_local2.info().then(function(info1) {
+if (info1.doc_count == 0){
+  $("#btn_login").addClass("disabled");
+var repEscolas = PouchDB.sync('http://192.168.1.2:5984/escolas', 'escolas_local2', {
+    live: false,
+    batch_size: 100,
+    retry: true
+  }).on('change', function(info) {
+    console.log("Escolas " + info);
+  }).on('complete', function(info) {
+    escolas_local2 = new PouchDB('escolas_local2');
+    triger1= true;
+    myfunction();
+    console.log("EscolasCOMPLETO " + info);
+  }).on('error', function(err) {
+    console.log("EscolasERRO " + info);
+  });
+}else{
+  triger1= true;
+  sinEscolasForev();
+}
 });
 
-var repProfessores = PouchDB.sync('http://192.168.1.2:5984/professores', 'professores_local2', {
-//var repProfessores = PouchDB.replicate('http://127.0.0.1:5984/professores', 'professores_local2', {
-  live: true,
-  batch_size: 100,
-  retry: true
+
+alunos_local2.info().then(function(info1) {
+
+if (info1.doc_count == 0){
+  $("#btn_login").addClass("disabled");
+var repEscolas = PouchDB.sync('http://192.168.1.2:5984/alunos', 'alunos_local2', {
+    live: false,
+    batch_size: 400,
+    retry: true
+  }).on('change', function(info) {
+    console.log("Alunos " + info);
+  }).on('complete', function(info) {
+    alunos_local2 = new PouchDB('alunos_local2');
+    console.log("AlunosCOMPLETO " + info);
+    triger2= true;
+    myfunction();
+  }).on('error', function(err) {
+    console.log("AlunosERRO " + info);
+  });
+}else{
+  triger2= true;
+  sinAlunosForev();
+}
 });
 
-var rep = PouchDB.sync('http://192.168.1.2:5984/alunos', 'alunos_local2', {
-//var rep = PouchDB.replicate('http://127.0.0.1:5984/alunos', 'alunos_local2', {
-  live: true,
-  batch_size: 400,
-  retry: true
+
+professores_local2.info().then(function(info1) {
+
+if (info1.doc_count == 0){
+  $("#btn_login").addClass("disabled");
+var repProfs = PouchDB.sync('http://192.168.1.2:5984/professores', 'professores_local2', {
+    live: false,
+    batch_size: 200,
+    retry: true
+  }).on('change', function(info) {
+    console.log("Profs " + info);
+  }).on('complete', function(info) {
+   professores_local2 = new PouchDB('professores_local2');
+    console.log("ProfsCOMPLETO " + info);
+    triger3= true;
+    myfunction();
+  }).on('error', function(err) {
+    console.log("ProfsERRO " + info);
+  });
+}else
+{
+  triger3= true;
+  sinProfsForev();
+}
 });
+
+testes_local2.info().then(function(info1) {
+
+if (info1.doc_count == 0){
+  $("#btn_login").addClass("disabled");
 var repTestes = PouchDB.sync('http://192.168.1.2:5984/testes', 'testes_local2', {
-//var rep = PouchDB.replicate('http://127.0.0.1:5984/testes', 'alunos_local2', {
-  live: true,
-  batch_size: 100,
-  retry: true
-});
-
-
-//##########################################################################
-repEscolas.on('change', function(info) {
-  console.log("Escolas "+info);
-});
-
-
-repProfessores.on('change', function(info) {
-  console.log("Profes "+info);
-});
-
-
-rep.on('change', function(info) {
-  console.log("Alunos "+info);
-});
-
-repTestes.on('change', function(info) {
-  console.log("Testes "+info);
-});
-
-////////////////////////////////////////////////////
-////////////////////////////////////////////////////
-rep.on('error', function(err) {
-  console.log("Alunos "+err);
-});
-
-
-repEscolas.on('error', function(err) {
-  console.log("Escolas "+err);
-});
-
-
-repProfessores.on('error', function(err) {
-  console.log("Profs "+err);
-});
-
-repTestes.on('error', function(err) {
-  console.log("Testes "+err);
+    live: false,
+    batch_size: 200,
+    retry: true
+  }).on('change', function(info) {
+    console.log("Testes " + info);
+  }).on('complete', function(info) {
+    professores_local2 = new PouchDB('testes_local2');
+    console.log("TestesCOMPLETO " + info);
+    triger4= true;
+    myfunction();
+  }).on('error', function(err) {
+    console.log("TestesERRO " + info);
+  });
+}else
+{
+  triger4= true;
+  sinTestesForev();
+}
 });

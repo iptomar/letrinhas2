@@ -40,9 +40,9 @@ define(function(require) {
         var $container = $('#outputProfs');
 
         for (var i = 0; i < data.professores.length; i++) {
-          var abc = data.professores[i].id;
+           data.professores[i].id;
           ///////Vai buscar os docs professores correspondes a escola ///
-          professores_local2.get(abc, function(errx, profDoc) {
+          professores_local2.get(data.professores[i].id, function(errx, profDoc) {
             if (errx) console.log(errx);
              /////Anexos de fotos dos professores ///
 

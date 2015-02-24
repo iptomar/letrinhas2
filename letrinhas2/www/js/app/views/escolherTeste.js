@@ -57,7 +57,10 @@ define(function(require) {
 
 
       function map(doc) {
-        if (doc.disciplina === 4 && doc.tipoTeste === 'texto') {
+        console.log(window.localStorage.getItem("TipoTesteSelecionado"))
+        console.log(window.localStorage.getItem("DiscplinaSelecionada"))
+        if (doc.disciplina == window.localStorage.getItem("DiscplinaSelecionada")
+        && doc.tipoTeste === window.localStorage.getItem("TipoTesteSelecionado")) {
           emit(doc);
         }
       }

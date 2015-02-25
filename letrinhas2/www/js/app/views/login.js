@@ -18,14 +18,6 @@ define(function(require) {
 
     initialize: function() {
 
-
-
-
-
-
-
-
-
     },
 
     //Eventos Click
@@ -36,10 +28,8 @@ define(function(require) {
     },
 
     clickLogin: function(e) {
-      $.getScript( "js/sinc.js", function() {
-  console.log( "Load was performed." );
-});
-
+      $.getScript( "js/apoio.js", function() {
+      });
       e.stopPropagation(); e.preventDefault();
       app.navigate('/escolherEscola', {
         trigger: true

@@ -41,7 +41,6 @@ define(function(require) {
     routes: {
       "": "login",
       "login": "login",
-      "summary": "summary",
       "escolherEscola": "escolherEscola",
       "escolherProf": "escolherProf",
       "escolherTurma": "escolherTurma",
@@ -116,14 +115,6 @@ define(function(require) {
       });
     },
 
-
-    summary: function() {
-      var self = this;
-      require(["app/views/summary"], function(SummaryView) {
-        var view = new SummaryView();
-        self.showView(view);
-      });
-    },
 
     escolherProf: function() {
       var self = this;

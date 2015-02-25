@@ -57,8 +57,7 @@ define(function(require) {
 
 
       function map(doc) {
-        console.log(window.localStorage.getItem("TipoTesteSelecionado"))
-        console.log(window.localStorage.getItem("DiscplinaSelecionada"))
+
         if (doc.disciplina == window.localStorage.getItem("DiscplinaSelecionada")
         && doc.tipoTeste === window.localStorage.getItem("TipoTesteSelecionado")) {
           emit(doc);
@@ -68,9 +67,14 @@ define(function(require) {
       testes_local2.query({map: map}, {reduce: false}, function(errx, response) {
         if (errx)  console.log(errx);
         var $container = $('#outputTestes');
+        if (response.rows.length == 0)
+      {
+        var $msg = $("<h4 class='centerEX' >SEM DADOS</h4>");
+        $msg.appendTo($container); //Adiciona ao Div
+       }
+
         for (var i = 0; i < response.rows.length; i++) {
          var   idTest =  response.rows[i].key;
-
         var $btn = $(
           '<div class="col-sm-20">' +
           '<button id="' + idTest._id+ '" type="button" style="height:65px;"" class="btn btn-info btn-lg btn-block btn-turma" >' +

@@ -71,13 +71,13 @@ define(function(require) {
           var $btn = $(this); // O jQuery passa o btn clicado pelo this
           $('#labelErr').text("");  //limpa campos
           $('#inputPIN').val("");   //limpa campos
+          $('#inputPINErr').removeClass("has-error"); //limpa campos
           nomeProfAux = $btn[0].innerText;
           idProfAux = $btn[0].id;
           pinProfAux = $btn[0].name;
           $('#myModal').modal("show");
-          $('#myModal').on('shown.bs.modal', function () {
-          $('#inputPIN').select();
-          $('#inputPIN').focus();
+          $('#myModal').on('shown.bs.modal', function (e) {
+             $("#inputPIN").focus();
           });
         });
       });
@@ -90,7 +90,8 @@ define(function(require) {
     },
 
 
-    clickBackButtonEP: function(e) {
+    clickBackButtonEP: function(ev) {
+      ev.stopPropagation(); ev.preventDefault();
       window.history.back();
     },
 
@@ -110,17 +111,9 @@ define(function(require) {
           });
         }
       } else {
+        $('#inputPINErr').addClass("has-error");
         $('#labelErr').text("PIN errado!");
       }
-    },
-
-
-    clickTeste: function(e) {
-    },
-
-    click: function(e) {
-      e.stopPropagation(); e.preventDefault();
-      console.log('click');
     },
 
     render: function() {

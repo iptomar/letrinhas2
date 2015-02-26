@@ -19,7 +19,7 @@ $("#btn_login").removeClass( "disabled" );
 
 
 function sinEscolasForev(){
-var repEscolas = PouchDB.sync('http://192.168.1.2:5984/escolas', 'escolas_local2', {
+var repEscolas = PouchDB.sync('http://127.0.0.1:5984/escolas', 'escolas_local2', {
     live: true,
     batch_size: 100,
     retry: true
@@ -33,7 +33,7 @@ var repEscolas = PouchDB.sync('http://192.168.1.2:5984/escolas', 'escolas_local2
 
 
 function sinAlunosForev(){
-  var repAlunos = PouchDB.sync('http://192.168.1.2:5984/alunos', 'alunos_local2', {
+var repAlunos = PouchDB.sync('http://127.0.0.1:5984/alunos', 'alunos_local2', {
       live: true,
       batch_size: 400,
       retry: true
@@ -45,7 +45,7 @@ function sinAlunosForev(){
 }
 
 function sinProfsForev(){
-  var repProfs = PouchDB.sync('http://192.168.1.2:5984/professores', 'professores_local2', {
+  var repAlunos = PouchDB.sync('http://127.0.0.1:5984/alunos', 'alunos_local2', {
       live: true,
       batch_size: 200,
       retry: true
@@ -57,7 +57,7 @@ function sinProfsForev(){
 }
 
 function sinTestesForev(){
-  var repProfs = PouchDB.sync('http://192.168.1.2:5984/testes', 'testes_local2', {
+  var repProfs = PouchDB.sync('http://127.0.0.1:5984/testes', 'testes_local2', {
       live: true,
       batch_size: 200,
       retry: true
@@ -72,7 +72,7 @@ function sinTestesForev(){
 escolas_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
-var repEscolas = PouchDB.sync('http://192.168.1.2:5984/escolas', 'escolas_local2', {
+var repEscolas = PouchDB.sync('http://127.0.0.1:5984/escolas', 'escolas_local2', {
     live: false,
     batch_size: 100,
     retry: true
@@ -97,7 +97,7 @@ alunos_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
-var repEscolas = PouchDB.sync('http://192.168.1.2:5984/alunos', 'alunos_local2', {
+var repEscolas = PouchDB.sync('http://127.0.0.1:5984/alunos', 'alunos_local2', {
     live: false,
     batch_size: 400,
     retry: true
@@ -122,7 +122,7 @@ professores_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
-var repProfs = PouchDB.sync('http://192.168.1.2:5984/professores', 'professores_local2', {
+var repProfs = PouchDB.sync('http://127.0.0.1:5984/professores', 'professores_local2', {
     live: false,
     batch_size: 200,
     retry: true
@@ -147,7 +147,7 @@ testes_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
-var repTestes = PouchDB.sync('http://192.168.1.2:5984/testes', 'testes_local2', {
+var repTestes = PouchDB.sync('http://127.0.0.1:5984/testes', 'testes_local2', {
     live: false,
     batch_size: 200,
     retry: true

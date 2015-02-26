@@ -17,11 +17,6 @@ define(function(require) {
 
     /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
-      $("#outputEscolas").html('');
-      $("#outputEscolas").append('Running query Joao1000 ...</br>');
-      escolas_local2.info().then(function(info) {
-        $("#outputEscolas").append('Documentos: ' + info.doc_count + '</br>');
-      });
 
       /// Vai buscar todas as escolas da base de dados //
       escolas_local2.allDocs({

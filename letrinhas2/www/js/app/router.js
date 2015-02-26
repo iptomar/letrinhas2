@@ -49,12 +49,21 @@ define(function(require) {
       "escolherDisciplina": "escolherDisciplina",
       "escolherTipoTeste": "escolherTipoTeste",
       "escolherTeste": "escolherTeste",
+      "testeTexto": "testeTexto",
 
     },
 
     boot: function() {
       var bootView = new BootView();
       this.showView(bootView);
+    },
+
+    testeTexto: function() {
+      var self = this;
+      require(["app/views/testeTexto"], function(TesteTextoView) {
+        var view = new TesteTextoView();
+        self.showView(view);
+      });
     },
 
     escolherTeste: function() {

@@ -81,6 +81,11 @@
     display: none!important
   }
 }
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
 .visible-print {
   display: none!important
 }
@@ -111,7 +116,7 @@
     margin-left: 30px
   }
   .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
-    width: 1170px
+    width: 94%
   }
   .span12 {
     width: 1170px

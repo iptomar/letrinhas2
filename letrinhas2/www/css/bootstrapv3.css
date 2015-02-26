@@ -1267,6 +1267,10 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
   cursor: not-allowed;
   background-color: #eeeeee;
 }
+.form-control[readonly]{
+
+  background-color: #ffffff;
+}
 textarea.form-control {
   height: auto;
 }

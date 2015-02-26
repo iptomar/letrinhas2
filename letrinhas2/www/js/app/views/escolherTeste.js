@@ -77,12 +77,29 @@ define(function(require) {
          var   idTest =  response.rows[i].key;
         var $btn = $(
           '<div class="col-sm-20">' +
-          '<button id="' + idTest._id+ '" type="button" style="height:65px;"" class="btn btn-info btn-lg btn-block btn-turma" >' +
+          '<button id="' + idTest._id+ '" type="button" style="height:65px;"" class="btn btn-info btn-lg btn-block btn-teste" >' +
           '  <span class="glyphicon glyphicon-file" ></span>   ' +
           idTest.titulo + "</button>" +
           '</div>');
         $btn.appendTo($container); //Adiciona ao Div
       }
+      //// Analisa todos os botoes do div e aqueles que forem botoes de turma escuta o evento click//
+      $container.on('click', '.btn-teste', function(ev) {
+        ev.stopPropagation(); ev.preventDefault();
+        var $btn = $(this); // O jQuery passa o btn clicado pelo this
+        var self = this;
+        if (Backbone.history.fragment != 'testeTexto') {
+          utils.loader(function() {
+            ev.preventDefault();
+            window.localStorage.setItem("TesteArealizarID", $btn[0].id + ''); //enviar variavel
+            app.navigate('/testeTexto', {
+              trigger: true
+            });
+          });
+        }
+      });
+
+
       });
     },
 

@@ -1,5 +1,6 @@
 //// Script de Replicacao da Base de dados CouchDb para PouchDb  //////
 //##########################################################################
+var IP= "127.0.0.1";
 
 var alunos_local2 = new PouchDB('alunos_local2');
 var escolas_local2 = new PouchDB('escolas_local2');
@@ -19,7 +20,7 @@ $("#btn_login").removeClass( "disabled" );
 
 
 function sinEscolasForev(){
-var repEscolas = PouchDB.sync('http://127.0.0.1:5984/escolas', 'escolas_local2', {
+var repEscolas = PouchDB.sync('http://'+IP+':5984/escolas', 'escolas_local2', {
     live: true,
     batch_size: 100,
     retry: true
@@ -33,7 +34,7 @@ var repEscolas = PouchDB.sync('http://127.0.0.1:5984/escolas', 'escolas_local2',
 
 
 function sinAlunosForev(){
-var repAlunos = PouchDB.sync('http://127.0.0.1:5984/alunos', 'alunos_local2', {
+var repAlunos = PouchDB.sync('http://'+IP+':5984/alunos', 'alunos_local2', {
       live: true,
       batch_size: 400,
       retry: true
@@ -45,7 +46,7 @@ var repAlunos = PouchDB.sync('http://127.0.0.1:5984/alunos', 'alunos_local2', {
 }
 
 function sinProfsForev(){
-  var repAlunos = PouchDB.sync('http://127.0.0.1:5984/alunos', 'alunos_local2', {
+  var repProfs = PouchDB.sync('http://'+IP+':5984/professores', 'professores_local2', {
       live: true,
       batch_size: 200,
       retry: true
@@ -57,7 +58,7 @@ function sinProfsForev(){
 }
 
 function sinTestesForev(){
-  var repProfs = PouchDB.sync('http://127.0.0.1:5984/testes', 'testes_local2', {
+  var repProfs = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
       live: true,
       batch_size: 200,
       retry: true
@@ -72,7 +73,7 @@ function sinTestesForev(){
 escolas_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
-var repEscolas = PouchDB.sync('http://127.0.0.1:5984/escolas', 'escolas_local2', {
+var repEscolas = PouchDB.sync('http://'+IP+':5984:5984/escolas', 'escolas_local2', {
     live: false,
     batch_size: 100,
     retry: true
@@ -97,7 +98,7 @@ alunos_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
-var repEscolas = PouchDB.sync('http://127.0.0.1:5984/alunos', 'alunos_local2', {
+var repEscolas = PouchDB.sync('http://'+IP+':5984/alunos', 'alunos_local2', {
     live: false,
     batch_size: 400,
     retry: true
@@ -122,7 +123,7 @@ professores_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
-var repProfs = PouchDB.sync('http://127.0.0.1:5984/professores', 'professores_local2', {
+var repProfs = PouchDB.sync('http://'+IP+':5984/professores', 'professores_local2', {
     live: false,
     batch_size: 200,
     retry: true
@@ -147,7 +148,7 @@ testes_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
-var repTestes = PouchDB.sync('http://127.0.0.1:5984/testes', 'testes_local2', {
+var repTestes = PouchDB.sync('http://'+IP+':5984:5984/testes', 'testes_local2', {
     live: false,
     batch_size: 200,
     retry: true

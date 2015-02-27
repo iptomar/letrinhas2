@@ -1719,6 +1719,9 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
 .glyphicon-star:before {
   content: "\e006";
 }
+.glyphicon-education:before {
+  content: "\e233";
+}
 .glyphicon-star-empty:before {
   content: "\e007";
 }

@@ -5,9 +5,9 @@ define(function(require) {
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    tpl = require('text!tpl/boot.html'),
+    janelas = require('text!janelas/boot.html'),
 
-    template = _.template(tpl);
+    template = _.template(janelas);
 
   return Backbone.View.extend({
 

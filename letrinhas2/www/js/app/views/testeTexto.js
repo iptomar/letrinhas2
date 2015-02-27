@@ -4,8 +4,8 @@ define(function(require) {
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    tpl = require('text!tpl/testeTexto.html'),
-    template = _.template(tpl);
+    janelas = require('text!janelas/testeTexto.html'),
+    template = _.template(janelas);
 
   return Backbone.View.extend({
 
@@ -53,9 +53,34 @@ define(function(require) {
           var url = URL.createObjectURL(DataImg);
           $('#playPlayer').attr("src",url);
 
-        });
+          var audio = new Audio(url);
+          audio.play();
 
         
+
+
+
+
+
+
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     },
@@ -67,8 +92,9 @@ define(function(require) {
     },
 
     clickBackButtonTTexto: function(e) {
-      e.stopPropagation(); e.preventDefault();
-      window.history.back();
+     e.stopPropagation(); e.preventDefault();
+     window.history.back();
+
     },
 
 

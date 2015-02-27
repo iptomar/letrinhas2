@@ -9,8 +9,8 @@ define(function(require) {
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    tpl = require('text!tpl/escolherTipoTeste.html'),
-    template = _.template(tpl);
+    janelas = require('text!janelas/escolherTipoTeste.html'),
+    template = _.template(janelas);
 
   return Backbone.View.extend({
 
@@ -48,7 +48,7 @@ define(function(require) {
       alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
         if (err2)  console.log(err2);
         var url = URL.createObjectURL(DataImg);
-        $('#lbNomeAluno').text(alunoNome);
+        $('#lbNomeAluno').text("["+turmaNome+" ] -- "+alunoNome);
         $('#imgAluno').attr("src",url);
       });
 
@@ -61,6 +61,27 @@ define(function(require) {
       "click #btnTesteLeituraPalav": "clickbtnTesteLeituraPalav",
       "click #btnTesteLeituraTextos": "clickbtnTesteLeituraTextos",
       "click #btnTesteLeituraMultimedia": "clickbtnTesteLeituraMultimedia",
+      "click #btnNavINI": "clickbtnNavINI",
+      "click #btnNavAlu": "clickbtnNavAlu",
+      "click #btnNavProf": "clickbtnNavProf",
+    },
+
+
+    clickbtnNavProf: function(e) {
+      e.stopPropagation(); e.preventDefault();
+      window.history.go(-5);
+    },
+
+
+    clickbtnNavAlu: function(e) {
+      e.stopPropagation(); e.preventDefault();
+      window.history.go(-3);
+    },
+
+
+    clickbtnNavINI: function(e) {
+      e.stopPropagation(); e.preventDefault();
+      window.history.go(-7);
     },
 
 

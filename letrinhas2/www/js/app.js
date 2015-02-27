@@ -4,7 +4,7 @@ require.config({
 
   paths: {
     app: '../app',
-    tpl: '../tpl',
+    janelas: '../janelas',
     'swipe': '../lib/swipe',
     'utils': '../app/utils',
   },

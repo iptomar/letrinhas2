@@ -9,6 +9,8 @@ var app = {
   },
 
   onDeviceReady: function() {
+    console.log("asda");
+
     app.receivedEvent('deviceready');
   },
 
@@ -16,3 +18,4 @@ var app = {
     //navigator.splashscreen.hide();
   }
 };
+app.initialize();

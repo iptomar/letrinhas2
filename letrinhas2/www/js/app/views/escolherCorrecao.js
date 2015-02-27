@@ -5,9 +5,9 @@ define(function(require) {
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    tpl = require('text!tpl/escolherCorrecao.html'),
+    janelas = require('text!janelas/escolherCorrecao.html'),
     classList = require('classList.min'),
-    template = _.template(tpl);
+    template = _.template(janelas);
 
   return Backbone.View.extend({
 

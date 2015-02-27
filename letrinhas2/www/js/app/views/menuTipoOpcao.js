@@ -5,9 +5,9 @@ define(function(require) {
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    tpl = require('text!tpl/menuTipoOpcao.html'),
+    janelas = require('text!janelas/menuTipoOpcao.html'),
 
-    template = _.template(tpl);
+    template = _.template(janelas);
 
   return Backbone.View.extend({
 
@@ -30,7 +30,6 @@ define(function(require) {
       professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
         if (err2)  console.log(err2);
         var url = URL.createObjectURL(DataImg);
-        $('#lbNomeTurma').text("  ["+turmaNome+"  ]");
         $('#lbNomeProf').text(profNome);
         $('#imgProf').attr("src",url);
       });
@@ -39,7 +38,7 @@ define(function(require) {
       alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
         if (err2)  console.log(err2);
         var url = URL.createObjectURL(DataImg);
-        $('#lbNomeAluno').text(alunoNome);
+        $('#lbNomeAluno').text("["+turmaNome+" ] -- "+alunoNome);
         $('#imgAluno').attr("src",url);
       });
 
@@ -52,10 +51,32 @@ define(function(require) {
       "click #btnRealizarTeste": "clickBtnRealizarTeste",
       "click #btnCorrigirTeste": "clickBtnCorrigirTeste",
       "click #btnConsultarTeste": "clickBtnConsultarTeste",
+      "click #btnNavINI": "clickbtnNavINI",
+      "click #btnNavAlu": "clickbtnNavAlu",
+      "click #btnNavProf": "clickbtnNavProf",
+    },
+
+
+    clickbtnNavProf: function(e) {
+      e.stopPropagation(); e.preventDefault();
+      window.history.go(-3);
+    },
+
+
+    clickbtnNavAlu: function(e) {
+      e.stopPropagation(); e.preventDefault();
+      window.history.go(-1);
+    },
+
+
+    clickbtnNavINI: function(e) {
+      e.stopPropagation(); e.preventDefault();
+      window.history.go(-5);
     },
 
 
     clickBackButtonMO: function(e) {
+      e.stopPropagation(); e.preventDefault();
       window.history.back();
     },
 

@@ -74,7 +74,17 @@ define(function(require) {
     },
 
     clickBtnCorrigirTeste: function(e) {
-    //  window.history.back();
+      var self = this;
+      if (Backbone.history.fragment != 'escolherCorrecao') {
+        utils.loader(function() {
+          e.preventDefault();
+
+
+          app.navigate('/escolherCorrecao', {
+            trigger: true
+          });
+        });
+      }
     },
 
     clickBtnConsultarTeste: function(e) {

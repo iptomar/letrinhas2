@@ -20,6 +20,14 @@ function insertTestes(count) {
     'texto': 'Era uma vez um menino que tinha muito jeito para pintar, e a quem tinham dado uma paleta de tintas e um pincel. \n As cores da paleta eram lindas: o encarnado das papoilas, o azul do céu, o verde do mar, o amarelo dos malmequeres – e ainda outras cores menos vivas, mas nem por isso menos bonitas: o roxo das violetas, o cor-de-rosa das rosas de Abril… O menino ficou encantado com a paleta e resolveu logo pintar um belo quadro. Era no princípio da primavera, o tempo estava muito bonito, o campo todo verde e salpicado de flores… E o menino-pintor lá foi para o campo, disposto a fazer coisas maravilhosas..'
   };
 
+  var testePalavras = {
+    'pergunta': 'Leia as palavras na horizontal:',
+    'palavrasCl1': ['Terço','Cedo','Ação','Desde','Táxi','Flecha','Boxe','Urbe','Enxó','Cartaz','Giro','Plantar','Lembrar','Atum','Bloco','Glote','Trevo','Ringue','Branco','Ente'],
+    'palavrasCl2': ['Unção','Globo','Prado','Obter','Pacto','Pneu','Aspeto','Nenhumas','Urtiga','Máximo','Reflexo','Imenso','Predador','Severa','Próximo','Ginete','Impeço','Constipar','Plainete','Flexíveis'],
+    'palavrasCl3': ['Problema','Bracejar','Advérbio','Egípcio','Cápsula','Forquilha','Plumagem','Glândula','Florido','Brocado','Cume','Tasca','Sesta','Folga','Açor','Aro','Malha','Limalha'],
+
+  };
+
   var teste = {
     '_id': 'Teste_N' + count,
     'titulo': 'Teste' + count,
@@ -36,9 +44,12 @@ function insertTestes(count) {
 ////multimedia - Teste multimedia
 
   if(count > 4) {
-    teste.conteudo = testeMULTIMEDIA;
-    teste.tipoTeste = 'multimedia';
-  }
+    if(count > 4 && count <= 8) {
+      teste.conteudo = testeMULTIMEDIA;
+      teste.tipoTeste = 'multimedia';
+  }else {teste.conteudo = testePalavras;
+        teste.tipoTeste = 'palavras';}
+}
 
   var attach1 = {
     name: 'voz.mp3',
@@ -62,7 +73,7 @@ function insertTestes(count) {
       console.log('Testes ' + 'Teste_N' + count  + ' failed' + err);
     }
 
-    if(count < 7) {
+    if(count < 12) {
       insertTestes(count+1);
 
     }

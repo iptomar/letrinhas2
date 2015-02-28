@@ -20,22 +20,15 @@ define(function(require) {
 
     },
 
-  /*  //Eventos Click
     events: {
-      "click #btn_login": "clickLogin",
-      "click #btn_qrcode": "qrreader",
-      "click #img_click": "imgclick"
+      "click #BackButton": "clickBackButton",
     },
 
-    clickLogin: function(e) {
-      $.getScript( "js/apoio.js", function() {
-      });
-      e.stopPropagation(); e.preventDefault();
-      app.navigate('/escolherEscola', {
-        trigger: true
-      });
+    clickBackButton: function(e) {
+      window.history.back();
     },
-*/
+
+  
     render: function() {
       this.$el.html(template());
       return this;

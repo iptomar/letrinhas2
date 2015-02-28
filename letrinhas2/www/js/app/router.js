@@ -50,6 +50,7 @@ define(function(require) {
       "escolherTipoTeste": "escolherTipoTeste",
       "escolherTeste": "escolherTeste",
       "testeTexto": "testeTexto",
+      "testeLista": "testeLista",
       "escolherCorrecao":"escolherCorrecao",
 
     },
@@ -62,10 +63,16 @@ define(function(require) {
     escolherCorrecao: function() {
       var self = this;
       require(["app/views/escolherCorrecao"], function(EscolherCorrecaoView) {
-// Está a dar erro aqui "Uncaught ReferenceError: EscolherCorrecao is not defined"
-// Alex onde é que me esqueci de defenir a função?
-        var view = new EscolherCorrecaoView(); //////AQUI tinhas "EscolherCorrecao" mudei para EscolherCorrecaoView q
-        self.showView(view);                      /// que foi o que definiste em cima
+        var view = new EscolherCorrecaoView();
+        self.showView(view);
+      });
+    },
+
+    testeLista: function() {
+      var self = this;
+      require(["app/views/testeLista"], function(TesteListaView) {
+        var view = new TesteListaView();
+        self.showView(view);
       });
     },
 

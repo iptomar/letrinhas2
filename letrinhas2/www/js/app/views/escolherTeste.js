@@ -88,21 +88,27 @@ define(function(require) {
         ev.stopPropagation(); ev.preventDefault();
         var $btn = $(this); // O jQuery passa o btn clicado pelo this
         var self = this;
-        if (Backbone.history.fragment != 'testeTexto') {
-          utils.loader(function() {
-            ev.preventDefault();
-            window.localStorage.setItem("TesteArealizarID", $btn[0].id + ''); //enviar variavel
-            app.navigate('/testeTexto', {
-              trigger: true
-            });
-          });
+
+        if (tipoTesteSelecionado == 'palavras'){
+       //////////colocar aqui para ir para a janela de palavras//////////
+        }
+        else if (tipoTesteSelecionado == 'texto'){
+          if (Backbone.history.fragment != 'testeTexto') {
+           utils.loader(function() {
+             ev.preventDefault();
+             window.localStorage.setItem("TesteArealizarID", $btn[0].id + ''); //enviar variavel
+             app.navigate('/testeTexto', {
+               trigger: true
+             });
+           });
+         }
+        }
+        else if (tipoTesteSelecionado == 'texto'){
+          //////////colocar aqui para ir para a janela de multimedia//////////
         }
       });
-
       });
     },
-
-
 
     events: {
       "click #BackButtonEscTest": "clickBackButtonEscTest",

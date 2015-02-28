@@ -97,7 +97,7 @@ define(function(require) {
       if (Backbone.history.fragment != 'escolherTeste') {
         utils.loader(function() {
           ev.preventDefault();
-          window.localStorage.setItem("TipoTesteSelecionado", 'lista'); //enviar variavel
+          window.localStorage.setItem("TipoTesteSelecionado", 'palavras'); //enviar variavel
           app.navigate('/escolherTeste', {
             trigger: true
           });

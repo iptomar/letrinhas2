@@ -1,6 +1,6 @@
 //// Script de Replicacao da Base de dados CouchDb para PouchDb  //////
 //##########################################################################
-var IP= "127.0.0.1";
+var IP= "192.168.1.2";
 
 var alunos_local2 = new PouchDB('alunos_local2');
 var escolas_local2 = new PouchDB('escolas_local2');
@@ -73,7 +73,7 @@ function sinTestesForev(){
 escolas_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
-var repEscolas = PouchDB.sync('http://'+IP+':5984:5984/escolas', 'escolas_local2', {
+var repEscolas = PouchDB.sync('http://'+IP+':5984/escolas', 'escolas_local2', {
     live: false,
     batch_size: 100,
     retry: true
@@ -148,7 +148,7 @@ testes_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
-var repTestes = PouchDB.sync('http://'+IP+':5984:5984/testes', 'testes_local2', {
+var repTestes = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
     live: false,
     batch_size: 200,
     retry: true

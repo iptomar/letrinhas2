@@ -1,27 +1,26 @@
 <section>
-
   <div class="globalcontent">
     <div class="topcoat-navigation-bar">
       <div class="topcoat-navigation-bar__item center full">
-        <h1 class="topcoat-navigation-bar__title">Letrinhas</h1>
+        <h1 class="topcoat-navigation-bar__title">Front-Office Letrinhas</h1>
+
       </div>
     </div>
+    <div class="container">
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Introduza dados de acesso</h2>
+        <label for="inputEmail" class="sr-only">Endereço E-mail:</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <label for="inputPassword" class="sr-only">Palavra-passe:</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+      </form>
 
+    </div>
     <div class="alert alert-danger" style="display:none">
       <div style="text-align: center; vertical-align: middle;">
         <span><b>ERROR!</b></span> <span id="msgerro"></span>
       </div>
-    </div>
-
-    <div class="container">
-      <form role="form">
-        <div class="form-group">
-          <textarea id="input1" class="form-control" rows="3"></textarea>
-          <button id="btn1" type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>
-          <button id="btn_login" type="button" class="btn-success topcoat-button--cta" ><i class="icon-lock"></i> LOGIN</button>
-        </div>
-      </form>
-
     </div>
   </div>
 </section>

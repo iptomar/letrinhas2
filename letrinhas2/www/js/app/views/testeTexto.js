@@ -1,3 +1,31 @@
+var mediaRec;
+
+function recordAudio() {
+  alert("A gravação vai começar!");
+    var src = "gravacao.amr";
+     mediaRec = new Media(src,
+        // success callback
+        function() {
+        //  alert("recordAudio():Audio Success");
+        },
+        // error callback
+        function(err) {
+          alert("recordAudio():Audio Error: "+ err.code);
+        }
+    );
+    // Record audio
+    mediaRec.startRecord();
+}
+
+function StopRec()
+{
+  alert("Foi parado a gravacao!");
+  mediaRec.stopRecord();
+  mediaRec.release();
+  mediaRec.play();
+}
+
+
 define(function(require) {
 
   "use strict";
@@ -53,34 +81,10 @@ define(function(require) {
           var url = URL.createObjectURL(DataImg);
           $('#playPlayer').attr("src",url);
 
-          var audio = new Audio(url);
-          audio.play();
-
-        
-
-
-
-
-
-
-
+        //  var audio = new Audio(url);
+        //  audio.play();
 
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     },
@@ -89,14 +93,27 @@ define(function(require) {
     events: {
       "click #BackButtonTTexto": "clickBackButtonTTexto",
       "click #BackButtonEE": "clickBackButtonEE",
+      "click #btnRecStop": "clickbtnRecStop",
+      "click #btnRec": "clickbtnRec",
+
     },
+
+    clickbtnRec: function(e) {
+      recordAudio();
+    },
+
+    clickbtnRecStop: function(e) {
+      StopRec();
+    },
+
+
+
 
     clickBackButtonTTexto: function(e) {
      e.stopPropagation(); e.preventDefault();
      window.history.back();
 
     },
-
 
 
     clickNEXT: function(e) {

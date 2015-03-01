@@ -32,36 +32,41 @@
           <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">titulo</label>
         </div>
       </div>
-      <textarea id="txtAreaConteud" class="form-control textareaParaTestes center-block" style="border:none" rows="12" readonly></textarea>
+      <textarea id="txtAreaConteud" class="form-control textareaParaTestes center-block" style="border:none" rows="13" readonly></textarea>
       <!--   <textarea id="txtAreaConteud" class="form-control" rows="22"></textarea>
       <div id="txtAreaConteud" class="well well-lg">...</div>
        Div onde se vai construir tudo dinamicamente -->
-     </br>
-       <div class="centerEX">
 
+      <div class="centerEX">
 
-             <audio id="playPlayer" style="width: 100%;" controls></audio>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">
+                Gravação de voz Aluno
+              </div>
+              <button id="btnRec" type="button" class="btn btn-primary btn-lg">Gravar</button>
+              <button id="btnRecStop" type="button" class="btn btn-primary btn-lg">Parar</button </div>
+            </div>
+          </div>
 
-             <a class="button" onclick="playAudio('img/voz.mp3');">Play that audio!</a>
+          <div class="col-md-4 ">
+            <div class="panel panel-danger">
+              <div class="panel-heading">
+                Reproduzir voz Professor
+              </div>
+              <button type="button" class="btn btn-primary btn-lg">Tocar</button>
+              <button type="button" class="btn btn-primary btn-lg">Parar</button </div>
+
+            </div>
+
+          </div>
+
+          <div class="col-md-4">
+
+          </div>
+        </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   </div>
-
-
 </section>

@@ -89,12 +89,6 @@ define(function(require) {
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
     },
 
-
-    clickBackButtonEP: function(ev) {
-      ev.stopPropagation(); ev.preventDefault();
-      window.history.back();
-    },
-
     clickbtnConfirmarPIN: function(e) {
       var pinDigitado = $('#inputPIN').val();
       if (pinProfAux == pinDigitado) {
@@ -105,6 +99,7 @@ define(function(require) {
             e.preventDefault();
             window.localStorage.setItem("ProfSelecNome", nomeProfAux + ''); //enviar variavel
             window.localStorage.setItem("ProfSelecID", idProfAux + ''); //enviar variavel
+            window.localStorage.setItem("ProfSelecPIN", pinProfAux + ''); //enviar variavel
             app.navigate('/escolherTurma', {
               trigger: true
             });
@@ -115,6 +110,13 @@ define(function(require) {
         $('#labelErr').text("PIN errado!");
       }
     },
+
+
+    clickBackButtonEP: function(ev) {
+      ev.stopPropagation(); ev.preventDefault();
+      window.history.back();
+    },
+
 
     render: function() {
       this.$el.html(template({}));

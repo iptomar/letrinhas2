@@ -28,6 +28,7 @@ function insertCorrecao(count) {
     'id_Prof': 'xpto@gmail.com0',
     'tipoCorrecao': 'texto',
     'conteudo': testeTexto,
+    'estado': '0',
   };
 ////tipoTeste
 ////texto - Teste Texto

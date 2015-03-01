@@ -6,14 +6,16 @@ var alunos_local2 = new PouchDB('alunos_local2');
 var escolas_local2 = new PouchDB('escolas_local2');
 var professores_local2 = new PouchDB('professores_local2');
 var testes_local2 = new PouchDB('testes_local2');
+var correcoes_local2 = new PouchDB('correcoes_local2');
 
 var triger1= false;
 var triger2= false;
 var triger3= false;
 var triger4= false;
+var triger5= false;
 
 function myfunction(){
-if (triger1 == true && triger2 == true && triger3 == true && triger4 == true )
+if (triger1 == true && triger2 == true && triger3 == true && triger4 == true && triger5 == true )
 $("#btn_login").removeClass( "disabled" );
 }
 
@@ -68,6 +70,21 @@ function sinTestesForev(){
       console.log("TestesERRO " + info);
     });
 }
+
+function sinCorrecoesForev(){
+  var repProfs = PouchDB.sync('http://'+IP+':5984/correcoes', 'correcoes_local2', {
+      live: true,
+      batch_size: 200,
+      retry: true
+    }).on('change', function(info) {
+      console.log("Correcoes " + info);
+    }).on('error', function(err) {
+      console.log("CorrecoesERRO " + info);
+    });
+}
+
+
+
 
 
 escolas_local2.info().then(function(info1) {
@@ -144,8 +161,10 @@ var repProfs = PouchDB.sync('http://'+IP+':5984/professores', 'professores_local
 }
 });
 
-testes_local2.info().then(function(info1) {
 
+
+
+testes_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
   $("#btn_login").addClass("disabled");
 var repTestes = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
@@ -155,7 +174,7 @@ var repTestes = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
   }).on('change', function(info) {
     console.log("Testes " + info);
   }).on('complete', function(info) {
-    professores_local2 = new PouchDB('testes_local2');
+    testes_local2 = new PouchDB('testes_local2');
     console.log("TestesCOMPLETO " + info);
     triger4= true;
     myfunction();
@@ -166,5 +185,32 @@ var repTestes = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
 {
   triger4= true;
   sinTestesForev();
+}
+});
+
+
+
+
+correcoes_local2.info().then(function(info1) {
+if (info1.doc_count == 0){
+  $("#btn_login").addClass("disabled");
+var repTestes = PouchDB.sync('http://'+IP+':5984/correcoes', 'correcoes_local2', {
+    live: false,
+    batch_size: 200,
+    retry: true
+  }).on('change', function(info) {
+    console.log("Correcoes " + info);
+  }).on('complete', function(info) {
+    correcoes_local2 = new PouchDB('correcoes_local2');
+    console.log("CorrecoesCOMPLETO " + info);
+    triger5= true;
+    myfunction();
+  }).on('error', function(err) {
+    console.log("CorrecoesERRO " + info);
+  });
+}else
+{
+  triger5= true;
+  sinCorrecoesForev();
 }
 });

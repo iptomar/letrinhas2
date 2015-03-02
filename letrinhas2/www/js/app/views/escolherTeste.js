@@ -90,8 +90,17 @@ define(function(require) {
         var self = this;
 
         if (tipoTesteSelecionado == 'palavras'){
-       //////////colocar aqui para ir para a janela de palavras//////////
+          if (Backbone.history.fragment != 'testeLista') {
+           utils.loader(function() {
+             ev.preventDefault();
+             window.localStorage.setItem("TesteArealizarID", $btn[0].id + ''); //enviar variavel
+             app.navigate('/testeLista', {
+               trigger: true
+             });
+           });
+         }
         }
+
         else if (tipoTesteSelecionado == 'texto'){
           if (Backbone.history.fragment != 'testeTexto') {
            utils.loader(function() {

@@ -1,3 +1,28 @@
+var mediaRec;
+
+//Gravar a leitura
+function recordAudio() {
+  var src = "gravacao.amr";
+  mediaRec = new Media(src,
+            // success callback
+            function() {},
+            // error callback
+            function(err) {
+              alert("recordAudio():Audio Error: " + err.code);
+            });
+
+  // Record audio
+  mediaRec.startRecord();
+}
+
+function StopRec() {
+  mediaRec.stopRecord();
+  mediaRec.release();
+}
+
+
+
+
 define(function(require) {
 
   "use strict";
@@ -6,7 +31,7 @@ define(function(require) {
     Backbone = require('backbone'),
     janelas = require('text!janelas/testeLista.html'),
     template = _.template(janelas),
-    Demo, Leitura, isFeito=false;
+    Demo, mediaRec, isFeito=false;
 
   var profId, profNome, escolaNome, escolaId, alunoId, alunoNome,
       turmaId, turmaNome, discplinaSelecionada, tipoTesteSelecionado,
@@ -76,18 +101,12 @@ define(function(require) {
           //Inserir a tabela no div id=listaAreaConteudo
           $('#listaAreaConteudo').html(allTable);
 
-
-
         } else{
           alert("Este teste está vazio! \n"+
                 "Id do teste: "+TesteArealizarID+
                 "\n Professor responsável: "+ profNome+
                 "\n id: "+ profId);
         }
-
-        //*/
-
-        //  $('#txtAreaConteud').val(testeDoc.conteudo.texto);
       });
 
       testes_local2.getAttachment(TesteArealizarID, 'voz.mp3', function(err2, DataImg) {
@@ -119,7 +138,7 @@ define(function(require) {
         $('#submitButton').attr("style","visibility:hidden;");
 
         //Iniciar a gravação
-        alert("Funcionalidade indisponivel!")
+        recordAudio();
       }
       else {
         $('#startButton').val(0);
@@ -130,16 +149,15 @@ define(function(require) {
         $('#submitButton').attr("style","visibility:initial; background-color: #00ee00");
 
         //parar a gravação!
-        //colocar a ulr da gravação na var leitura, para usar no "ouvir-me"
-
+        StopRec();
         isFeito=true;
       }
     },
 
     // reproduzir a ultima leitura do teste
     clickPlayMyTestButton: function(){
-      //$('#playPlayer').attr("src",Leitura);
-      $('#playPlayer').attr("src",Demo);
+      $('#playPlayer').attr("src",mediaRec);
+      //$('#playPlayer').attr("src",Demo);
 
       var audio = document.getElementById("playPlayer");
       if ($('#playMyTestButton').val()==0) {
@@ -160,7 +178,6 @@ define(function(require) {
         $('#startButton').attr("style","visibility:initial;background-color: #eeff00");
         $('#demoButton').attr("style","visibility:initial;background-color: #ffc060");
         $('#submitButton').attr("style","visibility:initial;background-color: #00ee00");
-
         audio.pause();
       }
 
@@ -170,8 +187,6 @@ define(function(require) {
     // Sumeter o teste para corecção (Criar uma correção não corrigida)
     clickSubmitButton: function(){
       //Criar o objeto correção!
-
-
       alert("Funcionalidade ainda indisponivel");
       window.history.back();
     },

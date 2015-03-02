@@ -3,7 +3,7 @@ define(function(require) {
   ////texto - Teste Texto
   ////lista- Teste Listas
   ////multimedia - Teste multimedia
-
+  var BtnNavPress;
   "use strict";
   var $ = require('jquery'),
     _ = require('underscore'),
@@ -127,24 +127,59 @@ define(function(require) {
       "click #btnNavINI": "clickbtnNavINI",
       "click #btnNavAlu": "clickbtnNavAlu",
       "click #btnNavProf": "clickbtnNavProf",
+      "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
+    },
+
+    clickbtnConfirmarPIN: function(e) {
+      var pinDigitado = $('#inputPIN').val();
+      var pinProfAux = window.localStorage.getItem("ProfSelecPIN");
+      if (pinProfAux == pinDigitado) {
+        $('#myModal').modal("hide");
+        $('#myModal').on('hidden.bs.modal', function (e) {
+          window.history.go(BtnNavPress);
+        });
+      } else {
+        $('#inputPINErr').addClass("has-error");
+        $('#labelErr').text("PIN errado!");
+      }
     },
 
 
     clickbtnNavProf: function(e) {
       e.stopPropagation(); e.preventDefault();
-      window.history.go(-6);
+      BtnNavPress = -6;
+      $('#labelErr').text("");  //limpa campos
+      $('#inputPIN').val("");   //limpa campos
+      $('#inputPINErr').removeClass("has-error"); //limpa campos
+      $('#myModal').modal("show");
+      $('#myModal').on('shown.bs.modal', function (e) {
+         $("#inputPIN").focus();
+      });
     },
-
 
     clickbtnNavAlu: function(e) {
       e.stopPropagation(); e.preventDefault();
-      window.history.go(-4);
+      BtnNavPress = -4;
+      $('#labelErr').text("");  //limpa campos
+      $('#inputPIN').val("");   //limpa campos
+      $('#inputPINErr').removeClass("has-error"); //limpa campos
+      $('#myModal').modal("show");
+      $('#myModal').on('shown.bs.modal', function (e) {
+         $("#inputPIN").focus();
+      });
     },
 
 
     clickbtnNavINI: function(e) {
       e.stopPropagation(); e.preventDefault();
-      window.history.go(-8);
+      BtnNavPress = -8;
+      $('#labelErr').text("");  //limpa campos
+      $('#inputPIN').val("");   //limpa campos
+      $('#inputPINErr').removeClass("has-error"); //limpa campos
+      $('#myModal').modal("show");
+      $('#myModal').on('shown.bs.modal', function (e) {
+         $("#inputPIN").focus();
+      });
     },
 
 

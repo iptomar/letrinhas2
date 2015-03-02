@@ -43,6 +43,29 @@
     </div>
 
     <div class="container">
+      <!-- ##################### POPUP PIN PROF ################# -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Insira o seu PIN de Professor!</h4>
+            </div>
+            <div class="modal-body">
+
+              <div id="inputPINErr" class="form-group ">
+                <input id="inputPIN" type="number"  maxlength="4" style="-webkit-text-security: disc;"  ng-model='data.caption' overflow-scroll='true' class="form-control input-large_PIN" placeholder="PIN">
+             </div>
+               <h4 id="labelErr" style="color:#D80000;"></h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
+              <button id="btnConfirmarPIN" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ##################### END ################# -->
 <div class="panel panel-info">
   <div class="panel-heading">
     <center>

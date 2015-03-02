@@ -1,33 +1,6 @@
 var mediaRec;
 
-function teste1()
-{
-  window.resolveLocalFileSystemURL("gravacao.amr", gotFile, fail);
 
-
-
-
-}
-
-function fail(e) {
-	console.log("FileSystem Error");
-	console.dir(e);
-}
-
-function gotFile(fileEntry) {
-
-	fileEntry.file(function(file) {
-		var s = "";
-		s += "<b>name:</b> " + file.name + "<br/>";
-		s += "<b>localURL:</b> " + file.localURL + "<br/>";
-		s += "<b>type:</b> " + file.type + "<br/>";
-		s += "<b>lastModifiedDate:</b> " + (new Date(file.lastModifiedDate)) + "<br/>";
-		s += "<b>size:</b> " + file.size + "<br/>";
-
-		//document.querySelector("#status").innerHTML = s;
-		console.dir(s);
-	});
-}
 
 
 function recordAudio() {
@@ -87,10 +60,7 @@ define(function(require) {
       var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
       var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 12bde461e40497e388c44cb94274bd255e08f7b2
 
       professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
         if (err2) console.log(err2);
@@ -174,8 +144,7 @@ define(function(require) {
 
 
     clickbtnRec: function(e) {
-    //  recordAudio();
-    teste1();
+    recordAudio();
     },
 
     clickbtnRecStop: function(e) {

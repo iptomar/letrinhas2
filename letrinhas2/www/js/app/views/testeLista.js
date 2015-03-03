@@ -1,7 +1,13 @@
 document.addEventListener("backbutton", onBackKeyDown, false);
 
 function onBackKeyDown() {
-  $("#inputPIN").focus();
+  $('#labelErr').text("");  //limpa campos
+  $('#inputPIN').val("");   //limpa campos
+  $('#inputPINErr').removeClass("has-error"); //limpa campos
+  $('#myModal').modal("show");
+  $('#myModal').on('shown.bs.modal', function (e) {
+     $("#inputPIN").focus();
+  });
 }
 
 
@@ -287,7 +293,7 @@ define(function(require) {
       if (pinProfAux == pinDigitado) {
         $('#myModal').modal("hide");
         $('#myModal').on('hidden.bs.modal', function (e) {
-          window.history.back();
+          window.history.go(-1);
         });
       } else {
         $('#inputPINErr').addClass("has-error");

@@ -1,5 +1,5 @@
-document.addEventListener("backbutton", onBackKeyDown, false);
 
+//METODO PARA O EVENTO DO BOTAO
 function onBackKeyDown() {
   $('#labelErr').text("");  //limpa campos
   $('#inputPIN').val("");   //limpa campos
@@ -58,7 +58,7 @@ define(function(require) {
 
     // Funcao executada no inicio de load da janela ////////////
     initialize: function() {
-
+      document.addEventListener("backbutton", onBackKeyDown, false); ////////ADICIONAR EVENTO
     // Vai buscar todas
       profId = window.localStorage.getItem("ProfSelecID");
       profNome = window.localStorage.getItem("ProfSelecNome");
@@ -243,6 +243,7 @@ define(function(require) {
       });
 
       correcoes_local2.get(ids, function(err, otherDoc) {});
+      document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
       window.history.back();
     },
 
@@ -288,11 +289,14 @@ define(function(require) {
     },
 
     clickbtnConfirmarPIN: function(e) {
+
       var pinDigitado = $('#inputPIN').val();
       var pinProfAux = window.localStorage.getItem("ProfSelecPIN");
       if (pinProfAux == pinDigitado) {
+        document.removeEventListener("backbutton", onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
         $('#myModal').modal("hide");
         $('#myModal').on('hidden.bs.modal', function (e) {
+
           window.history.go(-1);
         });
       } else {

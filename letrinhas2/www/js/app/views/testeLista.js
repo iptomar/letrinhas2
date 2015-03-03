@@ -1,4 +1,6 @@
-var mediaRec, mediaSrc, totalPalavras=0;
+var mediaRec,//objeto Media que irá fazer a gravação
+    mediaSrc,//url onde deverá ser guardada a gravação
+    totalPalavras=0,//contador de palavras
 
 //Gravar a leitura
 function recordAudio() {
@@ -15,13 +17,13 @@ function recordAudio() {
   mediaRec.startRecord();
 }
 
+//Parar a gravação
 function StopRec() {
   mediaRec.stopRecord();
   mediaRec.release();
 }
 
 define(function(require) {
-
   "use strict";
   var $ = require('jquery'),
     _ = require('underscore'),
@@ -118,11 +120,12 @@ define(function(require) {
 
     //Eventos Click
     events: {
-      "click #BtnCancelar": "clickBtnCancelar",//por finalizar
+      "click #BtnCancelar": "clickBtnCancelar",
       "click #demoButton": "clickDemoButton",
-      "click #startButton": "clickStartButton",//por fazer
-      "click #playMyTestButton": "clickPlayMyTestButton",//por fazer
-      "click #submitButton": "clickSubmitButton",//por fazer
+      "click #startButton": "clickStartButton",
+      "click #playMyTestButton": "clickPlayMyTestButton",
+      "click #submitButton": "clickSubmitButton",//por finalizar
+      "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
       "click #BackButtonEE": "clickBackButtonEE",
     },
 
@@ -227,7 +230,6 @@ define(function(require) {
       });
 
       correcoes_local2.get(ids, function(err, otherDoc) {});
-
       window.history.back();
     },
 
@@ -263,11 +265,29 @@ define(function(require) {
 
     clickBtnCancelar: function(e) {
      e.stopPropagation(); e.preventDefault();
-     //Falta implementar o pedido do Pin do professor
-     alert("Opção ainda não está 100% funcional!");
-     window.history.back();
+     $('#labelErr').text("");  //limpa campos
+     $('#inputPIN').val("");   //limpa campos
+     $('#inputPINErr').removeClass("has-error"); //limpa campos
+     $('#myModal').modal("show");
+     $('#myModal').on('shown.bs.modal', function (e) {
+        $("#inputPIN").focus();
+     });
     },
 
+    clickbtnConfirmarPIN: function(e) {
+      var pinDigitado = $('#inputPIN').val();
+      var pinProfAux = window.localStorage.getItem("ProfSelecPIN");
+      if (pinProfAux == pinDigitado) {
+        $('#myModal').modal("hide");
+        $('#myModal').on('hidden.bs.modal', function (e) {
+          window.history.back();
+        });
+      } else {
+        $('#inputPINErr').addClass("has-error");
+        $('#labelErr').text("PIN errado!");
+        $('#inputPIN').val("");
+      }
+    },
 
 
     clickNEXT: function(e) {

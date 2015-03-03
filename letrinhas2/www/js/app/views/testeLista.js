@@ -1,9 +1,9 @@
-var mediaRec;
+var mediaRec, mediaSrc, totalPalavras=0;
 
 //Gravar a leitura
 function recordAudio() {
-  var src = "gravacao.amr";
-  mediaRec = new Media(src,
+  mediaSrc = "gravacao.amr";
+  mediaRec = new Media(mediaSrc,
             // success callback
             function() {},
             // error callback
@@ -20,9 +20,6 @@ function StopRec() {
   mediaRec.release();
 }
 
-
-
-
 define(function(require) {
 
   "use strict";
@@ -31,7 +28,7 @@ define(function(require) {
     Backbone = require('backbone'),
     janelas = require('text!janelas/testeLista.html'),
     template = _.template(janelas),
-    Demo, mediaRec, isFeito=false;
+    Demo, isFeito=false;
 
   var profId, profNome, escolaNome, escolaId, alunoId, alunoNome,
       turmaId, turmaNome, discplinaSelecionada, tipoTesteSelecionado,
@@ -77,6 +74,7 @@ define(function(require) {
           s1="";
           for(var j=0; j<testeDoc.conteudo.palavrasCl1.length;j++){
             s1+="<p style='font-style:bold; font-size:18px'>"+ testeDoc.conteudo.palavrasCl1[j] +"</p>";
+            totalPalavras++;
           }
           allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
 
@@ -85,6 +83,7 @@ define(function(require) {
             for(var j=0; j<testeDoc.conteudo.palavrasCl2.length;j++){
               s1+="<p style='font-style:bold; font-size:18px'>"+ testeDoc.conteudo.palavrasCl2[j] +"</p>";
             }
+            totalPalavras++;
             allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
           }
 
@@ -93,6 +92,7 @@ define(function(require) {
             for(var j=0; j<testeDoc.conteudo.palavrasCl3.length;j++){
               s1+="<p style='font-style:bold; font-size:18px'>"+ testeDoc.conteudo.palavrasCl3[j] +"</p>";
             }
+            totalPalavras++;
             allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
           }
 
@@ -156,7 +156,7 @@ define(function(require) {
 
     // reproduzir a ultima leitura do teste
     clickPlayMyTestButton: function(){
-      $('#playPlayer').attr("src",mediaRec);
+      $('#playPlayer').attr("src",mediaSrc);
       //$('#playPlayer').attr("src",Demo);
 
       var audio = document.getElementById("playPlayer");
@@ -185,9 +185,49 @@ define(function(require) {
     },
 
     // Sumeter o teste para corecção (Criar uma correção não corrigida)
-    clickSubmitButton: function(){
-      //Criar o objeto correção!
-      alert("Funcionalidade ainda indisponivel");
+    clickSubmitButton: function(e) {
+      var ids = 'Corr' + new Date().toISOString();
+      var testeLista = {
+          'TotalPalavras':totalPalavras,
+          'NPalavrasErradas':'0',
+          'Vacilacoes':'0',
+          'Fragmentacoes':'0',
+          'Silabacoes':'0',
+          'Repeticoes':'0',
+          'PrecisaoL': '0',
+          'VelocidadeL': '0',
+          'Ritmo': '0',
+          'Expressividade': '0',
+          'PLM': '0',
+        };
+
+      var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
+      var alunoId = window.localStorage.getItem("AlunoSelecID");
+      var profId = window.localStorage.getItem("ProfSelecID");
+      var correcao = {
+          '_id': ids,
+          'id_Teste': TesteArealizarID,
+          'id_Aluno': alunoId,
+          'id_Prof': profId,
+          'tipoCorrecao': 'Lista',
+          'estado': '0',
+          'conteudo': testeLista,
+      };
+
+
+      correcoes_local2.put(correcao, function(err, body) {
+          if (!err) {
+            console.log('correcao ' + correcao._id + ' inserted\n Falta saber como inserir a gravação');
+            alert("Submissão do teste, feita com sucesso!\n Falta inserir a gravação \n testeLista.js linha:218");
+          }
+          else {
+            console.log('correcao ' + err + ' erro');
+            alert("Erro na submissão do teste \n"+ err);
+          }
+      });
+
+      correcoes_local2.get(ids, function(err, otherDoc) {});
+
       window.history.back();
     },
 

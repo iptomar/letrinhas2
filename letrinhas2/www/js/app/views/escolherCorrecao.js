@@ -33,17 +33,25 @@ define(function(require) {
       //procurar as correções do professor selecionado e que ainda não estejam corrigidas.
       //inicialmente, agrupar por alunos, dando destaque ao aluno selecionado e ordenar pela data.
       function map(doc) {
-        if (doc.estado == '0' &&
-            doc.id_Prof == profId) {
+        if (doc.estado == '0' //&& doc.id_Prof == profId
+        ) {
           emit(doc);
         }
       }
 
       correcoes_local2.query({map: map}, {reduce: false}, function(errx, response) {
         if (errx)  alert("Erro: "+errx);
-        else alert("Encontradas "+ response.rows.length +" Correções\n"
-                +"Prof_id:" profId);
-      });
+        else {
+
+          //teste
+              var s1="";
+              for (var i=0; i<response.rows.length-1; i++){
+                s1+=(i+1)+"º> "+response.rows[i].id_Prof+"\n";
+
+              }
+              alert("Encontradas "+ response.rows.length +" Correções\n"
+                    +"Professores_id: \n" + s1);
+              }});
 
 
       //

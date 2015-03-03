@@ -52,12 +52,21 @@ define(function(require) {
       "testeTexto": "testeTexto",
       "testeLista": "testeLista",
       "escolherCorrecao":"escolherCorrecao",
+      "corrigirTeste";"corrigirTeste",
 
     },
 
     boot: function() {
       var bootView = new BootView();
       this.showView(bootView);
+    },
+
+    corrigirTeste: function() {
+      var self = this;
+      require(["app/views/corrigirTeste"], function(corrigirTesteView) {
+        var view = new corrigirTesteView();
+        self.showView(view);
+      });
     },
 
     escolherCorrecao: function() {

@@ -1,5 +1,5 @@
 
-//METODO PARA O EVENTO DO BOTAO
+//Método para controlar o botão fisico de retroceder do tablet
 function onBackKeyDown() {
   $('#labelErr').text("");  //limpa campos
   $('#inputPIN').val("");   //limpa campos
@@ -58,8 +58,8 @@ define(function(require) {
 
     // Funcao executada no inicio de load da janela ////////////
     initialize: function() {
-      document.addEventListener("backbutton", onBackKeyDown, false); ////////ADICIONAR EVENTO
-    // Vai buscar todas
+      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+    // Vai buscar todas as variaveis necessárias
       profId = window.localStorage.getItem("ProfSelecID");
       profNome = window.localStorage.getItem("ProfSelecNome");
       escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");

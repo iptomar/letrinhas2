@@ -7,39 +7,55 @@
         <button id="BackButton" type="button" class="btn btn-default btn-lg">
           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Voltar
         </button>
-        </div>
+      </div>
       <div class="topcoat-navigation-bar__item center half">
           <h1 id="titleEscolherCorrTeste" class="topcoat-navigation-bar__title">Escolher Teste a Corrigir</h1>
       </div>
       <div class="topcoat-navigation-bar__item right quarter">
+          <img src="img/Corrigir.png" style='height:44px;'>
+      </div>
+    </div>
+
+
+    <nav class="navbar navbar-default navbar-fixed-bottom " style=" background: #3399CC; color:#FFFFFF; ">
+      <div class="nav navbar-nav navbar-left">
+        <a id="btnNavINI" class="navbar-brand">
+          <span class="glyphicon glyphicon glyphicon-home" style="color:#FFFFFF;" aria-hidden="true"> Inicio</span>
+        </a>
+        <a id="btnNavProf" class="navbar-brand">
+          <span class="glyphicon glyphicon glyphicon-user" style="color:#FFFFFF;" aria-hidden="true"> Professores</span>
+        </a>
+        <a id="btnNavAlu" class="navbar-brand">
+          <span class="glyphicon glyphicon glyphicon-education" style="color:#FFFFFF;" aria-hidden="true"> Alunos</span>
+        </a>
+      </div>
+      <div class="nav navbar-nav navbar-right">
         <label id="lbNomeProf" style="color:#FFFFF;">Professor</label>
-        <img id="imgProf" src="img/Corrigir.png" style='height:44px;'>
-        </div>
-  </div>
+        <img id="imgProf" src="" style='height:44px;'/>
+      </div>
+   </nav>
 
-
-  <nav class="navbar navbar-default navbar-fixed-bottom " style=" background: #3399CC; color:#FFFFFF; ">
-
- </nav>
-
-
-    <div class="loader" style="display:none">
-      <div class="placeholder light">
+   <div class="loader" style="display:none">
+     <div class="placeholder light">
         <div class="spinner"></div>
       </div>
     </div>
 
     <div class="container">
-<div class="panel panel-info">
-  <div class="panel-heading">
-    <center>
-      <img id="imgAluno" src="img/inConstruction.jpg" >
-    </center>  </div>
-  <div class="panel-body" id="outputCorrTestes" class="row">
+      <div class="panel panel-info">
+        <div class="panel-heading" style="height:40px">
+          <div class="nav navbar-nav navbar-left"
+                id="Cabecalho"
+                style="font-weight: bold; font-size:18px;">
+                ...</div>
+          <div class="nav navbar-nav navbar-right" style=""> Ordenar por:</div>
+        </div>
 
-  </div>
-</div>
-  </div>
+        <div class="panel-body" id="outputCorrTestes" class="row" style="height:550px; overflow:auto">
+          <img src="img/inConstruction.jpg"/>
+        </div>
+      </div>
+    </div>
 
   </div>
 

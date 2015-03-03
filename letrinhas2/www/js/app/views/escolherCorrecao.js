@@ -17,13 +17,11 @@ define(function(require) {
     },
 
     initialize: function() {
-      ////Carrega dados da janela anterior////
+      ////Carrega os dados mais uteis da janela anterior////
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
       var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
-      var alunoId = window.localStorage.getItem("AlunoSelecID");
-      var alunoNome = window.localStorage.getItem("AlunoSelecNome");
 
       professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
         if (err2)  console.log(err2);
@@ -34,10 +32,21 @@ define(function(require) {
 
       //procurar as correções do professor selecionado e que ainda não estejam corrigidas.
       //inicialmente, agrupar por alunos, dando destaque ao aluno selecionado e ordenar pela data.
+      function map(doc) {
+        if (doc.estado == '0' &&
+            doc.id_Prof == profId) {
+          emit(doc);
+        }
+      }
+
+      correcoes_local2.query({map: map}, {reduce: false}, function(errx, response) {
+        if (errx)  alert("Erro: "+errx);
+        else alert("Encontradas "+ response.rows.length +" Correções\n"
+                +"Prof_id:" profId);
+      });
 
 
-
-
+      //
     },
 
     events: {

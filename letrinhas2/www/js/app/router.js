@@ -52,7 +52,7 @@ define(function(require) {
       "testeTexto": "testeTexto",
       "testeLista": "testeLista",
       "escolherCorrecao":"escolherCorrecao",
-      "corrigirTeste";"corrigirTeste",
+      "corrigirTeste":"corrigirTeste",
 
     },
 

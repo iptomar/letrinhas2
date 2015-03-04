@@ -1,5 +1,5 @@
+///////// ONDE SE CONFIGURA AS ROTAS DE NAVEGACAO ////////////
 define(function(require) {
-
   "use strict";
 
   var $ = require('jquery');
@@ -41,9 +41,19 @@ define(function(require) {
     routes: {
       "": "login",
       "login": "login",
-      "paginic": "paginic",  
-    // Inserir novas páginas criadas
-        
+      "paginic": "paginic",
+      "escolherProf": "escolherProf",
+      "escolherTurma": "escolherTurma",
+      "escolherAluno": "escolherAluno",
+      "menuTipoOpcao": "menuTipoOpcao",
+      "escolherDisciplina": "escolherDisciplina",
+      "escolherTipoTeste": "escolherTipoTeste",
+      "escolherTeste": "escolherTeste",
+      "testeTexto": "testeTexto",
+      "testeLista": "testeLista",
+      "escolherCorrecao":"escolherCorrecao",
+      "corrigirTeste":"corrigirTeste",
+
     },
 
     boot: function() {
@@ -51,40 +61,108 @@ define(function(require) {
       this.showView(bootView);
     },
 
-    promotions: function() {
+    corrigirTeste: function() {
       var self = this;
-      require(["app/views/promotions"], function(PromotionsView) {
-        var view = new PromotionsView();
+      require(["app/views/corrigirTeste"], function(corrigirTesteView) {
+        var view = new corrigirTesteView();
         self.showView(view);
       });
     },
 
-    summary: function() {
+    escolherCorrecao: function() {
       var self = this;
-      require(["app/views/summary", "app/views/menu"], function(SummaryView, MenuView) {
-        var view = new SummaryView({
-          model: window.user
-        });
+      require(["app/views/escolherCorrecao"], function(EscolherCorrecaoView) {
+        var view = new EscolherCorrecaoView();
         self.showView(view);
-
-        if (!self.menuView) {
-          self.menuView = new MenuView({
-            el: $header,
-            model: window.user
-          });
-          self.menuView.delegateEvents();
-          self.menuView.render();
-        }
       });
     },
+
+    testeLista: function() {
+      var self = this;
+      require(["app/views/testeLista"], function(TesteListaView) {
+        var view = new TesteListaView();
+        self.showView(view);
+      });
+    },
+
+    testeTexto: function() {
+      var self = this;
+      require(["app/views/testeTexto"], function(TesteTextoView) {
+        var view = new TesteTextoView();
+        self.showView(view);
+      });
+    },
+
+    escolherTeste: function() {
+      var self = this;
+      require(["app/views/escolherTeste"], function(EscolherTesteView) {
+        var view = new EscolherTesteView();
+        self.showView(view);
+      });
+    },
+
+    escolherTipoTeste: function() {
+      var self = this;
+      require(["app/views/escolherTipoTeste"], function(EscolherTipoTesteView) {
+        var view = new EscolherTipoTesteView();
+        self.showView(view);
+      });
+    },
+
+
+    escolherDisciplina: function() {
+      var self = this;
+      require(["app/views/escolherDisciplina"], function(EscolherDisciplinaView) {
+        var view = new EscolherDisciplinaView();
+        self.showView(view);
+      });
+    },
+
+
+    paginic: function() {
+      var self = this;
+      require(["app/views/paginic"], function(paginicView) {
+        var view = new paginicView();
+        self.showView(view);
+      });
+    },
+
+    menuTipoOpcao: function() {
+      var self = this;
+      require(["app/views/menuTipoOpcao"], function(MenuTipoOpcaoView) {
+        var view = new MenuTipoOpcaoView();
+        self.showView(view);
+      });
+    },
+
+    escolherTurma: function() {
+      var self = this;
+      require(["app/views/escolherTurma"], function(EscolherTurmaView) {
+        var view = new EscolherTurmaView();
+        self.showView(view);
+      });
+    },
+
+    escolherAluno: function() {
+      var self = this;
+      require(["app/views/escolherAluno"], function(EscolherAlunoView) {
+        var view = new EscolherAlunoView();
+        self.showView(view);
+      });
+    },
+
+
+    escolherProf: function() {
+      var self = this;
+      require(["app/views/escolherProf"], function(EscolherProfView) {
+        var view = new EscolherProfView();
+        self.showView(view);
+      });
+    },
+
 
     login: function() {
       var self = this;
-      if (this.menuView) {
-        this.menuView.unbind();
-        this.menuView.undelegateEvents();
-        this.menuView = undefined;
-      }
       require(["app/views/login"], function(LoginView) {
         $header.html('');
         $body.html('');

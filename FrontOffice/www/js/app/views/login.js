@@ -5,9 +5,9 @@ define(function(require) {
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    tpl = require('text!tpl/login.html'),
+    janelas = require('text!janelas/login.html'),
     classList = require('classList.min'),
-    template = _.template(tpl);
+    template = _.template(janelas);
 
   return Backbone.View.extend({
 
@@ -22,13 +22,10 @@ define(function(require) {
 
     //Eventos Click
     events: {
-      "click #btnEntrar": "btnEntrarClick",
-    
+      "click #btnEntrar": "btnEntrar",
     },
 
-    btnEntrarClick: function(e) {
-      $.getScript( "js/apoio.js", function() {
-      });
+    btnEntrar: function(e) {
       e.stopPropagation(); e.preventDefault();
       app.navigate('/paginic', {
         trigger: true
@@ -41,4 +38,3 @@ define(function(require) {
     }
   });
 });
-

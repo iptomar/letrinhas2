@@ -1,13 +1,13 @@
-define(function (require) {
+define(function(require) {
 
   "use strict";
 
-  var $         = require('jquery'),
-      _         = require('underscore'),
-      Backbone  = require('backbone'),
-      tpl       = require('text!tpl/boot.html'),
+  var $ = require('jquery'),
+    _ = require('underscore'),
+    Backbone = require('backbone'),
+    janelas = require('text!janelas/boot.html'),
 
-      template = _.template(tpl);
+    template = _.template(janelas);
 
   return Backbone.View.extend({
 
@@ -15,7 +15,7 @@ define(function (require) {
       utils.islog('/summary');
     },
 
-    render: function () {
+    render: function() {
       this.$el.html(template());
 
       return this;

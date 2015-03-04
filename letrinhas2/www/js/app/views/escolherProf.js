@@ -1,3 +1,6 @@
+function onBackKeyDown() {
+}
+
 define(function(require) {
 
   "use strict";
@@ -68,6 +71,7 @@ define(function(require) {
         //// Analisa todos os botoes do div e aqueles que forem botoes de Prof escuta o evento click//
         $container.on('click', '.btn-professor', function(ev) {
           ev.stopPropagation(); ev.preventDefault();
+          document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
           var $btn = $(this); // O jQuery passa o btn clicado pelo this
           $('#labelErr').text("");  //limpa campos
           $('#inputPIN').val("");   //limpa campos
@@ -79,6 +83,10 @@ define(function(require) {
           $('#myModal').on('shown.bs.modal', function (e) {
              $("#inputPIN").focus();
           });
+          $('#myModal').on('hidden.bs.modal', function (e) {
+            document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+          });
+
         });
       });
     },
@@ -92,6 +100,7 @@ define(function(require) {
     clickbtnConfirmarPIN: function(e) {
       var pinDigitado = $('#inputPIN').val();
       if (pinProfAux == pinDigitado) {
+        document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
         $('#myModal').modal("toggle");
         var self = this;
         if (Backbone.history.fragment != 'escolherTurma') {

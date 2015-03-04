@@ -41,8 +41,9 @@ define(function(require) {
     routes: {
       "": "login",
       "login": "login",
-      "summary": "summary",
-      "promotions": "promotions"
+      "paginic": "paginic",  
+    // Inserir novas páginas criadas
+        
     },
 
     boot: function() {

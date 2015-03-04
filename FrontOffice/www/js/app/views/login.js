@@ -1,48 +1,44 @@
-define(function (require) {
+define(function(require) {
 
   "use strict";
 
-  var $         = require('jquery'),
-      _         = require('underscore'),
-      Backbone  = require('backbone'),
-      tpl       = require('text!tpl/login.html'),
-
-      template = _.template(tpl);
+  var $ = require('jquery'),
+    _ = require('underscore'),
+    Backbone = require('backbone'),
+    tpl = require('text!tpl/login.html'),
+    classList = require('classList.min'),
+    template = _.template(tpl);
 
   return Backbone.View.extend({
 
+    highlight: function(e) {
+      $('.side-nav__list__item').removeClass('is-active');
+      $(e.target).parent().addClass('is-active');
+    },
+
     initialize: function() {
+
     },
 
+    //Eventos Click
     events: {
-      "click #btn_login": "clickLogin",
-      "click #btn_qrcode": "qrreader",
-      "click #img_click": "imgclick",
-      "click #btn1": "btn1"
-
+      "click #btnEntrar": "btnEntrarClick",
+    
     },
 
-    imgclick: function(e) {
-      console.log('click');
-    },
-
-    btn1: function(e) {
-
-      console.log($('#input1').val());
-    },
-
-
-    clickLogin: function(e) {
-      app.navigate('/summary', {
+    btnEntrarClick: function(e) {
+      $.getScript( "js/apoio.js", function() {
+      });
+      e.stopPropagation(); e.preventDefault();
+      app.navigate('/paginic', {
         trigger: true
       });
     },
 
-    render: function () {
+    render: function() {
       this.$el.html(template());
       return this;
     }
-
   });
-
 });
+

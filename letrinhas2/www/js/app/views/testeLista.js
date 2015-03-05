@@ -202,7 +202,9 @@ define(function(require) {
 
     // Sumeter o teste para corecção (Criar uma correção não corrigida)
     clickSubmitButton: function(e) {
-      var ids = 'Corr' + new Date().toISOString();
+      var alunoId = window.localStorage.getItem("AlunoSelecID");
+      var agora=new Date();
+      var ids = 'Cr'+ alunoId + agora.toISOString();
       var testeLista = {
           'TotalPalavras':totalPalavras,
           'NPalavrasErradas':'0',
@@ -215,10 +217,11 @@ define(function(require) {
           'Ritmo': '0',
           'Expressividade': '0',
           'PLM': '0',
+          'dataSub': agora,
+          'dataCorr':null,
         };
 
       var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
-      var alunoId = window.localStorage.getItem("AlunoSelecID");
       var profId = window.localStorage.getItem("ProfSelecID");
       var correcao = {
           '_id': ids,

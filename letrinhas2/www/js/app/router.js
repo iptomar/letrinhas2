@@ -52,7 +52,7 @@ define(function(require) {
       "testeTexto": "testeTexto",
       "testeLista": "testeLista",
       "escolherCorrecao":"escolherCorrecao",
-      "corrigirTeste":"corrigirTeste",
+      "corrigirLista":"corrigirLista",
 
     },
 
@@ -61,10 +61,10 @@ define(function(require) {
       this.showView(bootView);
     },
 
-    corrigirTeste: function() {
+    corrigirLista: function() {
       var self = this;
-      require(["app/views/corrigirTeste"], function(corrigirTesteView) {
-        var view = new corrigirTesteView();
+      require(["app/views/corrigirLista"], function(CorrigirListaView) {
+        var view = new CorrigirListaView();
         self.showView(view);
       });
     },

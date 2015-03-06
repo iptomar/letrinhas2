@@ -39,83 +39,16 @@ define(function(require) {
     },
 
     routes: {
-      "": "login",
-      "login": "login",
-      "paginic": "paginic",
-      "escolherProf": "escolherProf",
-      "escolherTurma": "escolherTurma",
-      "escolherAluno": "escolherAluno",
-      "menuTipoOpcao": "menuTipoOpcao",
-      "escolherDisciplina": "escolherDisciplina",
-      "escolherTipoTeste": "escolherTipoTeste",
-      "escolherTeste": "escolherTeste",
-      "testeTexto": "testeTexto",
-      "testeLista": "testeLista",
-      "escolherCorrecao":"escolherCorrecao",
-      "corrigirTeste":"corrigirTeste",
-
+        "": "login",
+        "login": "login",
+        "paginic": "paginic",
+        "ModProf": "ModProf", 
+      
     },
 
     boot: function() {
       var bootView = new BootView();
       this.showView(bootView);
-    },
-
-    corrigirTeste: function() {
-      var self = this;
-      require(["app/views/corrigirTeste"], function(corrigirTesteView) {
-        var view = new corrigirTesteView();
-        self.showView(view);
-      });
-    },
-
-    escolherCorrecao: function() {
-      var self = this;
-      require(["app/views/escolherCorrecao"], function(EscolherCorrecaoView) {
-        var view = new EscolherCorrecaoView();
-        self.showView(view);
-      });
-    },
-
-    testeLista: function() {
-      var self = this;
-      require(["app/views/testeLista"], function(TesteListaView) {
-        var view = new TesteListaView();
-        self.showView(view);
-      });
-    },
-
-    testeTexto: function() {
-      var self = this;
-      require(["app/views/testeTexto"], function(TesteTextoView) {
-        var view = new TesteTextoView();
-        self.showView(view);
-      });
-    },
-
-    escolherTeste: function() {
-      var self = this;
-      require(["app/views/escolherTeste"], function(EscolherTesteView) {
-        var view = new EscolherTesteView();
-        self.showView(view);
-      });
-    },
-
-    escolherTipoTeste: function() {
-      var self = this;
-      require(["app/views/escolherTipoTeste"], function(EscolherTipoTesteView) {
-        var view = new EscolherTipoTesteView();
-        self.showView(view);
-      });
-    },
-
-
-    escolherDisciplina: function() {
-      var self = this;
-      require(["app/views/escolherDisciplina"], function(EscolherDisciplinaView) {
-        var view = new EscolherDisciplinaView();
-        self.showView(view);
-      });
     },
 
 
@@ -124,43 +57,19 @@ define(function(require) {
       require(["app/views/paginic"], function(paginicView) {
         var view = new paginicView();
         self.showView(view);
+         
       });
     },
 
-    menuTipoOpcao: function() {
+    ModProf: function() {
       var self = this;
-      require(["app/views/menuTipoOpcao"], function(MenuTipoOpcaoView) {
-        var view = new MenuTipoOpcaoView();
+      require(["app/views/ModProf"], function(ModProfView) {
+        var view = new ModProfView();
         self.showView(view);
+         
       });
     },
-
-    escolherTurma: function() {
-      var self = this;
-      require(["app/views/escolherTurma"], function(EscolherTurmaView) {
-        var view = new EscolherTurmaView();
-        self.showView(view);
-      });
-    },
-
-    escolherAluno: function() {
-      var self = this;
-      require(["app/views/escolherAluno"], function(EscolherAlunoView) {
-        var view = new EscolherAlunoView();
-        self.showView(view);
-      });
-    },
-
-
-    escolherProf: function() {
-      var self = this;
-      require(["app/views/escolherProf"], function(EscolherProfView) {
-        var view = new EscolherProfView();
-        self.showView(view);
-      });
-    },
-
-
+      
     login: function() {
       var self = this;
       require(["app/views/login"], function(LoginView) {
@@ -178,4 +87,5 @@ define(function(require) {
     },
 
   });
+
 });

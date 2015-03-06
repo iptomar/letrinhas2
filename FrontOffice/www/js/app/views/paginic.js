@@ -18,8 +18,11 @@ define(function(require) {
 
     //Eventos Click
     events: {
-      "click #btnNEXT": "clickNEXT",
-      "click #BackButtonEE": "clickBackButtonEE",
+      // "click #btnNEXT": "clickNEXT",
+        "click #BackButtonEE": "clickBackButtonEE",
+        "click #btnProf": "btnProf",
+        "click #btnAdmin": "btnAdmin",
+   
     },
 
     clickBackButtonEE: function(e) {
@@ -27,8 +30,22 @@ define(function(require) {
       window.history.back();
     },
 
+       
+    btnProf: function(e) {
+      e.stopPropagation(); e.preventDefault();
+      app.navigate('/ModProf', {
+        trigger: true
+        
+      });   
+    },
+      
+     btnAdmin: function(e) {
+      alert("Em construção");  
+        
+         
+    }, 
 
-    clickNEXT: function(e) {
+    /*clickNEXT: function(e) {
       var self = this;
       if (Backbone.history.fragment != 'summary') {
         utils.loader(function() {
@@ -39,7 +56,7 @@ define(function(require) {
           });
         });
       }
-    },
+    }, */
 
     render: function() {
       this.$el.html(template({}));

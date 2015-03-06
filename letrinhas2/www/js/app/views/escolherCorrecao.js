@@ -192,7 +192,7 @@ define(function(require) {
           }
           else{
             $("#Cabecalho").text("Não tem testes para corrigir.");
-            $("CorOrdena").enabled(false);
+            //$("CorOrdena").enabled(false);
           }
         }
       });

@@ -40,8 +40,8 @@ define(function(require) {
         if (discplinaSelecionada == '3'){$('#labelDisciplina').text("Estudo do Meio"); $('#imgDisciplinaIcon').attr("src","img/estudoMeio.png");}
         if (discplinaSelecionada == '4'){$('#labelDisciplina').text("Inglês"); $('#imgDisciplinaIcon').attr("src","img/ingles.png");}
 
-        if (tipoTesteSelecionado == 'texto'){$('#titleEscolherTeste').text("Escolher Teste de Leitura de Palavras");}
-        if (tipoTesteSelecionado == 'lista'){$('#titleEscolherTeste').text("Escolher Teste de Leitura de Textos");}
+        if (tipoTesteSelecionado == 'palavras'){$('#titleEscolherTeste').text("Escolher Teste de Leitura de Palavras");}
+        if (tipoTesteSelecionado == 'texto'){$('#titleEscolherTeste').text("Escolher Teste de Leitura de Textos");}
         if (tipoTesteSelecionado == 'multimedia'){$('#titleEscolherTeste').text("Escolher Teste Multimedia");}
 
         $('#lbNomeProf').text(profNome);

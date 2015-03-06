@@ -111,7 +111,15 @@ var BtnNavPress;
     },
 
     clickBackButtonED: function(e) {
-      window.history.back();
+      e.stopPropagation(); e.preventDefault();
+      BtnNavPress = -1;
+      $('#labelErr').text("");  //limpa campos
+      $('#inputPIN').val("");   //limpa campos
+      $('#inputPINErr').removeClass("has-error"); //limpa campos
+      $('#myModal').modal("show");
+      $('#myModal').on('shown.bs.modal', function (e) {
+         $("#inputPIN").focus();
+      });
     },
 
     clickbtnSelecPortugues: function(e) {

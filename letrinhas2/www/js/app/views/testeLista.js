@@ -10,7 +10,6 @@ function onBackKeyDown() {
   });
 }
 
-
 var mediaRec,//objeto Media que irá fazer a gravação
     mediaSrc,//url onde deverá ser guardada a gravação
     totalPalavras=0;//contador de palavras

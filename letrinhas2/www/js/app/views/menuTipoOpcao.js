@@ -54,59 +54,22 @@ define(function(require) {
       "click #btnNavINI": "clickbtnNavINI",
       "click #btnNavAlu": "clickbtnNavAlu",
       "click #btnNavProf": "clickbtnNavProf",
-      "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
     },
-
-    clickbtnConfirmarPIN: function(e) {
-      var pinDigitado = $('#inputPIN').val();
-      var pinProfAux = window.localStorage.getItem("ProfSelecPIN");
-      if (pinProfAux == pinDigitado) {
-        $('#myModal').modal("hide");
-        $('#myModal').on('hidden.bs.modal', function (e) {
-          window.history.go(BtnNavPress);
-        });
-      } else {
-        $('#inputPINErr').addClass("has-error");
-        $('#labelErr').text("PIN errado!");
-      }
-    },
-
 
     clickbtnNavProf: function(e) {
       e.stopPropagation(); e.preventDefault();
-      BtnNavPress = -3;
-      $('#labelErr').text("");  //limpa campos
-      $('#inputPIN').val("");   //limpa campos
-      $('#inputPINErr').removeClass("has-error"); //limpa campos
-      $('#myModal').modal("show");
-      $('#myModal').on('shown.bs.modal', function (e) {
-         $("#inputPIN").focus();
-      });
+      window.history.go(-3);
     },
 
     clickbtnNavAlu: function(e) {
       e.stopPropagation(); e.preventDefault();
-      BtnNavPress = -1;
-      $('#labelErr').text("");  //limpa campos
-      $('#inputPIN').val("");   //limpa campos
-      $('#inputPINErr').removeClass("has-error"); //limpa campos
-      $('#myModal').modal("show");
-      $('#myModal').on('shown.bs.modal', function (e) {
-         $("#inputPIN").focus();
-      });
+      window.history.go(-1);
     },
 
 
     clickbtnNavINI: function(e) {
       e.stopPropagation(); e.preventDefault();
-      BtnNavPress = -5;
-      $('#labelErr').text("");  //limpa campos
-      $('#inputPIN').val("");   //limpa campos
-      $('#inputPINErr').removeClass("has-error"); //limpa campos
-      $('#myModal').modal("show");
-      $('#myModal').on('shown.bs.modal', function (e) {
-         $("#inputPIN").focus();
-      });
+      window.history.go(-5);
     },
 
 
@@ -120,8 +83,6 @@ define(function(require) {
       if (Backbone.history.fragment != 'escolherDisciplina') {
         utils.loader(function() {
           e.preventDefault();
-
-
           app.navigate('/escolherDisciplina', {
             trigger: true
           });
@@ -134,8 +95,6 @@ define(function(require) {
       if (Backbone.history.fragment != 'escolherCorrecao') {
         utils.loader(function() {
           e.preventDefault();
-
-
           app.navigate('/escolherCorrecao', {
             trigger: true
           });

@@ -53,12 +53,22 @@ define(function(require) {
       "testeLista": "testeLista",
       "escolherCorrecao":"escolherCorrecao",
       "corrigirLista":"corrigirLista",
+      "testes":"testes",
 
     },
 
     boot: function() {
       var bootView = new BootView();
       this.showView(bootView);
+    },
+
+
+    testes: function() {
+      var self = this;
+      require(["app/views/testes"], function(TestesView) {
+        var view = new TestesView();
+        self.showView(view);
+      });
     },
 
     corrigirLista: function() {

@@ -1,8 +1,5 @@
 var mediaRec;
 
-
-
-
 function recordAudio() {
   alert("A gravação vai começar!");
   var src = "gravacao.amr";

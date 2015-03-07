@@ -24,7 +24,7 @@ define(function(require) {
     events: {
       "click #btn_login": "clickLogin",
       "click #btn_qrcode": "qrreader",
-      "click #img_click": "imgclick"
+      "click #btn_testes": "btn_testes"
     },
 
     clickLogin: function(e) {
@@ -32,6 +32,14 @@ define(function(require) {
       });
       e.stopPropagation(); e.preventDefault();
       app.navigate('/escolherEscola', {
+        trigger: true
+      });
+    },
+
+
+    btn_testes: function(e) {
+      e.stopPropagation(); e.preventDefault();
+      app.navigate('/testes', {
         trigger: true
       });
     },

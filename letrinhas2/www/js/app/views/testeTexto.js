@@ -1,3 +1,4 @@
+var TotalPalavas;
 function onBackKeyDown() {
   $('#labelErr').text("");  //limpa campos
   $('#inputPIN').val("");   //limpa campos
@@ -28,19 +29,17 @@ function fail(e) {
 
 function success(file) {
     var agora=new Date();
-    var ids = 'Cr'+ alunoId + agora.toISOString();
     var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
     var alunoId = window.localStorage.getItem("AlunoSelecID");
     var profId = window.localStorage.getItem("ProfSelecID");
     var correcao = {
-      '_id': ids,
       'id_Teste': TesteArealizarID,
       'id_Aluno': alunoId,
       'id_Prof': profId,
       'tipoCorrecao': 'Texto',
       'estado': '0',
       'conteudoResult':null,
-      'TotalPalavras':totalPalavras,
+      'TotalPalavras':TotalPalavas,
       'dataSub': agora,
       'dataCorr':null,
       'observ':null,
@@ -63,7 +62,13 @@ function success(file) {
 
 }
 
-
+function countWords(stringx){
+  stringx = stringx.replace(/(^\s*)|(\s*$)/gi,"");
+  stringx = stringx.replace(/[ ]{2,}/gi," ");
+  stringx = stringx.replace(/\n /,"\n");
+//  console.log(stringx.split(' ').length);
+TotalPalavas = stringx.split(' ').length;
+}
 
 
 //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
@@ -172,6 +177,7 @@ define(function(require) {
         $('#titleTestePagina').text(testeDoc.titulo);
         $('#lbTituloTeste').text(testeDoc.conteudo.pergunta);
         $('#txtAreaConteud').append(testeDoc.conteudo.texto.replace(/\n/g, '</br>'));
+        countWords(testeDoc.conteudo.texto);
       });
 
       testes_local2.getAttachment(TesteArealizarID, 'voz.mp3', function(err2, DataImg) {

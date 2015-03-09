@@ -1,3 +1,7 @@
+function onBackKeyDown() {
+}
+
+
 define(function(require) {
   var BtnNavPress;
   "use strict";
@@ -17,7 +21,6 @@ define(function(require) {
     },
 
     initialize: function() {
-
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
@@ -54,22 +57,47 @@ define(function(require) {
       "click #btnNavINI": "clickbtnNavINI",
       "click #btnNavAlu": "clickbtnNavAlu",
       "click #btnNavProf": "clickbtnNavProf",
+      "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
     },
+
+    clickbtnConfirmarSUB: function(e) {
+      document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+        $('#myModalSUB').modal("hide");
+        $('#myModalSUB').on('hidden.bs.modal', function (e) {
+          window.history.go(BtnNavPress);
+        });
+    },
+
 
     clickbtnNavProf: function(e) {
       e.stopPropagation(); e.preventDefault();
-      window.history.go(-3);
+      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+      BtnNavPress = -3;
+      $('#myModalSUB').modal("show");
+      $('#myModalSUB').on('hidden.bs.modal', function (e) {
+        document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+      });
     },
 
     clickbtnNavAlu: function(e) {
       e.stopPropagation(); e.preventDefault();
-      window.history.go(-1);
+      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+      BtnNavPress = -1;
+      $('#myModalSUB').modal("show");
+      $('#myModalSUB').on('hidden.bs.modal', function (e) {
+        document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+      });
     },
 
 
     clickbtnNavINI: function(e) {
       e.stopPropagation(); e.preventDefault();
-      window.history.go(-5);
+      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+      BtnNavPress = -5;
+      $('#myModalSUB').modal("show");
+      $('#myModalSUB').on('hidden.bs.modal', function (e) {
+        document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+      });
     },
 
 

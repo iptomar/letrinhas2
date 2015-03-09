@@ -86,7 +86,6 @@ define(function(require) {
           $('#myModal').on('hidden.bs.modal', function (e) {
             document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
           });
-
         });
       });
     },

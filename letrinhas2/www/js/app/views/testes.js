@@ -1,4 +1,4 @@
-var mediaRec;
+
 
 ////// teste para ler um ficheiro neste caso o ficheiro que foi gravado para a memoria fisica do tele
 function LerFile() {
@@ -6,34 +6,23 @@ function LerFile() {
 window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr", gotFile, fail);
 }
 
+function gotFile(fileEntry) {
+  console.log(fileEntry);
+	fileEntry.file(success, fail);
+}
+
 function fail(e) {
 	console.log("FileSystem Error:"+e);
 }
 
-function gotFile(fileEntry) {
-  console.log(fileEntry);
-  fileEntry.file(function(file) {
-		var reader = new FileReader();
 
-		reader.onload  = function() {
-      console.log("---------------------------------");
-      var attachment = new Blob([reader.result], {type: 'audio/amr'});
-      console.log(reader.result);
-      console.log("---------------------------------");
-			console.log(attachment);
-      //////Este codigo serve para inserir um anexo terá que por exemplo colocar um ID e _Rev valido por exemolo com os testes existentes no servidor ince.pt
+function success(file) {
+    console.log("File size: " + file);
 
-    //  correcoes_local2.putAttachment('Corr0', 'uiy.amr', "2-9f187af943e4cb64b8aac9c28c9c71d9", attachment, 'audio/amr', function(err, res) {
-    //  if (!err) {
-    //   console.log('anexo  inserted'+ res);
-    //  } else {
-    //    console.log('anexo ' + err + ' erro');
-    //  }
-    //  });
-		}
-		reader.readAsBinaryString(file);
-	});
 }
+
+
+
 
 //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
 
@@ -61,7 +50,7 @@ function GravarSOMfile (name, data, success, fail) {
 
 //////////// ////  recorder ////  /////////////////////////////
 
-
+var mediaRec;
 
 function recordAudio() {
   alert("A gravação vai começar!");
@@ -109,6 +98,8 @@ define(function(require) {
 
     initialize: function() {
 
+
+
     },
 
     //Eventos Click
@@ -120,7 +111,8 @@ define(function(require) {
     },
 
     btnVerFile: function(e) {
-      LerFile();
+    //  LerFile();
+		$("#cenas").append("O Lorem Ipsum é um texto modelo da indústria tipográfica e de impressão. O Lorem Ipsum tem vindo a ser o texto padrão usado por estas indústrias desde o ano de 1500, quando uma misturou os caracteres de um texto para criar um espécime de livro. Este texto não só sobreviveu 5 séculos, mas também o salto para a tipografia electrónica, mantendo-se essencialmente inalterada. Foi popularizada nos anos 60 com a disponibilização das folhas de Letraset, que continham passagens com Lorem Ipsum, e mais recentemente com os programas de publicação como o Aldus PageMaker que incluem versões do Lorem Ipsum.</br>xto aleatório. Tem raízes numa peça de literatura clássica em Latim, de 45 AC, tornando-o com mais de 2000 anos. Richard McClintock, um professor de Latim no Colégio Hampden-Sydney, na Virgínia, procurou uma das palavras em Latim mais obscuras (consectetur) numa passagem Lorem Ipsum, e");
     },
 
 

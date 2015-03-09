@@ -27,26 +27,12 @@ function fail(e) {
 
 
 function success(file) {
-<<<<<<< HEAD
     var agora=new Date();
     var ids = 'Cr'+ alunoId + agora.toISOString();
-=======
-  //  var ids = "corr"+Date.now();
-    var testeTexto = {
-      'exatidao': '0',
-      'velocidade': '0',
-      'fluidez': '0',
-      'expressividade': '0',
-      'compreensao': '0',
-    };
-
-    var agora=new Date();
->>>>>>> 66207ee7d31de942975f768d7dbbf7273507185f
     var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
     var alunoId = window.localStorage.getItem("AlunoSelecID");
     var profId = window.localStorage.getItem("ProfSelecID");
     var correcao = {
-<<<<<<< HEAD
       '_id': ids,
       'id_Teste': TesteArealizarID,
       'id_Aluno': alunoId,
@@ -58,16 +44,6 @@ function success(file) {
       'dataSub': agora,
       'dataCorr':null,
       'observ':null,
-=======
-      'id_Teste': TesteArealizarID,
-      'id_Aluno': alunoId,
-      'id_Prof': profId,
-      'tipoCorrecao': 'texto',
-      'estado': '0',
-      'conteudo': testeTexto,
-      'dataSub': agora,
-      'dataCorr':null,
->>>>>>> 66207ee7d31de942975f768d7dbbf7273507185f
     };
 
     correcoes_local2.post(correcao, function(err, response) {

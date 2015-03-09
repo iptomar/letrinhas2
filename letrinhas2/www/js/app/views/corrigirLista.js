@@ -28,6 +28,13 @@ define(function(require) {
 
     initialize: function() {
       document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+      var profId = window.localStorage.getItem("ProfSelecID");
+      var profNome = window.localStorage.getItem("ProfSelecNome");
+      var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
+      var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
+      var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
+      var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
+      var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
 
 
 

@@ -173,11 +173,11 @@ define(function(require) {
                 var $btn = $(this); // O jQuery passa o btn clicado pelo this
                 var self = this;
                 console.log($btn.val());
+                window.localStorage.setItem("CorrecaoID", $btn[0].id + ''); //enviar variavel
                 if($btn.val() == "texto" ){
                   if (Backbone.history.fragment != 'corrigirTexto') {
                     utils.loader(function() {
                       ev.preventDefault();
-                      window.localStorage.setItem("CorrecaoID", $btn[0].id + ''); //enviar variavel
                       app.navigate('/corrigirTexto', {trigger: true});
                     });
                   }
@@ -186,7 +186,6 @@ define(function(require) {
                     if (Backbone.history.fragment != 'corrigirLista') {
                       utils.loader(function() {
                         ev.preventDefault();
-                        window.localStorage.setItem("CorrecaoID", $btn[0].id + ''); //enviar variavel
                         app.navigate('/corrigirLista', {trigger: true});
                       });
                     }

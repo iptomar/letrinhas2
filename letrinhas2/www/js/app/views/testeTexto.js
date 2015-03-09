@@ -36,6 +36,7 @@ function success(file) {
       'compreensao': '0',
     };
 
+    var agora=new Date();
     var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
     var alunoId = window.localStorage.getItem("AlunoSelecID");
     var profId = window.localStorage.getItem("ProfSelecID");
@@ -46,6 +47,8 @@ function success(file) {
       'tipoCorrecao': 'texto',
       'estado': '0',
       'conteudo': testeTexto,
+      'dataSub': agora,
+      'dataCorr':null,
     };
 
     correcoes_local2.post(correcao, function(err, response) {

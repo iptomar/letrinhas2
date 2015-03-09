@@ -1,1 +1,83 @@
-<img src="img/inConstruction.jpg" />
+<section>
+
+  <div class="globalcontent">
+    <div class="topcoat-navigation-bar">
+      <div class="topcoat-navigation-bar__item left quarter">
+        <button id="BtnCancelar"
+                type="button"
+                class="btn btn-default btn-lg">
+          <span class="glyphicon glyphicon-chevron-left"
+                aria-hidden="true">
+          </span>
+          Cancelar
+        </button>
+      </div>
+      <div class="topcoat-navigation-bar__item center half">
+        <h1 id="titleTestePagina"
+            class="topcoat-navigation-bar__title">
+        </h1>
+      </div>
+    </div>
+
+    <div class="loader" style="display:none">
+      <div class="placeholder light">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="panel panel-default">
+        <div class="panel-body centerEX">
+          <img src="img/inConstruction.jpg" style="height:50px"/>
+          <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">titulo</label>
+        </div>
+      </div>
+
+      <!-- Agora o conteúdo, Div onde se vai construir tudo dinamicamente -->
+
+      <div id="listaAreaConteudo" class="well well-lg" style="height:27em; overflow:auto" align="center"></div>
+    </div>
+  </div>
+
+
+
+  <div class"navbar navbar-default navbar-fixed-bottom" >
+    <div class="well well-lg" >
+      <div class="centerEX">
+        <audio id="playPlayer" style="visibility:hidden" controls></audio>
+      </div>
+      <div class="centerEX">
+        <table style="width:100%">
+          <tr>
+            <td>
+            <!-- Posicionamento dos botões de demonstração, ouvir aluno e submeter! -->
+              <a id="demoButton" class="btn btn-default btn-lg" val=0 style="background-color: #ffc060">
+                <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
+                 Demonstração
+              </a>
+            </td>
+            <td>
+              <a id="playMyTestButton" class="btn btn-default btn-lg" val=0 style="background-color: #4ed0ff">
+                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                Ouvir Leitura
+              </a>
+            </td>
+            <td>
+              <a  class="btn btn-default btn-lg" val=0 style="visibility:hidden;">
+                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                espaço em branco................
+              </a>
+            </td>
+            <td>
+              <a id="submitButton" class="btn btn-default btn-lg" style="background-color: #00ee00">
+                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                Finalizar
+              </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

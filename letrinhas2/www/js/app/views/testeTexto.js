@@ -101,27 +101,24 @@ define(function(require) {
     },
 
     BTNTESTE: function(e) {
-
-       var ids = 'Corr' + new Date().toISOString();
-      var testeTexto = {
-        'exatidao': '1',
-        'velocidade': '2',
-        'fluidez': '2',
-        'expressividade': '2',
-        'compreensao': '2',
-      };
-
+      var agora=new Date();
       var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
       var alunoId = window.localStorage.getItem("AlunoSelecID");
       var profId = window.localStorage.getItem("ProfSelecID");
+      var ids = 'Cr' + alunoId + agora.toISOString();
+
       var correcao = {
         '_id': ids,
         'id_Teste': TesteArealizarID,
         'id_Aluno': alunoId,
         'id_Prof': profId,
-        'tipoCorrecao': 'texto',
+        'tipoCorrecao': 'Texto',
         'estado': '0',
-        'conteudo': testeTexto,
+        'conteudoResult':null,
+        'TotalPalavras':totalPalavras,
+        'dataSub': agora,
+        'dataCorr':null,
+        'observ':null,
       };
 
 

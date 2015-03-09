@@ -87,7 +87,7 @@ define(function(require) {
         if(testeDoc.conteudo.palavrasCl1.length>0){
           s1="";
           for(var j=0; j<testeDoc.conteudo.palavrasCl1.length;j++){
-            s1+="<p style='font-style:bold; font-size:18px'>"+ testeDoc.conteudo.palavrasCl1[j] +"</p>";
+            s1+="<p style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl1[j] +"</p>";
             totalPalavras++;
           }
           allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
@@ -95,7 +95,7 @@ define(function(require) {
           if(testeDoc.conteudo.palavrasCl2.length>0){
             s1="";
             for(var j=0; j<testeDoc.conteudo.palavrasCl2.length;j++){
-              s1+="<p style='font-style:bold; font-size:18px'>"+ testeDoc.conteudo.palavrasCl2[j] +"</p>";
+              s1+="<p style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl2[j] +"</p>";
             }
             totalPalavras++;
             allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
@@ -104,7 +104,7 @@ define(function(require) {
           if(testeDoc.conteudo.palavrasCl3.length>0){
             s1="";
             for(var j=0; j<testeDoc.conteudo.palavrasCl3.length;j++){
-              s1+="<p style='font-style:bold; font-size:18px'>"+ testeDoc.conteudo.palavrasCl3[j] +"</p>";
+              s1+="<p style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl3[j] +"</p>";
             }
             totalPalavras++;
             allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
@@ -127,6 +127,9 @@ define(function(require) {
         if (err2) console.log(err2);
           Demo = URL.createObjectURL(DataImg);
       });
+
+      ////// adicionar EVENTO DO BOTAO
+      document.addEventListener("backbutton", onBackKeyDown, true);
 
     },
 
@@ -204,22 +207,6 @@ define(function(require) {
       var alunoId = window.localStorage.getItem("AlunoSelecID");
       var agora=new Date();
       var ids = 'Cr'+ alunoId + agora.toISOString();
-      var testeLista = {
-          'TotalPalavras':totalPalavras,
-          'NPalavrasErradas':'0',
-          'Vacilacoes':'0',
-          'Fragmentacoes':'0',
-          'Silabacoes':'0',
-          'Repeticoes':'0',
-          'PrecisaoL': '0',
-          'VelocidadeL': '0',
-          'Ritmo': '0',
-          'Expressividade': '0',
-          'PLM': '0',
-          'dataSub': agora,
-          'dataCorr':null,
-        };
-
       var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
       var profId = window.localStorage.getItem("ProfSelecID");
       var correcao = {
@@ -229,7 +216,11 @@ define(function(require) {
           'id_Prof': profId,
           'tipoCorrecao': 'Lista',
           'estado': '0',
-          'conteudo': testeLista,
+          'conteudoResult':null,
+          'TotalPalavras':totalPalavras,
+          'dataSub': agora,
+          'dataCorr':null,
+          'observ':null,
       };
 
 

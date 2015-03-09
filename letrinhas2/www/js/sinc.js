@@ -1,6 +1,7 @@
 //// Script de Replicacao da Base de dados CouchDb para PouchDb  //////
 //##########################################################################
-var IP= "ince.pt"; ///"127.0.0.1";
+//var IP= "ince.pt";
+var IP= "localhost";
 
 var alunos_local2 = new PouchDB('alunos_local2');
 var escolas_local2 = new PouchDB('escolas_local2');

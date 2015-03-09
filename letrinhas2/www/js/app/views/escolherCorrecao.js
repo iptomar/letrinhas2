@@ -57,7 +57,7 @@ define(function(require) {
             for (var i=0; i< l; i++){
               correcoes[i] =  response.rows[i].key;
             }
-            //Teste
+            //Teste////////////////////////////////////////////////////
             // APENAS //// dar destaque (agrupar) ao aluno selecionado
             if(correcoes.length > 1 ){
               var k=0, j= correcoes.length-1;
@@ -74,6 +74,7 @@ define(function(require) {
               }
               correcoes=aux;
             }
+            ///////////////////////////////////////////////////////////
 
             //construir os botões, baseado no layout do "Letrinhas V.01"
             // |foto do aluno| Nome - Titulo do teste - Data/hora | Tipo de Teste| | Disciplina |
@@ -102,6 +103,13 @@ define(function(require) {
                 titulo=testeDoc.titulo;
                 disciplina=testeDoc.disciplina;
                 tipo=testeDoc.tipoTeste;
+                var data= new Date(correcoes[c].dataSub);
+                $('#pTitulo'+c).text(titulo+ " - "+ convert_n2d(data.getDate())
+                                    +"/"+ (convert_n2d(data.getMonth()+1))
+                                    +"/"+ data.getFullYear()
+                                    +" às "+ convert_n2d(data.getHours())
+                                    +":"+ convert_n2d(data.getMinutes())
+                                    +":"+ convert_n2d(data.getSeconds()));
 
                 //imagem da disciplina e tipo de teste
                 switch (disciplina){
@@ -114,22 +122,13 @@ define(function(require) {
                   case 4:urlDiscp = "img/ingles.png";
                     break;
                 }
+                var s = correcoes[c]._id;
                 if(tipo == "palavras"){
                   urlTipo="img/testLista.png";
-                  $('#bTipo'+c).val(0);
-                  var data= new Date(correcoes[c].conteudo.dataSub);
-                  $('#pTitulo'+c).text(titulo+ " - "+ convert_n2d(data.getDate())
-                                      +"/"+ (convert_n2d(data.getMonth()+1))
-                                      +"/"+ data.getFullYear()
-                                      +" às "+ convert_n2d(data.getHours())
-                                      +":"+ convert_n2d(data.getMinutes())
-                                      +":"+ convert_n2d(data.getSeconds()));
                 }
                 else{
                   if(tipo == "texto"){
                     urlTipo= "img/testeTexto.png";
-                    $('#bTipo'+c).val(1);
-                    $('#pTitulo'+c).text(titulo+ " - DD-MM-AAAA às HH:MM");
                   }/*
                   else{
                     if(tipo == "multimedia"){
@@ -142,19 +141,20 @@ define(function(require) {
                 //Entregar a origem das fotos
                 $('#bDiscip'+c).attr("src",urlDiscp);
                 $('#bTipo'+c).attr("src",urlTipo);
-                $('#bTipo'+c).val();
                 c++;
-
               });
 
               //construir o botão
+              console.log("idsB: "+ correcoes[i]._id+
+              "Tipo: "+correcoes[i].tipoCorrecao);
+
               var $btn = $(
                 '<div class="col-sm-20">'+
-                  '<button id="'+ correcoes[i]._id +'" value="'+correcoes[i].tipoCorrecao +'" type="button"' +
+                  '<button id="'+ correcoes[i]._id +'" value="'+correcoes[i].tipoCorrecao+'" type="button"' +
                           'style="height:100px;  padding: 0px 10px 0px 10px;"'+
                           'class="btn btn-info btn-lg btn-block btn-Corr" >'+
                     '<img id="bFoto'+ i +'" src="" style=" float: left; height:70px;"/>'+
-                    '<img id="bTipo'+ i +'" src="" style=" float: right; height:70px; margin-left:5px"/>'+
+                    '<img id="bTipo'+ i +'" val=0 src="" style=" float: right; height:70px; margin-left:5px"/>'+
                     '<img id="bDiscip'+ i +'" src="" style=" float: right; height:70px; margin-left:5px"/>'+
                     '<a style="color:#FFFFFF;" aria-hidden="true">'+
                       '<p id="pNome'+ i +'"></p>'+
@@ -172,15 +172,19 @@ define(function(require) {
 
                 var $btn = $(this); // O jQuery passa o btn clicado pelo this
                 var self = this;
-
-                if($btn.val() == "texto"){
-                  console.log("Corrigir um teste de texto");
+                if($btn.val() == "Texto" ){
+                  if (Backbone.history.fragment != 'corrigirLista') {
+                    utils.loader(function() {
+                      ev.preventDefault();
+                      window.localStorage.setItem("CorrecaoID", $btn[0].id + ''); //enviar variavel
+                      app.navigate('/corrigirTexto', {trigger: true});
+                    });
+                  }
                 }else{
-                  if($btn.val() == "Lista"){
+                  if($btn.val() == "Lista" ){
                     if (Backbone.history.fragment != 'corrigirLista') {
                       utils.loader(function() {
                         ev.preventDefault();
-                        console.log($btn[0].id+'');
                         window.localStorage.setItem("CorrecaoID", $btn[0].id + ''); //enviar variavel
                         app.navigate('/corrigirLista', {trigger: true});
                       });

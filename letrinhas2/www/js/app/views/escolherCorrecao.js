@@ -172,8 +172,9 @@ define(function(require) {
 
                 var $btn = $(this); // O jQuery passa o btn clicado pelo this
                 var self = this;
-                if($btn.val() == "Texto" ){
-                  if (Backbone.history.fragment != 'corrigirLista') {
+                console.log($btn.val());
+                if($btn.val() == "texto" ){
+                  if (Backbone.history.fragment != 'corrigirTexto') {
                     utils.loader(function() {
                       ev.preventDefault();
                       window.localStorage.setItem("CorrecaoID", $btn[0].id + ''); //enviar variavel

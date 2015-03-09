@@ -1,5 +1,5 @@
 define(function(require) {
-  var BtnNavPress;
+
   "use strict";
   var $ = require('jquery'),
     _ = require('underscore'),

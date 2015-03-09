@@ -2,16 +2,11 @@
 //Método para controlar o botão fisico de retroceder do tablet
 function onBackKeyDown() {
   alert("Está a sair, esta correção não foi guardada!");
-  /*$('#labelErr').text("");  //limpa campos
-  $('#inputPIN').val("");   //limpa campos
-  $('#inputPINErr').removeClass("has-error"); //limpa campos
-  $('#myModal').modal("show");
-  $('#myModal').on('shown.bs.modal', function (e) {
-     $("#inputPIN").focus();
-  });*/
+  document.removeEventListener("backbutton", onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
 }
 
-var isFeito=false, Demo, leitura, totalPalavrasErradas=0,//contador de palavras erradas
+var isFeito=false,
+    Demo, leitura, totalPalavrasErradas=0,//contador de palavras erradas
     relatorio="";
 
 
@@ -32,6 +27,10 @@ define(function(require) {
     },
 
     initialize: function() {
+      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+
+
+
 
 
 
@@ -147,6 +146,7 @@ define(function(require) {
     clickBtnCancelar: function(e) {
      e.stopPropagation(); e.preventDefault();
      alert("Está a sair, esta correção não foi guardada!");
+     document.removeEventListener("backbutton", onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
      window.history.back();
 
     },

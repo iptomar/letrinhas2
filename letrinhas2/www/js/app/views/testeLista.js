@@ -1,3 +1,7 @@
+var Demo,           //caminho para reproduzir o ficheiro de demonstração
+    mediaRec,       //objeto Media que irá fazer a gravação
+    mediaSrc,       //url onde deverá ser guardada a gravação
+    totalPalavras=0;//contador de palavras
 
 //Método para controlar o botão fisico de retroceder do tablet
 function onBackKeyDown() {
@@ -10,31 +14,122 @@ function onBackKeyDown() {
   });
 }
 
-var mediaRec,//objeto Media que irá fazer a gravação
-    mediaSrc,//url onde deverá ser guardada a gravação
-    totalPalavras=0;//contador de palavras
+////////////////////////LerFile e colocar em anexo para correcao/////////
+function LerficheiroGravacaoEinserir() {
+  window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr", gotFile, fail);
+}
 
-//Gravar a leitura
+function gotFile(fileEntry) {
+  console.log(fileEntry);
+  fileEntry.file(success, fail);
+}
+
+function fail(e) {
+	console.log("FileSystem Error:"+e);
+}
+
+
+function success(file) {
+  var agora=new Date();
+  var ids = 'Cr'+ alunoId + agora.toISOString();
+  var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
+  var alunoId = window.localStorage.getItem("AlunoSelecID");
+  var profId = window.localStorage.getItem("ProfSelecID");
+  var correcao = {
+      '_id': ids,
+      'id_Teste': TesteArealizarID,
+      'id_Aluno': alunoId,
+      'id_Prof': profId,
+      'tipoCorrecao': 'Lista',
+      'estado': '0',
+      'conteudoResult':null,
+      'TotalPalavras':totalPalavras,
+      'dataSub': agora,
+      'dataCorr':null,
+      'observ':null,
+  };
+
+  correcoes_local2.post(correcao, function(err, response) {
+    if (err) {
+      console.log('Correcao ' + err + ' erro');
+    }
+    else {
+      correcoes_local2.putAttachment(response.id, 'gravacao.amr', response.rev, file, 'audio/amr', function(err, res) {
+        if (!err) {
+          console.log('Anexo  inserted: '+ response.id);
+        }
+        else {
+          console.log('anexo ' + err + ' erro');
+        }
+      });
+      console.log('Correcao ' + response.id + ' inserido!');
+    }
+  });
+
+}
+
+//////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
+function GravarSOMfile (name, data, success, fail) {
+  console.log(cordova.file.dataDirectory);
+  var gotFileSystem = function (fileSystem) {
+    fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
+  };
+
+  var gotFileEntry = function (fileEntry) {
+    fileEntry.createWriter(gotFileWriter, fail);
+  };
+
+  var gotFileWriter = function (writer) {
+    writer.onwrite = success;
+    writer.onerror = fail;
+    writer.write(data);
+  };
+  window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+}
+
 function recordAudio() {
-  mediaSrc = "gravacao.amr";
-  mediaRec = new Media(mediaSrc,
-            // success callback
-            function() {},
-            // error callback
-            function(err) {
-              alert("recordAudio():Audio Error: " + err.code);
-            });
-
+  try{
+    var src = "gravacao.amr";
+    mediaRec = new Media(src,
+      // success callback
+      function() {
+        //  alert("recordAudio():Audio Success");
+      },
+      // error callback
+      function(err) {
+        alert("recordAudio():Audio Error: " + err.code);
+      }
+    );
   // Record audio
-  mediaRec.startRecord();
+    mediaRec.startRecord();
+  }
+  catch (err){
+    console.log(err.message);
+  }
+
 }
 
-//Parar a gravação
 function StopRec() {
+  try{
   mediaRec.stopRecord();
-  mediaRec.release();
+  mediaRec.release();}
+  catch(err){console.log(err.message);}
 }
 
+function PlayRec()
+{
+  try{mediaRec.play();}
+  catch(err){console.log(err.message);}
+}
+
+function StopPlayRec()
+{
+  try{mediaRec.stop();}
+  catch(err){console.log(err.message)}
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 define(function(require) {
   "use strict";
   var $ = require('jquery'),
@@ -42,7 +137,7 @@ define(function(require) {
     Backbone = require('backbone'),
     janelas = require('text!janelas/testeLista.html'),
     template = _.template(janelas),
-    Demo, isFeito=false;
+    isFeito=false;
 
   var profId, profNome, escolaNome, escolaId, alunoId, alunoNome,
       turmaId, turmaNome, discplinaSelecionada, tipoTesteSelecionado,
@@ -125,7 +220,13 @@ define(function(require) {
 
       testes_local2.getAttachment(TesteArealizarID, 'voz.mp3', function(err2, DataImg) {
         if (err2) console.log(err2);
-          Demo = URL.createObjectURL(DataImg);
+        GravarSOMfile('voz.mp3', DataImg, function () {
+          console.log('FUNCIONA');
+          Demo = cordova.file.dataDirectory+"/files/voz.mp3";
+          $("#playPlayer").attr("src",Demo)
+        }, function (err) {
+          console.log("DEU ERRO"+err);
+          });
       });
 
       ////// adicionar EVENTO DO BOTAO
@@ -204,38 +305,7 @@ define(function(require) {
 
     // Sumeter o teste para corecção (Criar uma correção não corrigida)
     clickSubmitButton: function(e) {
-      var alunoId = window.localStorage.getItem("AlunoSelecID");
-      var agora=new Date();
-      var ids = 'Cr'+ alunoId + agora.toISOString();
-      var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
-      var profId = window.localStorage.getItem("ProfSelecID");
-      var correcao = {
-          '_id': ids,
-          'id_Teste': TesteArealizarID,
-          'id_Aluno': alunoId,
-          'id_Prof': profId,
-          'tipoCorrecao': 'Lista',
-          'estado': '0',
-          'conteudoResult':null,
-          'TotalPalavras':totalPalavras,
-          'dataSub': agora,
-          'dataCorr':null,
-          'observ':null,
-      };
-
-
-      correcoes_local2.put(correcao, function(err, body) {
-          if (!err) {
-            console.log('correcao ' + correcao._id + ' inserted\n Falta saber como inserir a gravação');
-            alert("Submissão do teste, feita com sucesso!\n Falta inserir a gravação \n testeLista.js linha:218");
-          }
-          else {
-            console.log('correcao ' + err + ' erro');
-            alert("Erro na submissão do teste \n"+ err);
-          }
-      });
-
-      correcoes_local2.get(ids, function(err, otherDoc) {});
+      LerficheiroGravacaoEinserir();
       document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
       window.history.back();
     },
@@ -296,20 +366,6 @@ define(function(require) {
         $('#inputPINErr').addClass("has-error");
         $('#labelErr').text("PIN errado!");
         $('#inputPIN').val("");
-      }
-    },
-
-
-    clickNEXT: function(e) {
-      var self = this;
-      if (Backbone.history.fragment != 'summary') {
-        utils.loader(function() {
-          e.preventDefault();
-          self.highlight(e);
-          app.navigate('/summary', {
-            trigger: true
-          });
-        });
       }
     },
 

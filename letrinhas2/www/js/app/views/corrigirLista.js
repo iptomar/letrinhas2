@@ -1,9 +1,9 @@
 
 //Método para controlar o botão fisico de retroceder do tablet
 function onBackKeyDown() {
-  alert("Está a sair, esta correção não foi guardada!");
   document.removeEventListener("backbutton", onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
 }
+
 
 function convert_n2d(n){
     if(n<10) return("0"+n);
@@ -11,17 +11,33 @@ function convert_n2d(n){
 
 
 var isFeito=false,
+    $palavra,
     Demo, leitura,
     totalPalavras=0,
     totalPalavrasErradas=0,//contador de palavras erradas
     relatorio="";
 
-//Função para maracar / desmarcar a palavra clicada
-function picaPalavra(plvr){
-
+//Função para marcar ou desmarcar a palavra clicada
+function picaPalavra(op){
+  var $opcao = $(op); 
+  $palavra.val($opcao.text());
+  $palavra.attr("style","font-weight:bold; font-size:20px; color: #ee0000");
+  totalPalavrasErradas++;
+  verificaPalavras();
+  $('#myModalSUB').modal("hide");
+  $('#myModalSUB').on('hidden.bs.modal', function (e) {});
 
 }
 
+function verificaPalavras(){
+   if( totalPalavrasErradas!=0){
+     $("#lbErros").attr("style","font-weight:bold; font-size:20px; color: #dd0000; visibility:initial");
+     $("#lbErros").text(totalPalavrasErradas + " Palavras Erradas");
+   }
+   else{
+     $("#lbErros").attr("style","visibility:hidden");
+   }
+ }
 
 //******************************************************************************
 define(function(require) {
@@ -93,12 +109,13 @@ define(function(require) {
           var s1,allTable, empty=true;
           allTable ="<table style='width:100%; '><tr>";
 
-
           //*id do div com o conteúdo, id="listaAreaConteudo"
           if(testeDoc.conteudo.palavrasCl1.length>0){
             s1="";
             for(var j=0; j<testeDoc.conteudo.palavrasCl1.length;j++){
-              s1+="<p class='picavel'  value='' style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl1[j] +"</p>";
+              s1+="<p id='c1l"+ (j+1) +" 'class='picavel' value=''"
+                    +"style='font-weight:bold; font-size:20px'>"
+                    + testeDoc.conteudo.palavrasCl1[j] +"</p>";
               totalPalavras++;
             }
             allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
@@ -108,9 +125,11 @@ define(function(require) {
           if(testeDoc.conteudo.palavrasCl2.length>0){
               s1="";
               for(var j=0; j<testeDoc.conteudo.palavrasCl2.length;j++){
-                s1+="<p class='picavel'  value=''  style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl2[j] +"</p>";
+                s1+="<p id='c2l"+ (j+1) +"'class='picavel' value=''"
+                      +"style='font-weight:bold; font-size:20px'>"
+                      + testeDoc.conteudo.palavrasCl2[j] +"</p>";
+                totalPalavras++;
               }
-              totalPalavras++;
               allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
               empty=false;
           }
@@ -118,9 +137,11 @@ define(function(require) {
           if(testeDoc.conteudo.palavrasCl3.length>0){
               s1="";
               for(var j=0; j<testeDoc.conteudo.palavrasCl3.length;j++){
-                s1+="<p class='picavel' value='' style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl3[j] +"</p>";
+                s1+="<p id='c3l"+ (j+1) +"'class='picavel' value=''"
+                      +"style='font-weight:bold; font-size:20px'>"
+                      + testeDoc.conteudo.palavrasCl3[j] +"</p>";
+                totalPalavras++;
               }
-              totalPalavras++;
               allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
               empty=false;
           }
@@ -131,14 +152,7 @@ define(function(require) {
             //Inserir a tabela no div id=listaAreaConteudo
             $('#listaAreaConteudo').html(allTable);
 
-          } else{
-            alert("O conteúdo dste teste está vazio! \n"+
-                  "Id do teste: "+TesteArealizarID+
-                  "\n Professor responsável: "+ profNome+
-                  "\n id: "+ profId);
           }
-
-
         });
 
         // Analisa todos os botoes do div
@@ -146,55 +160,20 @@ define(function(require) {
         $container.on('click', '.picavel', function(ev) {
           ev.stopPropagation(); ev.preventDefault();
 
-          var $btn = $(this); // O jQuery passa o btn clicado pelo this
-          var self = this;
-
-          if($btn.val()==''){
-            //Teste//
-            $btn.val("picada");
-            //*******************
-            $btn.attr("style","font-weight:bold; font-size:20px; color: #ee0000");
+          $palavra = $(this); // O jQuery passa o btn clicado pelo this
+          //vou usar o atributo value, para guardar o tipo de erro cometido
+          //Se não tem nada no value, logo ainda nãoestá marcada
+          if($palavra.val()==''){
+            $('#myModalSUB').modal("show");
           }
-          else{
-            //Teste//
-            
-            $btn.val('');
-            //*******************
-
-            $btn.attr("style","font-weight:bold; font-size:20px; color: #000000");
+          else{/// Desmarcar
+            totalPalavrasErradas--;
+            $palavra.val('');
+            $palavra.attr("style","font-weight:bold; font-size:20px; color: #000000");
+            verificaPalavras();
           }
-
-        /*  console.log($btn.val());
-          if($btn.val() == "texto" ){
-            if (Backbone.history.fragment != 'corrigirTexto') {
-              utils.loader(function() {
-                ev.preventDefault();
-                app.navigate('/corrigirTexto', {trigger: true});
-              });
-            }
-          }else{
-            if($btn.val() == "Lista" ){
-              if (Backbone.history.fragment != 'corrigirLista') {
-                utils.loader(function() {
-                  ev.preventDefault();
-                  app.navigate('/corrigirLista', {trigger: true});
-                });
-              }
-            }
-          }*/
         });
-
       });
-
-
-
-
-
-
-
-
-
-
     },
 
     events: {
@@ -236,8 +215,7 @@ define(function(require) {
 
     // reproduzir a ultima leitura do teste
     clickPlayMyTestButton: function(){
-      $('#playPlayer').attr("src",mediaSrc);
-      //$('#playPlayer').attr("src",Demo);
+      $('#playPlayer').attr("src",leitura);
       isFeito=true;
       var audio = document.getElementById("playPlayer");
       if ($('#playMyTestButton').val()==0) {
@@ -305,7 +283,6 @@ define(function(require) {
 
     clickBtnCancelar: function(e) {
      e.stopPropagation(); e.preventDefault();
-     alert("Está a sair, esta correção não foi guardada!");
      document.removeEventListener("backbutton", onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
      window.history.back();
 

@@ -75,10 +75,10 @@ define(function(require) {
               correcoes=aux;
             }
             ///////////////////////////////////////////////////////////
-
+            //
             //construir os botões, baseado no layout do "Letrinhas V.01"
             // |foto do aluno| Nome - Titulo do teste - Data/hora | Tipo de Teste| | Disciplina |
-
+            //
             for(i=0; i<correcoes.length; i++){
               //buscar a foto e nome do aluno
               var a=0, b=0, c=0 ,nome, foto, titulo, disciplina, tipo, urlDiscp, urlTipo;
@@ -129,13 +129,7 @@ define(function(require) {
                 else{
                   if(tipo == "texto"){
                     urlTipo= "img/testeTexto.png";
-                  }/*
-                  else{
-                    if(tipo == "multimedia"){
-                      urlTipo="img/testMul.png";
-                      $('#bTipo'+c).val(2);
-                    }
-                  }*/
+                  }
                 }
 
                 //Entregar a origem das fotos
@@ -172,7 +166,6 @@ define(function(require) {
 
                 var $btn = $(this); // O jQuery passa o btn clicado pelo this
                 var self = this;
-                console.log($btn.val());
                 window.localStorage.setItem("CorrecaoID", $btn[0].id + ''); //enviar variavel
                 if($btn.val() == "texto" ){
                   if (Backbone.history.fragment != 'corrigirTexto') {
@@ -192,11 +185,9 @@ define(function(require) {
                   }
                 }
               });
-
           }
           else{
             $("#Cabecalho").text("Não tem testes para corrigir.");
-            //$("CorOrdena").enabled(false);
           }
         }
       });

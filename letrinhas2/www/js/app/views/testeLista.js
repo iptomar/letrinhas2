@@ -186,13 +186,12 @@ define(function(require) {
             totalPalavras++;
           }
           allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
-
           if(testeDoc.conteudo.palavrasCl2.length>0){
             s1="";
             for(var j=0; j<testeDoc.conteudo.palavrasCl2.length;j++){
               s1+="<p style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl2[j] +"</p>";
+              totalPalavras++;
             }
-            totalPalavras++;
             allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
           }
 
@@ -200,11 +199,10 @@ define(function(require) {
             s1="";
             for(var j=0; j<testeDoc.conteudo.palavrasCl3.length;j++){
               s1+="<p style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl3[j] +"</p>";
+              totalPalavras++;
             }
-            totalPalavras++;
             allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
           }
-
           allTable+="</tr></table>";
 
           //Inserir a tabela no div id=listaAreaConteudo
@@ -242,7 +240,8 @@ define(function(require) {
       "click #playMyTestButton": "clickPlayMyTestButton",
       "click #submitButton": "clickSubmitButton",//por finalizar
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
-      "click #BackButtonEE": "clickBackButtonEE",
+      "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
+
     },
 
     // Inicio da gravação da leitura do teste!
@@ -303,11 +302,19 @@ define(function(require) {
 
     },
 
+    clickbtnConfirmarSUB: function(e) {
+      document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+        $('#myModalSUB').modal("hide");
+        $('#myModalSUB').on('hidden.bs.modal', function (e) {
+          LerficheiroGravacaoEinserir();
+          window.history.back();
+        });
+    },
+
     // Sumeter o teste para corecção (Criar uma correção não corrigida)
     clickSubmitButton: function(e) {
-      LerficheiroGravacaoEinserir();
-      document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
-      window.history.back();
+      e.stopPropagation(); e.preventDefault();
+      $('#myModalSUB').modal("show");
     },
 
     //Função para executar a demonstração e inibir a gravação/reprodução da leitura e a finalização!.

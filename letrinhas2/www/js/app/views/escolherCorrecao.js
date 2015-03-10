@@ -139,9 +139,6 @@ define(function(require) {
               });
 
               //construir o botão
-              console.log("idsB: "+ correcoes[i]._id+
-              "Tipo: "+correcoes[i].tipoCorrecao);
-
               var $btn = $(
                 '<div class="col-sm-20">'+
                   '<button id="'+ correcoes[i]._id +'" value="'+correcoes[i].tipoCorrecao+'" type="button"' +
@@ -167,7 +164,7 @@ define(function(require) {
                 var $btn = $(this); // O jQuery passa o btn clicado pelo this
                 var self = this;
                 window.localStorage.setItem("CorrecaoID", $btn[0].id + ''); //enviar variavel
-                if($btn.val() == "texto" ){
+                if($btn.val() == "Texto" ){
                   if (Backbone.history.fragment != 'corrigirTexto') {
                     utils.loader(function() {
                       ev.preventDefault();

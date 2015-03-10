@@ -2,6 +2,7 @@
 //Método para controlar o botão fisico de retroceder do tablet
 function onBackKeyDown() {
   document.removeEventListener("backbutton", onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
+
 }
 
 
@@ -19,7 +20,7 @@ var isFeito=false,
 
 //Função para marcar ou desmarcar a palavra clicada
 function picaPalavra(op){
-  var $opcao = $(op); 
+  var $opcao = $(op);
   $palavra.val($opcao.text());
   $palavra.attr("style","font-weight:bold; font-size:20px; color: #ee0000");
   totalPalavrasErradas++;
@@ -38,6 +39,24 @@ function verificaPalavras(){
      $("#lbErros").attr("style","visibility:hidden");
    }
  }
+
+//////////// Guardar audio vindo do couchDB /////////////////
+function GravarSOMfile (name, data, success, fail) {
+ var gotFileSystem = function (fileSystem) {
+   fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
+  };
+
+  var gotFileEntry = function (fileEntry) {
+   fileEntry.createWriter(gotFileWriter, fail);
+  };
+
+ var gotFileWriter = function (writer) {
+   writer.onwrite = success;
+   writer.onerror = fail;
+   writer.write(data);
+ };
+ window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+}
 
 //******************************************************************************
 define(function(require) {
@@ -155,6 +174,34 @@ define(function(require) {
           }
         });
 
+        testes_local2.getAttachment(correcaoDoc.id_Teste, 'voz.mp3', function(err2, DataImg) {
+          try{
+            GravarSOMfile('voz.mp3', DataImg, function () {
+                console.log('FUNCIONA');
+                Demo = cordova.file.dataDirectory+"/files/voz.mp3";
+                }, function (err) {
+                  console.log("DEU ERRO: "+err);
+            });
+          }
+          catch (err){
+            console.log(err.message);
+          }
+        });
+
+        correcoes_local2.getAttachment(correcaoDoc.id_Teste, 'gravacao.amr', function(err2, DataImg) {
+          try{
+            GravarSOMfile('gravacao.mp3', DataImg, function () {
+                console.log('FUNCIONA');
+                leitura = cordova.file.dataDirectory+"/files/gravacao.amr";
+                }, function (err) {
+                  console.log("DEU ERRO: "+err);
+            });
+          }
+          catch (err){
+            console.log(err);
+          }
+        });
+
         // Analisa todos os botoes do div
         var $container = $('#listaAreaConteudo');
         $container.on('click', '.picavel', function(ev) {
@@ -181,7 +228,7 @@ define(function(require) {
       "click #demoButton": "clickDemoButton",
       "click #playMyTestButton": "clickPlayMyTestButton",
       "click #submitButton": "clickSubmitButton",
-      "click #BackButtonEE": "clickBackButtonEE",
+      "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
     },
 
 
@@ -239,53 +286,81 @@ define(function(require) {
 
     },
 
+
+    clickbtnConfirmarSUB: function(e) {
+        $('#myModalConfirm').modal("hide");
+        $('#myModalConfirm').on('hidden.bs.modal', function (e) {
+          try{
+            //construir relatório e fazer update à correção
+            var agora = new Date();
+            $('#playPlayer').attr("src",leitura);
+            
+            //retorna o tempo de duração da leitura em segundos,
+            //arredondando ao ineiro mais próximo
+            var tempoSeg = Math.roud($('#playPlayer').duration);
+            //(plm) palavras lidas por minuto
+            var plm = Math.roud((totalPalavras*60/tempoSeg));
+            //palavras corretamente lidas (pcl)
+
+            //Velocidade de leitura (VL)
+
+            //Precisão de leitura (PL)
+            var pl = Math.round(((totalPalavras-totalPalavrasErradas)*100/totalPalavras));
+
+            //ritmo
+
+            relatorio="Corrigido a "
+                      + convert_n2d(agora.dataSub.getDate())+
+                                          "/"+ convert_n2d(correcaoDoc.dataSub.getMonth()+1)+
+                                          "/"+ convert_n2d(correcaoDoc.dataSub.getFullYear())+
+                                          " às "+convert_n2d(correcaoDoc.dataSub.getHours())+
+                                          ":"+convert_n2d(correcaoDoc.dataSub.getMinutes())+
+                                          ":"+convert_n2d(correcaoDoc.dataSub.getSeconds());
+            //Detalhes:
+            /*
+            Tempo mm:ss
+            Total de palavras no texto:
+            Palavras lidas incorretamente:
+
+            */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          }
+          catch (err){
+            console.log(err.message);
+          }
+          window.history.back();
+        });
+    },
+
+
     // Fazer update à correção com os devidos campos preenchidos
     clickSubmitButton: function(e) {
-
-      /*
-      var alunoId = window.localStorage.getItem("AlunoSelecID");
-      var agora=new Date();
-      var ids = 'Cr'+ alunoId + agora.toISOString();
-      var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
-      var profId = window.localStorage.getItem("ProfSelecID");
-      var correcao = {
-          '_id': ids,
-          'id_Teste': TesteArealizarID,
-          'id_Aluno': alunoId,
-          'id_Prof': profId,
-          'tipoCorrecao': 'Lista',
-          'estado': '0',
-          'conteudoResult':null,
-          'TotalPalavras':totalPalavras,
-          'dataSub': agora,
-          'dataCorr':null,
-          'observ':null,
-      };
-
-
-      correcoes_local2.put(correcao, function(err, body) {
-          if (!err) {
-            console.log('correcao ' + correcao._id + ' inserted\n Falta saber como inserir a gravação');
-            alert("Submissão do teste, feita com sucesso!\n Falta inserir a gravação \n testeLista.js linha:218");
-          }
-          else {
-            console.log('correcao ' + err + ' erro');
-            alert("Erro na submissão do teste \n"+ err);
-          }
-      });
-
-      correcoes_local2.get(ids, function(err, otherDoc) {});
-      */
-
-      document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
-      window.history.back();
+      e.stopPropagation(); e.preventDefault();
+      $('#myModalConfirm').modal("show");
     },
 
     clickBtnCancelar: function(e) {
      e.stopPropagation(); e.preventDefault();
-     document.removeEventListener("backbutton", onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
      window.history.back();
-
     },
 
     render: function() {

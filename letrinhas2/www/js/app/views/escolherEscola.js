@@ -51,7 +51,6 @@ define(function(require) {
           if (Backbone.history.fragment != 'escolherProf') {
             utils.loader(function() {
               ev.preventDefault();
-              console.log($btn[0].name )
               window.localStorage.setItem("EscolaSelecionadaNome", $btn[0].innerText + ''); //enviar variavel
               window.localStorage.setItem("EscolaSelecionadaID", $btn[0].id + ''); //enviar variavel
               app.navigate('/escolherProf', {

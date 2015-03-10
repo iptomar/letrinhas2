@@ -14,7 +14,7 @@ function onBackKeyDown() {
   });
 }
 
-////////////////////////LerFile e colocar em anexo para correcao/////////
+////////////////////////Ler ficheiro e colocar em anexo para correcao/////////
 function LerficheiroGravacaoEinserir() {
   window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr", gotFile, fail);
 }
@@ -31,12 +31,10 @@ function fail(e) {
 
 function success(file) {
   var agora=new Date();
-  var ids = 'Cr'+ alunoId + agora.toISOString();
   var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
   var alunoId = window.localStorage.getItem("AlunoSelecID");
   var profId = window.localStorage.getItem("ProfSelecID");
   var correcao = {
-      '_id': ids,
       'id_Teste': TesteArealizarID,
       'id_Aluno': alunoId,
       'id_Prof': profId,
@@ -68,7 +66,7 @@ function success(file) {
 
 }
 
-//////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
+//////////// Guardar audio vindo do couchDB /////////////////
 function GravarSOMfile (name, data, success, fail) {
   console.log(cordova.file.dataDirectory);
   var gotFileSystem = function (fileSystem) {
@@ -89,8 +87,8 @@ function GravarSOMfile (name, data, success, fail) {
 
 function recordAudio() {
   try{
-    var src = "gravacao.amr";
-    mediaRec = new Media(src,
+    mediaSrc = "gravacao.amr";
+    mediaRec = new Media(mediaSrc,
       // success callback
       function() {
         //  alert("recordAudio():Audio Success");
@@ -314,7 +312,7 @@ define(function(require) {
     // Sumeter o teste para corecção (Criar uma correção não corrigida)
     clickSubmitButton: function(e) {
       e.stopPropagation(); e.preventDefault();
-      $('#myModalSUB').modal("show");
+      $('#myModalConfirm').modal("show");
     },
 
     //Função para executar a demonstração e inibir a gravação/reprodução da leitura e a finalização!.

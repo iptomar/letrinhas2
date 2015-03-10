@@ -1,0 +1,159 @@
+<section>
+
+  <div class="globalcontent">
+    <div class="topcoat-navigation-bar">
+      <div class="topcoat-navigation-bar__item left quarter">
+        <button id="BtnCancelar"
+                type="button"
+                class="btn btn-default btn-lg">
+          <span class="glyphicon glyphicon-chevron-left"
+                aria-hidden="true">
+          </span>
+          Cancelar
+        </button>
+      </div>
+      <div class="topcoat-navigation-bar__item center half">
+        <h1 id="titleTestePagina"
+            class="topcoat-navigation-bar__title">Corrigir...
+        </h1>
+      </div>
+      <div class="topcoat-navigation-bar__item right quarter">
+        <label id="lbNomeAluno" style="color:#FFFFF;">Aluno</label>
+        <img id="alunoFoto" src="img/inConstruction.jpg" style='height:50px;'>
+      </div>
+    </div>
+
+    <div class="loader" style="display:none">
+      <div class="placeholder light">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="panel panel-default">
+        <div class="panel-body centerEX">
+          <img id="imgDisciplina" src="img/inConstruction.jpg" style="height:44px"/>
+          <label id="lbTituloTeste">titulo</label>
+          <span style="margin-left:10px;">
+            <label id="lbErros" style="visibility:hidden">X Palavras Erradas</label>
+          </span>
+        </div>
+      </div>
+      <!-- ##################### POPUP para a escolha do tipo de erro ################# -->
+      <div class="modal fade" id="myModalSUB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header"  style="background-color:#4ed0ff; color:#ffffff;">
+              <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                Cancelar
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </button>
+              <h2>Marque o tipo de erro </h2>
+              <br/>
+            </div>
+            <div id="opFrame" class="modal-body">
+              <table style="width:100%; text-align:center" ><tr><td>
+              <div class="btn-group">
+                <button type="btn btn-primary success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <h3> Exatidão </h3><span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li onclick= picaPalavra(this)><h4>Substituição de letras</h4></li>
+                  <li class="divider"></li>
+                  <li onclick= picaPalavra(this)><h4>Substituição de palavras</h4></li>
+                  <li class="divider"></li>
+                  <li onclick= picaPalavra(this)><h4>Adições</h4></li>
+                  <li class="divider"></li>
+                  <li onclick= picaPalavra(this)><h4>Omissões de letras</h4></li>
+                  <li class="divider"></li>
+                  <li onclick= picaPalavra(this)><h4>Omissões de silabas</h4></li>
+                  <li class="divider"></li>
+                  <li onclick= picaPalavra(this)><h4>Omissões de palavras</h4></li>
+                  <li class="divider"></li>
+                  <li onclick= picaPalavra(this)><h4>Inversões</h4></li>
+                </ul>
+              </div>
+            </td><td>
+            <div class="btn-group">
+              <button type="btn btn-primary success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <h3> Fluidez </h3><span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li onclick= picaPalavra(this)><h4>Vacilação (hesitação)</h4></li>
+                <li class="divider"></li>
+                <li onclick= picaPalavra(this)><h4>Repetições</h4></li>
+                <li class="divider"></li>
+                <li onclick= picaPalavra(this)><h4>Soletração</h4></li>
+                <li class="divider"></li>
+                <li onclick= picaPalavra(this)><h4>Fragmentação de palavras</h4></li>
+                <li class="divider"></li>
+                <li onclick= picaPalavra(this)><h4>Retficação espontânea</h4></li>
+              </ul>
+
+            </div>
+          </td>
+        </tr></table>
+
+            </div>
+            <div class="modal-footer">
+              <!--  <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
+              <button id="btnConfirmarSUB" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge">Confirmar</button>
+            -->
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ##################### END ################# -->
+
+
+
+      <!-- Agora o conteúdo, Div onde se vai construir tudo dinamicamente -->
+
+      <div id="listaAreaConteudo" class="well well-lg" style="height:27em; overflow:auto" align="center"></div>
+    </div>
+  </div>
+
+
+
+  <div class"navbar navbar-default navbar-fixed-bottom" >
+    <div class="well well-lg" >
+      <div class="centerEX">
+        <audio id="playPlayer" style="visibility:hidden" controls></audio>
+      </div>
+      <div class="centerEX">
+        <table style="width:100%">
+          <tr>
+            <td>
+            <!-- Posicionamento dos botões de demonstração, ouvir aluno e submeter! -->
+              <a id="demoButton" class="btn btn-default btn-lg" val=0 style="background-color: #ffc060">
+                <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
+                 Demonstração
+              </a>
+            </td>
+            <td>
+              <a id="playMyTestButton" class="btn btn-default btn-lg" val=0 style="background-color: #4ed0ff">
+                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                Ouvir Leitura
+              </a>
+            </td>
+            <td>
+              <a  class="btn btn-default btn-lg" val=0 style="visibility:hidden;">
+                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                espaço em branco................
+              </a>
+            </td>
+            <td>
+              <a id="submitButton" class="btn btn-default btn-lg" style="background-color: #00ee00">
+                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                Finalizar
+              </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

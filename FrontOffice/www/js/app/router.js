@@ -1,5 +1,5 @@
-///////// ONDE SE CONFIGURA AS ROTAS DE NAVEGACAO ////////////
 define(function(require) {
+
   "use strict";
 
   var $ = require('jquery');
@@ -42,8 +42,12 @@ define(function(require) {
         "": "login",
         "login": "login",
         "paginic": "paginic",
-        "ModProf": "ModProf", 
-      
+        "InsTesTexto":"InsTesTexto",
+        "InsTesPalavras":"InsTesPalavras",
+        "InsProfessor":"InsProfessor",
+        
+    // Inserir novas páginas criadas
+        
     },
 
     boot: function() {
@@ -51,27 +55,40 @@ define(function(require) {
       this.showView(bootView);
     },
 
-
-    paginic: function() {
+    promotions: function() {
       var self = this;
-      require(["app/views/paginic"], function(paginicView) {
-        var view = new paginicView();
+      require(["app/views/promotions"], function(PromotionsView) {
+        var view = new PromotionsView();
         self.showView(view);
-         
       });
     },
 
-    ModProf: function() {
+    summary: function() {
       var self = this;
-      require(["app/views/ModProf"], function(ModProfView) {
-        var view = new ModProfView();
+      require(["app/views/summary", "app/views/menu"], function(SummaryView, MenuView) {
+        var view = new SummaryView({
+          model: window.user
+        });
         self.showView(view);
-         
+
+        if (!self.menuView) {
+          self.menuView = new MenuView({
+            el: $header,
+            model: window.user
+          });
+          self.menuView.delegateEvents();
+          self.menuView.render();
+        }
       });
     },
-      
+
     login: function() {
       var self = this;
+      if (this.menuView) {
+        this.menuView.unbind();
+        this.menuView.undelegateEvents();
+        this.menuView = undefined;
+      }
       require(["app/views/login"], function(LoginView) {
         $header.html('');
         $body.html('');
@@ -87,5 +104,4 @@ define(function(require) {
     },
 
   });
-
 });

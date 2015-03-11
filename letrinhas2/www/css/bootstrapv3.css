@@ -1821,6 +1821,9 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
 .glyphicon-barcode:before {
   content: "\e040";
 }
+.glyphicon-triangle-right:before {
+  content: "\e250";
+}
 .glyphicon-tag:before {
   content: "\e041";
 }

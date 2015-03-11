@@ -38,10 +38,14 @@ function success(file) {
       'id_Prof': profId,
       'tipoCorrecao': 'Texto',
       'estado': '0',
-      'conteudoResult':null,
+      'conteudoResult':[],
       'TotalPalavras':TotalPalavas,
       'dataSub': agora,
       'dataCorr':null,
+      'expresSinais':null,
+      'expresEntoacao':null,
+      'expresTexto':null,
+      'velocidade':null,
       'observ':null,
     };
 

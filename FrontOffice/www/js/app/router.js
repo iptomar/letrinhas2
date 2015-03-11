@@ -37,11 +37,10 @@ define(function(require) {
 
       $('.loader').fadeOut('slow');
     },
-
+// caminhos conhecidos
     routes: {
         "": "login",
         "login": "login",
-        "paginic": "paginic",
         "InsTesTexto":"InsTesTexto",
         "InsTesPalavras":"InsTesPalavras",
         "InsProfessor":"InsProfessor",
@@ -55,31 +54,14 @@ define(function(require) {
       this.showView(bootView);
     },
 
-    promotions: function() {
-      var self = this;
-      require(["app/views/promotions"], function(PromotionsView) {
-        var view = new PromotionsView();
-        self.showView(view);
-      });
-    },
-
-    summary: function() {
-      var self = this;
-      require(["app/views/summary", "app/views/menu"], function(SummaryView, MenuView) {
-        var view = new SummaryView({
-          model: window.user
-        });
-        self.showView(view);
-
-        if (!self.menuView) {
-          self.menuView = new MenuView({
-            el: $header,
-            model: window.user
-          });
-          self.menuView.delegateEvents();
-          self.menuView.render();
-        }
-      });
+    
+// para chamar a pagina
+    InsTesTexto:function(){
+        var self=this;
+        require(["app/views/InsTesTexto"], function(InsTesTextoView){
+            var view=new InsTesTextoView();
+            self.showView(view);
+        });    
     },
 
     login: function() {
@@ -104,4 +86,5 @@ define(function(require) {
     },
 
   });
+  
 });

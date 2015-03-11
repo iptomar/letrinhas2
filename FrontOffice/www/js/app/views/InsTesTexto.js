@@ -5,7 +5,7 @@ define(function(require) {
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    janelas = require('text!janelas/login.html'),
+    janelas = require('text!janelas/InsTesTexto.html'),
     classList = require('classList.min'),
     template = _.template(janelas);
 

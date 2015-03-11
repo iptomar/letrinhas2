@@ -1,3 +1,16 @@
+
+
+function busca(obj){
+var $opcao = $(obj);
+    //teste
+    e.stopPropagation(); e.preventDefault();
+      app.navigate('/InsTesTexto', {
+        trigger: true
+      });
+    
+    
+
+}
 define(function(require) {
 
   "use strict";

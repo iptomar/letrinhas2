@@ -1,5 +1,6 @@
 define(function(require) {
 
+
   "use strict";
 
   var $ = require('jquery'),
@@ -8,6 +9,8 @@ define(function(require) {
     janelas = require('text!janelas/InsTesTexto.html'),
     classList = require('classList.min'),
     template = _.template(janelas);
+    
+    var couch = require("node-couchdb");
 
   return Backbone.View.extend({
 
@@ -21,20 +24,47 @@ define(function(require) {
     },
 
     //Eventos Click
+    //Eventos Click
     events: {
-      "click #btnEntrar": "btnEntrarClick",
-    
+        "click #BackButtonEE": "clickBackButtonEE",
+        "click #btnInsTexto":"clickbtnInsTexto",
     },
 
-    btnEntrarClick: function(e) {
-      $.getScript( "js/apoio.js", function() {
-      });
+    clickBackButtonEE: function(e) {
       e.stopPropagation(); e.preventDefault();
-      app.navigate('/paginic', {
-        trigger: true
-      });
+      window.history.back();
     },
-
+// inserir dados na BD
+      clickbtnInsTexto: function(e) {
+      e.stopPropagation(); e.preventDefault();
+        var titulo=$("#tit").text();
+        var pergunta=$("#perg").text();
+        var texto=$("#insTexto").text();
+        var conteudo={'pergunta':pergunta,
+                      'texto':texto,
+                     };
+        var teste={'conteudo': conteudo,'titulo':titulo };
+        
+          
+        couch.insert( "testes", teste,function (err,response){
+            try{console.log("funciona");}
+            catch(err){console.log(err.message);}
+        
+        });                 
+        
+            
+        /*    
+        testes_local2.post(teste,function (err,response){
+            try{console.log("funciona");}
+            catch(err){console.log(err.message);}
+        
+        });         
+        */        
+          
+    },
+      
+      
+      
     render: function() {
       this.$el.html(template());
       return this;

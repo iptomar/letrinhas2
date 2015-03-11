@@ -22,6 +22,8 @@ var isFeito=false,
 function picaPalavra(op){
   var $opcao = $(op);
   $palavra.val($opcao.text());
+  console.log($palavra.val());
+  
   $palavra.attr("style","font-weight:bold; font-size:20px; color: #ee0000");
   totalPalavrasErradas++;
   verificaPalavras();
@@ -190,7 +192,7 @@ define(function(require) {
 
         correcoes_local2.getAttachment(correcaoDoc.id_Teste, 'gravacao.amr', function(err2, DataImg) {
           try{
-            GravarSOMfile('gravacao.mp3', DataImg, function () {
+            GravarSOMfile('gravacao.amr', DataImg, function () {
                 console.log('FUNCIONA');
                 leitura = cordova.file.dataDirectory+"/files/gravacao.amr";
                 }, function (err) {
@@ -294,18 +296,18 @@ define(function(require) {
             //construir relatório e fazer update à correção
             var agora = new Date();
             $('#playPlayer').attr("src",leitura);
-            
+
             //retorna o tempo de duração da leitura em segundos,
             //arredondando ao ineiro mais próximo
             var tempoSeg = Math.roud($('#playPlayer').duration);
             //(plm) palavras lidas por minuto
             var plm = Math.roud((totalPalavras*60/tempoSeg));
             //palavras corretamente lidas (pcl)
-
+            var pcl= totalPalavras - totalPalavrasErradas;
             //Velocidade de leitura (VL)
 
             //Precisão de leitura (PL)
-            var pl = Math.round(((totalPalavras-totalPalavrasErradas)*100/totalPalavras));
+            var pl = Math.round((pcl*100/totalPalavras));
 
             //ritmo
 
@@ -360,7 +362,16 @@ define(function(require) {
 
     clickBtnCancelar: function(e) {
      e.stopPropagation(); e.preventDefault();
-     window.history.back();
+     //window.history.back();
+     /*window.history.go(-2);
+     utils.loader(function() {
+       e.preventDefault();
+
+
+       app.navigate('/escolherCorrecao', {
+         trigger: true
+       });});
+       */
     },
 
     render: function() {

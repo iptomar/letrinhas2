@@ -121,9 +121,6 @@ define(function(require) {
 
     events: {
       "click #BackButtonEscTest": "clickBackButtonEscTest",
-      "click #btnRealizarTeste": "clickBtnRealizarTeste",
-      "click #btnCorrigirTeste": "clickBtnCorrigirTeste",
-      "click #btnConsultarTeste": "clickBtnConsultarTeste",
       "click #btnNavINI": "clickbtnNavINI",
       "click #btnNavAlu": "clickbtnNavAlu",
       "click #btnNavProf": "clickbtnNavProf",
@@ -186,29 +183,6 @@ define(function(require) {
     clickBackButtonEscTest: function(e) {
       window.history.back();
     },
-
-    clickBtnRealizarTeste: function(e) {
-      var self = this;
-      if (Backbone.history.fragment != 'escolherDisciplina') {
-        utils.loader(function() {
-          e.preventDefault();
-
-
-          app.navigate('/escolherDisciplina', {
-            trigger: true
-          });
-        });
-      }
-    },
-
-    clickBtnCorrigirTeste: function(e) {
-    //  window.history.back();
-    },
-
-    clickBtnConsultarTeste: function(e) {
-      //window.history.back();
-    },
-
 
     render: function() {
       this.$el.html(template({}));

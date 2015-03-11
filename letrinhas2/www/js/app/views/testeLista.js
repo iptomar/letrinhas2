@@ -87,15 +87,15 @@ function GravarSOMfile (name, data, success, fail) {
 
 function recordAudio() {
   try{
-    mediaSrc = "gravacao.amr";
+    mediaSrc = "file:///sdcard/gravacao.amr";
     mediaRec = new Media(mediaSrc,
       // success callback
       function() {
-        //  alert("recordAudio():Audio Success");
+        console.log("recordAudio():Audio Success");
       },
       // error callback
       function(err) {
-        alert("recordAudio():Audio Error: " + err.code);
+        console.log("recordAudio():Audio Error: " + err.code);
       }
     );
   // Record audio
@@ -273,7 +273,6 @@ define(function(require) {
     // reproduzir a ultima leitura do teste
     clickPlayMyTestButton: function(){
       $('#playPlayer').attr("src",mediaSrc);
-      //$('#playPlayer').attr("src",Demo);
 
       var audio = document.getElementById("playPlayer");
       if ($('#playMyTestButton').val()==0) {
@@ -312,7 +311,7 @@ define(function(require) {
     // Sumeter o teste para corecção (Criar uma correção não corrigida)
     clickSubmitButton: function(e) {
       e.stopPropagation(); e.preventDefault();
-      $('#myModalConfirm').modal("show");
+      $('#myModalSUB').modal("show");
     },
 
     //Função para executar a demonstração e inibir a gravação/reprodução da leitura e a finalização!.

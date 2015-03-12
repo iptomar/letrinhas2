@@ -87,7 +87,7 @@ function GravarSOMfile (name, data, success, fail) {
 
 function recordAudio() {
   try{
-    mediaSrc = "file:///sdcard/gravacao.amr";
+    mediaSrc = "gravacao.amr";
     mediaRec = new Media(mediaSrc,
       // success callback
       function() {
@@ -272,7 +272,7 @@ define(function(require) {
 
     // reproduzir a ultima leitura do teste
     clickPlayMyTestButton: function(){
-      $('#playPlayer').attr("src",mediaSrc);
+      $("#playPlayer").attr("src","file:///sdcard/gravacao.amr")
 
       var audio = document.getElementById("playPlayer");
       if ($('#playMyTestButton').val()==0) {

@@ -21,9 +21,7 @@ var isFeito=false,
 //Função para marcar ou desmarcar a palavra clicada
 function picaPalavra(op){
   var $opcao = $(op);
-  $palavra.val($opcao.text());
-  console.log($palavra.val());
-  
+  $palavra.val($opcao.val()+$opcao.text());
   $palavra.attr("style","font-weight:bold; font-size:20px; color: #ee0000");
   totalPalavrasErradas++;
   verificaPalavras();
@@ -129,7 +127,7 @@ define(function(require) {
           $('#imgDisciplina').attr("src",urlDiscp);
           var s1,allTable, empty=true;
           allTable ="<table style='width:100%; '><tr>";
-
+          totalPalavras=0;
           //*id do div com o conteúdo, id="listaAreaConteudo"
           if(testeDoc.conteudo.palavrasCl1.length>0){
             s1="";
@@ -190,11 +188,11 @@ define(function(require) {
           }
         });
 
-        correcoes_local2.getAttachment(correcaoDoc.id_Teste, 'gravacao.amr', function(err2, DataImg) {
+        correcoes_local2.getAttachment(correcaoDoc.id_Teste, 'leitura.amr', function(err2, DataImg) {
           try{
-            GravarSOMfile('gravacao.amr', DataImg, function () {
+            GravarSOMfile('leitura.amr', DataImg, function () {
                 console.log('FUNCIONA');
-                leitura = cordova.file.dataDirectory+"/files/gravacao.amr";
+                leitura = cordova.file.dataDirectory+"/files/leitura.amr";
                 }, function (err) {
                   console.log("DEU ERRO: "+err);
             });
@@ -223,6 +221,7 @@ define(function(require) {
           }
         });
       });
+      totalPalavrasErradas=0;
     },
 
     events: {
@@ -292,7 +291,65 @@ define(function(require) {
     clickbtnConfirmarSUB: function(e) {
         $('#myModalConfirm').modal("hide");
         $('#myModalConfirm').on('hidden.bs.modal', function (e) {
-          try{
+        //  try{
+            var plvr, categ, erro;
+            var conteudoResult = new Array();
+
+            //devolve todas as palavras da classe
+            var todasPalavras =document.getElementsByClassName("picavel");
+            for (var i=0; i< todasPalavras.length; i++){
+              if($(todasPalavras[i]).val() != ''){
+                plvr=$(todasPalavras[i]).text();
+
+                switch (parseInt(($(todasPalavras[i]).val()).charAt(0))){
+                  case 0:
+                    categ="Exatidão";
+                    break;
+                  case 1:
+                    categ="Fluidez";
+                    break;
+                }
+                erro= ($(todasPalavras[i]).val()).substring(1);
+                var item = {
+                    'palavra': plvr,
+                    'categoria': categ,
+                    'erro': erro,
+                };
+                conteudoResult[i] = item;
+
+                ////Falta fazer o update
+                /*
+                var correcao = {
+                    'id_Teste': TesteArealizarID,
+                    'id_Aluno': alunoId,
+                    'id_Prof': profId,
+                    'tipoCorrecao': 'Lista',
+                    'estado': '0',
+                    'conteudoResult':null,
+                    'TotalPalavras':totalPalavras,
+                    'dataSub': agora,
+                    'dataCorr':null,
+                    'observ':null,
+                };*/
+
+                console.log("\n palavra: "+ conteudoResult[i].palavra);
+                console.log("\n categoria: "+ conteudoResult[i].categoria);
+                console.log("\n erro: "+ conteudoResult[i].erro);
+                console.log();
+              }
+
+            }
+
+
+
+
+
+
+
+
+
+
+    /*/////////////RELATORIO/////////////////////////////////
             //construir relatório e fazer update à correção
             var agora = new Date();
             $('#playPlayer').attr("src",leitura);
@@ -305,7 +362,7 @@ define(function(require) {
             //palavras corretamente lidas (pcl)
             var pcl= totalPalavras - totalPalavrasErradas;
             //Velocidade de leitura (VL)
-
+            var vl = Math.roud((pcl*60/tempoSeg));
             //Precisão de leitura (PL)
             var pl = Math.round((pcl*100/totalPalavras));
 
@@ -345,11 +402,11 @@ define(function(require) {
 
 
 
-          }
-          catch (err){
-            console.log(err.message);
-          }
-          window.history.back();
+        //  }
+        //  catch (err){
+        //    console.log(err);
+        //  }
+        //  window.history.back();
         });
     },
 
@@ -362,16 +419,7 @@ define(function(require) {
 
     clickBtnCancelar: function(e) {
      e.stopPropagation(); e.preventDefault();
-     //window.history.back();
-     /*window.history.go(-2);
-     utils.loader(function() {
-       e.preventDefault();
-
-
-       app.navigate('/escolherCorrecao', {
-         trigger: true
-       });});
-       */
+     window.history.back();
     },
 
     render: function() {

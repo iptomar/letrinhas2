@@ -3642,7 +3642,7 @@ a.thumbnail:hover, a.thumbnail:focus {
 .alert-dismissable .close {
   position: relative;
   top: -2px;
-  right: -21px;
+  right: -1px;
   color: inherit;
 }
 .alert-success {
@@ -3681,13 +3681,13 @@ a.thumbnail:hover, a.thumbnail:focus {
 .alert-danger {
   color: #b94a48;
   background-color: #f2dede;
-  border-color: #eed3d7;
+  border-color: #ebccd1;
 }
 .alert-danger hr {
-  border-top-color: #e6c1c7;
+  border-top-color: #e4b9c0;
 }
 .alert-danger .alert-link {
-  color: #953b39;
+  color: #843534;
 }
 @-webkit-keyframes progress-bar-stripes {
   from {
@@ -4075,24 +4075,25 @@ a.list-group-item:hover, a.list-group-item:focus {
   font-size: 21px;
   font-weight: bold;
   line-height: 1;
-  color: #000000;
-  text-shadow: 0 1px 0 #ffffff;
-  opacity: 0.2;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
   filter: alpha(opacity=20);
+  opacity: .7;
 }
-.close:hover, .close:focus {
-  color: #000000;
+.close:hover,
+.close:focus {
+  color: #000;
   text-decoration: none;
   cursor: pointer;
-  opacity: 0.5;
   filter: alpha(opacity=50);
+  opacity: .5;
 }
 button.close {
+  -webkit-appearance: none;
   padding: 0;
   cursor: pointer;
   background: transparent;
   border: 0;
-  -webkit-appearance: none;
 }
 .modal-open {
   overflow: hidden;

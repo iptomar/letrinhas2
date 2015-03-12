@@ -162,19 +162,6 @@
 .alert h4 {
   margin: 0;
 }
-.alert .close {
-  position: relative;
-  top: 2px;
-  right: -22px;
-  line-height: 20px;
-  color: #FFFFFF;
-  text-shadow: none;
-  -webkit-transition: opacity 0.1s linear 0s;
-  -moz-transition: opacity 0.1s linear 0s;
-  -ms-transition: opacity 0.1s linear 0s;
-  -o-transition: opacity 0.1s linear 0s;
-  transition: opacity 0.1s linear 0s;
-}
 .alert .close:hover {
   opacity: 1;
 }
@@ -185,7 +172,7 @@
   background-color: #1F7F5C;
 }
 .alert-danger, .alert-error {
-  background-color: #E56C69;
+  background-color: #FF9999;
 }
 .alert-info {
   background-color: #5A9AA8;

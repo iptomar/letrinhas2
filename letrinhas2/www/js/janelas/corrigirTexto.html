@@ -1,24 +1,137 @@
 <section>
   <div class="globalcontent">
     <div class="topcoat-navigation-bar">
-      <div class="topcoat-navigation-bar__item center full">
-        <label class="topcoat-navigation-bar__title">Corrigir Teste Texto</label>
+      <div class="topcoat-navigation-bar__item left quarter">
+        <button id="BackButton" type="button" class="btn btn-default btn-lg">
+          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Voltar
+        </button>
+      </div>
+      <div class="topcoat-navigation-bar__item center half">
+        <img id="imgDisciplina" src="img/inConstruction.jpg" style="height:39px"/>
+        <label id="lbTituloTeste" class="textareaParaTestes" style="color:#ffffff;">titulo</label>
+      </div>
+      <div class="topcoat-navigation-bar__item right quarter">
+        <label id="lbNomeProf" style="color:#FFFFF;">Professor</label>
+        <img id="imgProf" src="" style='height:44px;'>
       </div>
     </div>
 
+    <div class="container">
+      <div id="popUpAviso"></div>
 
-
-    </nav>
-
-    <div class="centerEX">
-      <img src="img/Title.png" class="img-responsive center-block" style="width:520px;height:200px">
-          <img src="img/letrinhas2.png" class="img-responsive center-block" style="width:305px;height:236px">
-        <form role="form">
-          <div class="form-group">
+      <div class="panel panel-default centerEX">
+        <div class="panel-body">
+          <label class="textareaParaTestes" style="color:#000000;">Teste Realizador por: </label>
+          <label id="titleTestePagina" class="textareaParaTestes" style="color:#000000;">titulo</label>
+          <img id="imgAlunoTitle" src="img/inConstruction.jpg" style="height:42px"/>
+        </div>
+        <div class="nav navbar-nav navbar-left">
+        </div>
+      </div>
+      <!-- ##################### POPUP SIM NAO################# -->
+      <div class="modal fade" id="myModalSUB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">AVISO:</h4>
+            </div>
+            <div class="modal-body">
+               <h3 id="labelErr" style="color:#D80000;">Têm a certeza que deseja Submeter?</h3>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
+              <button id="btnConfirmarSUB" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge">Confirmar</button>
+            </div>
           </div>
-        </form>
+        </div>
+      </div>
+      <!-- ##################### END ################# -->
+
+      <nav class="navbar navbar-default navbar-fixed-bottom " style=" background: #E3E4E5; color:#FFFFFF; ">
+        <div class="row centerEX">
+          <div class="col-md-4">
+            <div class="panel panel-success" >
+              <div class="panel-heading">
+                Ouvir:
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">Aluno:</label>
+                </div>
+                <div class="col-md-9">
+                  <audio id="AudioPlayerAluno" controls="controls" style="width: 100%; "></audio>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">Professor:</label>
+                </div>
+                <div class="col-md-9">
+                  <audio id="AudioPlayerProf" controls="controls" style="width: 100%; "></audio>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class=" col-md-4">
+            <div class="panel panel-danger" style="height: 110px">
+              <div class="panel-heading">
+                Expressividade de:
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">Sinais:</label>
+                  <select id="DropExprSinais" class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="col-xs-4">
+                  <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">Entoação:</label>
+                  <select id="DropExprEntoacao" class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="col-xs-4">
+                  <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">Texto:</label>
+                  <select id="DropExprTexto" class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class=" col-md-4">
+            <div class="panel panel-info" style="height: 110px">
+              <div class="panel-heading">
+                Concluir
+              </div>
+              <button id="btnFinalizar" type="button" class="btn btn-success btn-lg btn-block">
+                 Finalizar    <span id="ContadorDeErros" class="badge">Erros: 0</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Div onde se vai construir tudo dinamicamente -->
+      <div id="DivContentorArea" class="textareaTexto"></div>
+
+    </div>
 
 
-  </div>
   </div>
 </section>

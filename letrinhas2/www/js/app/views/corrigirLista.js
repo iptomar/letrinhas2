@@ -40,6 +40,28 @@ function verificaPalavras(){
    }
  }
 
+function findErr(tip){
+  //devolve todas as palavras da classe
+
+  var e=0,f=0,todasPalavras=document.getElementsByClassName("picavel");
+  for (var i=0; i< todasPalavras.length; i++){
+    if($(todasPalavras[i]).val() != ''){
+      //selecionar a categoria do erro (Exatidão / fluidez)
+      switch (parseInt(($(todasPalavras[i]).val()).charAt(0))){
+        case 0:
+          e++;
+          break;
+        case 1:
+          f++;
+          break;
+      }
+    }
+  }
+
+  if(tip==0) return e;
+  else return f;
+}
+
 //////////// Guardar audio vindo do couchDB /////////////////
 function GravarSOMfile (name, data, success, fail) {
  var gotFileSystem = function (fileSystem) {
@@ -109,7 +131,6 @@ define(function(require) {
 
         testes_local2.get(correcaoDoc.id_Teste, function(err, testeDoc) {
           if (err)  console.log(err);
-              console.log(testeDoc);
 
           $('#lbTituloTeste').text(testeDoc.titulo+" - "+testeDoc.conteudo.pergunta);
           //imagem da disciplina e tipo de teste
@@ -291,9 +312,10 @@ define(function(require) {
     clickbtnConfirmarSUB: function(e) {
         $('#myModalConfirm').modal("hide");
         $('#myModalConfirm').on('hidden.bs.modal', function (e) {
-        //  try{
+        try{
             var plvr, categ, erro;
-            var conteudoResult = new Array();
+            //array para receber os items (palavra e erro)
+            var conteudoResultado = new Array();
 
             //devolve todas as palavras da classe
             var todasPalavras =document.getElementsByClassName("picavel");
@@ -301,6 +323,7 @@ define(function(require) {
               if($(todasPalavras[i]).val() != ''){
                 plvr=$(todasPalavras[i]).text();
 
+                //selecionar a categoria do erro (Exatidão / fluidez)
                 switch (parseInt(($(todasPalavras[i]).val()).charAt(0))){
                   case 0:
                     categ="Exatidão";
@@ -309,104 +332,73 @@ define(function(require) {
                     categ="Fluidez";
                     break;
                 }
+                //O erro em si.
                 erro= ($(todasPalavras[i]).val()).substring(1);
+                //mini array de 3 campos
                 var item = {
                     'palavra': plvr,
                     'categoria': categ,
                     'erro': erro,
                 };
-                conteudoResult[i] = item;
-
-                ////Falta fazer o update
-                /*
-                var correcao = {
-                    'id_Teste': TesteArealizarID,
-                    'id_Aluno': alunoId,
-                    'id_Prof': profId,
-                    'tipoCorrecao': 'Lista',
-                    'estado': '0',
-                    'conteudoResult':null,
-                    'TotalPalavras':totalPalavras,
-                    'dataSub': agora,
-                    'dataCorr':null,
-                    'observ':null,
-                };*/
-
-                console.log("\n palavra: "+ conteudoResult[i].palavra);
-                console.log("\n categoria: "+ conteudoResult[i].categoria);
-                console.log("\n erro: "+ conteudoResult[i].erro);
-                console.log();
+                //colocar o item no array
+                conteudoResultado[i] = item;
               }
-
             }
 
-
-
-
-
-
-
-
-
-
-    /*/////////////RELATORIO/////////////////////////////////
-            //construir relatório e fazer update à correção
+            //Data da correção
             var agora = new Date();
+            //garantir que o tempo é da leitura do aluno
             $('#playPlayer').attr("src",leitura);
+            //obrigar o player a ficar com o tempo do ficheiro.
+            var audio = document.getElementById("playPlayer");
+            audio.play();
+            audio.pause();
 
             //retorna o tempo de duração da leitura em segundos,
             //arredondando ao ineiro mais próximo
-            var tempoSeg = Math.roud($('#playPlayer').duration);
-            //(plm) palavras lidas por minuto
-            var plm = Math.roud((totalPalavras*60/tempoSeg));
+            var tempoSeg = Math.round($("#playPlayer").prop("duration"));
+            //(plm) palavras lidas por minuto (não necessário por enquanto)
+            //var plm = Math.roud((totalPalavras*60/tempoSeg));
             //palavras corretamente lidas (pcl)
             var pcl= totalPalavras - totalPalavrasErradas;
             //Velocidade de leitura (VL)
-            var vl = Math.roud((pcl*60/tempoSeg));
-            //Precisão de leitura (PL)
-            var pl = Math.round((pcl*100/totalPalavras));
+            var vl = Math.round((pcl*60/tempoSeg));
 
-            //ritmo
+            //Fazer o update
+            var CorrID= window.localStorage.getItem("CorrecaoID");
+            correcoes_local2.get(CorrID, function(err, docmnt){
+              //total de palavras
+              docmnt.TotalPalavras = totalPalavras;
+              //conteúdo onde estão identificadas as palavras erradas
+              docmnt.conteudoResult=conteudoResultado;
+              //Data da correção
+              docmnt.dataCorr = agora;
+              //estado para corrigido!
+              docmnt.estado = 1;
+              //erros de pontuação (não aplicavel neste tipo de teste)
+              docmnt.expresSinais = null;
+              //erros de entoação (não aplicavel)
+              docmnt.expresEntoacao = null;
+              //erros de expressividade do texto (não aplicavel)
+              docmnt.expresTexto = null;
+              //Velocidade da leitura
+              docmnt.velocidade = vl;
 
-            relatorio="Corrigido a "
-                      + convert_n2d(agora.dataSub.getDate())+
-                                          "/"+ convert_n2d(correcaoDoc.dataSub.getMonth()+1)+
-                                          "/"+ convert_n2d(correcaoDoc.dataSub.getFullYear())+
-                                          " às "+convert_n2d(correcaoDoc.dataSub.getHours())+
-                                          ":"+convert_n2d(correcaoDoc.dataSub.getMinutes())+
-                                          ":"+convert_n2d(correcaoDoc.dataSub.getSeconds());
-            //Detalhes:
-            /*
-            Tempo mm:ss
-            Total de palavras no texto:
-            Palavras lidas incorretamente:
+              //actualizar o documento (correcao)
+              correcoes_local2.put(docmnt, CorrID, docmnt._rev, function(err, response) {
+                if (err) {
+                  console.log('Correcao ' + err + ' erro');
+                } else {
+                  console.log('Parabens InseridoCorrecao');
+                }
+              });
 
-            */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //  }
-        //  catch (err){
-        //    console.log(err);
-        //  }
-        //  window.history.back();
+            });
+          }
+          catch (err){
+            console.log(err);
+          }
+          window.history.back();
         });
     },
 
@@ -414,6 +406,40 @@ define(function(require) {
     // Fazer update à correção com os devidos campos preenchidos
     clickSubmitButton: function(e) {
       e.stopPropagation(); e.preventDefault();
+      //fazer um resumo:
+      var resumo ="";
+      resumo+="Titulo: "+$("#lbTituloTeste").text()+"\n";
+      resumo+="Aluno: "+$("#lbNomeAluno").text()+"\n";
+      resumo+="Total de Palavras: "+totalPalavras+"\n";
+
+      var audio = document.getElementById("playPlayer");
+      audio.src = Demo;
+      audio.play();
+      audio.pause();
+      var tempo = Math.round(audio.duration);
+
+      resumo+="Tempo do professor:\n"+
+              "         - Duração: "+convert_n2d(tempo/60)+":"+convert_n2d(tempo%60)+"\n"+
+              "         - Velocidade: "+(Math.round(60*totalPalavras/tempo))+" palavras/min\n\n";
+      var e,f;
+      e= Math.round((findErr(0)*100/totalPalavras));
+      f= Math.round((findErr(1)*100/totalPalavras));
+      resumo+="Correção:\n"+
+              "         - Exatidão: "+e+" palavras erradas, acertou"+(100-e)+"%\n"+
+              "         - Fluidez:  "+f+" palavras erradas, acertou"+(100-f)+"%\n"+
+              "         >>> Total: "+(100-(e+f))+"% certo <<<\n\n";
+
+      audio.src = leitura;
+      //obrigar o player a ficar com o tempo do ficheiro.
+      audio.play();
+      audio.pause();
+      tempo = Math.round(audio.duration);
+      resumo+="Tempo do aluno:\n"+
+              "         - Duração: "+convert_n2d(tempo/60)+":"+convert_n2d(tempo%60)+"\n"+
+              "         - Velocidade: "+(Math.round(60*totalPalavras/tempo))+" palavras/min\n\n";
+
+      $("#resumo").text(resumo);
+
       $('#myModalConfirm').modal("show");
     },
 

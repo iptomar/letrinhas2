@@ -166,7 +166,7 @@ define(function(require) {
 
         $('#titleTestePagina').text(testeDoc.titulo);
         $('#lbTituloTeste').text(testeDoc.conteudo.pergunta);
-        $('#txtAreaConteud').append(testeDoc.conteudo.texto.replace(/\n/g, '</br>')+ testeDoc.conteudo.texto.replace(/\n/g, '</br>')+ testeDoc.conteudo.texto.replace(/\n/g, '</br>'));
+        $('#txtAreaConteud').append(testeDoc.conteudo.texto.replace(/\n/g, '</br>'));
         countWords(testeDoc.conteudo.texto);
       });
 

@@ -11,7 +11,7 @@ $("#btn_login").addClass("disabled");
 define(function(require) {
 
   "use strict";
-  var myVar = setInterval(checkStatus, 900);
+  var myVar = setInterval(checkStatus, 500);
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),

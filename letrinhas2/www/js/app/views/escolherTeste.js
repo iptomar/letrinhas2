@@ -20,6 +20,7 @@ define(function(require) {
 
     initialize: function() {
       ////Carrega dados da janela anterior////
+      BtnNavPress = 0;
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
@@ -124,8 +125,22 @@ define(function(require) {
       "click #btnNavINI": "clickbtnNavINI",
       "click #btnNavAlu": "clickbtnNavAlu",
       "click #btnNavProf": "clickbtnNavProf",
+      "click #btnNavCorrecao": "clickbtnNavCorrecao",
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
     },
+
+    clickbtnNavCorrecao: function(e) {
+      e.stopPropagation(); e.preventDefault();
+      BtnNavPress = -3;
+      $('#labelErr').text("");  //limpa campos
+      $('#inputPIN').val("");   //limpa campos
+      $('#inputPINErr').removeClass("has-error"); //limpa campos
+      $('#myModal').modal("show");
+      $('#myModal').on('shown.bs.modal', function (e) {
+         $("#inputPIN").focus();
+      });
+    },
+
 
     clickbtnConfirmarPIN: function(e) {
       var pinDigitado = $('#inputPIN').val();

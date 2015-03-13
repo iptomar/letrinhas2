@@ -1,3 +1,12 @@
+var triggerSelec = false;
+
+function TocarDepoisDeSelec()
+{
+  triggerSelec = false;
+  $("#AudioPlayerAluno").prop("currentTime",$("#AudioPlayerAluno").prop("currentTime")-1);
+  $("#AudioPlayerAluno").trigger('play');
+}
+
 //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
 function GravarSOMfile(name, data, success, fail) {
   console.log(cordova.file.dataDirectory);
@@ -129,11 +138,6 @@ function InsertCorrecao(IdCorr) {
   });
 }
 
-function convert_n2d(n) {
-  if (n < 10) return ("0" + n);
-  else return ("" + n);
-}
-
 define(function(require) {
 
   "use strict";
@@ -144,8 +148,9 @@ define(function(require) {
     template = _.template(janelas);
 
   var errosTTexto = 0;
-
   return Backbone.View.extend({
+
+
 
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
@@ -154,6 +159,7 @@ define(function(require) {
 
     initialize: function() {
       errosTTexto = 0;
+      triggerSelec = false;
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
@@ -260,24 +266,24 @@ define(function(require) {
               '<button class="btn btn-info testMedioDrops" type="button" id="menu1" data-toggle="dropdown" style="width:115px; "> Exatidão ' +
               '<span class="caret"></span></button>' +
               '<ul class="dropdown-menu testMedioDrops" role="menu" aria-labelledby="menu1">' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_1\').css(\'color\', \'#FF0000\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Substituição de letras</a></li>' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_2\').css(\'color\', \'#FF0000\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Substituição de palavras</a></li>' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_3\').css(\'color\', \'#FF0000\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Adições</a></li>' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_4\').css(\'color\', \'#FF0000\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de letras</a></li>' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_5\').css(\'color\', \'#FF0000\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de sílabas</a></li>' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_6\').css(\'color\', \'#FF0000\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de palavras</a></li>' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_7\').css(\'color\', \'#FF0000\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Inversões</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_1\').css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Substituição de letras</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_2\').css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Substituição de palavras</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_3\').css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Adições</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_4\').css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de letras</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_5\').css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de sílabas</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_6\').css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de palavras</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op1_7\').css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Inversões</a></li>' +
               '</ul>' +
               '</div>' +
               '<div class="dropdown"> ' +
               '<button class="btn btn-info testMedioDrops" type="button" id="menu1" data-toggle="dropdown" style="width:	115px;"> Fluidez ' +
               '<span class="caret"></span></button>' +
               '<ul class="dropdown-menu testMedioDrops" role="menu" aria-labelledby="menu1">' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op2_1\').css(\'color\', \'#3399FF\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Vacilação</a></li>' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op2_2\').css(\'color\', \'#3399FF\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Repetições</a></li>' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op2_3\').css(\'color\', \'#3399FF\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Soletração</a></li>' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op2_4\').css(\'color\', \'#3399FF\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Fragmentação de palavras</a></li>' +
-              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op2_5\').css(\'color\', \'#3399FF\');"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Retificação espontânea</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op2_1\').css(\'color\', \'#3399FF\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Vacilação</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op2_2\').css(\'color\', \'#3399FF\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Repetições</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op2_3\').css(\'color\', \'#3399FF\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Soletração</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op2_4\').css(\'color\', \'#3399FF\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Fragmentação de palavras</a></li>' +
+              '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').attr(\'value\', \'op2_5\').css(\'color\', \'#3399FF\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Retificação espontânea</a></li>' +
               '</ul>' +
               '</div> ';
             $meuSpan.popover({
@@ -288,10 +294,8 @@ define(function(require) {
               trigger: 'focus'
             });
 
-
-
-
             var color = $(this).css('color');
+
             if (color == 'rgb(255, 153, 0)' || color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
             {
               $(this).css("color", "#000000");
@@ -299,13 +303,15 @@ define(function(require) {
               $meuSpan.attr("value", " ");
               errosTTexto--;
               $('#ContadorDeErros').text("Erros: " + errosTTexto);
-            } else {
+              triggerSelec = false;
+            } else   if(triggerSelec == false){
+              $("#AudioPlayerAluno").trigger('pause');
               $(this).css("color", "#FF9900");
               $meuSpan.popover('show');
               errosTTexto++;
               $('#ContadorDeErros').text("Erros: " + errosTTexto);
+              triggerSelec = true;
 
-              console.log("Selecionado:" + text);
             }
           });
 

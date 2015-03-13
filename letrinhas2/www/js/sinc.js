@@ -1,7 +1,10 @@
 //// Script de Replicacao da Base de dados CouchDb para PouchDb  //////
 //##########################################################################
 //var IP= "ince.pt";
-var IP= "localhost";
+
+var btnBloqueado = false;
+
+var IP= "127.0.0.1";
 
 var alunos_local2 = new PouchDB('alunos_local2');
 var escolas_local2 = new PouchDB('escolas_local2');
@@ -17,7 +20,7 @@ var triger5= false;
 
 function myfunction(){
 if (triger1 == true && triger2 == true && triger3 == true && triger4 == true && triger5 == true )
-$("#btn_login").removeClass( "disabled" );
+btnBloqueado = false;
 }
 
 
@@ -90,7 +93,7 @@ function sinCorrecoesForev(){
 
 escolas_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
-  $("#btn_login").addClass("disabled");
+  btnBloqueado = true;
 var repEscolas = PouchDB.sync('http://'+IP+':5984/escolas', 'escolas_local2', {
     live: false,
     batch_size: 100,
@@ -115,7 +118,7 @@ var repEscolas = PouchDB.sync('http://'+IP+':5984/escolas', 'escolas_local2', {
 alunos_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
-  $("#btn_login").addClass("disabled");
+  btnBloqueado = true;
 var repEscolas = PouchDB.sync('http://'+IP+':5984/alunos', 'alunos_local2', {
     live: false,
     batch_size: 400,
@@ -140,7 +143,7 @@ var repEscolas = PouchDB.sync('http://'+IP+':5984/alunos', 'alunos_local2', {
 professores_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
-  $("#btn_login").addClass("disabled");
+  btnBloqueado = true;
 var repProfs = PouchDB.sync('http://'+IP+':5984/professores', 'professores_local2', {
     live: false,
     batch_size: 200,
@@ -167,7 +170,7 @@ var repProfs = PouchDB.sync('http://'+IP+':5984/professores', 'professores_local
 
 testes_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
-  $("#btn_login").addClass("disabled");
+  btnBloqueado = true;
 var repTestes = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
     live: false,
     batch_size: 200,
@@ -194,7 +197,7 @@ var repTestes = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
 
 correcoes_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
-  $("#btn_login").addClass("disabled");
+  btnBloqueado = true;
 var repTestes = PouchDB.sync('http://'+IP+':5984/correcoes', 'correcoes_local2', {
     live: false,
     batch_size: 200,

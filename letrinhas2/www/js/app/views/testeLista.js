@@ -4,15 +4,7 @@ var Demo,           //caminho para reproduzir o ficheiro de demonstração
     totalPalavras=0;//contador de palavras
 
 //Método para controlar o botão fisico de retroceder do tablet
-function onBackKeyDown() {
-  $('#labelErr').text("");  //limpa campos
-  $('#inputPIN').val("");   //limpa campos
-  $('#inputPINErr').removeClass("has-error"); //limpa campos
-  $('#myModal').modal("show");
-  $('#myModal').on('shown.bs.modal', function (e) {
-     $("#inputPIN").focus();
-  });
-}
+
 
 ////////////////////////Ler ficheiro e colocar em anexo para correcao/////////
 function LerficheiroGravacaoEinserir() {
@@ -129,6 +121,8 @@ function StopPlayRec()
 
 ////////////////////////////////////////////////////////////////////////////////
 define(function(require) {
+
+  var self;
   "use strict";
   var $ = require('jquery'),
     _ = require('underscore'),
@@ -143,6 +137,17 @@ define(function(require) {
 
   return Backbone.View.extend({
 
+    onBackKeyDown:  function() {
+      $('#labelErr').text("");  //limpa campos
+      $('#inputPIN').val("");   //limpa campos
+      $('#inputPINErr').removeClass("has-error"); //limpa campos
+      $('#myModal').modal("show");
+      $('#myModal').on('shown.bs.modal', function (e) {
+         $("#inputPIN").focus();
+      });
+    },
+
+
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
       $(e.target).parent().addClass('is-active');
@@ -150,7 +155,8 @@ define(function(require) {
 
     // Funcao executada no inicio de load da janela ////////////
     initialize: function() {
-      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+      self = this;
+      document.addEventListener("backbutton", this.onBackKeyDown, false); //Adicionar o evento
     // Vai buscar todas as variaveis necessárias
       profId = window.localStorage.getItem("ProfSelecID");
       profNome = window.localStorage.getItem("ProfSelecNome");
@@ -225,8 +231,7 @@ define(function(require) {
           });
       });
 
-      ////// adicionar EVENTO DO BOTAO
-      document.addEventListener("backbutton", onBackKeyDown, true);
+
 
     },
 
@@ -300,9 +305,10 @@ define(function(require) {
     },
 
     clickbtnConfirmarSUB: function(e) {
-      document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+
         $('#myModalSUB').modal("hide");
         $('#myModalSUB').on('hidden.bs.modal', function (e) {
+          document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
           LerficheiroGravacaoEinserir();
           window.history.back();
         });
@@ -360,10 +366,10 @@ define(function(require) {
       var pinDigitado = $('#inputPIN').val();
       var pinProfAux = window.localStorage.getItem("ProfSelecPIN");
       if (pinProfAux == pinDigitado) {
-        document.removeEventListener("backbutton", onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
+
         $('#myModal').modal("hide");
         $('#myModal').on('hidden.bs.modal', function (e) {
-
+          document.removeEventListener("backbutton", self.onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
           window.history.go(-1);
         });
       } else {

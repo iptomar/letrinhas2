@@ -1,7 +1,17 @@
+
+
+function checkStatus() {
+if  (btnBloqueado == false)
+     $("#btn_login").removeClass( "disabled" );
+else
+$("#btn_login").addClass("disabled");
+}
+
+
 define(function(require) {
 
   "use strict";
-
+  var myVar = setInterval(checkStatus, 900);
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
@@ -18,6 +28,10 @@ define(function(require) {
 
     initialize: function() {
 
+
+
+
+
     },
 
     //Eventos Click
@@ -28,6 +42,7 @@ define(function(require) {
     },
 
     clickLogin: function(e) {
+      clearInterval(myVar);
       $.getScript( "js/apoio.js", function() {
       });
       e.stopPropagation(); e.preventDefault();

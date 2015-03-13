@@ -789,6 +789,8 @@ input[type="checkbox"]:disabled:active + .topcoat-checkbox__checkmark:before {
   color: #fff;
   z-index: 45;
 }
+
+
 .topcoat-navigation-bar__item {
   vertical-align: middle;
 }

@@ -1,16 +1,4 @@
 var TotalPalavas;
-function onBackKeyDown() {
-  $('#labelErr').text("");  //limpa campos
-  $('#inputPIN').val("");   //limpa campos
-  $('#inputPINErr').removeClass("has-error"); //limpa campos
-  $('#myModalProf').modal("show");
-  $('#myModalProf').on('shown.bs.modal', function (e) {
-     $("#inputPIN").focus();
-  });
-}
-
-
-
 
 ////////////////////////LerFile e colocar em anexo para correcao/////////
 function LerficheiroGravacaoEinserir() {
@@ -101,9 +89,7 @@ var mediaRec;
 function recordAudio() {
   var src = "gravacao.amr";
   mediaRec = new Media(src,
-    // success callback
     function() {
-      //  alert("recordAudio():Audio Success");
     },
     // error callback
     function(err) {
@@ -119,21 +105,14 @@ function StopRec() {
   mediaRec.release();
 }
 
-function PlayRec()
-{
-  mediaRec.play();
-}
-
-function StopPlayRec()
-{
-  mediaRec.stop();
-}
-
 
 //////////////////////////////////////////////////
 define(function(require) {
 
   "use strict";
+
+  var self;
+
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
@@ -142,15 +121,23 @@ define(function(require) {
 
   return Backbone.View.extend({
 
-    highlight: function(e) {
-      $('.side-nav__list__item').removeClass('is-active');
-      $(e.target).parent().addClass('is-active');
+    onBackKeyDown:  function() {
+      $('#labelErr').text("");  //limpa campos
+      $('#inputPIN').val("");   //limpa campos
+      $('#inputPINErr').removeClass("has-error"); //limpa campos
+      $('#myModalProf').modal("show");
+      $('#myModalProf').on('shown.bs.modal', function (e) {
+         $("#inputPIN").focus();
+      });
     },
+
 
     /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
       /// Vai buscar todas
-      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+      self = this;
+      TotalPalavas = 0;
+      document.addEventListener("backbutton", this.onBackKeyDown, false); //Adicionar o evento
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
@@ -170,17 +157,16 @@ define(function(require) {
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome);
         $('#imgProf').attr("src", url);
-        document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
       });
 
 
       testes_local2.get(TesteArealizarID, function(err, testeDoc) {
         if (err) console.log(err);
-        console.log(testeDoc);
+        //console.log(testeDoc);
 
         $('#titleTestePagina').text(testeDoc.titulo);
         $('#lbTituloTeste').text(testeDoc.conteudo.pergunta);
-        $('#txtAreaConteud').append(testeDoc.conteudo.texto.replace(/\n/g, '</br>'));
+        $('#txtAreaConteud').append(testeDoc.conteudo.texto.replace(/\n/g, '</br>')+ testeDoc.conteudo.texto.replace(/\n/g, '</br>')+ testeDoc.conteudo.texto.replace(/\n/g, '</br>'));
         countWords(testeDoc.conteudo.texto);
       });
 
@@ -189,6 +175,7 @@ define(function(require) {
         GravarSOMfile('voz.mp3', DataImg, function () {
           console.log('FUNCIONA');
           $("#AudioPlayerProf").attr("src",cordova.file.dataDirectory+"/files/voz.mp3")
+
         }, function (err) {
           console.log("DEU ERRO"+err);
           });
@@ -203,16 +190,50 @@ define(function(require) {
       "click #btnFinalizar": "clickbtnFinalizar",
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
+      "click #btnDemonstracao": "clickbtnDemonstracao",
+      "click #btnParar1": "clickbtnParar1",
+      "click #btnParar2": "clickbtnParar2",
+      "click #btnOuvirme": "clickbtnOuvirme",
 
     },
 
+    clickbtnDemonstracao: function(e) {
+
+      $('#div1').hide();
+      $('#div2').show();
+      $("#AudioPlayerProf").prop("currentTime",0);
+      $("#AudioPlayerProf").trigger('play');
+     },
+
+
+     clickbtnParar1: function(e) {
+       $("#AudioPlayerProf").trigger('pause');
+       $('#div2').hide();
+       $('#div1').show();
+      },
+
+      clickbtnParar2: function(e) {
+        $("#AudioPlayerAluno").trigger('pause');
+        $('#div3').hide();
+        $('#div1').show();
+       },
+
+      clickbtnOuvirme: function(e) {
+        $('#div1').hide();
+        $('#div3').show();
+        $("#AudioPlayerAluno").prop("currentTime",0);
+        $("#AudioPlayerAluno").trigger('play');
+       },
+
+
     clickbtnConfirmarPIN: function(e) {
+      mediaRec = null;
       var pinDigitado = $('#inputPIN').val();
       var pinProfAux = window.localStorage.getItem("ProfSelecPIN");
       if (pinProfAux == pinDigitado) {
-        document.removeEventListener("backbutton", onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
         $('#myModalProf').modal("hide");
         $('#myModalProf').on('hidden.bs.modal', function (e) {
+          document.removeEventListener("backbutton", self.onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
           window.history.go(-1);
         });
       } else {
@@ -224,9 +245,10 @@ define(function(require) {
 
 
     clickbtnConfirmarSUB: function(e) {
-      document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+
         $('#myModalSUB').modal("hide");
         $('#myModalSUB').on('hidden.bs.modal', function (e) {
+          document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
           LerficheiroGravacaoEinserir();
           window.history.back();
         });
@@ -240,25 +262,32 @@ define(function(require) {
 
     clickbtnRec: function(e) {
    ///Se o botao é botao de gravar
-    if  ($('#btnRec').hasClass("btn-success"))
+    if  ($('#btnRec').hasClass("btn-success") || $('#btnRec').hasClass("btn-primary"))
     {
+      $('#btnDemonstracao').hide();
       $('#AudioPlayerProf').prop('controls', false);
       $('#AudioPlayerProf').trigger('pause');
       $('#AudioPlayerProf').prop("currentTime",0);
       $('#btnRec').removeClass("btn-success"); //limpa campos
+      $('#btnRec').removeClass("btn-primary"); //limpa campos
       $('#btnRec').addClass("btn-danger"); //limpa campos
       $('#btnRec').html("<span class='glyphicon glyphicon glyphicon-stop' ></span> Parar");
+      mediaRec = null;
       recordAudio();
     }///Se for para parar a gravacao
     else if ($('#btnRec').hasClass("btn-danger"))
     {  $('#btnFinalizar').removeClass("disabled"); //limpa campos
-       StopRec();
+        StopRec();
       $('#AudioPlayerProf').prop('controls', true);
-      $('#btnRec').hide();
-      $('#AudioPlayerAluno').prop('controls', true);
-      $("#AudioPlayerAluno").attr("src","file:///sdcard/gravacao.amr")
-
+      $('#btnRec').removeClass("btn-danger"); //limpa campos
+      $('#btnRec').addClass("btn-primary"); //limpa campos
+      $('#btnRec').html("<span class='glyphicon glyphicon glyphicon-repeat'></span>  Repetir");
+      $('#btnDemonstracao').show();
+      $('#btnFinalizar').show();
+      $('#btnOuvirme').show();
+      $("#AudioPlayerAluno").attr("src","file:///sdcard/gravacao.amr");
     }
+
     },
 
     clickBackButtonTTexto: function(e) {

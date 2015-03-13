@@ -4,18 +4,6 @@
   overflow-y: scroll;
   background-color: white;
 }
-.panelAlex {
-  position: fixed;
-   bottom: 0;
-   width: 100%;
-   padding-left: 10px;
-   padding-right: 10px;
-   background: #20abe0;
-   color: #fff;
-   z-index: 45;
-   display: block;
-}
-
 
 .input-large_PIN {
   height: 48px;
@@ -46,7 +34,7 @@
     font-family: Arial;
     position:fixed;
     padding: 15px;
-    height: 61%;
+    height: 68%;
     overflow: scroll;
     background-color: white;
 }

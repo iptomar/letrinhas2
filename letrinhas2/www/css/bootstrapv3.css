@@ -1534,6 +1534,12 @@ textarea.input-lg {
   background-color: #f0ad4e;
   border-color: #eea236;
 }
+.btn-roxo {
+  color: #ffffff;
+  background-color: #c065ff;
+  border-color: #c065ff;
+}
+
 .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning {
   color: #ffffff;
   background-color: #ed9c28;

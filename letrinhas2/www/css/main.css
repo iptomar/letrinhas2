@@ -27,7 +27,41 @@
 
 .testMedioDrops{
   font-size: 13pt;
+}
 
+.croool {
+  position: absolute;
+      top: 150px;
+      bottom: 50px;
+      left: 30px;
+      width: 36%;
+      overflow-y: scroll;
+}
+
+.croool2 {
+  position: absolute;
+    top: 150px;
+    bottom: 150px;
+    right:30px;
+    overflow-y: scroll;
+    width: 58%;
+}
+
+.btnCroool {
+    position: absolute;
+    bottom: 70px;
+    right:30px;
+    width: 20%;
+}
+
+.activeXF{
+  color: inherit;
+  background-color: #53BDDC;
+  color: #ffffff;
+}
+.activeXF:hover {
+  background-color: #53BDDC;
+  color: #ffffff;
 }
 
 .textareaTexto {
@@ -56,8 +90,11 @@
 
 .fontEX{
   font-size: 12pt;
-
 }
+.fontEX2{
+  font-size: 14pt;
+}
+
 
 .centerEX{
   text-align: center;
@@ -98,7 +135,6 @@
 .btn-dark-blue {
   margin-top: 5px;
   background-color: #0d5677;
-  ;
 }
 .btn-dark-blue:hover {
   background-color: #0b4965;

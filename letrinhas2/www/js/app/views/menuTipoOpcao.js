@@ -131,7 +131,15 @@ define(function(require) {
     },
 
     clickBtnConsultarTeste: function(e) {
-      //window.history.back();
+      var self = this;
+      if (Backbone.history.fragment != 'escolherResultados') {
+        utils.loader(function() {
+          e.preventDefault();
+          app.navigate('/escolherResultados', {
+            trigger: true
+          });
+        });
+      }
     },
 
 

@@ -7,7 +7,7 @@
         </button>
       </div>
       <div class="topcoat-navigation-bar__item center half">
-        <img id="imgDisciplina" src="img/inConstruction.jpg" style="height:39px"/>
+        <img id="imgDisciplina" src="img/inConstruction.jpg" style="height:39px" />
         <label id="lbTituloTeste" class="textareaParaTestes" style="color:#ffffff;">titulo</label>
       </div>
       <div class="topcoat-navigation-bar__item right quarter">
@@ -23,26 +23,42 @@
         <div class="panel-body">
           <label class="textareaParaTestes" style="color:#000000;">Teste Realizador por: </label>
           <label id="titleTestePagina" class="textareaParaTestes" style="color:#000000;">titulo</label>
-          <img id="imgAlunoTitle" src="img/inConstruction.jpg" style="height:42px"/>
+          <img id="imgAlunoTitle" src="img/inConstruction.jpg" style="height:42px" />
         </div>
         <div class="nav navbar-nav navbar-left">
         </div>
       </div>
       <!-- ##################### POPUP SIM NAO################# -->
-      <div class="modal fade" id="myModalSUB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+      <div class="modal fade bs-example-modal-lg" id="myModalSUB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">AVISO:</h4>
-            </div>
-            <div class="modal-body">
-               <h3 id="labelErr" style="color:#D80000;">Têm a certeza que deseja Submeter?</h3>
-            </div>
+            <div class="panel panel-success">
+              <div class="panel-heading centerEX">
+                <h3 class="panel-title">Sumário</h3>
+              </div>
+              <div class="panel-body">
+                <label id="LBrelaTitulo" class="textareaParaTestes fontEX" style="color:#000000;">Titulo: </label>
+                </p>
+                <label id="LBrelaAluno" class="textareaParaTestes fontEX" style="color:#000000;">Aluno: </label>
+                <img id="imgAlunoTitleRela" src="img/inConstruction.jpg" style="height:42px" />
+                </p>
+                <label id="LBtotalPalavras" class="textareaParaTestes fontEX" style="color:#000000;">Totalpalavas: </label>
+                </p>
+                <label id="LBCtempoProf" class="textareaParaTestes fontEX" style="color:#000000;">tempoProfo: </label>
+                </p>
+                </p>
+                <label id="LBCorrecao" class="textareaParaTestes fontEX" style="color:#000000;">Correção: </label>
+                </p>
+                </p>
+                <label id="LBCtempoAluno" class="textareaParaTestes fontEX" style="color:#000000;">tempoAluno: </label>
+                </p>
+              </div>
+
             <div class="modal-footer">
-              <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
-              <button id="btnConfirmarSUB" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge">Confirmar</button>
+              <button type="button" class="btn btn-default btn_mine-MediumLarge2" data-dismiss="modal">Cancelar</button>
+              <button id="btnConfirmarSUB" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge2">Confirmar</button>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -51,7 +67,7 @@
       <nav class="navbar navbar-default navbar-fixed-bottom " style=" background: #E3E4E5; color:#FFFFFF; ">
         <div class="row centerEX">
           <div class="col-md-4">
-            <div class="panel panel-success" >
+            <div class="panel panel-success">
               <div class="panel-heading">
                 Ouvir:
               </div>
@@ -120,7 +136,8 @@
                 Concluir
               </div>
               <button id="btnFinalizar" type="button" class="btn btn-success btn-lg btn-block">
-                 Finalizar    <span id="ContadorDeErros" class="badge">Erros: 0</span>
+                Finalizar
+                <span id="ContadorDeErros" class="badge">Erros: 0</span>
               </button>
             </div>
           </div>

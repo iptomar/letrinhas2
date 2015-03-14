@@ -7,6 +7,37 @@ function TocarDepoisDeSelec()
   $("#AudioPlayerAluno").trigger('play');
 }
 
+function AnalisarTexto()
+{
+  var $container = $('#DivContentorArea'); //Adiciona ao Div
+  var sapns = $("#DivContentorArea > span");
+  var maxEle = $("#DivContentorArea > span").length;
+
+  var exatidao = 0;
+  var fluidez = 0;
+  var totalPalavas = 0;
+  for (var i = 0; i < maxEle; i++) {
+    totalPalavas++;
+    var color = sapns[i].style.color
+    if (color == 'rgb(255, 0, 0)')
+    {
+      exatidao++;
+    }
+    if (color == 'rgb(51, 153, 255)')
+    {
+      fluidez++;
+    }
+  }
+
+  return {
+    "exatidao": exatidao,
+    "fluidez": fluidez,
+    "totalPalavas": totalPalavas
+    };
+
+}
+
+
 //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
 function GravarSOMfile(name, data, success, fail) {
   console.log(cordova.file.dataDirectory);
@@ -94,7 +125,14 @@ function converterStingEmTexto(stringx) {
     };
 }
 
-
+function readableDuration(seconds) {
+    sec = Math.floor( seconds );
+    min = Math.floor( sec / 60 );
+    min = min >= 10 ? min : '0' + min;
+    sec = Math.floor( sec % 60 );
+    sec = sec >= 10 ? sec : '0' + sec;
+    return min + ':' + sec;
+}
 
 function InsertCorrecao(IdCorr) {
   var $container = $('#DivContentorArea'); //Adiciona ao Div
@@ -187,13 +225,17 @@ define(function(require) {
 
         alunos_local2.getAttachment(correcaoDoc.id_Aluno, 'aluno.png', function(err2, DataImg) {
             if (err2)  console.log(err2);
-          var foto = URL.createObjectURL(DataImg);
+            var foto = URL.createObjectURL(DataImg);
             $('#imgAlunoTitle').attr("src",foto);
+            $('#imgAlunoTitleRela').attr("src",foto);
+
 
         });
         alunos_local2.get(correcaoDoc.id_Aluno, function(err, alunoDoc){
           if(err) console.log(err);
           $('#titleTestePagina').text("("+alunoDoc.nome+")");
+          $('#LBrelaAluno').text("Aluno: "+alunoDoc.nome);
+
         });
 
         correcoes_local2.getAttachment(correcaoID, 'gravacao.amr', function(err2, DataAudio) {
@@ -217,15 +259,14 @@ define(function(require) {
             GravarSOMfile('voz.mp3', DataImg, function() {
               console.log('FUNCIONA VOZ PROF');
               $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3");
-              $("#AudioPlayerProf").trigger('load');
+              $("#AudioPlayerProf").trigger('play');
+
             }, function(err) {
               console.log("DEU ERRO VOZ PROF" + err);
             });
           });
 
-
-
-      //    $('#lbTituloTeste').text(testeDoc.conteudo.pergunta);
+          $('#LBrelaTitulo').text("Titulo: " +testeDoc.titulo+" - \""+testeDoc.conteudo.pergunta+"\"");
           $('#lbTituloTeste').text(testeDoc.titulo+" - "+testeDoc.conteudo.pergunta);
           //imagem da disciplina e tipo de teste
           var urlDiscp;
@@ -247,9 +288,7 @@ define(function(require) {
 
           var words = $("#DivContentorArea").text().split(' ');
           $("#DivContentorArea").html("");
-
           $.each(words, function(i, val) {
-
             var $span;
             if (val == "\n")
               $span = $('</br>');
@@ -258,7 +297,7 @@ define(function(require) {
             $span.css("color", "#000000");
             $span.appendTo($container); //Adiciona ao Div
           });
-
+          $("#AudioPlayerProf").trigger('pause');
           $container.on('click', '.SpansTxt', function(ev) {
             var text = $(this).text();
             var $meuSpan = $(this);
@@ -345,7 +384,6 @@ define(function(require) {
       e.preventDefault();
 
       var timex = $('#AudioPlayerAluno').prop("duration");
-      console.log(timex);
 
       if (timex == 0) {
         $("#popUpAviso").empty();
@@ -357,11 +395,36 @@ define(function(require) {
       } else {
         $("#popUpAviso").empty();
         $('#myModalSUB').modal("show");
+        var exatidaoTotal= AnalisarTexto().exatidao;
+        var fluidezTotal = AnalisarTexto().fluidez;
+        var palavrasTotal = AnalisarTexto().totalPalavas;
+
+
+        $('#LBtotalPalavras').text("Total de Palavras: "+AnalisarTexto().totalPalavas);
+        var exPer = Math.round((exatidaoTotal/palavrasTotal)*100);
+        var exFlu = Math.round((fluidezTotal/palavrasTotal)*100);
+        $('#LBCorrecao').html("Correção: </br>"+
+        "&nbsp;&nbsp;&nbsp;&nbsp-Exatidão: "+AnalisarTexto().exatidao+" palavras erradas, acertou: "+(100-exPer)+"% </br>"+
+        "&nbsp;&nbsp;&nbsp;&nbsp-Fluidez: "+AnalisarTexto().fluidez+" palavras, acertou: "+(100-exFlu)+"% </br>"+
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp>>> Total:"+(100-(exPer+exFlu))+"% certo <<<\n\n"
+      );
+      var tempoSeg = $('#AudioPlayerAluno').prop("duration");
+
+      var tempoSegProf = $('#AudioPlayerProf').prop("duration");
+
+
+
+
+
+       $('#LBCtempoAluno').html("Tempo do Aluno: </br>"+
+            "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+readableDuration(tempoSeg)+" </br>"+
+            "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*palavrasTotal/tempoSeg))+" ");
+
+      $('#LBCtempoProf').html("Tempo do Professor: </br>"+
+      "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+readableDuration(tempoSegProf)+" </br>"+
+      "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*palavrasTotal/tempoSegProf))+" ");
+
       }
-
-
-
-
     },
 
     clickBackButton: function(e) {

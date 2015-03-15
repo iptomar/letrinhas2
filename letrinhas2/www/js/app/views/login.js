@@ -2,9 +2,16 @@
 
 function checkStatus() {
 if  (btnBloqueado == false)
-     $("#btn_login").removeClass( "disabled" );
+{
+   $("#progBAR").css('width', perc+'%').attr('aria-valuenow', perc).html(perc+'%');
+   $("#btn_login").removeClass( "disabled" );
+}
 else
-$("#btn_login").addClass("disabled");
+{
+  $("#proB").css('visibility','visible')
+  $("#progBAR").css('width', perc+'%').attr('aria-valuenow', perc).html(perc+'%');
+  $("#btn_login").addClass("disabled");
+}
 }
 
 
@@ -29,9 +36,6 @@ define(function(require) {
     initialize: function() {
 
 
-
-
-
     },
 
     //Eventos Click
@@ -42,10 +46,11 @@ define(function(require) {
     },
 
     clickLogin: function(e) {
+      e.stopPropagation(); e.preventDefault();
       clearInterval(myVar);
       $.getScript( "js/apoio.js", function() {
       });
-      e.stopPropagation(); e.preventDefault();
+      $("#proB").css('visibility','hidden')
       app.navigate('/escolherEscola', {
         trigger: true
       });

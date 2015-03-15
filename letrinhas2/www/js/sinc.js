@@ -1,10 +1,10 @@
 //// Script de Replicacao da Base de dados CouchDb para PouchDb  //////
 //##########################################################################
-//var IP= "ince.pt";
+var IP= "ince.pt";
 
 var btnBloqueado = false;
 //var IP= "85.139.248.99";
-var IP= "127.0.0.1";
+//var IP= "192.168.1.2";
 
 var alunos_local2 = new PouchDB('alunos_local2');
 var escolas_local2 = new PouchDB('escolas_local2');
@@ -17,13 +17,12 @@ var triger2= false;
 var triger3= false;
 var triger4= false;
 var triger5= false;
+var perc = 0;
 
 function myfunction(){
 if (triger1 == true && triger2 == true && triger3 == true && triger4 == true && triger5 == true )
 btnBloqueado = false;
 }
-
-
 
 function sinEscolasForev(){
 var repEscolas = PouchDB.sync('http://'+IP+':5984/escolas', 'escolas_local2', {
@@ -42,7 +41,7 @@ var repEscolas = PouchDB.sync('http://'+IP+':5984/escolas', 'escolas_local2', {
 function sinAlunosForev(){
 var repAlunos = PouchDB.sync('http://'+IP+':5984/alunos', 'alunos_local2', {
       live: true,
-      batch_size: 400,
+      batch_size: 300,
       retry: true
     }).on('change', function(info) {
       console.log("Alunos " + info);
@@ -102,6 +101,7 @@ var repEscolas = PouchDB.sync('http://'+IP+':5984/escolas', 'escolas_local2', {
     console.log("Escolas " + info);
   }).on('complete', function(info) {
     escolas_local2 = new PouchDB('escolas_local2');
+    perc += 20;
     triger1= true;
     myfunction();
     console.log("EscolasCOMPLETO " + info);
@@ -121,12 +121,13 @@ if (info1.doc_count == 0){
   btnBloqueado = true;
 var repEscolas = PouchDB.sync('http://'+IP+':5984/alunos', 'alunos_local2', {
     live: false,
-    batch_size: 400,
+    batch_size: 200,
     retry: true
   }).on('change', function(info) {
     console.log("Alunos " + info);
   }).on('complete', function(info) {
-    alunos_local2 = new PouchDB('alunos_local2');
+   alunos_local2 = new PouchDB('alunos_local2');
+    perc += 20;
     console.log("AlunosCOMPLETO " + info);
     triger2= true;
     myfunction();
@@ -153,6 +154,7 @@ var repProfs = PouchDB.sync('http://'+IP+':5984/professores', 'professores_local
   }).on('complete', function(info) {
    professores_local2 = new PouchDB('professores_local2');
     console.log("ProfsCOMPLETO " + info);
+    perc += 20;
     triger3= true;
     myfunction();
   }).on('error', function(err) {
@@ -179,6 +181,7 @@ var repTestes = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
     console.log("Testes " + info);
   }).on('complete', function(info) {
     testes_local2 = new PouchDB('testes_local2');
+    perc += 20;
     console.log("TestesCOMPLETO " + info);
     triger4= true;
     myfunction();
@@ -206,6 +209,7 @@ var repTestes = PouchDB.sync('http://'+IP+':5984/correcoes', 'correcoes_local2',
     console.log("Correcoes " + info);
   }).on('complete', function(info) {
     correcoes_local2 = new PouchDB('correcoes_local2');
+    perc += 20;
     console.log("CorrecoesCOMPLETO " + info);
     triger5= true;
     myfunction();

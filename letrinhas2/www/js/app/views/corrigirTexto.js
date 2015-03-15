@@ -160,6 +160,7 @@ function InsertCorrecao(IdCorr) {
           'palavra': sapns[i].innerText,
           'categoria': converterStingEmTexto(cenas).categoria,
           'erro': converterStingEmTexto(cenas).erro,
+          'posicao': i,
         });
       }
     }
@@ -293,7 +294,7 @@ define(function(require) {
             if (val == "\n")
               $span = $('</br>');
             else
-              $span = $('<span data-toggle="collapse" value=" " class="SpansTxt">' + val + ' </span>');
+            $span = $('<span data-toggle="collapse" value=" " class="SpansTxt ">' + val + ' </span>');
             $span.css("color", "#000000");
             $span.appendTo($container); //Adiciona ao Div
           });
@@ -382,7 +383,7 @@ define(function(require) {
     clickbtnFinalizar: function(e) {
       e.stopPropagation();
       e.preventDefault();
-
+      window.print();
       var timex = $('#AudioPlayerAluno').prop("duration");
 
       if (timex == 0) {
@@ -411,10 +412,6 @@ define(function(require) {
       var tempoSeg = $('#AudioPlayerAluno').prop("duration");
 
       var tempoSegProf = $('#AudioPlayerProf').prop("duration");
-
-
-
-
 
        $('#LBCtempoAluno').html("Tempo do Aluno: </br>"+
             "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+readableDuration(tempoSeg)+" </br>"+

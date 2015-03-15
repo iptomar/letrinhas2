@@ -76,6 +76,22 @@
     overflow-y: auto;
     background-color: white;
 }
+
+.relatorioDiv {
+
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    font-size: 18pt;
+    font-family: Arial;
+    height: 450px;
+    padding: 15px;
+
+    overflow-y: auto;
+    background-color: white;
+}
+
+
 .textareaTextoCorr {
     -moz-appearance: textfield-multiline;
     -webkit-appearance: textarea;

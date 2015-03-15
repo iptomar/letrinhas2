@@ -14,7 +14,7 @@ function writ(idCorr, inic)
     var $containerPrin = $('#'+idCorr);
 
     testes_local2.get(correcaoDoc.id_Teste, function(err, testeDoc) {
-      if (err) console.log(err);
+      if (err) console.log("errr"+err);
 
       var data= new Date(correcaoDoc.dataSub);
 
@@ -125,10 +125,12 @@ define(function(require) {
       var turmaNome = window.localStorage.getItem("TurmaSelecNome");
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
       var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
-      var correcaoID = window.localStorage.getItem("CorrecaoID");
+      var resultadoID = window.localStorage.getItem("resultadoID");
+      console.log(resultadoID);
+
       auxID ="";
-      writ(correcaoID, true);
-      correcoes_local2.get(correcaoID, function(err, CorrrecaoDoc) {
+      writ(resultadoID, true);
+      correcoes_local2.get(resultadoID, function(err, CorrrecaoDoc) {
         if (err) console.log(err);
         auxID = CorrrecaoDoc.id_Teste;
 

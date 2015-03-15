@@ -55,6 +55,8 @@ define(function(require) {
       "corrigirLista":"corrigirLista",
       "corrigirTexto":"corrigirTexto",
       "escolherResultados":"escolherResultados",
+      "mostraResultadoLista":"mostraResultadoLista",
+      "mostraResultadoTexto":"mostraResultadoTexto",
       "testes":"testes",
 
     },
@@ -69,6 +71,22 @@ define(function(require) {
       var self = this;
       require(["app/views/testes"], function(TestesView) {
         var view = new TestesView();
+        self.showView(view);
+      });
+    },
+
+    mostraResultadoLista: function() {
+      var self = this;
+      require(["app/views/mostraResultadoLista"], function(mostraResultadoListaView) {
+        var view = new mostraResultadoListaView();
+        self.showView(view);
+      });
+    },
+
+    mostraResultadoTexto: function() {
+      var self = this;
+      require(["app/views/mostraResultadoTexto"], function(mostraResultadoTextoView) {
+        var view = new mostraResultadoTextoView();
         self.showView(view);
       });
     },

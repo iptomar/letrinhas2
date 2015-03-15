@@ -104,12 +104,13 @@ define(function(require) {
                 disciplina=testeDoc.disciplina;
                 tipo=testeDoc.tipoTeste;
                 var data= new Date(correcoes[c].dataSub);
-                $('#pTitulo'+c).text(titulo+ " - "+ convert_n2d(data.getDate())
-                                    +"/"+ (convert_n2d(data.getMonth()+1))
-                                    +"/"+ data.getFullYear()
-                                    +" às "+ convert_n2d(data.getHours())
+                $('#pTitulo'+c).text(titulo+ " - Executado às "+
+                                    convert_n2d(data.getHours())
                                     +":"+ convert_n2d(data.getMinutes())
-                                    +":"+ convert_n2d(data.getSeconds()));
+                                    +":"+ convert_n2d(data.getSeconds())
+                                    +" do dia "+ convert_n2d(data.getDate())
+                                    +" do "+ (convert_n2d(data.getMonth()+1))
+                                    +" de"+ data.getFullYear());
 
                 //imagem da disciplina e tipo de teste
                 switch (disciplina){
@@ -144,9 +145,9 @@ define(function(require) {
                   '<button id="'+ correcoes[i]._id +'" value="'+correcoes[i].tipoCorrecao+'" type="button"' +
                           'style="height:100px;  padding: 0px 10px 0px 10px;"'+
                           'class="btn btn-info btn-lg btn-block btn-Corr" >'+
-                    '<img id="bFoto'+ i +'" src="" style=" float: left; height:70px;"/>'+
-                    '<img id="bTipo'+ i +'" val=0 src="" style=" float: right; height:70px; margin-left:5px"/>'+
-                    '<img id="bDiscip'+ i +'" src="" style=" float: right; height:70px; margin-left:5px"/>'+
+                    '<img id="bFoto'+ i +'" src="" style=" float: left; height:60px;"/>'+
+                    '<img id="bTipo'+ i +'" val=0 src="" style=" float: right; height:60px; margin-left:5px"/>'+
+                    '<img id="bDiscip'+ i +'" src="" style=" float: right; height:60px; margin-left:5px"/>'+
                     '<a style="color:#FFFFFF;" aria-hidden="true">'+
                       '<p id="pNome'+ i +'"></p>'+
                       '<p id="pTitulo'+ i +'"></p>'+

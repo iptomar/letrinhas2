@@ -56,28 +56,32 @@ define(function(require) {
             for (var i=0; i< l; i++){
               resultados[i] =  response.rows[i].key;
             }
+
+            var nome, foto;
+            alunos_local2.get(resultados[0].id_Aluno, function(err, alunoDoc) {
+              if (err)  console.log(err);
+              nome = alunoDoc.nome;
+              $("#alNome" ).text(nome);
+              a++;
+            });
+
+            alunos_local2.getAttachment(resultados[0].id_Aluno, 'aluno.png', function(err2, DataImg) {
+                if (err2)  console.log(err2);
+                foto = URL.createObjectURL(DataImg);
+                $('#alFoto').attr("src",foto);
+                b++;
+            });
+
             ///////////////////////////////////////////////////////////
             //
-            //construir os botões, baseado no layout do "Letrinhas V.01"
-            // |foto do aluno| Nome - Titulo do teste - Data/hora | Tipo de Teste| | Disciplina |
+            //construir os botões,
+            // Titulo do teste - Data/hora | Tipo de Teste| | Disciplina |
             //
             for(i=0; i<resultados.length; i++){
               //buscar a foto e nome do aluno
-              var a=0, b=0, c=0 ,nome, foto, titulo, disciplina, tipo, urlDiscp, urlTipo;
+              var a=0, b=0, c=0 , titulo, disciplina, tipo, urlDiscp, urlTipo;
 
-              alunos_local2.get(resultados[i].id_Aluno, function(err, alunoDoc) {
-                if (err)  console.log(err);
-                nome = alunoDoc.nome;
-                $("#pNome"+a ).text(nome);
-                a++;
-              });
 
-              alunos_local2.getAttachment(resultados[i].id_Aluno, 'aluno.png', function(err2, DataImg) {
-                  if (err2)  console.log(err2);
-                  foto = URL.createObjectURL(DataImg);
-                  $('#bFoto'+b).attr("src",foto);
-                  b++;
-              });
 
               //buscar o título, tipo e disciplina do teste
               testes_local2.get(resultados[i].id_Teste, function(err, testeDoc) {
@@ -86,12 +90,13 @@ define(function(require) {
                 disciplina=testeDoc.disciplina;
                 tipo=testeDoc.tipoTeste;
                 var data= new Date(resultados[c].dataSub);
-                $('#pTitulo'+c).text(titulo+ " - "+ convert_n2d(data.getDate())
-                                    +"/"+ (convert_n2d(data.getMonth()+1))
-                                    +"/"+ data.getFullYear()
-                                    +" às "+ convert_n2d(data.getHours())
+                $('#pTitulo'+c).text(titulo+ " - Executado às "+
+                                    convert_n2d(data.getHours())
                                     +":"+ convert_n2d(data.getMinutes())
-                                    +":"+ convert_n2d(data.getSeconds()));
+                                    +":"+ convert_n2d(data.getSeconds())
+                                    +" do dia "+ convert_n2d(data.getDate())
+                                    +" do "+ (convert_n2d(data.getMonth()+1))
+                                    +" de"+ data.getFullYear());
 
                 //imagem da disciplina e tipo de teste
                 switch (disciplina){
@@ -126,16 +131,14 @@ define(function(require) {
                   '<button id="'+ resultados[i]._id +'" value="'+resultados[i].tipoCorrecao+'" type="button"' +
                           'style="height:100px;  padding: 0px 10px 0px 10px;"'+
                           'class="btn btn-info btn-lg btn-block btn-Corr" >'+
-                    '<img id="bFoto'+ i +'" src="" style=" float: left; height:70px;"/>'+
-                    '<img id="bTipo'+ i +'" val=0 src="" style=" float: right; height:70px; margin-left:5px"/>'+
-                    '<img id="bDiscip'+ i +'" src="" style=" float: right; height:70px; margin-left:5px"/>'+
+                    '<img id="bTipo'+ i +'" val=0 src="" style=" float: right; height:60px; margin-left:5px"/>'+
+                    '<img id="bDiscip'+ i +'" src="" style=" float: right; height:60px; margin-left:5px"/>'+
                     '<a style="color:#FFFFFF;" aria-hidden="true">'+
-                      '<p id="pNome'+ i +'"></p>'+
                       '<p id="pTitulo'+ i +'"></p>'+
                     '</a>'+
                   '</button>'+
                 '</div>');
-              var $container = $('#outputCorrTestes');
+              var $container = $('#outputResultado');
               $btn.appendTo($container);
               }
 
@@ -147,7 +150,7 @@ define(function(require) {
                 var self = this;
                 window.localStorage.setItem("CorrecaoID", $btn[0].id + ''); //enviar variavel
                 if($btn.val() == "Texto" ){
-                  if (Backbone.history.fragment != 'corrigirTexto') {
+                  if (Backbone.history.fragment != 'mostraResultadoTexto') {
                     utils.loader(function() {
                       ev.preventDefault();
                       app.navigate('/mostraResultadoTexto', {trigger: true});
@@ -155,7 +158,7 @@ define(function(require) {
                   }
                 }else{
                   if($btn.val() == "Lista" ){
-                    if (Backbone.history.fragment != 'corrigirLista') {
+                    if (Backbone.history.fragment != 'mostraResultadoLista') {
                       utils.loader(function() {
                         ev.preventDefault();
                         app.navigate('/mostraResultadoLista', {trigger: true});
@@ -166,7 +169,7 @@ define(function(require) {
               });
           }
           else{
-            $("#Cabecalho").text("Não tem testes para corrigir.");
+            $("#Cabecalho").text("Não existem resultados.");
           }
         }
       });

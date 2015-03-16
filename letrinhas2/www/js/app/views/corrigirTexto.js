@@ -186,6 +186,12 @@ define(function(require) {
       });
     }
 
+
+    function onBack() {
+
+     }
+
+
   var errosTTexto = 0;
   return Backbone.View.extend({
 
@@ -211,13 +217,14 @@ define(function(require) {
       var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
       var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
       var correcaoID = window.localStorage.getItem("CorrecaoID"); //enviar variavel
+      document.addEventListener("backbutton", onBack, false); //Adicionar o evento
 
       professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome);
         $('#imgProf').attr("src", url);
-        //    document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+
       });
 
       correcoes_local2.get(correcaoID, function(err, correcaoDoc) {
@@ -364,11 +371,10 @@ define(function(require) {
 
 
     clickbtnConfirmarSUB: function(e) {
-
-      //    document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+      InsertCorrecao(window.localStorage.getItem("CorrecaoID"));
+      document.removeEventListener("backbutton", onBack, false); ///RETIRAR EVENTO DO BOTAO
       $('#myModalSUB').modal("hide");
       $('#myModalSUB').on('hidden.bs.modal', function(e) {
-        InsertCorrecao(window.localStorage.getItem("CorrecaoID"));
         window.history.back();
       });
     },
@@ -390,10 +396,10 @@ define(function(require) {
       } else {
         $("#popUpAviso").empty();
         $('#myModalSUB').modal("show");
+
         var exatidaoTotal= AnalisarTexto().exatidao;
         var fluidezTotal = AnalisarTexto().fluidez;
         var palavrasTotal = AnalisarTexto().totalPalavas;
-
 
         $('#LBtotalPalavras').text("Total de Palavras: "+AnalisarTexto().totalPalavas);
         var exPer = Math.round((exatidaoTotal/palavrasTotal)*100);
@@ -401,7 +407,9 @@ define(function(require) {
         $('#LBCorrecao').html("Correção: </br>"+
         "&nbsp;&nbsp;&nbsp;&nbsp-Exatidão: "+AnalisarTexto().exatidao+" palavras erradas, acertou: "+(100-exPer)+"% </br>"+
         "&nbsp;&nbsp;&nbsp;&nbsp-Fluidez: "+AnalisarTexto().fluidez+" palavras, acertou: "+(100-exFlu)+"% </br>"+
-        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp>>> Total:"+(100-(exPer+exFlu))+"% certo <<<\n\n"
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp---[ Total:"+(100-(exPer+exFlu))+"% certo ]--- </br>"+
+        "Expressividade: </br>"+
+        "&nbsp-Sinais: "+$('#DropExprSinais').val()+ " || -Entoação: "+$('#DropExprEntoacao').val() +" || -Texto: "+$('#DropExprTexto').val()
       );
       var tempoSeg = $('#AudioPlayerAluno').prop("duration");
 
@@ -421,8 +429,8 @@ define(function(require) {
     clickBackButton: function(e) {
       e.stopPropagation();
       e.preventDefault();
+      document.removeEventListener("backbutton", onBack, false); ///RETIRAR EVENTO DO BOTAO
       window.history.back();
-
     },
 
 

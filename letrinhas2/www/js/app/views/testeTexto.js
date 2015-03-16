@@ -119,10 +119,12 @@ define(function(require) {
       mediaRec.release();
     }
 
+    var modelTrue = false;
 
   return Backbone.View.extend({
 
-    onBackKeyDown:  function() {
+    onBackKeyDowns:  function() {
+        if (modelTrue == false)
       $('#labelErr').text("");  //limpa campos
       $('#inputPIN').val("");   //limpa campos
       $('#inputPINErr').removeClass("has-error"); //limpa campos
@@ -141,7 +143,8 @@ define(function(require) {
       /// Vai buscar todas
       self = this;
       TotalPalavas = 0;
-      document.addEventListener("backbutton", this.onBackKeyDown, false); //Adicionar o evento
+      modelTrue = false;
+      document.addEventListener("backbutton", this.onBackKeyDowns, false); //Adicionar o evento
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
@@ -236,7 +239,7 @@ define(function(require) {
       if (pinProfAux == pinDigitado) {
         $('#myModalProf').modal("hide");
         $('#myModalProf').on('hidden.bs.modal', function (e) {
-          document.removeEventListener("backbutton", self.onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
+          document.removeEventListener("backbutton", self.onBackKeyDowns, false); ////// RETIRAR EVENTO DO BOTAO
           window.history.go(-1);
         });
       } else {
@@ -248,10 +251,11 @@ define(function(require) {
 
 
     clickbtnConfirmarSUB: function(e) {
-
+        modelTrue = false;
         $('#myModalSUB').modal("hide");
         $('#myModalSUB').on('hidden.bs.modal', function (e) {
-          document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+          modelTrue = false;
+          document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
           LerficheiroGravacaoEins();
           window.history.back();
         });
@@ -259,6 +263,7 @@ define(function(require) {
 
     clickbtnFinalizar: function(e) {
       e.stopPropagation(); e.preventDefault();
+      modelTrue = true;
       $('#myModalSUB').modal("show");
     },
 

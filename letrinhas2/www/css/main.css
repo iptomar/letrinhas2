@@ -35,7 +35,7 @@
       bottom: 50px;
       left: 30px;
       width: 36%;
-      overflow-y: scroll;
+      overflow-y: auto;
 }
 
 .croool2 {
@@ -43,7 +43,7 @@
     top: 150px;
     bottom: 150px;
     right:30px;
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 58%;
 }
 

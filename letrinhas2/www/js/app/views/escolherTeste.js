@@ -13,12 +13,16 @@ define(function(require) {
 
   var btns = null;
   var tipo = 0;
+  var testeID_Aux = false;
+  var tipoTesteSelecionado;
   return Backbone.View.extend({
 
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
       $(e.target).parent().addClass('is-active');
     },
+
+
 
     initialize: function() {
       ////Carrega dados da janela anterior////
@@ -33,8 +37,10 @@ define(function(require) {
       var turmaId = window.localStorage.getItem("TurmaSelecID");
       var turmaNome = window.localStorage.getItem("TurmaSelecNome");
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
-      var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
-      window.localStorage.setItem("TesteArealizarID", '0'); //enviar variavel
+      tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
+
+
+      testeID_Aux = false;
       professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
@@ -122,6 +128,7 @@ define(function(require) {
 
           if (tipoTesteSelecionado == 'palavras') {
             var $container2 = $('#outputTestesConteudo');
+            testeID_Aux = true;
             window.localStorage.setItem("TesteArealizarID", $btn[0].id + ''); //enviar variavel
             testes_local2.get($btn[0].id, function(err, testeDoc) {
               if (err) console.log(err);
@@ -160,7 +167,8 @@ define(function(require) {
           //////////colocar aqui para ir para a janela de T//////////
           else if (tipoTesteSelecionado == 'texto') {
             var $container2 = $('#outputTestesConteudo');
-            window.localStorage.setItem("TesteArealizarID", $btn[0].id + ''); //enviar variavel
+            testeID_Aux=  true;
+            window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
             testes_local2.get($btn[0].id, function(err, testeDoc) {
               if (err) console.log(err);
               //console.log(testeDoc);
@@ -195,9 +203,7 @@ define(function(require) {
     clickbtnEscolher: function(e) {
       e.stopPropagation();
       e.preventDefault();
-      var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
-      var teste = window.localStorage.getItem("TesteArealizarID");
-      if (teste != "0") {
+      if (testeID_Aux != 0) {
         if (tipoTesteSelecionado == 'texto') {
           if (Backbone.history.fragment != 'testeTexto') {
             utils.loader(function() {

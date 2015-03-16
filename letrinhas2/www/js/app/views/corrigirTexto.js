@@ -1,5 +1,4 @@
 var triggerSelec = false;
-
 function TocarDepoisDeSelec()
 {
   triggerSelec = false;
@@ -7,175 +6,6 @@ function TocarDepoisDeSelec()
   $("#AudioPlayerAluno").trigger('play');
 }
 
-function AnalisarTexto()
-{
-  var $container = $('#DivContentorArea'); //Adiciona ao Div
-  var sapns = $("#DivContentorArea > span");
-  var maxEle = $("#DivContentorArea > span").length;
-
-  var exatidao = 0;
-  var fluidez = 0;
-  var totalPalavas = 0;
-  for (var i = 0; i < maxEle; i++) {
-    totalPalavas++;
-    var color = sapns[i].style.color
-    if (color == 'rgb(255, 0, 0)')
-    {
-      exatidao++;
-    }
-    if (color == 'rgb(51, 153, 255)')
-    {
-      fluidez++;
-    }
-  }
-
-  return {
-    "exatidao": exatidao,
-    "fluidez": fluidez,
-    "totalPalavas": totalPalavas
-    };
-
-}
-
-
-//////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
-function GravarSOMfile(name, data, success, fail) {
-  console.log(cordova.file.dataDirectory);
-  var gotFileSystem = function(fileSystem) {
-    fileSystem.root.getFile(name, {
-      create: true,
-      exclusive: false
-    }, gotFileEntry, fail);
-  };
-
-  var gotFileEntry = function(fileEntry) {
-    fileEntry.createWriter(gotFileWriter, fail);
-  };
-
-  var gotFileWriter = function(writer) {
-    writer.onwrite = success;
-    writer.onerror = fail;
-    writer.write(data);
-  };
-  window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
-}
-
-
-function converterStingEmTexto(stringx) {
-  if (stringx == "op1_1")
-    return {
-      "categoria": "Exatidão",
-      "erro": "Substituição de letras"
-    };
-  if (stringx == "op1_2")
-    return {
-      "categoria": "Exatidão",
-      "erro": "Substituição de palavras"
-    };
-  if (stringx == "op1_3")
-    return {
-      "categoria": "Exatidão",
-      "erro": "Adições"
-    };
-  if (stringx == "op1_4")
-    return {
-      "categoria": "Exatidão",
-      "erro": "Omissões de letras"
-    };
-  if (stringx == "op1_5")
-    return {
-      "categoria": "Exatidão",
-      "erro": "Omissões de sílabas"
-    };
-  if (stringx == "op1_6")
-    return {
-      "categoria": "Exatidão",
-      "erro": "Omissões de palavras"
-    };
-  if (stringx == "op1_7")
-    return {
-      "categoria": "Exatidão",
-      "erro": "Inversões"
-    };
-
-  if (stringx == "op2_1")
-    return {
-      "categoria": "Fluidez",
-      "erro": "Vacilação"
-    };
-  if (stringx == "op2_2")
-    return {
-      "categoria": "Fluidez",
-      "erro": "Repetições"
-    };
-  if (stringx == "op2_3")
-    return {
-      "categoria": "Fluidez",
-      "erro": "Soletração"
-    };
-  if (stringx == "op2_4")
-    return {
-      "categoria": "Fluidez",
-      "erro": "Fragmentação de palavras"
-    };
-  if (stringx == "op2_5")
-    return {
-      "categoria": "Fluidez",
-      "erro": "Retificação espontânea"
-    };
-}
-
-function readableDuration(seconds) {
-    sec = Math.floor( seconds );
-    min = Math.floor( sec / 60 );
-    min = min >= 10 ? min : '0' + min;
-    sec = Math.floor( sec % 60 );
-    sec = sec >= 10 ? sec : '0' + sec;
-    return min + ':' + sec;
-}
-
-function InsertCorrecao(IdCorr) {
-  var $container = $('#DivContentorArea'); //Adiciona ao Div
-  var sapns = $("#DivContentorArea > span");
-  var maxEle = $("#DivContentorArea > span").length;
-  var agora = new Date();
-  var tempoSeg = $('#AudioPlayerAluno').prop("duration");
-  var palavrasErr = 0;
-
-  correcoes_local2.get(IdCorr, function(err, otherDoc) {
-    otherDoc.estado = 1;
-    otherDoc.TotalPalavras = maxEle;
-    otherDoc.dataCorr = agora;
-    otherDoc.expresSinais = $('#DropExprSinais').val();
-    otherDoc.expresEntoacao = $('#DropExprEntoacao').val();
-    otherDoc.expresTexto = $('#DropExprTexto').val();
-
-    for (var i = 0; i < maxEle; i++) {
-      var color = sapns[i].style.color
-      if (color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
-      {
-        var cenas = sapns[i].getAttribute("value");
-        palavrasErr++;
-        otherDoc.conteudoResult.push({
-          'palavra': sapns[i].innerText,
-          'categoria': converterStingEmTexto(cenas).categoria,
-          'erro': converterStingEmTexto(cenas).erro,
-          'posicao': i,
-        });
-      }
-    }
-    var pcl = maxEle - palavrasErr;
-    otherDoc.velocidade = Math.round((pcl * 60 / tempoSeg));
-
-    correcoes_local2.put(otherDoc, IdCorr, otherDoc._rev, function(err, response) {
-      if (err) {
-        console.log('Correcao ' + err + ' erro');
-      } else {
-        console.log('Parabens InseridoCorrecao');
-      }
-    });
-  });
-}
 
 define(function(require) {
 
@@ -185,6 +15,176 @@ define(function(require) {
     Backbone = require('backbone'),
     janelas = require('text!janelas/corrigirTexto.html'),
     template = _.template(janelas);
+
+    function AnalisarTexto()
+    {
+      var $container = $('#DivContentorArea'); //Adiciona ao Div
+      var sapns = $("#DivContentorArea > span");
+      var maxEle = $("#DivContentorArea > span").length;
+
+      var exatidao = 0;
+      var fluidez = 0;
+      var totalPalavas = 0;
+      for (var i = 0; i < maxEle; i++) {
+        totalPalavas++;
+        var color = sapns[i].style.color
+        if (color == 'rgb(255, 0, 0)')
+        {
+          exatidao++;
+        }
+        if (color == 'rgb(51, 153, 255)')
+        {
+          fluidez++;
+        }
+      }
+
+      return {
+        "exatidao": exatidao,
+        "fluidez": fluidez,
+        "totalPalavas": totalPalavas
+        };
+
+    }
+
+
+    //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
+    function GravarSOMfile(name, data, success, fail) {
+      console.log(cordova.file.dataDirectory);
+      var gotFileSystem = function(fileSystem) {
+        fileSystem.root.getFile(name, {
+          create: true,
+          exclusive: false
+        }, gotFileEntry, fail);
+      };
+
+      var gotFileEntry = function(fileEntry) {
+        fileEntry.createWriter(gotFileWriter, fail);
+      };
+
+      var gotFileWriter = function(writer) {
+        writer.onwrite = success;
+        writer.onerror = fail;
+        writer.write(data);
+      };
+      window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+    }
+
+
+    function converterStingEmTexto(stringx) {
+      if (stringx == "op1_1")
+        return {
+          "categoria": "Exatidão",
+          "erro": "Substituição de letras"
+        };
+      if (stringx == "op1_2")
+        return {
+          "categoria": "Exatidão",
+          "erro": "Substituição de palavras"
+        };
+      if (stringx == "op1_3")
+        return {
+          "categoria": "Exatidão",
+          "erro": "Adições"
+        };
+      if (stringx == "op1_4")
+        return {
+          "categoria": "Exatidão",
+          "erro": "Omissões de letras"
+        };
+      if (stringx == "op1_5")
+        return {
+          "categoria": "Exatidão",
+          "erro": "Omissões de sílabas"
+        };
+      if (stringx == "op1_6")
+        return {
+          "categoria": "Exatidão",
+          "erro": "Omissões de palavras"
+        };
+      if (stringx == "op1_7")
+        return {
+          "categoria": "Exatidão",
+          "erro": "Inversões"
+        };
+
+      if (stringx == "op2_1")
+        return {
+          "categoria": "Fluidez",
+          "erro": "Vacilação"
+        };
+      if (stringx == "op2_2")
+        return {
+          "categoria": "Fluidez",
+          "erro": "Repetições"
+        };
+      if (stringx == "op2_3")
+        return {
+          "categoria": "Fluidez",
+          "erro": "Soletração"
+        };
+      if (stringx == "op2_4")
+        return {
+          "categoria": "Fluidez",
+          "erro": "Fragmentação de palavras"
+        };
+      if (stringx == "op2_5")
+        return {
+          "categoria": "Fluidez",
+          "erro": "Retificação espontânea"
+        };
+    }
+
+    function readableDuration(seconds) {
+      var  sec = Math.floor( seconds );
+      var  min = Math.floor( sec / 60 );
+        min = min >= 10 ? min : '0' + min;
+        sec = Math.floor( sec % 60 );
+        sec = sec >= 10 ? sec : '0' + sec;
+        return min + ':' + sec;
+    }
+
+    function InsertCorrecao(IdCorr) {
+      var $container = $('#DivContentorArea'); //Adiciona ao Div
+      var sapns = $("#DivContentorArea > span");
+      var maxEle = $("#DivContentorArea > span").length;
+      var agora = new Date();
+      var tempoSeg = $('#AudioPlayerAluno').prop("duration");
+      var palavrasErr = 0;
+
+      correcoes_local2.get(IdCorr, function(err, otherDoc) {
+        otherDoc.estado = 1;
+        otherDoc.TotalPalavras = maxEle;
+        otherDoc.dataCorr = agora;
+        otherDoc.expresSinais = $('#DropExprSinais').val();
+        otherDoc.expresEntoacao = $('#DropExprEntoacao').val();
+        otherDoc.expresTexto = $('#DropExprTexto').val();
+
+        for (var i = 0; i < maxEle; i++) {
+          var color = sapns[i].style.color
+          if (color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
+          {
+            var cenas = sapns[i].getAttribute("value");
+            palavrasErr++;
+            otherDoc.conteudoResult.push({
+              'palavra': sapns[i].innerText,
+              'categoria': converterStingEmTexto(cenas).categoria,
+              'erro': converterStingEmTexto(cenas).erro,
+              'posicao': i,
+            });
+          }
+        }
+        var pcl = maxEle - palavrasErr;
+        otherDoc.velocidade = Math.round((pcl * 60 / tempoSeg));
+
+        correcoes_local2.put(otherDoc, IdCorr, otherDoc._rev, function(err, response) {
+          if (err) {
+            console.log('Correcao ' + err + ' erro');
+          } else {
+            console.log('Parabens InseridoCorrecao');
+          }
+        });
+      });
+    }
 
   var errosTTexto = 0;
   return Backbone.View.extend({
@@ -260,8 +260,7 @@ define(function(require) {
             GravarSOMfile('voz.mp3', DataImg, function() {
               console.log('FUNCIONA VOZ PROF');
               $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3");
-              $("#AudioPlayerProf").trigger('play');
-
+              $("#AudioPlayerProf").trigger('load');
             }, function(err) {
               console.log("DEU ERRO VOZ PROF" + err);
             });
@@ -351,21 +350,16 @@ define(function(require) {
               errosTTexto++;
               $('#ContadorDeErros').text("Erros: " + errosTTexto);
               triggerSelec = true;
-
             }
           });
-
         });
       });
-
-
     },
 
     events: {
       "click #BackButton": "clickBackButton",
       "click #btnFinalizar": "clickbtnFinalizar",
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
-
     },
 
 

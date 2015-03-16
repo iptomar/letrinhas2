@@ -3,124 +3,9 @@ var Demo,           //caminho para reproduzir o ficheiro de demonstração
     mediaSrc,       //url onde deverá ser guardada a gravação
     totalPalavras=0;//contador de palavras
 
-//Método para controlar o botão fisico de retroceder do tablet
 
-
-////////////////////////Ler ficheiro e colocar em anexo para correcao/////////
-function LerficheiroGravacaoEinserir() {
-  window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr", gotFile, fail);
-}
-
-function gotFile(fileEntry) {
-  console.log(fileEntry);
-  fileEntry.file(success, fail);
-}
-
-function fail(e) {
-	console.log("FileSystem Error:"+e);
-}
-
-
-function success(file) {
-  var agora=new Date();
-  var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
-  var alunoId = window.localStorage.getItem("AlunoSelecID");
-  var profId = window.localStorage.getItem("ProfSelecID");
-  var correcao = {
-      'id_Teste': TesteArealizarID,
-      'id_Aluno': alunoId,
-      'id_Prof': profId,
-      'tipoCorrecao': 'Lista',
-      'estado': '0',
-      'conteudoResult':null,
-      'TotalPalavras':totalPalavras,
-      'dataSub': agora,
-      'dataCorr':null,
-      'observ':null,
-  };
-
-  correcoes_local2.post(correcao, function(err, response) {
-    if (err) {
-      console.log('Correcao ' + err + ' erro');
-    }
-    else {
-      correcoes_local2.putAttachment(response.id, 'gravacao.amr', response.rev, file, 'audio/amr', function(err, res) {
-        if (!err) {
-          console.log('Anexo  inserted: '+ response.id);
-        }
-        else {
-          console.log('anexo ' + err + ' erro');
-        }
-      });
-      console.log('Correcao ' + response.id + ' inserido!');
-    }
-  });
-
-}
-
-//////////// Guardar audio vindo do couchDB /////////////////
-function GravarSOMfile (name, data, success, fail) {
-  console.log(cordova.file.dataDirectory);
-  var gotFileSystem = function (fileSystem) {
-    fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
-  };
-
-  var gotFileEntry = function (fileEntry) {
-    fileEntry.createWriter(gotFileWriter, fail);
-  };
-
-  var gotFileWriter = function (writer) {
-    writer.onwrite = success;
-    writer.onerror = fail;
-    writer.write(data);
-  };
-  window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
-}
-
-function recordAudio() {
-  try{
-    mediaSrc = "gravacao.amr";
-    mediaRec = new Media(mediaSrc,
-      // success callback
-      function() {
-        console.log("recordAudio():Audio Success");
-      },
-      // error callback
-      function(err) {
-        console.log("recordAudio():Audio Error: " + err.code);
-      }
-    );
-  // Record audio
-    mediaRec.startRecord();
-  }
-  catch (err){
-    console.log(err.message);
-  }
-
-}
-
-function StopRec() {
-  try{
-  mediaRec.stopRecord();
-  mediaRec.release();}
-  catch(err){console.log(err.message);}
-}
-
-function PlayRec()
-{
-  try{mediaRec.play();}
-  catch(err){console.log(err.message);}
-}
-
-function StopPlayRec()
-{
-  try{mediaRec.stop();}
-  catch(err){console.log(err.message)}
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 define(function(require) {
+
 
   var self;
   "use strict";
@@ -134,6 +19,121 @@ define(function(require) {
   var profId, profNome, escolaNome, escolaId, alunoId, alunoNome,
       turmaId, turmaNome, discplinaSelecionada, tipoTesteSelecionado,
       TesteArealizarID;
+
+      ////////////////////////Ler ficheiro e colocar em anexo para correcao/////////
+      function LerficheiroGravacaoEinserir() {
+        window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr", gotFile, fail);
+      }
+
+      function gotFile(fileEntry) {
+        console.log(fileEntry);
+        fileEntry.file(success, fail);
+      }
+
+      function fail(e) {
+      	console.log("FileSystem Error:"+e);
+      }
+
+
+      function success(file) {
+        var agora=new Date();
+        var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
+        var alunoId = window.localStorage.getItem("AlunoSelecID");
+        var profId = window.localStorage.getItem("ProfSelecID");
+        var correcao = {
+            'id_Teste': TesteArealizarID,
+            'id_Aluno': alunoId,
+            'id_Prof': profId,
+            'tipoCorrecao': 'Lista',
+            'estado': '0',
+            'conteudoResult':null,
+            'TotalPalavras':totalPalavras,
+            'dataSub': agora,
+            'dataCorr':null,
+            'observ':null,
+        };
+
+        correcoes_local2.post(correcao, function(err, response) {
+          if (err) {
+            console.log('Correcao ' + err + ' erro');
+          }
+          else {
+            correcoes_local2.putAttachment(response.id, 'gravacao.amr', response.rev, file, 'audio/amr', function(err, res) {
+              if (!err) {
+                console.log('Anexo  inserted: '+ response.id);
+              }
+              else {
+                console.log('anexo ' + err + ' erro');
+              }
+            });
+            console.log('Correcao ' + response.id + ' inserido!');
+          }
+        });
+
+      }
+
+      //////////// Guardar audio vindo do couchDB /////////////////
+      function GravarSOMfile (name, data, success, fail) {
+        console.log(cordova.file.dataDirectory);
+        var gotFileSystem = function (fileSystem) {
+          fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
+        };
+
+        var gotFileEntry = function (fileEntry) {
+          fileEntry.createWriter(gotFileWriter, fail);
+        };
+
+        var gotFileWriter = function (writer) {
+          writer.onwrite = success;
+          writer.onerror = fail;
+          writer.write(data);
+        };
+        window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+      }
+
+      function recordAudio() {
+        try{
+          mediaSrc = "gravacao.amr";
+          mediaRec = new Media(mediaSrc,
+            // success callback
+            function() {
+              console.log("recordAudio():Audio Success");
+            },
+            // error callback
+            function(err) {
+              console.log("recordAudio():Audio Error: " + err.code);
+            }
+          );
+        // Record audio
+          mediaRec.startRecord();
+        }
+        catch (err){
+          console.log(err.message);
+        }
+
+      }
+
+      function StopRec() {
+        try{
+        mediaRec.stopRecord();
+        mediaRec.release();}
+        catch(err){console.log(err.message);}
+      }
+
+      function PlayRec()
+      {
+        try{mediaRec.play();}
+        catch(err){console.log(err.message);}
+      }
+
+      function StopPlayRec()
+      {
+        try{mediaRec.stop();}
+        catch(err){console.log(err.message)}
+      }
+
+
+      ////////////////////////////////////////////////////////////////////////////////
 
   return Backbone.View.extend({
 

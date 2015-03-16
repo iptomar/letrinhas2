@@ -1,111 +1,5 @@
 var TotalPalavas;
 
-////////////////////////LerFile e colocar em anexo para correcao/////////
-function LerficheiroGravacaoEinserir() {
-window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr", gotFile, fail);
-}
-
-function gotFile(fileEntry) {
-  console.log(fileEntry);
-	fileEntry.file(success, fail);
-}
-
-function fail(e) {
-	console.log("FileSystem Error:"+e);
-}
-
-
-function success(file) {
-    var agora=new Date();
-    var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
-    var alunoId = window.localStorage.getItem("AlunoSelecID");
-    var profId = window.localStorage.getItem("ProfSelecID");
-    var correcao = {
-      'id_Teste': TesteArealizarID,
-      'id_Aluno': alunoId,
-      'id_Prof': profId,
-      'tipoCorrecao': 'Texto',
-      'estado': '0',
-      'conteudoResult':[],
-      'TotalPalavras':TotalPalavas,
-      'dataSub': agora,
-      'dataCorr':null,
-      'expresSinais':null,
-      'expresEntoacao':null,
-      'expresTexto':null,
-      'velocidade':null,
-      'observ':null,
-    };
-
-    correcoes_local2.post(correcao, function(err, response) {
-      if (err) {
-        console.log('Correcao ' + err + ' erro');
-      } else {
-        correcoes_local2.putAttachment(response.id, 'gravacao.amr', response.rev, file, 'audio/amr', function(err, res) {
-        if (!err) {
-         console.log('Anexo  inserted: '+ response.id);
-        } else {
-          console.log('anexo ' + err + ' erro');
-        }
-       });
-        console.log('Correcao ' + response.id + ' inserido!');
-      }
-    });
-
-}
-
-function countWords(stringx){
-  stringx = stringx.replace(/(^\s*)|(\s*$)/gi,"");
-  stringx = stringx.replace(/[ ]{2,}/gi," ");
-  stringx = stringx.replace(/\n /,"\n");
-//  console.log(stringx.split(' ').length);
-TotalPalavas = stringx.split(' ').length;
-}
-
-
-//////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
-function GravarSOMfile (name, data, success, fail) {
-  console.log(cordova.file.dataDirectory);
-  var gotFileSystem = function (fileSystem) {
-    fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
-  };
-
-  var gotFileEntry = function (fileEntry) {
-    fileEntry.createWriter(gotFileWriter, fail);
-  };
-
-  var gotFileWriter = function (writer) {
-    writer.onwrite = success;
-    writer.onerror = fail;
-    writer.write(data);
-  };
-  window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
-}
-
-//////////// ////  recorder ////  /////////////////////////////
-
-var mediaRec;
-
-function recordAudio() {
-  var src = "gravacao.amr";
-  mediaRec = new Media(src,
-    function() {
-    },
-    // error callback
-    function(err) {
-      alert("recordAudio():Audio Error: " + err.code);
-    }
-  );
-  // Record audio
-  mediaRec.startRecord();
-}
-
-function StopRec() {
-  mediaRec.stopRecord();
-  mediaRec.release();
-}
-
-
 //////////////////////////////////////////////////
 define(function(require) {
 
@@ -118,6 +12,113 @@ define(function(require) {
     Backbone = require('backbone'),
     janelas = require('text!janelas/testeTexto.html'),
     template = _.template(janelas);
+
+
+
+    function LerficheiroGravacaoEins() {
+    window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr", gotFiles, fails);
+    }
+
+    function gotFiles(fileEntry) {
+      console.log(fileEntry);
+    	fileEntry.file(successs, fails);
+    }
+
+    function fails(e) {
+    	console.log("FileSystem Error:"+e);
+    }
+
+
+    function successs(file) {
+        var agora=new Date();
+        var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
+        var alunoId = window.localStorage.getItem("AlunoSelecID");
+        var profId = window.localStorage.getItem("ProfSelecID");
+        var correcao = {
+          'id_Teste': TesteTextArealizarID,
+          'id_Aluno': alunoId,
+          'id_Prof': profId,
+          'tipoCorrecao': 'Texto',
+          'estado': '0',
+          'conteudoResult':[],
+          'TotalPalavras':TotalPalavas,
+          'dataSub': agora,
+          'dataCorr':null,
+          'expresSinais':null,
+          'expresEntoacao':null,
+          'expresTexto':null,
+          'velocidade':null,
+          'observ':null,
+        };
+
+        correcoes_local2.post(correcao, function(err, response) {
+          if (err) {
+            console.log('Correcao ' + err + ' erro');
+          } else {
+            correcoes_local2.putAttachment(response.id, 'gravacao.amr', response.rev, file, 'audio/amr', function(err, res) {
+            if (!err) {
+             console.log('Anexo  inserted: '+ response.id);
+            } else {
+              console.log('anexo ' + err + ' erro');
+            }
+           });
+            console.log('Correcao ' + response.id + ' inserido!');
+          }
+        });
+
+    }
+
+    function countWords(stringx){
+      stringx = stringx.replace(/(^\s*)|(\s*$)/gi,"");
+      stringx = stringx.replace(/[ ]{2,}/gi," ");
+      stringx = stringx.replace(/\n /,"\n");
+    //  console.log(stringx.split(' ').length);
+    TotalPalavas = stringx.split(' ').length;
+    }
+
+
+    //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
+    function GravarSOMfiles (name, data, success, fail) {
+      console.log(cordova.file.dataDirectory);
+      var gotFileSystem = function (fileSystem) {
+        fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
+      };
+
+      var gotFileEntry = function (fileEntry) {
+        fileEntry.createWriter(gotFileWriter, fail);
+      };
+
+      var gotFileWriter = function (writer) {
+        writer.onwrite = success;
+        writer.onerror = fail;
+        writer.write(data);
+      };
+      window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+    }
+
+    //////////// ////  recorder ////  /////////////////////////////
+
+    var mediaRec;
+
+    function recordAudio() {
+      var src = "gravacao.amr";
+      mediaRec = new Media(src,
+        function() {
+        },
+        // error callback
+        function(err) {
+          alert("recordAudio():Audio Error: " + err.code);
+        }
+      );
+      // Record audio
+      mediaRec.startRecord();
+    }
+
+    function StopRec() {
+      mediaRec.stopRecord();
+      mediaRec.release();
+    }
+
 
   return Backbone.View.extend({
 
@@ -132,8 +133,11 @@ define(function(require) {
     },
 
 
+
     /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
+      //MyModule.call(this);
+
       /// Vai buscar todas
       self = this;
       TotalPalavas = 0;
@@ -148,7 +152,7 @@ define(function(require) {
       var turmaNome = window.localStorage.getItem("TurmaSelecNome");
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
       var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
-      var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
+      var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
 
 
 
@@ -160,9 +164,9 @@ define(function(require) {
       });
 
 
-      testes_local2.get(TesteArealizarID, function(err, testeDoc) {
+      testes_local2.get(TesteTextArealizarID, function(err, testeDoc) {
         if (err) console.log(err);
-        //console.log(testeDoc);
+        console.log(testeDoc);
 
         $('#titleTestePagina').text(testeDoc.titulo);
         $('#lbTituloTeste').text(testeDoc.conteudo.pergunta);
@@ -170,9 +174,9 @@ define(function(require) {
         countWords(testeDoc.conteudo.texto);
       });
 
-      testes_local2.getAttachment(TesteArealizarID, 'voz.mp3', function(err2, DataImg) {
+      testes_local2.getAttachment(TesteTextArealizarID, 'voz.mp3', function(err2, DataImg) {
         if (err2) console.log(err2);
-        GravarSOMfile('voz.mp3', DataImg, function () {
+        GravarSOMfiles('voz.mp3', DataImg, function () {
           console.log('FUNCIONA');
           $("#AudioPlayerProf").attr("src",cordova.file.dataDirectory+"/files/voz.mp3")
 
@@ -198,7 +202,6 @@ define(function(require) {
     },
 
     clickbtnDemonstracao: function(e) {
-
       $('#div1').hide();
       $('#div2').show();
       $("#AudioPlayerProf").prop("currentTime",0);
@@ -249,7 +252,7 @@ define(function(require) {
         $('#myModalSUB').modal("hide");
         $('#myModalSUB').on('hidden.bs.modal', function (e) {
           document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
-          LerficheiroGravacaoEinserir();
+          LerficheiroGravacaoEins();
           window.history.back();
         });
     },

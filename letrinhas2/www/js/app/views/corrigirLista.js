@@ -19,7 +19,6 @@ function convert_n3d(n){
 
 var isFeito=false,
     $palavra,
-    Demo, leitura,
     totalPalavras=0,
     totalPalavrasErradas=0,//contador de palavras erradas
     relatorio="";
@@ -95,6 +94,7 @@ define(function(require) {
     janelas = require('text!janelas/corrigirLista.html'),
     template = _.template(janelas);
 
+var Demo, leitura;
   return Backbone.View.extend({
 
     highlight: function(e) {
@@ -204,10 +204,10 @@ define(function(require) {
         testes_local2.getAttachment(correcaoDoc.id_Teste, 'voz.mp3', function(err2, DataImg) {
           try{
             GravarSOMfile('voz.mp3', DataImg, function () {
-                console.log('FUNCIONA');
+                console.log('FUNCIONA vozprof');
                 Demo = cordova.file.dataDirectory+"/files/voz.mp3";
                 }, function (err) {
-                  console.log("DEU ERRO: "+err);
+                  console.log("DEU ERRO vozprof: "+err);
             });
           }
           catch (err){
@@ -215,18 +215,15 @@ define(function(require) {
           }
         });
 
-        correcoes_local2.getAttachment(correcaoDoc.id_Teste, 'leitura.amr', function(err2, DataImg) {
-          try{
-            GravarSOMfile('leitura.amr', DataImg, function () {
-                console.log('FUNCIONA');
-                leitura = cordova.file.dataDirectory+"/files/leitura.amr";
+        correcoes_local2.getAttachment(correcaoDoc._id, 'gravacao.amr', function(err2, DataImg) {
+
+            GravarSOMfile('gravacao.amr', DataImg, function () {
+                console.log('FUNCIONA leitura');
+                leitura = cordova.file.dataDirectory+"/files/gravacao.amr";
                 }, function (err) {
-                  console.log("DEU ERRO: "+err);
+                  console.log("DEU ERRO leitura: "+err);
             });
-          }
-          catch (err){
-            console.log(err);
-          }
+
         });
 
         // Analisa todos os botoes do div

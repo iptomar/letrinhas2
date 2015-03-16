@@ -10,6 +10,12 @@ function convert_n2d(n){
     if(n<10) return("0"+n);
     else return(""+n);	}
 
+function convert_n3d(n){
+  if(n<100) return("0"+ convert_n2d(n) );
+  else return(""+n);
+}
+
+
 
 var isFeito=false,
     $palavra,
@@ -321,7 +327,8 @@ define(function(require) {
             var todasPalavras =document.getElementsByClassName("picavel");
             for (var i=0; i< todasPalavras.length; i++){
               if($(todasPalavras[i]).val() != ''){
-                plvr=$(todasPalavras[i]).text();
+                ///adiciono 3 digitos, para futuramente saber onde esta se posiiona no texto
+                plvr=convert_n3d(i) + $(todasPalavras[i]).text();
 
                 //selecionar a categoria do erro (Exatidão / fluidez)
                 switch (parseInt(($(todasPalavras[i]).val()).charAt(0))){

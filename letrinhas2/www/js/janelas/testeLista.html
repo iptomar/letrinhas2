@@ -25,7 +25,53 @@
       </div>
     </div>
 
+    <nav class="navbar navbar-default navbar-fixed-bottom ">
+      <div class="centerEX">
+        <audio id="playPlayer" style="visibility:hidden" controls></audio>
+      </div>
+      <div id="div1">
+        <div class="col-md-3">
+        </p>
+          <button id="demoButton" type="button" class="btn btn-lg btn-block" val=0 style="background-color: #ffc060">
+            <span class="glyphicon glyphicon glyphicon-headphones"></span> Demonstração
+          </button>
+        </p>
+        </div>
+
+        <div class=" col-md-3">
+        </p>
+          <button id="startButton" type="button" class="btn btn-lg btn-block" style="background-color: #60f060">
+            <span class="glyphicon glyphicon glyphicon-record"></span> Gravar
+          </button>
+        </p>
+        </div>
+        <div class=" col-md-3">
+        </p>
+          <button id="playMyTestButton" type="button" class="btn btn-lg btn-block" style="visibility:hidden;">
+            <span class="glyphicon glyphicon glyphicon-play"></span> Ouvir-me
+          </button>
+        </p>
+        </div>
+        <div class=" col-md-3">
+        </p>
+          <button id="submitButton" type="button" class="btn btn-lg btn-block" style="visibility:hidden;">
+            <span class="glyphicon glyphicon glyphicon-ok" ></span> Finalizar
+          </button>
+        </p>
+        </div>
+      </div>
+    </nav>
+
     <div class="container">
+
+
+
+      <div class="panel panel-default">
+        <div class="panel-body centerEX">
+          <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">titulo</label>
+        </div>
+      </div>
+
       <!-- ##################### POPUP PIN PROF ################# -->
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -49,6 +95,7 @@
         </div>
       </div>
       <!-- ##################### END ################# -->
+
       <!-- ##################### POPUP SIM NAO################# -->
       <div class="modal fade" id="myModalSUB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -70,55 +117,11 @@
       <!-- ##################### END ################# -->
 
 
-
-      <div class="panel panel-default">
-        <div class="panel-body centerEX">
-          <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">titulo</label>
-        </div>
-      </div>
-
       <!-- Agora o conteúdo, Div onde se vai construir tudo dinamicamente -->
 
-      <div id="listaAreaConteudo" class="well well-lg" style="height:450px; overflow:auto" align="center"></div>
+      <div id="listaAreaConteudo" class="textareaTexto container" align="center"></div>
     </div>
   </div>
 
-  <nav class"navbar navbar-default navbar-fixed-bottom  " >
-    <div class="well well-lg" >
-    <div class="centerEX">
-      <audio id="playPlayer" style="visibility:hidden" controls></audio>
-    </div>
-    <div class="centerEX">
-      <table style="width:100%">
-        <tr>
-          <td>
-          <!-- Posicionamento dos botões de demonstração, gravação, ouvir e submeter! -->
-            <a id="demoButton" class="btn btn-default btn-lg" val=0 style="background-color: #ffc060">
-              <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
-               Demonstrar
-            </a>
-          </td>
-          <td>
-            <a id="startButton" class="btn btn-default btn-lg" val=0 style="background-color: #60f060">
-              <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
-              Começar
-            </a>
-          </td>
-          <td>
-            <a id="playMyTestButton" class="btn btn-default btn-lg" val=0 style="visibility:hidden;background-color: #c065ff">
-              <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-              Ouvir-me
-            </a>
-          </td>
-          <td>
-            <a id="submitButton" class="btn btn-default btn-lg" style="visibility:hidden;background-color: #00ee00">
-              <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-              Finalizar
-            </a>
-          </td>
-        </tr>
-      </table>
-      </div>
-    </div>
-  </nav>
+
 </section>

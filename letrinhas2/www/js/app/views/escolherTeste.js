@@ -102,91 +102,97 @@ define(function(require) {
           var $msg = $("<h4 class='centerEX' >SEM DADOS</h4>");
           $msg.appendTo($container); //Adiciona ao Div
         }
+        else{
+          var ponteiro=response.rows[0].key;
 
-        for (var i = 0; i < response.rows.length; i++) {
-          var idTest = response.rows[i].key;
-          var $btn = $(
-            '<button id="' + idTest._id + '" type="button" style="height:65px;"" class="btn btn-lg btn-block btn-teste activeXF " >' +
-            '  <span class="glyphicon glyphicon-file" ></span>   ' +
-            idTest.titulo + "</button>");
-          $btn.appendTo($container); //Adiciona ao Div
-        }
-        //// Analisa todos os botoes do div e aqueles que forem botoes de turma escuta o evento click//
-        $container.on('click', '.btn-teste', function(ev) {
-          ev.stopPropagation();
-          ev.preventDefault();
-          if (btns != null) {
-            btns.removeClass("btn-primary");
-            btns.addClass("activeXF");
+          for (var i = 0; i < response.rows.length; i++) {
+            var idTest = response.rows[i].key;
+            var $btn = $(
+              '<button id="' + idTest._id + '" type="button" style="height:65px;"" class="btn btn-lg btn-block btn-teste activeXF " >' +
+              '  <span class="glyphicon glyphicon-file" ></span>   ' +
+              idTest.titulo + "</button>");
+            $btn.appendTo($container); //Adiciona ao Div
           }
-          btns = $(this);
-          $(this).removeClass("activeXF");
-          $(this).addClass("btn-primary");
+          //// Analisa todos os botoes do div e aqueles que forem botoes de turma escuta o evento click//
+          $container.on('click', '.btn-teste', function(ev) {
+            ev.stopPropagation();
+            ev.preventDefault();
+            if (btns != null) {
+              btns.removeClass("btn-primary");
+              btns.addClass("activeXF");
+            }
+            btns = $(this);
+            $(this).removeClass("activeXF");
+            $(this).addClass("btn-primary");
 
-          var $btn = $(this); // O jQuery passa o btn clicado pelo this
-          var self = this;
+            var $btn = $(this); // O jQuery passa o btn clicado pelo this
+            var self = this;
 
-          if (tipoTesteSelecionado == 'palavras') {
-            var $container2 = $('#outputTestesConteudo');
-            testeID_Aux = true;
-            window.localStorage.setItem("TesteArealizarID", $btn[0].id + ''); //enviar variavel
-            testes_local2.get($btn[0].id, function(err, testeDoc) {
-              if (err) console.log(err);
-              //console.log(testeDoc);
-              var colum1 = "";
-              var colum2 = "";
-              var colum3 = "";
-              for (var j = 0; j < testeDoc.conteudo.palavrasCl1.length; j++) {
-                colum1 += testeDoc.conteudo.palavrasCl1[j] + "</p>";
-              }
+            if (tipoTesteSelecionado == 'palavras') {
+              var $container2 = $('#outputTestesConteudo');
+              testeID_Aux = true;
+              window.localStorage.setItem("TesteArealizarID", $btn[0].id + ''); //enviar variavel
+              testes_local2.get($btn[0].id, function(err, testeDoc) {
+                if (err) console.log(err);
+                //console.log(testeDoc);
+                var colum1 = "";
+                var colum2 = "";
+                var colum3 = "";
+                for (var j = 0; j < testeDoc.conteudo.palavrasCl1.length; j++) {
+                  colum1 += testeDoc.conteudo.palavrasCl1[j] + "</p>";
+                }
 
-              for (var j = 0; j < testeDoc.conteudo.palavrasCl2.length; j++) {
-                colum2 += testeDoc.conteudo.palavrasCl2[j] + "</p>";
-              }
+                for (var j = 0; j < testeDoc.conteudo.palavrasCl2.length; j++) {
+                  colum2 += testeDoc.conteudo.palavrasCl2[j] + "</p>";
+                }
 
-              for (var j = 0; j < testeDoc.conteudo.palavrasCl3.length; j++) {
-                colum3 += testeDoc.conteudo.palavrasCl3[j] + "</p>";
-              }
+                for (var j = 0; j < testeDoc.conteudo.palavrasCl3.length; j++) {
+                  colum3 += testeDoc.conteudo.palavrasCl3[j] + "</p>";
+                }
 
-              var $btn2 = $(
-                '<div class="panel panel-primary">' +
-                '<div class="panel-heading centerEX">' +
-                '<h3 class="panel-title">' + testeDoc.titulo + '</h3>' +
-                '</div>' +
-                '<div class="panel-body fontEX2">' +
-                '<div class="row">' +
-                '<div class="col-xs-4">' + colum1 + '</div>' +
-                '<div class="col-xs-4">' + colum2 + '</div>' +
-                '<div class="col-xs-4">' + colum3 + '</div>' +
-                '</div>' +
-                '</div></div>');
-              $container2.empty();
-              $btn2.appendTo($container2);
-            });
-          }
-          //////////colocar aqui para ir para a janela de T//////////
-          else if (tipoTesteSelecionado == 'texto') {
-            var $container2 = $('#outputTestesConteudo');
-            testeID_Aux=  true;
-            window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
-            testes_local2.get($btn[0].id, function(err, testeDoc) {
-              if (err) console.log(err);
-              //console.log(testeDoc);
-              var $btn2 = $(
-                '<div class="panel panel-primary">' +
-                '<div class="panel-heading centerEX">' +
-                '<h3 class="panel-title">' + testeDoc.titulo + '</h3>' +
-                '</div>' +
-                '<div class="panel-body fontEX2">' +
-                testeDoc.conteudo.texto.replace(/\n/g, '</br>') +
-                '</div></div>');
-              $container2.empty();
-              $btn2.appendTo($container2);
-            });
-          } else if (tipoTesteSelecionado == 'texto') {
+                var $btn2 = $(
+                  '<div class="panel panel-primary">' +
+                  '<div class="panel-heading centerEX">' +
+                  '<h3 class="panel-title">' + testeDoc.titulo + '</h3>' +
+                  '</div>' +
+                  '<div class="panel-body fontEX2">' +
+                  '<div class="row">' +
+                  '<div class="col-xs-4">' + colum1 + '</div>' +
+                  '<div class="col-xs-4">' + colum2 + '</div>' +
+                  '<div class="col-xs-4">' + colum3 + '</div>' +
+                  '</div>' +
+                  '</div></div>');
+                $container2.empty();
+                $btn2.appendTo($container2);
+              });
+            }
+            //////////colocar aqui para ir para a janela de T//////////
+            else if (tipoTesteSelecionado == 'texto') {
+              var $container2 = $('#outputTestesConteudo');
+              testeID_Aux=  true;
+              window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
+              testes_local2.get($btn[0].id, function(err, testeDoc) {
+                if (err) console.log(err);
+                //console.log(testeDoc);
+                var $btn2 = $(
+                  '<div class="panel panel-primary">' +
+                  '<div class="panel-heading centerEX">' +
+                  '<h3 class="panel-title">' + testeDoc.titulo + '</h3>' +
+                  '</div>' +
+                  '<div class="panel-body fontEX2">' +
+                  testeDoc.conteudo.texto.replace(/\n/g, '</br>') +
+                  '</div></div>');
+                $container2.empty();
+                $btn2.appendTo($container2);
+              });
+            } else if (tipoTesteSelecionado == 'texto') {
             //////////colocar aqui para ir para a janela de multimedia//////////
-          }
-        });
+            }
+          });
+
+          //Selecionar o 1º Item
+          $('#'+ponteiro._id).click();
+        }
       });
     },
 

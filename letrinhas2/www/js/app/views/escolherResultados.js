@@ -46,16 +46,33 @@ define(function(require) {
         if (errx) console.log("Erro: "+errx);
         else {
 
+
+
           if(response.rows.length > 0){
             //criar um array para receber as correções
             var l=response.rows.length;
-            //preencher o cabeçalho
-            $("#Cabecalho").text("Tem "+ response.rows.length + " resultados.");
-            //criar um array para receber as correções
+            //criar um array para receber as correções unicas por teste
+
             var resultados= new Array();
-            for (var i=0; i< l; i++){
-              resultados[i] =  response.rows[i].key;
+            resultados[0] =  response.rows[0].key;
+            if(l>1){
+              var j=0;
+              var resAux= new Array();
+              for (var i=1; i< l; i++){
+                resAux[i] =  response.rows[i].key;
+                if(resAux[i].id_Teste != resultados[0].id_Teste){
+                  j++;
+                  resultados[j]=resAux[i];
+                }
+              }
             }
+
+
+            //preencher o cabeçalho
+            $("#Cabecalho").text("Tem "+ resultados.length + " resultados.");
+
+
+
 
             var nome, foto;
             alunos_local2.get(resultados[0].id_Aluno, function(err, alunoDoc) {

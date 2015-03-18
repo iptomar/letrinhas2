@@ -1,10 +1,10 @@
-
-//Método para controlar o botão fisico de retroceder do tablet
-function onBackKeyDown() {
-  document.removeEventListener("backbutton", onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO
-
+var triggerSelec = false;
+function TocarDepoisDeSelec()
+{
+  triggerSelec = false;
+  $("#AudioPlayerAluno").prop("currentTime",$("#AudioPlayerAluno").prop("currentTime")-1);
+  $("#AudioPlayerAluno").trigger('play');
 }
-
 
 function convert_n2d(n){
     if(n<10) return("0"+n);
@@ -15,56 +15,43 @@ function convert_n3d(n){
   else return(""+n);
 }
 
-
-
-var isFeito=false,
-    $palavra,
-    totalPalavras=0,
-    totalPalavrasErradas=0,//contador de palavras erradas
-    relatorio="";
-
-//Função para marcar ou desmarcar a palavra clicada
-function picaPalavra(op){
-  var $opcao = $(op);
-  $palavra.val($opcao.val()+$opcao.text());
-  $palavra.attr("style","font-weight:bold; font-size:20px; color: #ee0000");
-  totalPalavrasErradas++;
-  verificaPalavras();
-  $('#myModalSUB').modal("hide");
-  $('#myModalSUB').on('hidden.bs.modal', function (e) {});
-
-}
+var totalPalavras=0,
+    totalPalavrasErradas=0;//contador de palavras erradas
 
 function verificaPalavras(){
    if( totalPalavrasErradas!=0){
-     $("#lbErros").attr("style","font-weight:bold; font-size:20px; color: #dd0000; visibility:initial");
-     $("#lbErros").text(totalPalavrasErradas + " Palavras Erradas");
+     $("#ContadorDeErros").attr("style","color: #dd0000; visibility:initial");
+     $("#ContadorDeErros").text(totalPalavrasErradas + " Palavras Erradas");
    }
    else{
-     $("#lbErros").attr("style","visibility:hidden");
+     $("#ContadorDeErros").attr("style","visibility:hidden");
    }
  }
 
-function findErr(tip){
+function findErr(){
   //devolve todas as palavras da classe
 
-  var e=0,f=0,todasPalavras=document.getElementsByClassName("picavel");
+  var e=0,f=0,
+      todasPalavras=document.getElementsByClassName("picavel");
   for (var i=0; i< todasPalavras.length; i++){
+
     if($(todasPalavras[i]).val() != ''){
       //selecionar a categoria do erro (Exatidão / fluidez)
       switch (parseInt(($(todasPalavras[i]).val()).charAt(0))){
-        case 0:
+        case 1:
           e++;
           break;
-        case 1:
+        case 2:
           f++;
           break;
       }
     }
   }
 
-  if(tip==0) return e;
-  else return f;
+  return{
+    "exatidao": e,
+    "fluidez": f
+    };
 }
 
 //////////// Guardar audio vindo do couchDB /////////////////
@@ -82,7 +69,7 @@ function GravarSOMfile (name, data, success, fail) {
    writer.onerror = fail;
    writer.write(data);
  };
- window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
 }
 
 //******************************************************************************
@@ -94,7 +81,6 @@ define(function(require) {
     janelas = require('text!janelas/corrigirLista.html'),
     template = _.template(janelas);
 
-var Demo, leitura;
   return Backbone.View.extend({
 
     highlight: function(e) {
@@ -103,7 +89,6 @@ var Demo, leitura;
     },
 
     initialize: function() {
-      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
 
       ////Carrega os dados mais uteis da janela anterior////
       var profId = window.localStorage.getItem("ProfSelecID");
@@ -127,18 +112,24 @@ var Demo, leitura;
           if(err) console.log(err);
 
           $("#lbNomeAluno").text(alunoDoc.nome);
+          $("#LBrelaAluno").text(alunoDoc.nome);
+
         });
         alunos_local2.getAttachment(correcaoDoc.id_Aluno, 'aluno.png', function(err2, DataImg) {
             if (err2)  console.log(err2);
 
             var foto = URL.createObjectURL(DataImg);
             $("#alunoFoto").attr("src",foto);
+            $("#imgAlunoTitleRela").attr("src",foto);
+
         });
 
         testes_local2.get(correcaoDoc.id_Teste, function(err, testeDoc) {
           if (err)  console.log(err);
 
           $('#lbTituloTeste').text(testeDoc.titulo+" - "+testeDoc.conteudo.pergunta);
+          $('#LBrelaTitulo').text(testeDoc.titulo+" - "+testeDoc.conteudo.pergunta);
+
           //imagem da disciplina e tipo de teste
           var urlDiscp;
           switch (testeDoc.disciplina){
@@ -159,7 +150,7 @@ var Demo, leitura;
           if(testeDoc.conteudo.palavrasCl1.length>0){
             s1="";
             for(var j=0; j<testeDoc.conteudo.palavrasCl1.length;j++){
-              s1+="<p id='c1l"+ (j+1) +" 'class='picavel' value=''"
+              s1+="<p id='"+convert_n3d(totalPalavras)+" 'class='picavel' value=''"
                     +"style='font-weight:bold; font-size:20px'>"
                     + testeDoc.conteudo.palavrasCl1[j] +"</p>";
               totalPalavras++;
@@ -171,7 +162,7 @@ var Demo, leitura;
           if(testeDoc.conteudo.palavrasCl2.length>0){
               s1="";
               for(var j=0; j<testeDoc.conteudo.palavrasCl2.length;j++){
-                s1+="<p id='c2l"+ (j+1) +"'class='picavel' value=''"
+                s1+="<p id='"+ convert_n3d(totalPalavras) +"'class='picavel' value=''"
                       +"style='font-weight:bold; font-size:20px'>"
                       + testeDoc.conteudo.palavrasCl2[j] +"</p>";
                 totalPalavras++;
@@ -183,7 +174,7 @@ var Demo, leitura;
           if(testeDoc.conteudo.palavrasCl3.length>0){
               s1="";
               for(var j=0; j<testeDoc.conteudo.palavrasCl3.length;j++){
-                s1+="<p id='c3l"+ (j+1) +"'class='picavel' value=''"
+                s1+="<p id='"+ convert_n3d(totalPalavras) +"'class='picavel' value=''"
                       +"style='font-weight:bold; font-size:20px'>"
                       + testeDoc.conteudo.palavrasCl3[j] +"</p>";
                 totalPalavras++;
@@ -199,50 +190,88 @@ var Demo, leitura;
             $('#listaAreaConteudo').html(allTable);
 
           }
+
+          testes_local2.getAttachment(testeDoc._id, 'voz.mp3', function(err2, DataImg) {
+            if (err2) console.log(err2);
+            GravarSOMfile('voz.mp3', DataImg, function() {
+              console.log('FUNCIONA VOZ PROF');
+              $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3");
+              $("#AudioPlayerProf").trigger('load');
+            }, function(err) {
+              console.log("DEU ERRO VOZ PROF" + err);
+            });
+          });
         });
 
-        testes_local2.getAttachment(correcaoDoc.id_Teste, 'voz.mp3', function(err2, DataImg) {
-          try{
-            GravarSOMfile('voz.mp3', DataImg, function () {
-                console.log('FUNCIONA vozprof');
-                Demo = cordova.file.dataDirectory+"/files/voz.mp3";
-                }, function (err) {
-                  console.log("DEU ERRO vozprof: "+err);
-            });
-          }
-          catch (err){
-            console.log(err.message);
-          }
-        });
 
-        correcoes_local2.getAttachment(correcaoDoc._id, 'gravacao.amr', function(err2, DataImg) {
-
-            GravarSOMfile('gravacao.amr', DataImg, function () {
-                console.log('FUNCIONA leitura');
-                leitura = cordova.file.dataDirectory+"/files/gravacao.amr";
-                }, function (err) {
-                  console.log("DEU ERRO leitura: "+err);
-            });
-
+        correcoes_local2.getAttachment(correcaoID, 'gravacao.amr', function(err2, DataAudio) {
+          if (err2) console.log(err2);
+          GravarSOMfile('gravacao.amr', DataAudio, function() {
+            console.log('FUNCIONA');
+            $("#AudioPlayerAluno").attr("src", cordova.file.dataDirectory + "/files/gravacao.amr");
+            $("#AudioPlayerAluno").trigger('load');
+          }, function(err) {
+            console.log("DEU ERRO" + err);
+          });
         });
 
         // Analisa todos os botoes do div
         var $container = $('#listaAreaConteudo');
         $container.on('click', '.picavel', function(ev) {
-          ev.stopPropagation(); ev.preventDefault();
+          var text = $(this).text();
 
-          $palavra = $(this); // O jQuery passa o btn clicado pelo this
-          //vou usar o atributo value, para guardar o tipo de erro cometido
-          //Se não tem nada no value, logo ainda nãoestá marcada
-          if($palavra.val()==''){
-            $('#myModalSUB').modal("show");
-          }
-          else{/// Desmarcar
+          var $meuSpan = $(this);
+          var elem = '<div class="dropdown" > ' +
+            '<button class="btn btn-info testMedioDrops" type="button" id="menu1" data-toggle="dropdown" style="width:115px; "> Exatidão ' +
+            '<span class="caret"></span></button>' +
+            '<ul class="dropdown-menu testMedioDrops" role="menu" aria-labelledby="menu1">' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(11).css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Substituição de letras</a></li>' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(12).css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Substituição de palavras</a></li>' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(13).css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Adições</a></li>' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(14).css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de letras</a></li>' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(15).css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de sílabas</a></li>' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(16).css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de palavras</a></li>' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(17).css(\'color\', \'#FF0000\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Inversões</a></li>' +
+            '</ul>' +
+            '</div>' +
+            '<div class="dropdown"> ' +
+            '<button class="btn btn-info testMedioDrops" type="button" id="menu1" data-toggle="dropdown" style="width:	115px;"> Fluidez ' +
+            '<span class="caret"></span></button>' +
+            '<ul class="dropdown-menu testMedioDrops" role="menu" aria-labelledby="menu1">' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(21).css(\'color\', \'#3399FF\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Vacilação</a></li>' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(22).css(\'color\', \'#3399FF\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Repetições</a></li>' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(23).css(\'color\', \'#3399FF\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Soletração</a></li>' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(24).css(\'color\', \'#3399FF\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Fragmentação de palavras</a></li>' +
+            '<li role="presentation"><a role="menuitem" tabindex="-1" class="close-me" onclick="$(this).closest(\'div.popover\').prev().popover(\'hide\').val(25).css(\'color\', \'#3399FF\');TocarDepoisDeSelec();"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Retificação espontânea</a></li>' +
+            '</ul>' +
+            '</div> ';
+          $meuSpan.popover({
+            toggle: "popover",
+            content: elem,
+            placement: 'top',
+            html: true,
+            trigger: 'focus'
+          });
+
+          var color = $(this).css('color');
+
+          if (color == 'rgb(255, 153, 0)' || color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
+          {
+            $(this).css("color", "#000000");
+            $meuSpan.popover('destroy');
+            $meuSpan.attr("value", " ");
             totalPalavrasErradas--;
-            $palavra.val('');
-            $palavra.attr("style","font-weight:bold; font-size:20px; color: #000000");
             verificaPalavras();
+            triggerSelec = false;
+          } else   if(triggerSelec == false){
+            $("#AudioPlayerAluno").trigger('pause');
+            $(this).css("color", "#FF9900");
+            $meuSpan.popover('show');
+            totalPalavrasErradas++;
+            verificaPalavras();
+            triggerSelec = true;
           }
+
         });
       });
       totalPalavrasErradas=0;
@@ -258,63 +287,13 @@ var Demo, leitura;
 
 
 
-    //Função para executar a demonstração e inibir a reprodução da leitura e a finalização!.
-    clickDemoButton: function(){
-      $('#playPlayer').attr("src",Demo);
-      var audio = document.getElementById("playPlayer");
-      if ($('#demoButton').val()==0) {
-        $('#demoButton').val(1);
-        $('#demoButton').attr("style","background-color: #ee0000");
-        $('#demoButton').html('<span class="glyphicon glyphicon-stop"aria-hidden="true"> </span> Parar </a>');
-        $('#playPlayer').attr("style","visibility:initial; width:100%");
-        $('#playMyTestButton').attr("style","visibility:hidden;");
-        $('#submitButton').attr("style","visibility:hidden;");
-        audio.play();
-      }
-      else {
-        $('#demoButton').val(0);
-        $('#demoButton').attr("style","background-color: #ffc060");
-        $('#demoButton').html('<span class="glyphicon glyphicon-headphones"aria-hidden="true"> </span> Demonstrar </a>');
-        $('#playPlayer').attr("style","visibility:hidden;");
-        $('#playMyTestButton').attr("style","visibility:initial;background-color: #4ed0ff");
-        if (isFeito){
-          $('#submitButton').attr("style","visibility:initial;background-color: #00ee00");
-        }
-        audio.pause();
-      }
-
-    },
-
-    // reproduzir a ultima leitura do teste
-    clickPlayMyTestButton: function(){
-      $('#playPlayer').attr("src",leitura);
-      isFeito=true;
-      var audio = document.getElementById("playPlayer");
-      if ($('#playMyTestButton').val()==0) {
-        $('#playMyTestButton').val(1);
-        $('#playMyTestButton').attr("style","background-color: #ee0000");
-        $('#playMyTestButton').html('<span class="glyphicon glyphicon-stop"aria-hidden="true"> </span> Parar </a>');
-        $('#playPlayer').attr("style","visibility:initial; width:100%");
-        $('#demoButton').attr("style","visibility:hidden;");
-        $('#submitButton').attr("style","visibility:hidden;");
-        audio.play();
-      }
-      else {
-        $('#playMyTestButton').val(0);
-        $('#playMyTestButton').attr("style","background-color: #4ed0ff");
-        $('#playMyTestButton').html('<span class="glyphicon glyphicon-play"aria-hidden="true"> </span> Ouvir-me </a>');
-        $('#playPlayer').attr("style","visibility:hidden;");
-        $('#demoButton').attr("style","visibility:initial;background-color: #ffc060");
-        $('#submitButton').attr("style","visibility:initial;background-color: #00ee00");
-        audio.pause();
-      }
-
-    },
-
 
     clickbtnConfirmarSUB: function(e) {
-        $('#myModalConfirm').modal("hide");
-        $('#myModalConfirm').on('hidden.bs.modal', function (e) {
+        console.log("cenas");
+
+
+        $('#myModalSUB').modal("hide");
+        $('#myModalSUB').on('hidden.bs.modal', function (e) {
         try{
             var plvr, categ, erro;
             //array para receber os items (palavra e erro)
@@ -324,26 +303,40 @@ var Demo, leitura;
             var todasPalavras =document.getElementsByClassName("picavel");
             for (var i=0; i< todasPalavras.length; i++){
               if($(todasPalavras[i]).val() != ''){
-                ///adiciono 3 digitos, para futuramente saber onde esta se posiiona no texto
-                plvr=convert_n3d(i) + $(todasPalavras[i]).text();
+                plvr=$(todasPalavras[i]).text();
 
                 //selecionar a categoria do erro (Exatidão / fluidez)
                 switch (parseInt(($(todasPalavras[i]).val()).charAt(0))){
-                  case 0:
+                  case 1:
                     categ="Exatidão";
                     break;
-                  case 1:
+                  case 2:
                     categ="Fluidez";
                     break;
                 }
                 //O erro em si.
-                erro= ($(todasPalavras[i]).val()).substring(1);
-                //mini array de 3 campos
+                switch (parseInt($(todasPalavras[i]).val())){
+                  case 11:erro="Substituição de palavras";break;
+                  case 13:erro="Adições";break;
+                  case 14:erro="Omissões de letras";break;
+                  case 15:erro="Omissões de sílabas";break;
+                  case 16:erro="Omissões de palavras";break;
+                  case 17:erro="Inversões";break;
+                  case 21:erro="Vacilação";break;
+                  case 22:erro="Repetições";break;
+                  case 23:erro="Soletração";break;
+                  case 24:erro="Fragmentação de palavras";break;
+                  case 25:erro="Retificação espontânea";break;
+                }
+
+                //mini array de 4 campos
                 var item = {
                     'palavra': plvr,
                     'categoria': categ,
                     'erro': erro,
+                    'posicao':$(todasPalavras[i]).attr("id")
                 };
+
                 //colocar o item no array
                 conteudoResultado[i] = item;
               }
@@ -351,16 +344,11 @@ var Demo, leitura;
 
             //Data da correção
             var agora = new Date();
-            //garantir que o tempo é da leitura do aluno
-            $('#playPlayer').attr("src",leitura);
-            //obrigar o player a ficar com o tempo do ficheiro.
-            var audio = document.getElementById("playPlayer");
-            audio.play();
-            audio.pause();
+            var tempoSeg = $('#AudioPlayerAluno').prop("duration");
 
             //retorna o tempo de duração da leitura em segundos,
             //arredondando ao ineiro mais próximo
-            var tempoSeg = Math.round($("#playPlayer").prop("duration"));
+            var tempoSeg = Math.round($("#AudioPlayerAluno").prop("duration"));
             //(plm) palavras lidas por minuto (não necessário por enquanto)
             //var plm = Math.roud((totalPalavras*60/tempoSeg));
             //palavras corretamente lidas (pcl)
@@ -409,42 +397,46 @@ var Demo, leitura;
 
     // Fazer update à correção com os devidos campos preenchidos
     clickSubmitButton: function(e) {
-      e.stopPropagation(); e.preventDefault();
-      //fazer um resumo:
-      var resumo ="";
-      resumo+="Titulo: "+$("#lbTituloTeste").text()+"\n";
-      resumo+="Aluno: "+$("#lbNomeAluno").text()+"\n";
-      resumo+="Total de Palavras: "+totalPalavras+"\n";
+      e.stopPropagation();
+      e.preventDefault();
+      window.print();
+      var timex = $('#AudioPlayerAluno').prop("duration");
 
-      var audio = document.getElementById("playPlayer");
-      audio.src = Demo;
-      audio.play();
-      audio.pause();
-      var tempo = Math.round(audio.duration);
+      if (timex == 0) {
+        $("#popUpAviso").empty();
+        $("#popUpAviso").append(
+          '<div id="qwert" class="alert alert-danger alert-dismissable">' +
+          '<button type="button" class="close" data-dismiss="alert"> <span aria-hidden="true">&times;</span></button>' +
+          '<strong>Aviso!</strong> Têm que ouvir pelo menos uma vez a leitura do Aluno.' +
+          '</div>');
+      } else {
+        $("#popUpAviso").empty();
 
-      resumo+="Tempo do professor:\n"+
-              "         - Duração: "+convert_n2d(tempo/60)+":"+convert_n2d(tempo%60)+"\n"+
-              "         - Velocidade: "+(Math.round(60*totalPalavras/tempo))+" palavras/min\n\n";
-      var e,f;
-      e= Math.round((findErr(0)*100/totalPalavras));
-      f= Math.round((findErr(1)*100/totalPalavras));
-      resumo+="Correção:\n"+
-              "         - Exatidão: "+e+" palavras erradas, acertou"+(100-e)+"%\n"+
-              "         - Fluidez:  "+f+" palavras erradas, acertou"+(100-f)+"%\n"+
-              "         >>> Total: "+(100-(e+f))+"% certo <<<\n\n";
+        var analise = findErr();
+        var exatidaoTotal= analise.exatidao;
+        var fluidezTotal = analise.fluidez;
 
-      audio.src = leitura;
-      //obrigar o player a ficar com o tempo do ficheiro.
-      audio.play();
-      audio.pause();
-      tempo = Math.round(audio.duration);
-      resumo+="Tempo do aluno:\n"+
-              "         - Duração: "+convert_n2d(tempo/60)+":"+convert_n2d(tempo%60)+"\n"+
-              "         - Velocidade: "+(Math.round(60*totalPalavras/tempo))+" palavras/min\n\n";
+        $('#LBtotalPalavras').text("Total de Palavras: "+totalPalavras);
+        var exPer = Math.round((exatidaoTotal/totalPalavras)*100);
+        var exFlu = Math.round((fluidezTotal/totalPalavras)*100);
+        $('#LBCorrecao').html("Correção: </br>"+
+        "&nbsp;&nbsp;&nbsp;&nbsp-Exatidão: "+analise.exatidao+" palavras erradas, acertou: "+(100-exPer)+"% </br>"+
+        "&nbsp;&nbsp;&nbsp;&nbsp-Fluidez: "+analise.fluidez+" palavras, acertou: "+(100-exFlu)+"% </br>"+
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp>>> Total:"+(100-(exPer+exFlu))+"% certo <<<\n\n"
+      );
+      var tempoSeg = $('#AudioPlayerAluno').prop("duration");
 
-      $("#resumo").text(resumo);
+      var tempoSegProf = $('#AudioPlayerProf').prop("duration");
 
-      $('#myModalConfirm').modal("show");
+       $('#LBCtempoAluno').html("Tempo do Aluno: </br>"+
+            "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+readableDuration(tempoSeg)+" </br>"+
+            "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*totalPalavras/tempoSeg))+" ");
+
+      $('#LBCtempoProf').html("Tempo do Professor: </br>"+
+      "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+readableDuration(tempoSegProf)+" </br>"+
+      "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*totalPalavras/temopoSegProf))+" ");
+      $('#myModalSUB').modal("show");
+      }
     },
 
     clickBtnCancelar: function(e) {

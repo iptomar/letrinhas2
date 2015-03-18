@@ -29,142 +29,137 @@
     </div>
 
     <div class="container">
+      <div id="popUpAviso"></div>
 
       <div class="panel panel-default">
         <div class="panel-body centerEX">
           <img id="imgDisciplina" src="img/inConstruction.jpg" style="height:44px"/>
           <label id="lbTituloTeste">titulo</label>
-          <span style="margin-left:10px;">
-            <label id="lbErros" style="visibility:hidden">X Palavras Erradas</label>
-          </span>
         </div>
       </div>
-      <!-- ##################### POPUP para a escolha do tipo de erro ################# -->
-      <div class="modal fade" id="myModalSUB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header"  style="background-color:#4ed0ff; color:#ffffff;">
-              <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
-                Cancelar
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-              </button>
-              <h2>Marque o tipo de erro </h2>
-              <br/>
-            </div>
-            <div class="modal-body">
-              <table style="width:100%; text-align:center" ><tr><td>
-              <div class="btn-group">
-                <button type="btn btn-primary success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <h3> Exatidão </h3><span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li onclick= picaPalavra(this) value=0><h4>Substituição de letras</h4></li>
-                  <li class="divider"></li>
-                  <li onclick= picaPalavra(this) value=0><h4>Substituição de palavras</h4></li>
-                  <li class="divider"></li>
-                  <li onclick= picaPalavra(this) value=0><h4>Adições</h4></li>
-                  <li class="divider"></li>
-                  <li onclick= picaPalavra(this) value=0><h4>Omissões de letras</h4></li>
-                  <li class="divider"></li>
-                  <li onclick= picaPalavra(this) value=0><h4>Omissões de silabas</h4></li>
-                  <li class="divider"></li>
-                  <li onclick= picaPalavra(this) value=0><h4>Omissões de palavras</h4></li>
-                  <li class="divider"></li>
-                  <li onclick= picaPalavra(this) value=0><h4>Inversões</h4></li>
-                </ul>
-              </div>
-            </td><td>
-            <div class="btn-group">
-              <button type="btn btn-primary success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <h3> Fluidez </h3><span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li onclick= picaPalavra(this) value=1><h4>Vacilação (hesitação)</h4></li>
-                <li class="divider"></li>
-                <li onclick= picaPalavra(this) value=1><h4>Repetições</h4></li>
-                <li class="divider"></li>
-                <li onclick= picaPalavra(this) value=1><h4>Soletração</h4></li>
-                <li class="divider"></li>
-                <li onclick= picaPalavra(this) value=1><h4>Fragmentação de palavras</h4></li>
-                <li class="divider"></li>
-                <li onclick= picaPalavra(this) value=1><h4>Retficação espontânea</h4></li>
-              </ul>
-
-            </div>
-          </td>
-        </tr></table>
-
-            </div>
-
-          </div>
-        </div>
-      </div>
-      <!-- ##################### END ################# -->
       <!-- ##################### POPUP SIM NAO################# -->
-      <div class="modal fade" id="myModalConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+      <div class="modal fade bs-example-modal-lg" id="myModalSUB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
-            <div class="modal-header" style="background-color:#4ed0ff; color:#ffffff;">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h2 class="modal-title" id="myModalLabel">Resumo da Correção:</h2>
-            </div>
-            <div class="modal-body" style="text-align:center;">
-               <textarea id="resumo" rows="15" cols="51" readonly disabled style="font-size:20px; color:#000000; background-color:#eeeeff"></textarea>
-            </div>
+            <div class="panel panel-success">
+              <div class="panel-heading centerEX">
+                <h3 class="panel-title">Sumário</h3>
+              </div>
+              <div class="panel-body">
+                <label id="LBrelaTitulo" class="textareaParaTestes fontEX" style="color:#000000;">Titulo: </label>
+                </p>
+                <label id="LBrelaAluno" class="textareaParaTestes fontEX" style="color:#000000;">Aluno: </label>
+                <img id="imgAlunoTitleRela" src="img/inConstruction.jpg" style="height:42px" />
+                </p>
+                <label id="LBtotalPalavras" class="textareaParaTestes fontEX" style="color:#000000;">Totalpalavas: </label>
+                </p>
+                <label id="LBCtempoProf" class="textareaParaTestes fontEX" style="color:#000000;">tempoProfo: </label>
+                </p>
+                </p>
+                <label id="LBCorrecao" class="textareaParaTestes fontEX" style="color:#000000;">Correção: </label>
+                </p>
+                </p>
+                <label id="LBCtempoAluno" class="textareaParaTestes fontEX" style="color:#000000;">tempoAluno: </label>
+                </p>
+              </div>
+
             <div class="modal-footer">
-              <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
-              <button id="btnConfirmarSUB" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge">Confirmar</button>
+              <button type="button" class="btn btn-default btn_mine-MediumLarge2" data-dismiss="modal">Cancelar</button>
+              <button id="btnConfirmarSUB" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge2">Confirmar</button>
             </div>
+          </div>
           </div>
         </div>
       </div>
       <!-- ##################### END ################# -->
 
+      <nav class="navbar navbar-default navbar-fixed-bottom " style=" background: #E3E4E5; color:#FFFFFF; ">
+        <div class="row centerEX">
+          <div class="col-md-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">
+                Ouvir:
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">Aluno:</label>
+                </div>
+                <div class="col-md-9">
+                  <audio id="AudioPlayerAluno" controls="controls" style="width: 100%; "></audio>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">Professor:</label>
+                </div>
+                <div class="col-md-9">
+                  <audio id="AudioPlayerProf" controls="controls" style="width: 100%; "></audio>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class=" col-md-4">
+            <div class="panel panel-danger" style="height: 110px">
+              <div class="panel-heading">
+                Expressividade de:
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">Sinais:</label>
+                  <select id="DropExprSinais" class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="col-xs-4">
+                  <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">Entoação:</label>
+                  <select id="DropExprEntoacao" class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="col-xs-4">
+                  <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">Texto:</label>
+                  <select id="DropExprTexto" class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class=" col-md-4">
+            <div class="panel panel-info" style="height: 110px">
+              <div class="panel-heading">
+                Concluir
+              </div>
+              <button id="submitButton" type="button" class="btn btn-success btn-lg btn-block">
+                Finalizar
+                <span id="ContadorDeErros" style="visibility:hidden" class="badge">Erros: 0</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
 
       <!-- Agora o conteúdo, Div onde se vai construir tudo dinamicamente -->
 
-      <div id="listaAreaConteudo" class="well well-lg" style="height:27em; overflow:auto" align="center"></div>
+
+      <div id="listaAreaConteudo" class="well well-lg textareaTextoCorr container " style="overflow:auto" align="center"></div>
     </div>
   </div>
 
 
 
-  <div class"navbar navbar-default navbar-fixed-bottom" >
-    <div class="well well-lg" >
-      <div class="centerEX">
-        <audio id="playPlayer" style="visibility:hidden" controls></audio>
-      </div>
-      <div class="centerEX">
-        <table style="width:100%">
-          <tr>
-            <td>
-            <!-- Posicionamento dos botões de demonstração, ouvir aluno e submeter! -->
-              <a id="demoButton" class="btn btn-default btn-lg" val=0 style="background-color: #ffc060">
-                <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
-                 Demonstração
-              </a>
-            </td>
-            <td>
-              <a id="playMyTestButton" class="btn btn-default btn-lg" val=0 style="background-color: #4ed0ff">
-                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                Ouvir Leitura
-              </a>
-            </td>
-            <td>
-              <a  class="btn btn-default btn-lg" val=0 style="visibility:hidden;">
-                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                espaço em branco................
-              </a>
-            </td>
-            <td>
-              <a id="submitButton" class="btn btn-default btn-lg" style="visibility:hidden">
-                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-                Finalizar
-              </a>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  </div>
 </section>

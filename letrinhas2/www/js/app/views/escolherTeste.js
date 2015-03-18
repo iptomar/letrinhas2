@@ -140,11 +140,11 @@ define(function(require) {
                 colum1 += testeDoc.conteudo.palavrasCl1[j] + "</p>";
               }
 
-              for (var j = 0; j < testeDoc.conteudo.palavrasCl1.length; j++) {
+              for (var j = 0; j < testeDoc.conteudo.palavrasCl2.length; j++) {
                 colum2 += testeDoc.conteudo.palavrasCl2[j] + "</p>";
               }
 
-              for (var j = 0; j < testeDoc.conteudo.palavrasCl1.length; j++) {
+              for (var j = 0; j < testeDoc.conteudo.palavrasCl3.length; j++) {
                 colum3 += testeDoc.conteudo.palavrasCl3[j] + "</p>";
               }
 

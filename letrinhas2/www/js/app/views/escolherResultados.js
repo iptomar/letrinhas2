@@ -71,9 +71,6 @@ define(function(require) {
             //preencher o cabeçalho
             $("#Cabecalho").text("Tem "+ resultados.length + " resultados.");
 
-
-
-
             var nome, foto;
             alunos_local2.get(resultados[0].id_Aluno, function(err, alunoDoc) {
               if (err)  console.log(err);
@@ -97,8 +94,6 @@ define(function(require) {
             for(i=0; i<resultados.length; i++){
               //buscar a foto e nome do aluno
               var a=0, b=0, c=0 , titulo, disciplina, tipo, urlDiscp, urlTipo;
-
-
 
               //buscar o título, tipo e disciplina do teste
               testes_local2.get(resultados[i].id_Teste, function(err, testeDoc) {

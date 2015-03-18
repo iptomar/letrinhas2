@@ -91,6 +91,21 @@ define(function(require) {
         window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
       }
 
+      function vaiGravar(){
+
+          $('#startButton').val(1);
+          $('#startButton').attr("style","background-color: #ee0000");
+          $('#startButton').html('<span class="glyphicon glyphicon-stop"aria-hidden="true"> </span> Parar </a>');
+          $('#demoButton').attr("style","visibility:hidden;");
+          $('#playMyTestButton').attr("style","visibility:hidden;");
+          $('#submitButton').attr("style","visibility:hidden;");
+
+          //Iniciar a gravação
+          recordAudio();
+
+
+      }
+
       function recordAudio() {
         try{
           mediaSrc = "gravacao.amr";
@@ -244,35 +259,44 @@ define(function(require) {
       "click #submitButton": "clickSubmitButton",//por finalizar
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
+      "click #btnConfirmarRep": "clickbtnConfirmarRep",
 
     },
 
+    //Controlo para repetição da gravação de leitura
+    clickbtnConfirmarRep: function(e){
+      e.stopPropagation(); e.preventDefault();
+      $('#myModalRep').modal("hide");
+      $('#myModalRep').on('hidden.bs.modal', function (e) {
+
+      });
+      vaiGravar();
+    },
+
+
     // Inicio da gravação da leitura do teste!
-    clickStartButton: function(){
-      var record;
-      if ($('#startButton').val()==0) {
-        $('#startButton').val(1);
-        $('#startButton').attr("style","background-color: #ee0000");
-        $('#startButton').html('<span class="glyphicon glyphicon-stop"aria-hidden="true"> </span> Parar </a>');
-        $('#demoButton').attr("style","visibility:hidden;");
-        $('#playMyTestButton').attr("style","visibility:hidden;");
-        $('#submitButton').attr("style","visibility:hidden;");
-
-        //Iniciar a gravação
-        recordAudio();
+    clickStartButton: function(e){
+      e.stopPropagation(); e.preventDefault();
+      if ($('#startButton').val()==0){
+        if(isFeito==true){
+          $('#myModalRep').modal("show");
+        }
+        else {
+          vaiGravar();
+        }
       }
-      else {
-        $('#startButton').val(0);
-        $('#startButton').attr("style","background-color: #eeff00");
-        $('#startButton').html('<span class="glyphicon glyphicon-repeat"aria-hidden="true"> </span> Repetir </a>');
-        $('#demoButton').attr("style","visibility:initial;background-color: #ffc060");
-        $('#playMyTestButton').attr("style","visibility:initial; background-color: #c065ff");
-        $('#submitButton').attr("style","visibility:initial; background-color: #00ee00");
+        else {
+          $('#startButton').val(0);
+          $('#startButton').attr("style","background-color: #eeff00");
+          $('#startButton').html('<span class="glyphicon glyphicon-repeat"aria-hidden="true"> </span> Repetir </a>');
+          $('#demoButton').attr("style","visibility:initial;background-color: #ffc060");
+          $('#playMyTestButton').attr("style","visibility:initial; background-color: #c065ff");
+          $('#submitButton').attr("style","visibility:initial; background-color: #00ee00");
 
-        //parar a gravação!
-        StopRec();
-        isFeito=true;
-      }
+          //parar a gravação!
+          StopRec();
+          isFeito=true;
+        }
     },
 
     // reproduzir a ultima leitura do teste

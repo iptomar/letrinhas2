@@ -96,16 +96,16 @@
       </div>
       <!-- ##################### END ################# -->
 
-      <!-- ##################### POPUP SIM NAO################# -->
+      <!-- ##################### POPUP SIM NAO confirmar ################# -->
       <div class="modal fade" id="myModalSUB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color:#dff0d8;">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title" id="myModalLabel">Aviso: Submeter para avaliação</h4>
             </div>
             <div class="modal-body">
-               <h3 id="labelErr" style="color:#D80000;">Tem a certeza que quer continuar?</h3>
+               <h3 id="labelErr" style="color:#10aa20;">Tem a certeza que quer continuar?</h3>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
@@ -115,6 +115,28 @@
         </div>
       </div>
       <!-- ##################### END ################# -->
+
+      <!-- ##################### POPUP SIM NAO Repetir ################# -->
+      <div class="modal fade" id="myModalRep" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header " style="background-color:#c09853">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Aviso: Repetir a gravação</h4>
+            </div>
+            <div class="modal-body">
+               <h3 id="warning" style="color:#ffaa10;">Tem a certeza que quer continuar?</h3>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
+              <button id="btnConfirmarRep" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ##################### END ################# -->
+
+
 
 
       <!-- Agora o conteúdo, Div onde se vai construir tudo dinamicamente -->

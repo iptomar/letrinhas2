@@ -1,8 +1,17 @@
-var Demo,           //caminho para reproduzir o ficheiro de demonstração
-    mediaRec,       //objeto Media que irá fazer a gravação
-    mediaSrc,       //url onde deverá ser guardada a gravação
-    totalPalavras=0;//contador de palavras
+var semaforoIntrvl, semfroCont;
 
+function desenha(){
+  $("#semafro").text(''+semfroCont);
+  console.log($("#semafro").text());
+  if(semfroCont>0){
+    semfroCont--;
+  }else{
+    clearInterval(semaforoIntrvl);
+    $('#myModalCont').modal("hide");
+    $('#myModalCont').on('hidden.bs.modal', function (e) {$("#pik").click();});
+    $("#semafro").text('A gravar em');
+  }
+}
 
 define(function(require) {
 
@@ -19,6 +28,17 @@ define(function(require) {
   var profId, profNome, escolaNome, escolaId, alunoId, alunoNome,
       turmaId, turmaNome, discplinaSelecionada, tipoTesteSelecionado,
       TesteArealizarID;
+
+  var Demo,           //caminho para reproduzir o ficheiro de demonstração
+    mediaRec,       //objeto Media que irá fazer a gravação
+    mediaSrc,       //url onde deverá ser guardada a gravação
+    totalPalavras=0;//contador de palavras
+
+    function semaforo(){
+      semfroCont=3;
+      clearInterval(semaforoIntrvl);
+      semaforoIntrvl=setInterval('desenha()',1000);
+    }
 
       ////////////////////////Ler ficheiro e colocar em anexo para correcao/////////
       function LerficheiroGravacaoEinserir() {
@@ -90,6 +110,9 @@ define(function(require) {
         };
         window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
       }
+
+
+
 
       function vaiGravar(){
 
@@ -172,6 +195,7 @@ define(function(require) {
     initialize: function() {
       self = this;
       document.addEventListener("backbutton", this.onBackKeyDown, false); //Adicionar o evento
+      isFeito=false;
     // Vai buscar todas as variaveis necessárias
       profId = window.localStorage.getItem("ProfSelecID");
       profNome = window.localStorage.getItem("ProfSelecNome");
@@ -187,7 +211,6 @@ define(function(require) {
 
       testes_local2.get(TesteArealizarID, function(err, testeDoc) {
         if (err)  console.log(err);
-            console.log(testeDoc);
 
         $('#titleTestePagina').text(testeDoc.titulo);
         $('#lbTituloTeste').text(testeDoc.conteudo.pergunta);
@@ -260,8 +283,16 @@ define(function(require) {
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
       "click #btnConfirmarRep": "clickbtnConfirmarRep",
+      "click #pik": "clickpik",
 
     },
+
+    clickpik: function(e){
+      e.stopPropagation(); e.preventDefault();
+      mediaRec = null;
+      vaiGravar();
+    },
+
 
     //Controlo para repetição da gravação de leitura
     clickbtnConfirmarRep: function(e){
@@ -270,7 +301,8 @@ define(function(require) {
       $('#myModalRep').on('hidden.bs.modal', function (e) {
 
       });
-      vaiGravar();
+      $("#myModalCont").modal("show");
+      semaforo();
     },
 
 
@@ -282,7 +314,8 @@ define(function(require) {
           $('#myModalRep').modal("show");
         }
         else {
-          vaiGravar();
+          $("#myModalCont").modal("show");
+          semaforo();
         }
       }
         else {

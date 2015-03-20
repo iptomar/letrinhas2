@@ -100,13 +100,14 @@ define(function(require) {
       correcoes_local2.get(correcaoID, function(err, correcaoDoc){
         if(err) console.log(err);
 
+        var data = new Date(correcaoDoc.dataSub);
         $("#titleTestePagina").text("Corrigir teste de lista de palavras, submetido a "+
-                                      convert_n2d(correcaoDoc.dataSub.getDate())+
-                                      "/"+ convert_n2d(correcaoDoc.dataSub.getMonth()+1)+
-                                      "/"+ convert_n2d(correcaoDoc.dataSub.getFullYear())+
-                                      " às "+convert_n2d(correcaoDoc.dataSub.getHours())+
-                                      ":"+convert_n2d(correcaoDoc.dataSub.getMinutes())+
-                                      ":"+convert_n2d(correcaoDoc.dataSub.getSeconds())
+                                      convert_n2d(data.getDate())+
+                                      "/"+ convert_n2d(data.getMonth()+1)+
+                                      "/"+ convert_n2d(data.getFullYear())+
+                                      " às "+convert_n2d(data.getHours())+
+                                      ":"+convert_n2d(data.getMinutes())+
+                                      ":"+convert_n2d(data.getSeconds())
                                       );
         alunos_local2.get(correcaoDoc.id_Aluno, function(err, alunoDoc){
           if(err) console.log(err);
@@ -301,6 +302,7 @@ define(function(require) {
 
             //devolve todas as palavras da classe
             var todasPalavras =document.getElementsByClassName("picavel");
+            var a=0;
             for (var i=0; i< todasPalavras.length; i++){
               if($(todasPalavras[i]).val() != ''){
                 plvr=$(todasPalavras[i]).text();
@@ -338,7 +340,8 @@ define(function(require) {
                 };
 
                 //colocar o item no array
-                conteudoResultado[i] = item;
+                conteudoResultado[a] = item;
+                a++;
               }
             }
 
@@ -422,19 +425,19 @@ define(function(require) {
         $('#LBCorrecao').html("Correção: </br>"+
         "&nbsp;&nbsp;&nbsp;&nbsp-Exatidão: "+analise.exatidao+" palavras erradas, acertou: "+(100-exPer)+"% </br>"+
         "&nbsp;&nbsp;&nbsp;&nbsp-Fluidez: "+analise.fluidez+" palavras, acertou: "+(100-exFlu)+"% </br>"+
-        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp>>> Total:"+(100-(exPer+exFlu))+"% certo <<<\n\n"
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp>>> Precisão:"+(100-(exPer+exFlu))+"% certo <<<\n\n"
       );
       var tempoSeg = $('#AudioPlayerAluno').prop("duration");
 
       var tempoSegProf = $('#AudioPlayerProf').prop("duration");
 
        $('#LBCtempoAluno').html("Tempo do Aluno: </br>"+
-            "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+readableDuration(tempoSeg)+" </br>"+
-            "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*totalPalavras/tempoSeg))+" ");
+            "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+Math.round(tempoSeg)+" segundos </br>"+
+            "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*totalPalavras/tempoSeg))+" plv/min. ");
 
       $('#LBCtempoProf').html("Tempo do Professor: </br>"+
-      "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+readableDuration(tempoSegProf)+" </br>"+
-      "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*totalPalavras/temopoSegProf))+" ");
+      "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+Math.round(tempoSegProf)+" segundos</br>"+
+      "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*totalPalavras/tempoSegProf))+" plv/min.");
       $('#myModalSUB').modal("show");
       }
     },

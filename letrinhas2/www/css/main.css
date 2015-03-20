@@ -91,6 +91,21 @@
     background-color: white;
 }
 
+.relatorioDiv2 {
+
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    font-size: 15pt;
+    font-family: Arial;
+    height: 500px;
+    padding: 10px;
+    margin-left:40px;
+    text-align: center;
+    overflow-y: auto;
+    background-color: white;
+}
+
 
 .textareaTextoCorr {
     -moz-appearance: textfield-multiline;

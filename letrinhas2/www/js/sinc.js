@@ -2,9 +2,9 @@
 //##########################################################################
 
 var btnBloqueado = false;
-var IP= "127.0.0.1";
+//var IP= "127.0.0.1";
 
-//var IP= "ince.pt";
+var IP= "ince.pt";
 
 
 var alunos_local2 = new PouchDB('alunos_local2');

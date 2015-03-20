@@ -60,7 +60,7 @@ define(function(require) {
               var resAux= new Array();
               for (var i=1; i< l; i++){
                 resAux[i] =  response.rows[i].key;
-                if(resAux[i].id_Teste != resultados[0].id_Teste){
+                if(resAux[i].id_Teste != resultados[j].id_Teste){
                   j++;
                   resultados[j]=resAux[i];
                 }

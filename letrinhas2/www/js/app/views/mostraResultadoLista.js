@@ -65,7 +65,6 @@ function preencheColuna(colunaIn, resultado,posicoes){
 }
 
 
-//////////////// ERRO ///////////////////////////////////////
 function getSrc(obj){
     if($(obj).val()==0){
     correcoes_local2.getAttachment(obj.id, 'gravacao.amr', function(err2, DataAudio) {
@@ -291,9 +290,8 @@ define(function(require) {
                 $(".picavel").popover('hide');
               }
 
-
               if(nPaginas>1){
-                //colocar controlos de navegação caso existam mais que um resultado, para poder comparar
+                //colocar controlos de navegação caso exista mais que um resultado, para poder comparar
                 var controlo = '<a class="left carousel-control2" href="#carousel-example-generic" role="button" data-slide="prev">'
                               +'<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'
                               +'<span class="sr-only">Previous</span></a>'
@@ -314,8 +312,6 @@ define(function(require) {
       "click #BtnVoltar": "clickBtnCancelar",
       "click #controlos": "clickControlos",
     },
-
-
 
     clickControlos: function(e) {
      $(".picavel").popover('hide');

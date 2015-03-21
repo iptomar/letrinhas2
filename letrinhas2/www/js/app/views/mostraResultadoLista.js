@@ -70,7 +70,7 @@ function getSrc(obj){
     correcoes_local2.getAttachment(obj.id, 'gravacao.amr', function(err2, DataAudio) {
       if (err2) console.log(err2);
       GravarSOMfile(obj.id+'.amr', DataAudio, function() {
-        obj.src=""+cordova.file.dataDirectory + "/files/"+obj.id+".amr";
+        obj.src=""+cordova.file.dataDirectory + "/files/resultados/"+obj.id+".amr";
         obj.trigger='load';
         console.log("\nplayer carregado com sucesso. \nid: "+ obj.id);
         $(obj).val(1);

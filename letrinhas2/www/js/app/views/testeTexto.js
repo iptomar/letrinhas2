@@ -6,14 +6,12 @@ define(function(require) {
   "use strict";
 
   var self;
-
+  var myVarTIMER;
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
     janelas = require('text!janelas/testeTexto.html'),
     template = _.template(janelas);
-
-
 
     function LerficheiroGravacaoEins() {
     window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr", gotFiles, fails);
@@ -120,6 +118,35 @@ define(function(require) {
     }
 
     var modelTrue = false;
+    var count321 = 3;
+
+    function timerGrav() {
+      if (count321 <= 0)
+      {
+        clearInterval(myVarTIMER);
+        $('#myModalCont').modal("hide");
+        $('#btnDemonstracao').hide();
+              $('#btnFinalizar').hide();
+              $('#btnOuvirme').hide();
+              $('#AudioPlayerProf').prop('controls', false);
+              $('#AudioPlayerProf').trigger('pause');
+              $('#AudioPlayerProf').prop("currentTime",0);
+              $('#btnRec').removeClass("btn-primary"); //limpa campos
+              $('#btnRec').removeClass("btn-success"); //limpa campos
+              $('#btnRec').addClass("btn-danger"); //limpa campos
+              $('#btnRec').html("<span class='glyphicon glyphicon glyphicon-stop' ></span> Parar");
+              mediaRec = null;
+       recordAudio();
+       $("#semafroLB").text("A gravar em");
+      }
+      else{
+
+        $("#semafroLB").text(''+count321);
+        count321--;
+      }
+
+
+    }
 
   return Backbone.View.extend({
 
@@ -201,8 +228,18 @@ define(function(require) {
       "click #btnParar1": "clickbtnParar1",
       "click #btnParar2": "clickbtnParar2",
       "click #btnOuvirme": "clickbtnOuvirme",
+      "click #btnConfirmarSUBGrav": "clickbtnConfirmarSUBGrav",
 
     },
+
+    clickbtnConfirmarSUBGrav: function(e) {
+      $('#myModalSUBGravar').modal("hide");
+      $("#myModalCont").modal("show");
+      clearInterval(timerGrav);
+      count321 = 3;
+      myVarTIMER = setInterval(timerGrav, 1000);
+     },
+
 
     clickbtnDemonstracao: function(e) {
       $('#div1').hide();
@@ -270,19 +307,19 @@ define(function(require) {
 
     clickbtnRec: function(e) {
    ///Se o botao é botao de gravar
-    if  ($('#btnRec').hasClass("btn-success") || $('#btnRec').hasClass("btn-primary"))
+    if  ($('#btnRec').hasClass("btn-success"))
     {
-      $('#btnDemonstracao').hide();
-      $('#AudioPlayerProf').prop('controls', false);
-      $('#AudioPlayerProf').trigger('pause');
-      $('#AudioPlayerProf').prop("currentTime",0);
-      $('#btnRec').removeClass("btn-success"); //limpa campos
-      $('#btnRec').removeClass("btn-primary"); //limpa campos
-      $('#btnRec').addClass("btn-danger"); //limpa campos
-      $('#btnRec').html("<span class='glyphicon glyphicon glyphicon-stop' ></span> Parar");
-      mediaRec = null;
-      recordAudio();
-    }///Se for para parar a gravacao
+      $("#myModalCont").modal("show");
+      clearInterval(timerGrav);
+      count321 = 3;
+      myVarTIMER = setInterval(timerGrav, 1000);
+
+    }
+    else if ($('#btnRec').hasClass("btn-primary"))
+    {
+      $('#myModalSUBGravar').modal("show");
+    }
+    ///Se for para parar a gravacao
     else if ($('#btnRec').hasClass("btn-danger"))
     {  $('#btnFinalizar').removeClass("disabled"); //limpa campos
         StopRec();

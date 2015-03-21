@@ -133,7 +133,7 @@
               <h4 class="modal-title" id="myModalLabel">AVISO:</h4>
             </div>
             <div class="modal-body">
-              <h3 id="labelErr" style="color:#D80000;">Têm a certeza que deseja Submeter?</h3>
+              <h3 id="labelModelMsg" style="color:#D80000;">Têm a certeza que deseja Submeter?</h3>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
@@ -144,6 +144,39 @@
       </div>
       <!-- ##################### END ################# -->
 
+
+      <!-- ##################### POPUP SIM NAO Gravacao################# -->
+      <div class="modal fade" id="myModalSUBGravar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">AVISO:</h4>
+            </div>
+            <div class="modal-body">
+              <h3 id="labelModelMsg" style="color:#D80000;">Têm a certeza que deseja repetir a gravação?</h3>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
+              <button id="btnConfirmarSUBGrav" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ##################### END ################# -->
+
+      <div class="modal fade" id="myModalCont" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div align="center" style="background: transparent; color:#ffffff">
+            <button id="pik" type="button" style="visibility:hidden"></button>
+          </br>
+            <h1 id="semafroLB"style="font-size:72px; " >A gravar em</h1>
+          </div>
+        </div>
+      </div>
+      <!-- ##################### END ################# -->
 
       <div id="txtAreaConteud" class="textareaTexto container"> </div>
     </div>

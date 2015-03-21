@@ -1,4 +1,4 @@
-var testeID, alunoId;
+var testeID, alunoId, contaPosicao=0;
 
 function convert_n2d(n){
     if(n<10) return("0"+n);
@@ -21,6 +21,65 @@ function GravarSOMfile (name, data, success, fail) {
    writer.write(data);
  };
 window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+}
+
+function preencheColuna(colunaIn, resultado,posicoes){
+  var colunaOut ='',errE=0, errF=0;
+  for (var j = 0; j < colunaIn.length; j++) {
+    var isErro=false, erro, categ;
+    for(var k=0; k<posicoes.length; k++){
+      if(contaPosicao == posicoes[k]){
+        isErro=true;
+        erro=resultado.conteudoResult[k].erro;
+        categ=resultado.conteudoResult[k].categoria;
+        break;
+      }
+    }
+    if(isErro){
+      var cor;
+      if(categ == 'Exatidão'){
+        cor='#ee2020';
+        errE++;
+      }
+      else{
+        cor='#3399ff';
+        errF++;
+      }
+      colunaOut += '<p class="picavel" style="color:'+cor+'"'
+             +'data-placement="top"'
+             +'data-toggle="popover"'
+             +'data-container="body"'
+             +'data-content="'+erro+'"'
+             +'onclick="$(this).popover()">'
+             + colunaIn[j] + '</p>';
+    }
+    else{
+      colunaOut += '<p>'+ colunaIn[j] + '</p>';
+    }
+    contaPosicao++;
+  }
+  return {
+    coluna:colunaOut,
+    exatidao:errE,
+    fluidez:errF};
+}
+
+
+//////////////// ERRO ///////////////////////////////////////
+function getSrc(obj){
+    if($(obj).val()==0){
+    correcoes_local2.getAttachment(obj.id, 'gravacao.amr', function(err2, DataAudio) {
+      if (err2) console.log(err2);
+      GravarSOMfile(obj.id+'.amr', DataAudio, function() {
+        obj.src=""+cordova.file.dataDirectory + "/files/"+obj.id+".amr";
+        obj.trigger='load';
+        console.log("\nplayer carregado com sucesso. \nid: "+ obj.id);
+        $(obj).val(1);
+      }, function(err) {
+        console.log("DEU ERRO" + err);
+      });
+    });
+  }
 }
 
 define(function(require) {
@@ -137,10 +196,10 @@ define(function(require) {
               for (var i=0;i<nPaginas; i++){
                 var data= new Date(resultados[i].dataSub);
                 paginas='';
-                colum1 = "";
-                colum2 = "";
-                colum3 = "";
-                var errExatidao=0, errFluidez=0;
+                colum1 = null;
+                colum2 = null;
+                colum3 = null;
+
                 if(i==0){
                   paginas+='<div class="item active">';
 
@@ -153,119 +212,21 @@ define(function(require) {
                 for (var j=0; j<resultados[i].conteudoResult.length; j++){
                   posicoes[j]=parseInt(resultados[i].conteudoResult[j].posicao);
                 }
-                var contaPosicao=0;
+                contaPosicao=0;
 
-                for (var j = 0; j < testeLista.conteudo.palavrasCl1.length; j++) {
-                  var isErro=false, erro, categ;
-                  for(var k=0; k<posicoes.length; k++){
-                    if(contaPosicao == posicoes[k]){
-                      isErro=true;
-                      erro=resultados[i].conteudoResult[k].erro;
-                      categ=resultados[i].conteudoResult[k].categoria;
-                      break;
-                    }
-                  }
-                  if(isErro){
-                    var cor;
-                    if(categ == 'Exatidão'){
-                      cor='#ee2020';
-                      errExatidao++;
-                    }
-                    else{
-                      cor='#3399ff';
-                      errFluidez++;
-                    }
-                    colum1 += '<p class="picavel" style="color:'+cor+'"'
-                           +'data-placement="top"'
-                           +'data-toggle="popover"'
-                           +'data-container="body"'
-                           +'data-content="'+erro+'"'
-                           +'onclick="$(this).popover()">'
-                           + testeLista.conteudo.palavrasCl1[j] + '</p>';
-                  }
-                  else{
-                    colum1 += '<p>'+ testeLista.conteudo.palavrasCl1[j] + '</p>';
-                  }
-                  contaPosicao++;
-                }
+                colum1 = preencheColuna(testeLista.conteudo.palavrasCl1,resultados[i],posicoes);
+                colum2 = preencheColuna(testeLista.conteudo.palavrasCl2,resultados[i],posicoes);
+                colum3 = preencheColuna(testeLista.conteudo.palavrasCl3,resultados[i],posicoes);
+                var errExatidao = colum1.exatidao + colum2.exatidao + colum3.exatidao;
+                var errFluidez = colum1.fluidez + colum2.fluidez + colum3.fluidez;
 
-                for (var j = 0; j < testeLista.conteudo.palavrasCl2.length; j++) {
-                  var isErro=false, erro, categ;
-                  for(var k=0; k<posicoes.length; k++){
-                    if(contaPosicao == posicoes[k]){
-                      isErro=true;
-                      erro=resultados[i].conteudoResult[k].erro;
-                      categ=resultados[i].conteudoResult[k].categoria;
-                      break;
-                    }
-                  }
-                  if(isErro){
-                    var cor;
-                    if(categ == 'Exatidão'){
-                      cor='#ee2020';
-                      errExatidao++;
-                    }
-                    else{
-                      cor='#3399ff';
-                      errFluidez++;
-                    }
-                    colum2 += '<p class="picavel" style="color:'+cor+'"'
-                           +'data-placement="top"'
-                           +'data-toggle="popover"'
-                           +'data-container="body"'
-                           +'data-content="'+erro+'"'
-                           +'onclick="$(this).popover()">'
-                           + testeLista.conteudo.palavrasCl2[j] + '</p>';
-                  }
-                  else{
-                    colum2 += '<p>'+ testeLista.conteudo.palavrasCl2[j] + '</p>';
-                  }
-                  contaPosicao++;
-                }
-
-                for (var j = 0; j < testeLista.conteudo.palavrasCl3.length; j++) {
-                  var isErro=false, erro, categ;
-                  for(var k=0; k<posicoes.length; k++){
-                                      if(contaPosicao == posicoes[k]){
-                                        isErro=true;
-                                        erro=resultados[i].conteudoResult[k].erro;
-                                        categ=resultados[i].conteudoResult[k].categoria;
-                                        console.log(""+erro);
-                                        console.log(""+categ);
-                                        break;
-                                      }
-                                    }
-                                    if(isErro){
-                                      var cor;
-                                      if(categ == 'Exatidão'){
-                                        cor='#ee2020';
-                                        errExatidao++;
-                                      }
-                                      else{
-                                        cor='#3399ff';
-                                        errFluidez++;
-                                      }
-                                      colum3 += '<p class="picavel" style="color:'+cor+'"'
-                                             +'data-placement="top"'
-                                             +'data-toggle="popover"'
-                                             +'data-container="body"'
-                                             +'data-content="'+erro+'"'
-                                             +'onclick="$(this).popover()">'
-                                             + testeLista.conteudo.palavrasCl3[j] + '</p>';
-                                    }
-                                    else{
-                                      colum3 += '<p>'+ testeLista.conteudo.palavrasCl3[j] + '</p>';
-                                    }
-                                                    contaPosicao++;
-
-                }
                 var $btn2 = $(''+paginas
                         +'<div class="panel-primary">'
                           +'<div class="panel-body">'
                             +'<table style="width:100%  "><tr><td><div class="relatorioDiv2 col-xs-7">'
-                              +'<div class="col-xs-4">' + colum1 + '</div>'
-                              +'<div class="col-xs-4">' + colum2 + '</div>'
-                              +'<div class="col-xs-4">' + colum3 + '</div>'
+                              +'<div class="col-xs-4">' + colum1.coluna + '</div>'
+                              +'<div class="col-xs-4">' + colum2.coluna + '</div>'
+                              +'<div class="col-xs-4">' + colum3.coluna + '</div>'
                             +'</div>'
                             //*/relatorio lateral aqui
                             +'<div class="col-xs-4"  style="font-size:18px;">'
@@ -302,8 +263,8 @@ define(function(require) {
                                     +'<div class="panel-heading">Leitura do aluno:</div>'
                                   +'</div>'
                                 +'</div>'
-                                +'<div class="col-xs-9">'
-                                  +'<audio id="plyrAluno'+i+'" controls="controls"  style="width:100%"></audio>'
+                                +'<div class="col-xs-9" onclick>'
+                                  +'<audio id="'+resultados[i]._id+'" val=0 controls="controls"  style="width:100%" onclick="getSrc(this)"></audio>'
                                 +'</div>'
                               +'</div>'
                             +'</td></tr></table>'
@@ -327,19 +288,6 @@ define(function(require) {
                 var $container = $('#innerPages');
                 $btn2.appendTo($container);
 
-
-                //buscar a gravação:////tem bug
-                correcoes_local2.getAttachment(resultados[i]._id, 'gravacao.amr', function(err2, DataAudio) {
-                  if (err2) console.log(err2);
-                  GravarSOMfile('gravacao.amr', DataAudio, function() {
-                    $("#plyrAluno"+i).attr("src", cordova.file.dataDirectory + "/files/gravacao.amr");
-                    $("#plyrAluno"+i).trigger('load');
-                    console.log("\nplayer"+i+" carregado com sucesso. id: "+ "#plyrAluno"+i);
-                  }, function(err) {
-                    console.log("DEU ERRO" + err);
-                  });
-                });
-
                 $(".picavel").popover('hide');
               }
 
@@ -354,12 +302,7 @@ define(function(require) {
                               +'<span class="sr-only">Next</span></a>';
                 $("#controlos").html(controlo);
               }
-
-
             }
-
-
-
           }
         });
       });
@@ -370,8 +313,9 @@ define(function(require) {
     events: {
       "click #BtnVoltar": "clickBtnCancelar",
       "click #controlos": "clickControlos",
-
     },
+
+
 
     clickControlos: function(e) {
      $(".picavel").popover('hide');

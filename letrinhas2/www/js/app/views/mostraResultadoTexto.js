@@ -52,7 +52,6 @@ define(function(require) {
     }
 
 
-
   function writ(idCorr, inic) {
     correcoes_local2.get(idCorr, function(err, correcaoDoc) {
       if (err) console.log(err);

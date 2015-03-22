@@ -70,7 +70,7 @@ function getSrc(obj){
     correcoes_local2.getAttachment(obj.id, 'gravacao.amr', function(err2, DataAudio) {
       if (err2) console.log(err2);
       GravarSOMfile(obj.id+'.amr', DataAudio, function() {
-        obj.src=""+cordova.file.dataDirectory + "/files/resultados/"+obj.id+".amr";
+        obj.src=""+cordova.file.dataDirectory + "/files/"+obj.id+".amr";
         obj.trigger='load';
         console.log("\nplayer carregado com sucesso. \nid: "+ obj.id);
         $(obj).val(1);
@@ -82,6 +82,12 @@ function getSrc(obj){
 }
 
 define(function(require) {
+
+  function onBKey() {
+    $('.picavel').popover('destroy');
+    document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
+    window.history.back();
+  }
 
   "use strict";
   var $ = require('jquery'),
@@ -105,6 +111,8 @@ define(function(require) {
       alunoId = window.localStorage.getItem("AlunoSelecID");
       var alunoNome = window.localStorage.getItem("AlunoSelecNome");
       var resultadoID =  window.localStorage.getItem("resultadoID");
+      //escuta evento, para eliminar os "balões", caso estes esteja ativos
+      document.addEventListener("backbutton", onBKey, false); //Adicionar o evento
 
       var nome, foto;
       alunos_local2.get(alunoId, function(err, alunoDoc) {
@@ -176,10 +184,10 @@ define(function(require) {
               var indicadores='';
               for (var i=0; i<nPaginas; i++){
                 if(i==0){
-                  indicadores += '<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
+                  indicadores += '<li data-target="#carouselLista" data-slide-to="'+i+'" class="active"></li>';
                 }
                 else{
-                  indicadores += '<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>';
+                  indicadores += '<li data-target="#carouselLista" data-slide-to="'+i+'"></li>';
                 }
               }
               $("#indicadores").html(indicadores);
@@ -244,7 +252,7 @@ define(function(require) {
                               +'</div>'
                               +'<div class="panel panel-info" style="margin-top:-10px;">'
                                 +'<div class="panel-heading">Detalhes:</div>'
-                                +'<div id="detalhes"style="padding:15px;height:268px; overflow:auto">'
+                                +'<div id="detalhes"style="padding:15px;height:258px; overflow:auto">'
                                   +'Total de Palavras: '+resultados[i].TotalPalavras+' </br>'
                                   +'Palavras corretamente lidas: '+(resultados[i].TotalPalavras - errExatidao - errFluidez)+' </br>'
                                   +'Velocidade da leitura: '+resultados[i].velocidade+' plv/min</br>'
@@ -292,13 +300,28 @@ define(function(require) {
 
               if(nPaginas>1){
                 //colocar controlos de navegação caso exista mais que um resultado, para poder comparar
-                var controlo = '<a class="left carousel-control2" href="#carousel-example-generic" role="button" data-slide="prev">'
+                var controlo = '<a class="left carousel-control2" href="#carouselLista" role="button" data-slide="prev">'
                               +'<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'
                               +'<span class="sr-only">Previous</span></a>'
-                              +'<a class="right carousel-control2" href="#carousel-example-generic" role="button" data-slide="next">'
+                              +'<a class="right carousel-control2" href="#carouselLista" role="button" data-slide="next">'
                               +'<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'
                               +'<span class="sr-only">Next</span></a>';
                 $("#controlos").html(controlo);
+
+                $('#carouselLista').on('slide.bs.carousel', function() {
+                  $('.picavel').popover('hide');
+                });
+
+                /////////////////Função para ativar o swipe //////////////////////////////
+                $("#carouselLista").swipe( {
+                  //Generic swipe handler for all directions
+                  swipeLeft:function(event, direction, distance, duration, fingerCount, fingerData) {
+                    $('#carouselLista').carousel('next');
+                  },
+                  swipeRight:function(event, direction, distance, duration, fingerCount, fingerData) {
+                    $('#carouselLista').carousel('prev');
+                  },
+                });
               }
             }
           }
@@ -310,16 +333,17 @@ define(function(require) {
     //Eventos Click
     events: {
       "click #BtnVoltar": "clickBtnCancelar",
-      "click #controlos": "clickControlos",
+    //  "click #controlos": "clickControlos",
     },
 
-    clickControlos: function(e) {
+  /*  clickControlos: function(e) {
      $(".picavel").popover('hide');
     },
-
+*/
     clickBtnCancelar: function(e) {
      e.stopPropagation(); e.preventDefault();
-     $(".picavel").popover('hide');
+     document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
+     $('.picavel').popover('destroy');
      window.history.back();
     },
 

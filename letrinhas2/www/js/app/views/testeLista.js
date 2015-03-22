@@ -2,14 +2,12 @@ var semaforoIntrvl, semfroCont;
 
 function desenha(){
   $("#semafro").text(''+semfroCont);
-  console.log($("#semafro").text());
   if(semfroCont>0){
     semfroCont--;
   }else{
     clearInterval(semaforoIntrvl);
     $('#myModalCont').modal("hide");
     $('#myModalCont').on('hidden.bs.modal', function (e) {$("#pik").click();});
-    $("#semafro").text('A gravar em');
   }
 }
 
@@ -37,7 +35,7 @@ define(function(require) {
     function semaforo(){
       semfroCont=3;
       clearInterval(semaforoIntrvl);
-      semaforoIntrvl=setInterval('desenha()',1000);
+      semaforoIntrvl=setInterval('desenha()',1200);
     }
 
       ////////////////////////Ler ficheiro e colocar em anexo para correcao/////////
@@ -130,7 +128,6 @@ define(function(require) {
       }
 
       function recordAudio() {
-        try{
           mediaSrc = "gravacao.amr";
           mediaRec = new Media(mediaSrc,
             // success callback
@@ -139,22 +136,17 @@ define(function(require) {
             },
             // error callback
             function(err) {
-              console.log("recordAudio():Audio Error: " + err.code);
+              console.log("recordAudio():Audio Error: " + err.message);
             }
           );
         // Record audio
           mediaRec.startRecord();
-        }
-        catch (err){
-          console.log(err.message);
-        }
-
       }
 
       function StopRec() {
         try{
-        mediaRec.stopRecord();
-        mediaRec.release();}
+          mediaRec.stopRecord();
+          mediaRec.release();}
         catch(err){console.log(err.message);}
       }
 
@@ -261,11 +253,10 @@ define(function(require) {
       testes_local2.getAttachment(TesteArealizarID, 'voz.mp3', function(err2, DataImg) {
         if (err2) console.log(err2);
         GravarSOMfile('voz.mp3', DataImg, function () {
-          console.log('FUNCIONA');
           Demo = cordova.file.dataDirectory+"/files/voz.mp3";
           $("#playPlayer").attr("src",Demo)
         }, function (err) {
-          console.log("DEU ERRO"+err);
+          console.log("DEU ERRO: "+err);
           });
       });
 
@@ -298,9 +289,7 @@ define(function(require) {
     clickbtnConfirmarRep: function(e){
       e.stopPropagation(); e.preventDefault();
       $('#myModalRep').modal("hide");
-      $('#myModalRep').on('hidden.bs.modal', function (e) {
-
-      });
+      $('#myModalRep').on('hidden.bs.modal', function(e){});
       $("#myModalCont").modal("show");
       semaforo();
     },
@@ -309,6 +298,8 @@ define(function(require) {
     // Inicio da gravação da leitura do teste!
     clickStartButton: function(e){
       e.stopPropagation(); e.preventDefault();
+      $("#semafro").text('A gravar em');
+
       if ($('#startButton').val()==0){
         if(isFeito==true){
           $('#myModalRep').modal("show");

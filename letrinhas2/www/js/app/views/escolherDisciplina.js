@@ -10,6 +10,10 @@ var BtnNavPress;
     janelas = require('text!janelas/escolherDisciplina.html'),
     template = _.template(janelas);
 
+  function onBKey() {
+    $('#BackButtonED').click();
+  }
+
   return Backbone.View.extend({
 
     highlight: function(e) {
@@ -28,6 +32,8 @@ var BtnNavPress;
       var turmaId = window.localStorage.getItem("TurmaSelecID");
       var turmaNome = window.localStorage.getItem("TurmaSelecNome");
 
+      document.addEventListener("backbutton", onBKey, false); //Adicionar o evento
+
       professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
         if (err2)  console.log(err2);
         var url = URL.createObjectURL(DataImg);
@@ -42,8 +48,6 @@ var BtnNavPress;
         $('#lbNomeAluno').text("["+turmaNome+" ] -- "+alunoNome);
         $('#imgAluno').attr("src",url);
       });
-      //console.log(alunoId);
-      //console.log(alunoNome);
     },
 
     events: {
@@ -64,6 +68,7 @@ var BtnNavPress;
       if (pinProfAux == pinDigitado) {
         $('#myModal').modal("hide");
         $('#myModal').on('hidden.bs.modal', function (e) {
+          document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
           window.history.go(BtnNavPress);
         });
       } else {
@@ -125,6 +130,7 @@ var BtnNavPress;
     clickbtnSelecPortugues: function(e) {
       e.stopPropagation(); e.preventDefault();
       window.localStorage.setItem("DiscplinaSelecionada", 1); //enviar variavel 1 -Portugues
+      document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
       var self = this;
       if (Backbone.history.fragment != 'escolherTipoTeste') {
         utils.loader(function() {
@@ -139,6 +145,7 @@ var BtnNavPress;
 
     clickbtnSelecMate: function(e) {
       e.stopPropagation(); e.preventDefault();
+      document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
       window.localStorage.setItem("DiscplinaSelecionada", 2); //enviar variavel 2- Matematica
       var self = this;
       if (Backbone.history.fragment != 'escolherTipoTeste') {
@@ -154,6 +161,7 @@ var BtnNavPress;
 
     clickbtnSelecEstuMeio: function(e) {
       e.stopPropagation(); e.preventDefault();
+      document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
       window.localStorage.setItem("DiscplinaSelecionada", 3); //enviar variavel 3 -EstudoMeio
       var self = this;
       if (Backbone.history.fragment != 'escolherTipoTeste') {
@@ -169,6 +177,7 @@ var BtnNavPress;
 
     clickbtnSelecIngles: function(e) {
       e.stopPropagation(); e.preventDefault();
+      document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
       window.localStorage.setItem("DiscplinaSelecionada", 4); //enviar variavel 4- Ingles
       var self = this;
       if (Backbone.history.fragment != 'escolherTipoTeste') {

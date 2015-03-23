@@ -14,7 +14,7 @@ define(function(require) {
     template = _.template(janelas);
 
     function LerficheiroGravacaoEins() {
-    window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr", gotFiles, fails);
+    window.resolveLocalFileSystemURL("file:///sdcard/gravacao1.amr", gotFiles, fails);
     }
 
     function gotFiles(fileEntry) {
@@ -98,55 +98,28 @@ define(function(require) {
 
     var mediaRec;
 
-    function recordAudio() {
-      var src = "gravacao.amr";
+    function recordAudioForSD() {
+      var src = "gravacao1.amr";
       mediaRec = new Media(src,
         function() {
         },
         // error callback
         function(err) {
-          alert("recordAudio():Audio Error: " + err.code);
+          alert("Audio Error: " + err.code);
         }
       );
       // Record audio
       mediaRec.startRecord();
     }
 
-    function StopRec() {
+    function StopRecorder() {
       mediaRec.stopRecord();
       mediaRec.release();
     }
 
     var modelTrue = false;
-    var count321 = 3;
-
-    function timerGrav() {
-      if (count321 <= 0)
-      {
-        clearInterval(myVarTIMER);
-        $('#myModalCont').modal("hide");
-        $('#btnDemonstracao').hide();
-              $('#btnFinalizar').hide();
-              $('#btnOuvirme').hide();
-              $('#AudioPlayerProf').prop('controls', false);
-              $('#AudioPlayerProf').trigger('pause');
-              $('#AudioPlayerProf').prop("currentTime",0);
-              $('#btnRec').removeClass("btn-primary"); //limpa campos
-              $('#btnRec').removeClass("btn-success"); //limpa campos
-              $('#btnRec').addClass("btn-danger"); //limpa campos
-              $('#btnRec').html("<span class='glyphicon glyphicon glyphicon-stop' ></span> Parar");
-              mediaRec = null;
-       recordAudio();
-       $("#semafroLB").text("A gravar em");
-      }
-      else{
-
-        $("#semafroLB").text(''+count321);
-        count321--;
-      }
 
 
-    }
 
   return Backbone.View.extend({
 
@@ -234,10 +207,18 @@ define(function(require) {
 
     clickbtnConfirmarSUBGrav: function(e) {
       $('#myModalSUBGravar').modal("hide");
-      $("#myModalCont").modal("show");
-      clearInterval(timerGrav);
-      count321 = 3;
-      myVarTIMER = setInterval(timerGrav, 1000);
+      $('#btnDemonstracao').hide();
+            $('#btnFinalizar').hide();
+            $('#btnOuvirme').hide();
+            $('#AudioPlayerProf').prop('controls', false);
+            $('#AudioPlayerProf').trigger('pause');
+            $('#AudioPlayerProf').prop("currentTime",0);
+            $('#btnRec').removeClass("btn-primary"); //limpa campos
+            $('#btnRec').removeClass("btn-success"); //limpa campos
+            $('#btnRec').addClass("btn-danger"); //limpa campos
+            $('#btnRec').html("<span class='glyphicon glyphicon glyphicon-stop' ></span> Parar");
+            mediaRec = null;
+            recordAudioForSD();
      },
 
 
@@ -309,10 +290,18 @@ define(function(require) {
    ///Se o botao é botao de gravar
     if  ($('#btnRec').hasClass("btn-success"))
     {
-      $("#myModalCont").modal("show");
-      clearInterval(timerGrav);
-      count321 = 3;
-      myVarTIMER = setInterval(timerGrav, 1000);
+      $('#btnDemonstracao').hide();
+            $('#btnFinalizar').hide();
+            $('#btnOuvirme').hide();
+            $('#AudioPlayerProf').prop('controls', false);
+            $('#AudioPlayerProf').trigger('pause');
+            $('#AudioPlayerProf').prop("currentTime",0);
+            $('#btnRec').removeClass("btn-primary"); //limpa campos
+            $('#btnRec').removeClass("btn-success"); //limpa campos
+            $('#btnRec').addClass("btn-danger"); //limpa campos
+            $('#btnRec').html("<span class='glyphicon glyphicon glyphicon-stop' ></span> Parar");
+            mediaRec = null;
+            recordAudioForSD();
 
     }
     else if ($('#btnRec').hasClass("btn-primary"))
@@ -322,7 +311,7 @@ define(function(require) {
     ///Se for para parar a gravacao
     else if ($('#btnRec').hasClass("btn-danger"))
     {  $('#btnFinalizar').removeClass("disabled"); //limpa campos
-        StopRec();
+    StopRecorder();
       $('#AudioPlayerProf').prop('controls', true);
       $('#btnRec').removeClass("btn-danger"); //limpa campos
       $('#btnRec').addClass("btn-primary"); //limpa campos
@@ -330,9 +319,8 @@ define(function(require) {
       $('#btnDemonstracao').show();
       $('#btnFinalizar').show();
       $('#btnOuvirme').show();
-      $("#AudioPlayerAluno").attr("src","file:///sdcard/gravacao.amr");
+      $("#AudioPlayerAluno").attr("src","file:///sdcard/gravacao1.amr");
     }
-
     },
 
     clickBackButtonTTexto: function(e) {

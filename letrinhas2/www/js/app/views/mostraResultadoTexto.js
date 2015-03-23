@@ -1,33 +1,37 @@
-var auxID;
-
-function getSrcAUDIO(obj){
+var auxIdCorrCorr;
+function getSrcAUDIO(obj) {
+  if($(obj).val()==0){
   var aux = obj.id.substring(2);
-console.log("cenas : "+ aux);
-correcoes_local2.getAttachment(aux, 'gravacao.amr', function(err2, DataAudio) {
-  if (err2) console.log(err2);
-  GravarSOMfiD('gravacao.amr', DataAudio, function() {
-    obj.src=""+cordova.file.dataDirectory + "/files/gravacao.amr";
-    obj.trigger='load';
-    console.log("player carregado com sucesso. id: ");
-  }, function(err) {
-    console.log("DEU ERRO" + err);
+  console.log("cenas : " + aux);
+  correcoes_local2.getAttachment(aux, 'gravacao.amr', function(err2, DataAudio) {
+    if (err2) console.log(err2);
+    GravarSOMfiD(aux + '.amr', DataAudio, function() {
+      obj.src = "" + cordova.file.dataDirectory + "/files/" + aux + ".amr";
+      obj.trigger = 'load';
+      $(obj).val(1);
+      console.log("player carregado com sucesso. id: ");
+    }, function(err) {
+      console.log("DEU ERRO" + err);
+    });
   });
-});
+}
 }
 
 
 //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
-function GravarSOMfiD (name, data, success, fail) {
-  console.log(cordova.file.dataDirectory);
-  var gotFileSystem = function (fileSystem) {
-    fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
+function GravarSOMfiD(name, data, success, fail) {
+  var gotFileSystem = function(fileSystem) {
+    fileSystem.root.getFile(name, {
+      create: true,
+      exclusive: false
+    }, gotFileEntry, fail);
   };
 
-  var gotFileEntry = function (fileEntry) {
+  var gotFileEntry = function(fileEntry) {
     fileEntry.createWriter(gotFileWriter, fail);
   };
 
-  var gotFileWriter = function (writer) {
+  var gotFileWriter = function(writer) {
     writer.onwrite = success;
     writer.onerror = fail;
     writer.write(data);
@@ -45,11 +49,42 @@ define(function(require) {
     classList = require('classList.min'),
     template = _.template(janelas);
 
-    function onBKey() {
-      $('.SpansTxt').popover('destroy');
-      document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
-      window.history.back();
+  function onBKey() {
+    $('.SpansTxt').popover('destroy');
+
+    function map(doc) {
+      if (doc.estado == 1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == auxIdCorrCorr) {
+        emit(doc);
+      }
     }
+    correcoes_local2.query({
+        map: map
+      }, {
+        reduce: false
+      }, function(errx, response) {
+        if (errx) console.log("Erro: " + errx);
+        for (var i = 0; i < response.rows.length; i++) {
+          Removefile(response.rows[i].id + '.amr', function() {console.log("APAGADO ");}, function(err) {console.log("DEU ERRO APAGAR" + err);});
+        }
+      });
+
+    document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
+    window.history.back();
+  }
+
+  //////////// RemoverFicheiro /////////////////
+  function Removefile(name, success, fail) {
+    var gotFileSystems = function(fileSystem) {
+      fileSystem.root.getFile(name, {
+        create: false,
+        exclusive: false
+      }, gotRemoveFileEntry, fail);
+    };
+    var gotRemoveFileEntry = function(fileEntry) {
+      fileEntry.remove(success, fail);
+    };
+    window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, gotFileSystems, fail);
+  }
 
 
   function writ(idCorr, inic) {
@@ -68,7 +103,7 @@ define(function(require) {
       testes_local2.get(correcaoDoc.id_Teste, function(err, testeDoc) {
         if (err) console.log("errr" + err);
 
-        $('#lbTituloTeste').text("Ver resultados: [ "+testeDoc.titulo+" ]");
+        $('#lbTituloTeste').text("Ver resultados: [ " + testeDoc.titulo + " ]");
         var data = new Date(correcaoDoc.dataSub);
         var day = data.getDate().toString();
         var month = data.getMonth().toString();
@@ -77,7 +112,7 @@ define(function(require) {
         day = day.length === 2 ? day : '0' + day;
         month = month.length === 2 ? month : '0' + month;
         hours = hours.length === 2 ? hours : '0' + hours;
-        minutes= minutes.length === 2 ? minutes : '0' + minutes;
+        minutes = minutes.length === 2 ? minutes : '0' + minutes;
         var dataFinal = day + "/" + month + "/" + data.getFullYear() + " - " + hours + ":" + minutes;
 
         var $btn = $('<h3> ' + testeDoc.titulo + ' - (' + dataFinal + ') </h3>' +
@@ -126,7 +161,7 @@ define(function(require) {
           }
         }
 
-        $("#Div" + idCorr).scroll(function(){
+        $("#Div" + idCorr).scroll(function() {
           $('.SpansTxt').popover('hide');
         });
 
@@ -161,9 +196,9 @@ define(function(require) {
           '        <div class="panel-heading">' +
           '          Aluno' +
           '        </div>' +
-          '        <label id="LB'+idCorr+'"></label>' +
-          '        <img id="IMG'+idCorr+'" src="" style="height:44px;">' +
-          '        <audio id="AU'+idCorr+'" val="'+idCorr+'" controls="controls"  style="width: 100%"  onclick="getSrcAUDIO(this)"></audio>' +
+          '        <label id="LB' + idCorr + '"></label>' +
+          '        <img id="IMG' + idCorr + '" src="" style="height:44px;">' +
+          '        <audio id="AU' + idCorr + '" val=0 controls="controls"  style="width: 100%"  onclick="getSrcAUDIO(this)"></audio>' +
           '      </div>' +
           '    </div>' +
           '  </div>'
@@ -174,12 +209,12 @@ define(function(require) {
         alunos_local2.getAttachment(correcaoDoc.id_Aluno, 'aluno.png', function(err2, DataImg) {
           if (err2) console.log(err2);
           var url = URL.createObjectURL(DataImg);
-          $('#IMG'+idCorr).attr("src", url);
+          $('#IMG' + idCorr).attr("src", url);
         });
 
         alunos_local2.get(correcaoDoc.id_Aluno, function(err, alunoDoc) {
           if (err) console.log(err);
-          $('#LB'+idCorr).text("Aluno: " + alunoDoc.nome);
+          $('#LB' + idCorr).text("Aluno: " + alunoDoc.nome);
         });
 
       });
@@ -190,103 +225,113 @@ define(function(require) {
 
   return Backbone.View.extend({
 
-    highlight: function(e) {
-      $('.side-nav__list__item').removeClass('is-active');
-      $(e.target).parent().addClass('is-active');
-    },
+      highlight: function(e) {
+        $('.side-nav__list__item').removeClass('is-active');
+        $(e.target).parent().addClass('is-active');
+      },
 
-    initialize: function() {
-      var profId = window.localStorage.getItem("ProfSelecID");
-      var profNome = window.localStorage.getItem("ProfSelecNome");
-      var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
-      var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
-      var alunoId = window.localStorage.getItem("AlunoSelecID");
-      var alunoNome = window.localStorage.getItem("AlunoSelecNome");
-      var turmaId = window.localStorage.getItem("TurmaSelecID");
-      var turmaNome = window.localStorage.getItem("TurmaSelecNome");
-      var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
-      var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
-      var resultadoID = window.localStorage.getItem("resultadoID");
-      document.addEventListener("backbutton", onBKey, false); //Adicionar o evento
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
-        if (err2) console.log(err2);
-        var url = URL.createObjectURL(DataImg);
-        $('#lbNomeProf').text(profNome);
-        $('#imgProf').attr("src", url);
-      });
-
-      auxID = "";
-      writ(resultadoID, true);
-
-
-
-
-
-
-      correcoes_local2.get(resultadoID, function(err, CorrrecaoDoc) {
-        if (err) console.log(err);
-        auxID = CorrrecaoDoc.id_Teste;
-
-
-        $('#carouselPrincipal').on('slide.bs.carousel', function() {
-          $('.SpansTxt').popover('hide');
+      initialize: function() {
+        var profId = window.localStorage.getItem("ProfSelecID");
+        var profNome = window.localStorage.getItem("ProfSelecNome");
+        var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
+        var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
+        var alunoId = window.localStorage.getItem("AlunoSelecID");
+        var alunoNome = window.localStorage.getItem("AlunoSelecNome");
+        var turmaId = window.localStorage.getItem("TurmaSelecID");
+        var turmaNome = window.localStorage.getItem("TurmaSelecNome");
+        var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
+        var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
+        var resultadoID = window.localStorage.getItem("resultadoID");
+        document.addEventListener("backbutton", onBKey, false); //Adicionar o evento
+        professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+          if (err2) console.log(err2);
+          var url = URL.createObjectURL(DataImg);
+          $('#lbNomeProf').text(profNome);
+          $('#imgProf').attr("src", url);
         });
-/////////////////FUNCAO PARA O SWIPE SO ISTO xD ////////////////////////////////
-        $("#carouselPrincipal").swipe( {
-          //Generic swipe handler for all directions
-          swipeLeft:function(event, direction, distance, duration, fingerCount, fingerData) {
-            $('#carouselPrincipal').carousel('next');
-          },
-          swipeRight:function(event, direction, distance, duration, fingerCount, fingerData) {
-            $('#carouselPrincipal').carousel('prev');
-          },
-        });
-        ////////////////fim ////////////////////////////////
 
-      var $containerIND = $('#IndicatorsCorr');
-       var $li = $('<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>');
-       $li.appendTo($containerIND);
-       var count = 0;
+        auxIdCorrCorr = "";
+
+        writ(resultadoID, true);
+
+        correcoes_local2.get(resultadoID, function(err, CorrrecaoDoc) {
+          if (err) console.log(err);
+          auxIdCorrCorr = CorrrecaoDoc.id_Teste;
 
 
+          $('#carouselPrincipal').on('slide.bs.carousel', function() {
+            $('.SpansTxt').popover('hide');
+          });
+          /////////////////FUNCAO PARA O SWIPE SO ISTO xD ////////////////////////////////
+          $("#carouselPrincipal").swipe({
+            //Generic swipe handler for all directions
+            swipeLeft: function(event, direction, distance, duration, fingerCount, fingerData) {
+              $('#carouselPrincipal').carousel('next');
+            },
+            swipeRight: function(event, direction, distance, duration, fingerCount, fingerData) {
+              $('#carouselPrincipal').carousel('prev');
+            },
+          });
+          ////////////////fim ////////////////////////////////
 
-        function map(doc) {
-          if (doc.estado == 1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == auxID) {
-            emit(doc);
-          }
-        }
-        correcoes_local2.query({
-          map: map
-        }, {
-          reduce: false
-        }, function(errx, response) {
-          if (errx) console.log("Erro: " + errx);
-          for (var i = 0; i < response.rows.length; i++) {
-            if (response.rows[i].id != CorrrecaoDoc._id)
-            {
-            count++;
-            writ(response.rows[i].id, false);
-            var $containerIND = $('#IndicatorsCorr');
-            var $li = $('<li data-target="#carouselPrincipal" data-slide-to="'+count+'" ></li>');
-            $li.appendTo($containerIND);
+          var $containerIND = $('#IndicatorsCorr');
+          var $li = $('<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>');
+          $li.appendTo($containerIND);
+          var count = 0;
 
+
+
+          function map(doc) {
+            if (doc.estado == 1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == auxIdCorrCorr) {
+              emit(doc);
             }
-
           }
+          correcoes_local2.query({
+            map: map
+          }, {
+            reduce: false
+          }, function(errx, response) {
+            if (errx) console.log("Erro: " + errx);
+            for (var i = 0; i < response.rows.length; i++) {
+              if (response.rows[i].id != CorrrecaoDoc._id) {
+                count++;
+                writ(response.rows[i].id, false);
+                var $containerIND = $('#IndicatorsCorr');
+                var $li = $('<li data-target="#carouselPrincipal" data-slide-to="' + count + '" ></li>');
+                $li.appendTo($containerIND);
+              }
+            }
+          });
         });
-      });
-    },
+      },
 
-    //Eventos Click
-    events: {
-      "click #BackButton": "clickBackButton",
-    },
+      //Eventos Click
+      events: {
+        "click #BackButton": "clickBackButton",
+      },
 
-    clickBackButton: function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
-     $('.SpansTxt').popover('destroy');
+      clickBackButton: function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
+        $('.SpansTxt').popover('destroy');
+
+                function map(doc) {
+                  if (doc.estado == 1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == auxIdCorrCorr) {
+                    emit(doc);
+                  }
+                }
+                correcoes_local2.query({
+                    map: map
+                  }, {
+                    reduce: false
+                  }, function(errx, response) {
+                    if (errx) console.log("Erro: " + errx);
+                    for (var i = 0; i < response.rows.length; i++) {
+                      Removefile(response.rows[i].id + '.amr', function() {console.log("APAGADO ");}, function(err) {console.log("DEU ERRO APAGAR" + err);});
+                    }
+                  });
+
       window.history.back();
     },
 

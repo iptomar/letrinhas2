@@ -83,12 +83,6 @@ function getSrc(obj){
 
 define(function(require) {
 
-  function onBKey() {
-    $('.picavel').popover('destroy');
-    document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
-    window.history.back();
-  }
-
   "use strict";
   var $ = require('jquery'),
     _ = require('underscore'),
@@ -105,6 +99,7 @@ define(function(require) {
     },
 
     initialize: function() {
+      var self=this;
       ////Carrega os dados mais uteis da janela anterior////
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
       var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
@@ -112,7 +107,7 @@ define(function(require) {
       var alunoNome = window.localStorage.getItem("AlunoSelecNome");
       var resultadoID =  window.localStorage.getItem("resultadoID");
       //escuta evento, para eliminar os "balões", caso estes esteja ativos
-      document.addEventListener("backbutton", onBKey, false); //Adicionar o evento
+      document.addEventListener("backbutton", self.onBKey, false); //Adicionar o evento
 
       var nome, foto;
       alunos_local2.get(alunoId, function(err, alunoDoc) {
@@ -340,11 +335,21 @@ define(function(require) {
      $(".picavel").popover('hide');
     },
 */
+
+    onBKey: function() {
+      var self=this;
+      $('.picavel').popover('destroy');
+      document.removeEventListener("backbutton", self.onBKey, false); ///RETIRAR EVENTO DO BOTAO
+      window.history.back();
+    },
+
+
     clickBtnCancelar: function(e) {
-     e.stopPropagation(); e.preventDefault();
-     document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
-     $('.picavel').popover('destroy');
-     window.history.back();
+      var self=this;
+      e.stopPropagation(); e.preventDefault();
+      document.removeEventListener("backbutton", self.onBKey, false); ///RETIRAR EVENTO DO BOTAO
+      $('.picavel').popover('destroy');
+      window.history.back();
     },
 
     render: function() {

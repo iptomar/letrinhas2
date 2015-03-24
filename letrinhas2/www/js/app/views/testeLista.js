@@ -1,18 +1,4 @@
-var semaforoIntrvl, semfroCont;
-
-function desenha(){
-  $("#semafro").text(''+semfroCont);
-  if(semfroCont>0){
-    semfroCont--;
-  }else{
-    clearInterval(semaforoIntrvl);
-    $('#myModalCont').modal("hide");
-    $('#myModalCont').on('hidden.bs.modal', function (e) {$("#pik").click();});
-  }
-}
-
 define(function(require) {
-
 
   var self;
   "use strict";
@@ -20,152 +6,165 @@ define(function(require) {
     _ = require('underscore'),
     Backbone = require('backbone'),
     janelas = require('text!janelas/testeLista.html'),
-    template = _.template(janelas),
-    isFeito=false;
-
-  var profId, profNome, escolaNome, escolaId, alunoId, alunoNome,
-      turmaId, turmaNome, discplinaSelecionada, tipoTesteSelecionado,
-      TesteArealizarID;
-
-  var Demo,           //caminho para reproduzir o ficheiro de demonstração
-    mediaRec,       //objeto Media que irá fazer a gravação
-    mediaSrc,       //url onde deverá ser guardada a gravação
-    totalPalavras=0;//contador de palavras
-
-    function semaforo(){
-      semfroCont=3;
-      clearInterval(semaforoIntrvl);
-      semaforoIntrvl=setInterval('desenha()',1200);
-    }
-
-      ////////////////////////Ler ficheiro e colocar em anexo para correcao/////////
-      function LerficheiroGravacaoEinserir() {
-        window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr", gotFile, fail);
-      }
-
-      function gotFile(fileEntry) {
-        console.log(fileEntry);
-        fileEntry.file(success, fail);
-      }
-
-      function fail(e) {
-      	console.log("FileSystem Error:"+e);
-      }
-
-
-      function success(file) {
-        var agora=new Date();
-        var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
-        var alunoId = window.localStorage.getItem("AlunoSelecID");
-        var profId = window.localStorage.getItem("ProfSelecID");
-        var correcao = {
-            'id_Teste': TesteArealizarID,
-            'id_Aluno': alunoId,
-            'id_Prof': profId,
-            'tipoCorrecao': 'Lista',
-            'estado': '0',
-            'conteudoResult':null,
-            'TotalPalavras':totalPalavras,
-            'dataSub': agora,
-            'dataCorr':null,
-            'observ':null,
-        };
-
-        correcoes_local2.post(correcao, function(err, response) {
-          if (err) {
-            console.log('Correcao ' + err + ' erro');
-          }
-          else {
-            correcoes_local2.putAttachment(response.id, 'gravacao.amr', response.rev, file, 'audio/amr', function(err, res) {
-              if (!err) {
-                console.log('Anexo  inserted: '+ response.id);
-              }
-              else {
-                console.log('anexo ' + err + ' erro');
-              }
-            });
-            console.log('Correcao ' + response.id + ' inserido!');
-          }
-        });
-
-      }
-
-      //////////// Guardar audio vindo do couchDB /////////////////
-      function GravarSOMfile (name, data, success, fail) {
-        console.log(cordova.file.dataDirectory);
-        var gotFileSystem = function (fileSystem) {
-          fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
-        };
-
-        var gotFileEntry = function (fileEntry) {
-          fileEntry.createWriter(gotFileWriter, fail);
-        };
-
-        var gotFileWriter = function (writer) {
-          writer.onwrite = success;
-          writer.onerror = fail;
-          writer.write(data);
-        };
-        window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
-      }
-
-
-
-
-      function vaiGravar(){
-
-          $('#startButton').val(1);
-          $('#startButton').attr("style","background-color: #ee0000");
-          $('#startButton').html('<span class="glyphicon glyphicon-stop"aria-hidden="true"> </span> Parar </a>');
-          $('#demoButton').attr("style","visibility:hidden;");
-          $('#playMyTestButton').attr("style","visibility:hidden;");
-          $('#submitButton').attr("style","visibility:hidden;");
-
-          //Iniciar a gravação
-          recordAudio();
-
-
-      }
-
-      function recordAudio() {
-          mediaSrc = "gravacao.amr";
-          mediaRec = new Media(mediaSrc,
-            // success callback
-            function() {
-              console.log("recordAudio():Audio Success");
-            },
-            // error callback
-            function(err) {
-              console.log("recordAudio():Audio Error: " + err.message);
-            }
-          );
-        // Record audio
-          mediaRec.startRecord();
-      }
-
-      function StopRec() {
-        try{
-          mediaRec.stopRecord();
-          mediaRec.release();}
-        catch(err){console.log(err.message);}
-      }
-
-      function PlayRec()
-      {
-        try{mediaRec.play();}
-        catch(err){console.log(err.message);}
-      }
-
-      function StopPlayRec()
-      {
-        try{mediaRec.stop();}
-        catch(err){console.log(err.message)}
-      }
-
-
-      ////////////////////////////////////////////////////////////////////////////////
+    template = _.template(janelas);
 
   return Backbone.View.extend({
+    isFeito:false,
+    TotalPalavras:0,
+
+/////////// Fora de serviço, continua com o problema de unefined ///////////////
+    semaforo: function(){
+      var self = this;
+      var semaforoIntrvl,
+      semfroCont=3;
+      clearInterval(semaforoIntrvl);
+      semaforoIntrvl=setInterval(//'desenha()'
+        function(){
+          $("#semafro").text(''+semfroCont);
+          console.log(semfroCont);
+          if(semfroCont>0){
+            semfroCont--;
+          }else{
+            clearInterval(semaforoIntrvl);
+            $('#myModalCont').modal("hide");
+            $('#myModalCont').on('hidden.bs.modal', function (e) {
+              $('#startButton').val(1);
+              $('#startButton').attr("style","background-color: #ee0000");
+              $('#startButton').html('<span class="glyphicon glyphicon-stop"aria-hidden="true"> </span> Parar </a>');
+              $('#demoButton').attr("style","visibility:hidden;");
+              $('#playMyTestButton').attr("style","visibility:hidden;");
+              $('#submitButton').attr("style","visibility:hidden;");
+              //Iniciar a gravação
+              self.recordAudio();
+              });
+          }
+        },1100);
+    },
+////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////Ler ficheiro e colocar em anexo para correcao///////
+    LerficheiroGravacaoEinserir: function() {
+      var self = this;
+      window.resolveLocalFileSystemURL("file:///sdcard/gravacao.amr",
+      function (fileEntry) {
+        console.log(fileEntry);
+      	fileEntry.file(
+          function (file) {
+            var agora=new Date();
+            var TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
+            var alunoId = window.localStorage.getItem("AlunoSelecID");
+            var profId = window.localStorage.getItem("ProfSelecID");
+            var correcao = {
+              'id_Teste': TesteArealizarID,
+              'id_Aluno': alunoId,
+              'id_Prof': profId,
+              'tipoCorrecao': 'Lista',
+              'estado': '0',
+              'conteudoResult':null,
+              'TotalPalavras':self.TotalPalavras,
+              'dataSub': agora,
+              'dataCorr':null,
+              'expresSinais':null,
+              'expresEntoacao':null,
+              'expresTexto':null,
+              'velocidade':null,
+              'observ':null,
+            };
+            correcoes_local2.post(correcao, function(err, response) {
+              if (err) {
+                console.log('Correcao ' + err + ' erro');
+              } else {
+                correcoes_local2.putAttachment(response.id, 'gravacao.amr', response.rev, file, 'audio/amr', function(err, res) {
+                if (!err) {
+                 console.log('Anexo  inserted: '+ response.id);
+                } else {
+                  console.log('anexo ' + err + ' erro');
+                }
+               });
+                console.log('Correcao ' + response.id + ' inserido!');
+              }
+            });
+          }
+        , function (e) {
+        	console.log("FileSystem Error:"+e);
+        });
+      },  function (e) {
+      	console.log("FileSystem Error:"+e);
+      });
+    },
+
+    //////////// Guardar audio vindo do couchDB /////////////////
+    GravarSOMfile: function(name, data, success, fail) {
+      console.log(cordova.file.dataDirectory);
+      var gotFileSystem = function (fileSystem) {
+        fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
+      };
+
+      var gotFileEntry = function (fileEntry) {
+        fileEntry.createWriter(gotFileWriter, fail);
+      };
+
+      var gotFileWriter = function (writer) {
+        writer.onwrite = success;
+        writer.onerror = fail;
+        writer.write(data);
+      };
+      window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+    },
+
+
+    vaiGravar: function(){
+      self = this;
+      $('#startButton').val(1);
+      $('#startButton').attr("style","background-color: #ee0000");
+      $('#startButton').html('<span class="glyphicon glyphicon-stop"aria-hidden="true"> </span> Parar </a>');
+      $('#demoButton').attr("style","visibility:hidden;");
+      $('#playMyTestButton').attr("style","visibility:hidden;");
+      $('#submitButton').attr("style","visibility:hidden;");
+      //Iniciar a gravação
+      self.recordAudio();
+    },
+
+
+    recordAudio: function(){
+      self = this;
+        self.mediaSrc = "gravacao.amr";
+        self.mediaRec = new Media(self.mediaSrc,
+          // success callback
+          function() {
+            console.log("recordAudio():Audio Success");
+          },
+          // error callback
+          function(err) {
+            console.log("recordAudio():Audio Error: " + err.message);
+          }
+        );
+      // Record audio
+      self.mediaRec.startRecord();
+    },
+
+    StopRec: function() {
+      try{
+        self = this;
+        self.mediaRec.stopRecord();
+        self.mediaRec.release();}
+      catch(err){console.log(err.message);}
+    },
+
+    PlayRec: function()
+    {
+      self = this;
+      try{self.mediaRec.play();}
+      catch(err){console.log(err.message);}
+    },
+
+    StopPlayRec: function ()
+    {
+      self = this;
+      try{self.mediaRec.stop();}
+      catch(err){console.log(err.message)}
+    },
+    ////////////////////////////////////////////////////////////////////////////////
 
     onBackKeyDown:  function() {
       $('#labelErr').text("");  //limpa campos
@@ -177,7 +176,6 @@ define(function(require) {
       });
     },
 
-
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
       $(e.target).parent().addClass('is-active');
@@ -187,18 +185,17 @@ define(function(require) {
     initialize: function() {
       self = this;
       document.addEventListener("backbutton", this.onBackKeyDown, false); //Adicionar o evento
-      isFeito=false;
+      self.isFeito=false;
     // Vai buscar todas as variaveis necessárias
-      profId = window.localStorage.getItem("ProfSelecID");
-      profNome = window.localStorage.getItem("ProfSelecNome");
-      escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
-      escolaId = window.localStorage.getItem("EscolaSelecionadaID");
-      alunoId = window.localStorage.getItem("AlunoSelecID");
-      alunoNome = window.localStorage.getItem("AlunoSelecNome");
-      turmaId = window.localStorage.getItem("TurmaSelecID");
-      turmaNome = window.localStorage.getItem("TurmaSelecNome");
-      discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
-      tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
+      var profId = window.localStorage.getItem("ProfSelecID"),
+      profNome = window.localStorage.getItem("ProfSelecNome"),
+      escolaNome = window.localStorage.getItem("EscolaSelecionadaNome"),
+      escolaId = window.localStorage.getItem("EscolaSelecionadaID"),
+      alunoNome = window.localStorage.getItem("AlunoSelecNome"),
+      turmaId = window.localStorage.getItem("TurmaSelecID"),
+      turmaNome = window.localStorage.getItem("TurmaSelecNome"),
+      discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada"),
+      tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado"),
       TesteArealizarID = window.localStorage.getItem("TesteArealizarID");
 
       testes_local2.get(TesteArealizarID, function(err, testeDoc) {
@@ -217,14 +214,14 @@ define(function(require) {
           s1="";
           for(var j=0; j<testeDoc.conteudo.palavrasCl1.length;j++){
             s1+="<p style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl1[j] +"</p>";
-            totalPalavras++;
+            self.TotalPalavras++;
           }
           allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
           if(testeDoc.conteudo.palavrasCl2.length>0){
             s1="";
             for(var j=0; j<testeDoc.conteudo.palavrasCl2.length;j++){
               s1+="<p style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl2[j] +"</p>";
-              totalPalavras++;
+              self.TotalPalavras++;
             }
             allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
           }
@@ -233,7 +230,7 @@ define(function(require) {
             s1="";
             for(var j=0; j<testeDoc.conteudo.palavrasCl3.length;j++){
               s1+="<p style='font-weight:bold; font-size:20px'>"+ testeDoc.conteudo.palavrasCl3[j] +"</p>";
-              totalPalavras++;
+              self.TotalPalavras++;
             }
             allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
           }
@@ -252,9 +249,11 @@ define(function(require) {
 
       testes_local2.getAttachment(TesteArealizarID, 'voz.mp3', function(err2, DataImg) {
         if (err2) console.log(err2);
-        GravarSOMfile('voz.mp3', DataImg, function () {
-          Demo = cordova.file.dataDirectory+"/files/voz.mp3";
-          $("#playPlayer").attr("src",Demo)
+        self.GravarSOMfile('voz.mp3', DataImg, function () {
+          self.Demo = cordova.file.dataDirectory+"/files/voz.mp3";
+          $("#playPlayer").attr("src",self.Demo);
+          console.log("\nA carregar demo: "+self.Demo);
+
         }, function (err) {
           console.log("DEU ERRO: "+err);
           });
@@ -278,35 +277,37 @@ define(function(require) {
 
     },
 
+    ///////////////////////Fora de serviço///////////////////////////////////
     clickpik: function(e){
+      var self=this;
       e.stopPropagation(); e.preventDefault();
       mediaRec = null;
-      vaiGravar();
+      self.vaiGravar();
     },
+    /////////////////////////////////////////////////////////////////////////
 
 
     //Controlo para repetição da gravação de leitura
     clickbtnConfirmarRep: function(e){
+      var self=this;
       e.stopPropagation(); e.preventDefault();
       $('#myModalRep').modal("hide");
       $('#myModalRep').on('hidden.bs.modal', function(e){});
-      $("#myModalCont").modal("show");
-      semaforo();
+      //$("#myModalCont").modal("show");
+      self.vaiGravar();
     },
-
 
     // Inicio da gravação da leitura do teste!
     clickStartButton: function(e){
       e.stopPropagation(); e.preventDefault();
       $("#semafro").text('A gravar em');
-
       if ($('#startButton').val()==0){
-        if(isFeito==true){
+        if(self.isFeito==true){
           $('#myModalRep').modal("show");
         }
         else {
-          $("#myModalCont").modal("show");
-          semaforo();
+          //$("#myModalCont").modal("show");
+          self.vaiGravar();
         }
       }
         else {
@@ -318,15 +319,14 @@ define(function(require) {
           $('#submitButton').attr("style","visibility:initial; background-color: #00ee00");
 
           //parar a gravação!
-          StopRec();
-          isFeito=true;
+          self.StopRec();
+          self.isFeito=true;
         }
     },
 
     // reproduzir a ultima leitura do teste
     clickPlayMyTestButton: function(){
       $("#playPlayer").attr("src","file:///sdcard/gravacao.amr")
-
       var audio = document.getElementById("playPlayer");
       if ($('#playMyTestButton').val()==0) {
         $('#playMyTestButton').val(1);
@@ -348,16 +348,14 @@ define(function(require) {
         $('#submitButton').attr("style","visibility:initial;background-color: #00ee00");
         audio.pause();
       }
-
-
     },
 
     clickbtnConfirmarSUB: function(e) {
-
+      var self=this;
         $('#myModalSUB').modal("hide");
         $('#myModalSUB').on('hidden.bs.modal', function (e) {
           document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
-          LerficheiroGravacaoEinserir();
+          self.LerficheiroGravacaoEinserir();
           window.history.back();
         });
     },
@@ -370,7 +368,10 @@ define(function(require) {
 
     //Função para executar a demonstração e inibir a gravação/reprodução da leitura e a finalização!.
     clickDemoButton: function(){
-      $('#playPlayer').attr("src",Demo);
+      var self=this;
+      console.log("\nDemoButon: "+self.Demo);
+
+      $('#playPlayer').attr("src",self.Demo);
       var audio = document.getElementById("playPlayer");
       if ($('#demoButton').val()==0) {
         $('#demoButton').val(1);
@@ -388,14 +389,12 @@ define(function(require) {
         $('#demoButton').html('<span class="glyphicon glyphicon-headphones"aria-hidden="true"> </span> Demonstrar </a>');
         $('#playPlayer').attr("style","visibility:hidden;");
         $('#startButton').attr("style","visibility:initial;background-color: #60f060");
-        if (isFeito){
+        if (self.isFeito){
           $('#playMyTestButton').attr("style","visibility:initial;background-color: #c065ff");
           $('#submitButton').attr("style","visibility:initial;background-color: #00ee00");
         }
         audio.pause();
       }
-
-
     },
 
     clickBtnCancelar: function(e) {
@@ -410,11 +409,9 @@ define(function(require) {
     },
 
     clickbtnConfirmarPIN: function(e) {
-
       var pinDigitado = $('#inputPIN').val();
       var pinProfAux = window.localStorage.getItem("ProfSelecPIN");
       if (pinProfAux == pinDigitado) {
-
         $('#myModal').modal("hide");
         $('#myModal').on('hidden.bs.modal', function (e) {
           document.removeEventListener("backbutton", self.onBackKeyDown, false); ////// RETIRAR EVENTO DO BOTAO

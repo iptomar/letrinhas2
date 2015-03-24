@@ -1,78 +1,12 @@
 var triggerSelec = false;
-function TocarDepoisDeSelec()
+
+function TocarDepoisDeSelec ()
 {
   triggerSelec = false;
   $("#AudioPlayerAluno").prop("currentTime",$("#AudioPlayerAluno").prop("currentTime")-1);
   $("#AudioPlayerAluno").trigger('play');
 }
 
-function convert_n2d(n){
-    if(n<10) return("0"+n);
-    else return(""+n);	}
-
-function convert_n3d(n){
-  if(n<100) return("0"+ convert_n2d(n) );
-  else return(""+n);
-}
-
-var totalPalavras=0,
-    totalPalavrasErradas=0;//contador de palavras erradas
-
-function verificaPalavras(){
-   if( totalPalavrasErradas!=0){
-     $("#ContadorDeErros").attr("style","color: #dd0000; visibility:initial");
-     $("#ContadorDeErros").text(totalPalavrasErradas + " Palavras Erradas");
-   }
-   else{
-     $("#ContadorDeErros").attr("style","visibility:hidden");
-   }
- }
-
-function findErr(){
-  //devolve todas as palavras da classe
-
-  var e=0,f=0,
-      todasPalavras=document.getElementsByClassName("picavel");
-  for (var i=0; i< todasPalavras.length; i++){
-
-    if($(todasPalavras[i]).val() != ''){
-      //selecionar a categoria do erro (Exatidão / fluidez)
-      switch (parseInt(($(todasPalavras[i]).val()).charAt(0))){
-        case 1:
-          e++;
-          break;
-        case 2:
-          f++;
-          break;
-      }
-    }
-  }
-
-  return{
-    "exatidao": e,
-    "fluidez": f
-    };
-}
-
-//////////// Guardar audio vindo do couchDB /////////////////
-function GravarSOMfile (name, data, success, fail) {
- var gotFileSystem = function (fileSystem) {
-   fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
-  };
-
-  var gotFileEntry = function (fileEntry) {
-   fileEntry.createWriter(gotFileWriter, fail);
-  };
-
- var gotFileWriter = function (writer) {
-   writer.onwrite = success;
-   writer.onerror = fail;
-   writer.write(data);
- };
-window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
-}
-
-//******************************************************************************
 define(function(require) {
   "use strict";
   var $ = require('jquery'),
@@ -82,6 +16,73 @@ define(function(require) {
     template = _.template(janelas);
 
   return Backbone.View.extend({
+    totalPalavras:0,
+    totalPalavrasErradas:0,//contador de palavras erradas
+    triggerSelec:false,
+
+    convert_n2d: function(n){
+        if(n<10) return("0"+n);
+        else return(""+n);
+    },
+
+    convert_n3d: function(n){
+      var self=this;
+      if(n<100) return("0"+ self.convert_n2d(n) );
+      else return(""+n);
+    },
+
+    verificaPalavras: function(){
+      var self=this;
+       if( self.totalPalavrasErradas!=0){
+         $("#ContadorDeErros").attr("style","color: #dd0000; visibility:initial");
+         $("#ContadorDeErros").text(self.totalPalavrasErradas + " Palavras Erradas");
+       }
+       else{
+         $("#ContadorDeErros").attr("style","visibility:hidden");
+       }
+     },
+
+    findErr: function(){
+      //devolve todas as palavras da classe
+      var e=0,f=0,
+          todasPalavras=document.getElementsByClassName("picavel");
+      for (var i=0; i< todasPalavras.length; i++){
+        if($(todasPalavras[i]).val() != ''){
+          //selecionar a categoria do erro (Exatidão / fluidez)
+          switch (parseInt(($(todasPalavras[i]).val()).charAt(0))){
+            case 1:
+              e++;
+              break;
+            case 2:
+              f++;
+              break;
+          }
+        }
+      }
+      return{
+        "exatidao": e,
+        "fluidez": f
+        };
+    },
+
+    //////////// Guardar audio vindo do couchDB /////////////////
+    GravarSOMfile: function(name, data, success, fail) {
+      console.log(cordova.file.dataDirectory);
+      var gotFileSystem = function (fileSystem) {
+        fileSystem.root.getFile(name, { create: true, exclusive: false }, gotFileEntry, fail);
+      };
+
+      var gotFileEntry = function (fileEntry) {
+        fileEntry.createWriter(gotFileWriter, fail);
+      };
+
+      var gotFileWriter = function (writer) {
+        writer.onwrite = success;
+        writer.onerror = fail;
+        writer.write(data);
+      };
+      window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+    },
 
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
@@ -89,7 +90,7 @@ define(function(require) {
     },
 
     initialize: function() {
-
+      var self = this;
       ////Carrega os dados mais uteis da janela anterior////
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
@@ -102,12 +103,12 @@ define(function(require) {
 
         var data = new Date(correcaoDoc.dataSub);
         $("#titleTestePagina").text("Corrigir teste de lista de palavras, submetido a "+
-                                      convert_n2d(data.getDate())+
-                                      "/"+ convert_n2d(data.getMonth()+1)+
-                                      "/"+ convert_n2d(data.getFullYear())+
-                                      " às "+convert_n2d(data.getHours())+
-                                      ":"+convert_n2d(data.getMinutes())+
-                                      ":"+convert_n2d(data.getSeconds())
+                                      self.convert_n2d(data.getDate())+
+                                      "/"+ self.convert_n2d(data.getMonth()+1)+
+                                      "/"+ self.convert_n2d(data.getFullYear())+
+                                      " às "+ self.convert_n2d(data.getHours())+
+                                      ":"+ self.convert_n2d(data.getMinutes())+
+                                      ":"+ self.convert_n2d(data.getSeconds())
                                       );
         alunos_local2.get(correcaoDoc.id_Aluno, function(err, alunoDoc){
           if(err) console.log(err);
@@ -146,15 +147,15 @@ define(function(require) {
           $('#imgDisciplina').attr("src",urlDiscp);
           var s1,allTable, empty=true;
           allTable ="<table style='width:100%; '><tr>";
-          totalPalavras=0;
+          self.totalPalavras=0;
           //*id do div com o conteúdo, id="listaAreaConteudo"
           if(testeDoc.conteudo.palavrasCl1.length>0){
             s1="";
             for(var j=0; j<testeDoc.conteudo.palavrasCl1.length;j++){
-              s1+="<p id='"+convert_n3d(totalPalavras)+" 'class='picavel' value=''"
+              s1+="<p id='"+self.convert_n3d(self.totalPalavras)+" 'class='picavel' value=''"
                     +"style='font-weight:bold; font-size:20px'>"
                     + testeDoc.conteudo.palavrasCl1[j] +"</p>";
-              totalPalavras++;
+                    self.totalPalavras++;
             }
             allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
             empty=false;
@@ -163,10 +164,10 @@ define(function(require) {
           if(testeDoc.conteudo.palavrasCl2.length>0){
               s1="";
               for(var j=0; j<testeDoc.conteudo.palavrasCl2.length;j++){
-                s1+="<p id='"+ convert_n3d(totalPalavras) +"'class='picavel' value=''"
+                s1+="<p id='"+ self.convert_n3d(self.totalPalavras) +"'class='picavel' value=''"
                       +"style='font-weight:bold; font-size:20px'>"
                       + testeDoc.conteudo.palavrasCl2[j] +"</p>";
-                totalPalavras++;
+                      self.totalPalavras++;
               }
               allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
               empty=false;
@@ -175,10 +176,10 @@ define(function(require) {
           if(testeDoc.conteudo.palavrasCl3.length>0){
               s1="";
               for(var j=0; j<testeDoc.conteudo.palavrasCl3.length;j++){
-                s1+="<p id='"+ convert_n3d(totalPalavras) +"'class='picavel' value=''"
+                s1+="<p id='"+ self.convert_n3d(self.totalPalavras) +"'class='picavel' value=''"
                       +"style='font-weight:bold; font-size:20px'>"
                       + testeDoc.conteudo.palavrasCl3[j] +"</p>";
-                totalPalavras++;
+                      self.totalPalavras++;
               }
               allTable+=("<td class='well' align='center' valign='top' style='width:30%'>"+s1+"</td>");
               empty=false;
@@ -194,7 +195,7 @@ define(function(require) {
 
           testes_local2.getAttachment(testeDoc._id, 'voz.mp3', function(err2, DataImg) {
             if (err2) console.log(err2);
-            GravarSOMfile('voz.mp3', DataImg, function() {
+            self.GravarSOMfile('voz.mp3', DataImg, function() {
               console.log('FUNCIONA VOZ PROF');
               $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3");
               $("#AudioPlayerProf").trigger('load');
@@ -207,10 +208,10 @@ define(function(require) {
 
         correcoes_local2.getAttachment(correcaoID, 'gravacao.amr', function(err2, DataAudio) {
           if (err2) console.log(err2);
-          GravarSOMfile('gravacao.amr', DataAudio, function() {
+          self.GravarSOMfile('gravacao.amr', DataAudio, function() {
             console.log('FUNCIONA');
             $("#AudioPlayerAluno").attr("src", cordova.file.dataDirectory + "/files/gravacao.amr");
-            $("#AudioPlayerAluno").trigger('load');
+            //$("#AudioPlayerAluno").trigger('load');
           }, function(err) {
             console.log("DEU ERRO" + err);
           });
@@ -261,21 +262,21 @@ define(function(require) {
             $(this).css("color", "#000000");
             $meuSpan.popover('destroy');
             $meuSpan.attr("value", " ");
-            totalPalavrasErradas--;
-            verificaPalavras();
+            self.totalPalavrasErradas--;
+            self.verificaPalavras();
             triggerSelec = false;
           } else   if(triggerSelec == false){
             $("#AudioPlayerAluno").trigger('pause');
             $(this).css("color", "#FF9900");
             $meuSpan.popover('show');
-            totalPalavrasErradas++;
-            verificaPalavras();
+            self.totalPalavrasErradas++;
+            self.verificaPalavras();
             triggerSelec = true;
           }
 
         });
       });
-      totalPalavrasErradas=0;
+      self.totalPalavrasErradas=0;
     },
 
     events: {
@@ -290,16 +291,13 @@ define(function(require) {
 
 
     clickbtnConfirmarSUB: function(e) {
-        console.log("cenas");
-
-
+      var self=this;
         $('#myModalSUB').modal("hide");
         $('#myModalSUB').on('hidden.bs.modal', function (e) {
         try{
             var plvr, categ, erro;
             //array para receber os items (palavra e erro)
             var conteudoResultado = new Array();
-
             //devolve todas as palavras da classe
             var todasPalavras =document.getElementsByClassName("picavel");
             var a=0;
@@ -355,7 +353,7 @@ define(function(require) {
             //(plm) palavras lidas por minuto (não necessário por enquanto)
             //var plm = Math.roud((totalPalavras*60/tempoSeg));
             //palavras corretamente lidas (pcl)
-            var pcl= totalPalavras - totalPalavrasErradas;
+            var pcl= self.totalPalavras - self.totalPalavrasErradas;
             //Velocidade de leitura (VL)
             var vl = Math.round((pcl*60/tempoSeg));
 
@@ -363,7 +361,7 @@ define(function(require) {
             var CorrID= window.localStorage.getItem("CorrecaoID");
             correcoes_local2.get(CorrID, function(err, docmnt){
               //total de palavras
-              docmnt.TotalPalavras = totalPalavras;
+              docmnt.TotalPalavras = self.totalPalavras;
               //conteúdo onde estão identificadas as palavras erradas
               docmnt.conteudoResult=conteudoResultado;
               //Data da correção
@@ -402,6 +400,7 @@ define(function(require) {
     clickSubmitButton: function(e) {
       e.stopPropagation();
       e.preventDefault();
+      var self=this;
       window.print();
       var timex = $('#AudioPlayerAluno').prop("duration");
 
@@ -415,16 +414,16 @@ define(function(require) {
       } else {
         $("#popUpAviso").empty();
 
-        var analise = findErr();
+        var analise = self.findErr();
         var exatidaoTotal= analise.exatidao;
         var fluidezTotal = analise.fluidez;
 
-        $('#LBtotalPalavras').text("Total de Palavras: "+totalPalavras);
-        var exPer = Math.round((exatidaoTotal/totalPalavras)*100);
-        var exFlu = Math.round((fluidezTotal/totalPalavras)*100);
+        $('#LBtotalPalavras').text("Total de Palavras: "+self.totalPalavras);
+        var exPer = Math.round((exatidaoTotal/self.totalPalavras)*100);
+        var exFlu = Math.round((fluidezTotal/self.totalPalavras)*100);
         $('#LBCorrecao').html("Correção: </br>"+
-        "&nbsp;&nbsp;&nbsp;&nbsp-Exatidão: "+analise.exatidao+" palavras erradas, acertou: "+(100-exPer)+"% </br>"+
-        "&nbsp;&nbsp;&nbsp;&nbsp-Fluidez: "+analise.fluidez+" palavras, acertou: "+(100-exFlu)+"% </br>"+
+        "&nbsp;&nbsp;&nbsp;&nbsp-Exatidão: "+ exatidaoTotal +" palavras erradas, acertou: "+(100-exPer)+"% </br>"+
+        "&nbsp;&nbsp;&nbsp;&nbsp-Fluidez: "+ fluidezTotal +" palavras, acertou: "+(100-exFlu)+"% </br>"+
         "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp>>> Precisão:"+(100-(exPer+exFlu))+"% certo <<<\n\n"
       );
       var tempoSeg = $('#AudioPlayerAluno').prop("duration");
@@ -433,11 +432,11 @@ define(function(require) {
 
        $('#LBCtempoAluno').html("Tempo do Aluno: </br>"+
             "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+Math.round(tempoSeg)+" segundos </br>"+
-            "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*totalPalavras/tempoSeg))+" plv/min. ");
+            "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*self.totalPalavras/tempoSeg))+" plv/min. ");
 
       $('#LBCtempoProf').html("Tempo do Professor: </br>"+
       "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+Math.round(tempoSegProf)+" segundos</br>"+
-      "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*totalPalavras/tempoSegProf))+" plv/min.");
+      "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*self.totalPalavras/tempoSegProf))+" plv/min.");
       $('#myModalSUB').modal("show");
       }
     },

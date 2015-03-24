@@ -1,7 +1,3 @@
-function onBackKeyDown() {
-}
-
-
 define(function(require) {
   var BtnNavPress;
   "use strict";
@@ -10,7 +6,6 @@ define(function(require) {
     _ = require('underscore'),
     Backbone = require('backbone'),
     janelas = require('text!janelas/menuTipoOpcao.html'),
-
     template = _.template(janelas);
 
   return Backbone.View.extend({
@@ -18,6 +13,10 @@ define(function(require) {
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
       $(e.target).parent().addClass('is-active');
+    },
+
+    onBackKeyDown: function() {
+      ////nada///
     },
 
     initialize: function() {
@@ -61,7 +60,7 @@ define(function(require) {
     },
 
     clickbtnConfirmarSUB: function(e) {
-      document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+      document.removeEventListener("backbutton", function() {  }, false); ///RETIRAR EVENTO DO BOTAO
         $('#myModalSUB').modal("hide");
         $('#myModalSUB').on('hidden.bs.modal', function (e) {
           window.history.go(BtnNavPress);
@@ -70,33 +69,36 @@ define(function(require) {
 
 
     clickbtnNavProf: function(e) {
+      var self = this;
       e.stopPropagation(); e.preventDefault();
-      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+      document.addEventListener("backbutton", self.onBackKeyDown, false); //Adicionar o evento
       BtnNavPress = -3;
       $('#myModalSUB').modal("show");
       $('#myModalSUB').on('hidden.bs.modal', function (e) {
-        document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+        document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
       });
     },
 
     clickbtnNavAlu: function(e) {
+      var self = this;
       e.stopPropagation(); e.preventDefault();
-      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+      document.addEventListener("backbutton", self.onBackKeyDown, false); //Adicionar o evento
       BtnNavPress = -1;
       $('#myModalSUB').modal("show");
       $('#myModalSUB').on('hidden.bs.modal', function (e) {
-        document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+        document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
       });
     },
 
 
     clickbtnNavINI: function(e) {
+      var self = this;
       e.stopPropagation(); e.preventDefault();
-      document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+      document.addEventListener("backbutton", self.onBackKeyDown, false); //Adicionar o evento
       BtnNavPress = -5;
       $('#myModalSUB').modal("show");
       $('#myModalSUB').on('hidden.bs.modal', function (e) {
-        document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+        document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
       });
     },
 
@@ -142,12 +144,10 @@ define(function(require) {
       }
     },
 
-
     render: function() {
       this.$el.html(template({}));
       return this;
     }
-
   });
 
 });

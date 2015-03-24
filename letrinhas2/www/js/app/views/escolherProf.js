@@ -1,13 +1,7 @@
-function onBackKeyDown() {
-}
-
 define(function(require) {
 
   "use strict";
   ///Variaveis de apoio///
-  var nomeProfAux;
-  var idProfAux;
-  var pinProfAux;
 
   var $ = require('jquery'),
     _ = require('underscore'),
@@ -17,6 +11,10 @@ define(function(require) {
 
   return Backbone.View.extend({
 
+    onBackKeyDown: function() {
+      ////nada///
+    },
+
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
       $(e.target).parent().addClass('is-active');
@@ -24,7 +22,7 @@ define(function(require) {
     /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
 
-
+      var self = this;
       ////Carrega dados da janela anterior////
       var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
@@ -71,20 +69,20 @@ define(function(require) {
         //// Analisa todos os botoes do div e aqueles que forem botoes de Prof escuta o evento click//
         $container.on('click', '.btn-professor', function(ev) {
           ev.stopPropagation(); ev.preventDefault();
-          document.addEventListener("backbutton", onBackKeyDown, false); //Adicionar o evento
+          document.addEventListener("backbutton", self.onBackKeyDown, false); //Adicionar o evento
           var $btn = $(this); // O jQuery passa o btn clicado pelo this
           $('#labelErr').text("");  //limpa campos
           $('#inputPIN').val("");   //limpa campos
           $('#inputPINErr').removeClass("has-error"); //limpa campos
-          nomeProfAux = $btn[0].innerText;
-          idProfAux = $btn[0].id;
-          pinProfAux = $btn[0].name;
+          window.localStorage.setItem("ProfSelecNome", $btn[0].innerText + ''); //enviar variavel
+          window.localStorage.setItem("ProfSelecID", $btn[0].id + ''); //enviar variavel
+          window.localStorage.setItem("ProfSelecPIN", $btn[0].name + ''); //enviar variavel
           $('#myModal').modal("show");
           $('#myModal').on('shown.bs.modal', function (e) {
              $("#inputPIN").focus();
           });
           $('#myModal').on('hidden.bs.modal', function (e) {
-            document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+            document.removeEventListener("backbutton",  self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
           });
         });
       });
@@ -97,17 +95,15 @@ define(function(require) {
     },
 
     clickbtnConfirmarPIN: function(e) {
+      var self = this;
       var pinDigitado = $('#inputPIN').val();
-      if (pinProfAux == pinDigitado) {
-        document.removeEventListener("backbutton", onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
+      if (window.localStorage.getItem("ProfSelecPIN") == pinDigitado) {
+        document.removeEventListener("backbutton",  self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
         $('#myModal').modal("toggle");
         var self = this;
         if (Backbone.history.fragment != 'escolherTurma') {
           utils.loader(function() {
             e.preventDefault();
-            window.localStorage.setItem("ProfSelecNome", nomeProfAux + ''); //enviar variavel
-            window.localStorage.setItem("ProfSelecID", idProfAux + ''); //enviar variavel
-            window.localStorage.setItem("ProfSelecPIN", pinProfAux + ''); //enviar variavel
             app.navigate('/escolherTurma', {
               trigger: true
             });

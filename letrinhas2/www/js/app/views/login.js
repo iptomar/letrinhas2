@@ -1,20 +1,8 @@
 
-function checkStatus() {
-  if (btnBloqueado == false) {
-    $("#progBAR").css('width', perc + '%').attr('aria-valuenow', perc).html(perc + '%');
-    $("#btn_login").removeClass("disabled");
-  } else {
-    $("#proB").css('visibility', 'visible')
-    $("#progBAR").css('width', perc + '%').attr('aria-valuenow', perc).html(perc + '%');
-    $("#btn_login").addClass("disabled");
-  }
-}
-
-
 define(function(require) {
 
   "use strict";
-  var myVar = setInterval(checkStatus, 500);
+
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
@@ -24,14 +12,25 @@ define(function(require) {
 
   return Backbone.View.extend({
 
+    myVar : setInterval(function() {
+      if (btnBloqueado == false) {
+        $("#progBAR").css('width', perc + '%').attr('aria-valuenow', perc).html(perc + '%');
+        $("#btn_login").removeClass("disabled");
+      } else {
+        $("#proB").css('visibility', 'visible')
+        $("#progBAR").css('width', perc + '%').attr('aria-valuenow', perc).html(perc + '%');
+        $("#btn_login").addClass("disabled");
+      }
+    }, 500),
+
+
+
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
       $(e.target).parent().addClass('is-active');
     },
 
     initialize: function() {
-
-
     },
 
     //Eventos Click
@@ -42,8 +41,10 @@ define(function(require) {
     },
 
     clickLogin: function(e) {
+      var self = this;
       e.stopPropagation(); e.preventDefault();
-      clearInterval(myVar);
+
+      clearInterval(self.myVar);
       $("#proB").css('visibility','hidden')
       app.navigate('/escolherEscola', {
         trigger: true

@@ -9,13 +9,10 @@ var app = {
   },
 
   onDeviceReady: function() {
-    console.log("asda");
-
     app.receivedEvent('deviceready');
   },
 
   receivedEvent: function(id) {
-    //navigator.splashscreen.hide();
   }
 };
 app.initialize();

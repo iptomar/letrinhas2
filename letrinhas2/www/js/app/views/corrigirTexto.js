@@ -1,5 +1,6 @@
 var triggerSelec = false;
-function TocarDepoisDeSelec()
+
+function TocarDepoisDeSelec ()
 {
   triggerSelec = false;
   $("#AudioPlayerAluno").prop("currentTime",$("#AudioPlayerAluno").prop("currentTime")-1);
@@ -16,12 +17,19 @@ define(function(require) {
     janelas = require('text!janelas/corrigirTexto.html'),
     template = _.template(janelas);
 
-    function AnalisarTexto()
+    function onBack() {
+
+     }
+
+  return Backbone.View.extend({
+
+    errosTTexto : 0,
+
+    AnalisarTexto: function()
     {
       var $container = $('#DivContentorArea'); //Adiciona ao Div
       var sapns = $("#DivContentorArea > span");
       var maxEle = $("#DivContentorArea > span").length;
-
       var exatidao = 0;
       var fluidez = 0;
       var totalPalavas = 0;
@@ -37,40 +45,67 @@ define(function(require) {
           fluidez++;
         }
       }
-
       return {
         "exatidao": exatidao,
         "fluidez": fluidez,
         "totalPalavas": totalPalavas
         };
+    },
 
-    }
+    readableDuration:  function(seconds) {
+      var  sec = Math.floor( seconds );
+      var  min = Math.floor( sec / 60 );
+        min = min >= 10 ? min : '0' + min;
+        sec = Math.floor( sec % 60 );
+        sec = sec >= 10 ? sec : '0' + sec;
+        return min + ':' + sec;
+    },
+
+    InsertCorrecao:  function (IdCorr) {
+      var self = this;
+      var $container = $('#DivContentorArea'); //Adiciona ao Div
+      var sapns = $("#DivContentorArea > span");
+      var maxEle = $("#DivContentorArea > span").length;
+      var agora = new Date();
+      var tempoSeg = $('#AudioPlayerAluno').prop("duration");
+      var palavrasErr = 0;
+
+      correcoes_local2.get(IdCorr, function(err, otherDoc) {
+        otherDoc.estado = 1;
+        otherDoc.TotalPalavras = maxEle;
+        otherDoc.dataCorr = agora;
+        otherDoc.expresSinais = $('#DropExprSinais').val();
+        otherDoc.expresEntoacao = $('#DropExprEntoacao').val();
+        otherDoc.expresTexto = $('#DropExprTexto').val();
+
+        for (var i = 0; i < maxEle; i++) {
+          var color = sapns[i].style.color
+          if (color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
+          {
+            var cenas = sapns[i].getAttribute("value");
+            palavrasErr++;
+            otherDoc.conteudoResult.push({
+              'palavra': sapns[i].innerText,
+              'categoria': self.converterStingEmTexto(cenas).categoria,
+              'erro': self.converterStingEmTexto(cenas).erro,
+              'posicao': i,
+            });
+          }
+        }
+        var pcl = maxEle - palavrasErr;
+        otherDoc.velocidade = Math.round((pcl * 60 / tempoSeg));
+        correcoes_local2.put(otherDoc, IdCorr, otherDoc._rev, function(err, response) {
+          if (err) {
+            console.log('Correcao ' + err + ' erro');
+          } else {
+            console.log('Parabens InseridoCorrecao');
+          }
+        });
+      });
+    },
 
 
-    //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
-    function GravarSOMfile(name, data, success, fail) {
-      console.log(cordova.file.dataDirectory);
-      var gotFileSystem = function(fileSystem) {
-        fileSystem.root.getFile(name, {
-          create: true,
-          exclusive: false
-        }, gotFileEntry, fail);
-      };
-
-      var gotFileEntry = function(fileEntry) {
-        fileEntry.createWriter(gotFileWriter, fail);
-      };
-
-      var gotFileWriter = function(writer) {
-        writer.onwrite = success;
-        writer.onerror = fail;
-        writer.write(data);
-      };
-      window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
-    }
-
-
-    function converterStingEmTexto(stringx) {
+    converterStingEmTexto: function(stringx) {
       if (stringx == "op1_1")
         return {
           "categoria": "Exatidão",
@@ -132,68 +167,35 @@ define(function(require) {
           "categoria": "Fluidez",
           "erro": "Retificação espontânea"
         };
-    }
-
-    function readableDuration(seconds) {
-      var  sec = Math.floor( seconds );
-      var  min = Math.floor( sec / 60 );
-        min = min >= 10 ? min : '0' + min;
-        sec = Math.floor( sec % 60 );
-        sec = sec >= 10 ? sec : '0' + sec;
-        return min + ':' + sec;
-    }
-
-    function InsertCorrecao(IdCorr) {
-      var $container = $('#DivContentorArea'); //Adiciona ao Div
-      var sapns = $("#DivContentorArea > span");
-      var maxEle = $("#DivContentorArea > span").length;
-      var agora = new Date();
-      var tempoSeg = $('#AudioPlayerAluno').prop("duration");
-      var palavrasErr = 0;
-
-      correcoes_local2.get(IdCorr, function(err, otherDoc) {
-        otherDoc.estado = 1;
-        otherDoc.TotalPalavras = maxEle;
-        otherDoc.dataCorr = agora;
-        otherDoc.expresSinais = $('#DropExprSinais').val();
-        otherDoc.expresEntoacao = $('#DropExprEntoacao').val();
-        otherDoc.expresTexto = $('#DropExprTexto').val();
-
-        for (var i = 0; i < maxEle; i++) {
-          var color = sapns[i].style.color
-          if (color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
-          {
-            var cenas = sapns[i].getAttribute("value");
-            palavrasErr++;
-            otherDoc.conteudoResult.push({
-              'palavra': sapns[i].innerText,
-              'categoria': converterStingEmTexto(cenas).categoria,
-              'erro': converterStingEmTexto(cenas).erro,
-              'posicao': i,
-            });
-          }
-        }
-        var pcl = maxEle - palavrasErr;
-        otherDoc.velocidade = Math.round((pcl * 60 / tempoSeg));
-
-        correcoes_local2.put(otherDoc, IdCorr, otherDoc._rev, function(err, response) {
-          if (err) {
-            console.log('Correcao ' + err + ' erro');
-          } else {
-            console.log('Parabens InseridoCorrecao');
-          }
-        });
-      });
-    }
+    },
 
 
-    function onBack() {
+    //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
+    GravarSOMfile : function(name, data, success, fail) {
+      console.log(cordova.file.dataDirectory);
+      var gotFileSystem = function(fileSystem) {
+        fileSystem.root.getFile(name, {
+          create: true,
+          exclusive: false
+        }, function(fileEntry) {
+          fileEntry.createWriter(function(writer) {
+            writer.onwrite = success;
+            writer.onerror = fail;
+            writer.write(data);
+          }, fail);
+        }, fail);
+      };
+      window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+    },
 
-     }
 
 
-  var errosTTexto = 0;
-  return Backbone.View.extend({
+
+
+
+
+
+
 
 
 
@@ -203,7 +205,8 @@ define(function(require) {
     },
 
     initialize: function() {
-      errosTTexto = 0;
+      var self = this;
+      this.errosTTexto = 0;
       triggerSelec = false;
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
@@ -249,7 +252,7 @@ define(function(require) {
         correcoes_local2.getAttachment(correcaoID, 'gravacao.amr', function(err2, DataAudio) {
           if (err2) console.log(err2);
           console.log(DataAudio);
-          GravarSOMfile('gravacao.amr', DataAudio, function() {
+          self.GravarSOMfile('gravacao.amr', DataAudio, function() {
             console.log('FUNCIONA');
             $("#AudioPlayerAluno").attr("src", cordova.file.dataDirectory + "/files/gravacao.amr");
             $("#AudioPlayerAluno").trigger('load');
@@ -261,10 +264,9 @@ define(function(require) {
 
         testes_local2.get(correcaoDoc.id_Teste, function(err, testeDoc) {
           if (err) console.log(err);
-
           testes_local2.getAttachment(testeDoc._id, 'voz.mp3', function(err2, DataImg) {
             if (err2) console.log(err2);
-            GravarSOMfile('voz.mp3', DataImg, function() {
+            self.GravarSOMfile('voz.mp3', DataImg, function() {
               console.log('FUNCIONA VOZ PROF');
               $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3");
               $("#AudioPlayerProf").trigger('load');
@@ -347,15 +349,15 @@ define(function(require) {
               $(this).css("color", "#000000");
               $meuSpan.popover('destroy');
               $meuSpan.attr("value", " ");
-              errosTTexto--;
-              $('#ContadorDeErros').text("Erros: " + errosTTexto);
+              self.errosTTexto--;
+              $('#ContadorDeErros').text("Erros: " + self.errosTTexto);
               triggerSelec = false;
             } else   if(triggerSelec == false){
               $("#AudioPlayerAluno").trigger('pause');
               $(this).css("color", "#FF9900");
               $meuSpan.popover('show');
-              errosTTexto++;
-              $('#ContadorDeErros').text("Erros: " + errosTTexto);
+              self.errosTTexto++;
+              $('#ContadorDeErros').text("Erros: " + self.errosTTexto);
               triggerSelec = true;
             }
           });
@@ -371,7 +373,8 @@ define(function(require) {
 
 
     clickbtnConfirmarSUB: function(e) {
-      InsertCorrecao(window.localStorage.getItem("CorrecaoID"));
+      var self = this
+      self.InsertCorrecao(window.localStorage.getItem("CorrecaoID"));
       document.removeEventListener("backbutton", onBack, false); ///RETIRAR EVENTO DO BOTAO
       $('#myModalSUB').modal("hide");
       $('#myModalSUB').on('hidden.bs.modal', function(e) {
@@ -381,8 +384,8 @@ define(function(require) {
 
 
     clickbtnFinalizar: function(e) {
-      e.stopPropagation();
-      e.preventDefault();
+      var self = this;
+      e.stopPropagation();e.preventDefault();
       window.print();
       var timex = $('#AudioPlayerAluno').prop("duration");
 
@@ -396,17 +399,18 @@ define(function(require) {
       } else {
         $("#popUpAviso").empty();
         $('#myModalSUB').modal("show");
+        var auxAnalisar = self.AnalisarTexto();
 
-        var exatidaoTotal= AnalisarTexto().exatidao;
-        var fluidezTotal = AnalisarTexto().fluidez;
-        var palavrasTotal = AnalisarTexto().totalPalavas;
+        var exatidaoTotal= auxAnalisar.exatidao;
+        var fluidezTotal = auxAnalisar.fluidez;
+        var palavrasTotal = auxAnalisar.totalPalavas;
 
-        $('#LBtotalPalavras').text("Total de Palavras: "+AnalisarTexto().totalPalavas);
+        $('#LBtotalPalavras').text("Total de Palavras: "+auxAnalisar.totalPalavas);
         var exPer = Math.round((exatidaoTotal/palavrasTotal)*100);
         var exFlu = Math.round((fluidezTotal/palavrasTotal)*100);
         $('#LBCorrecao').html("Correção: </br>"+
-        "&nbsp;&nbsp;&nbsp;&nbsp-Exatidão: "+AnalisarTexto().exatidao+" palavras erradas, acertou: "+(100-exPer)+"% </br>"+
-        "&nbsp;&nbsp;&nbsp;&nbsp-Fluidez: "+AnalisarTexto().fluidez+" palavras, acertou: "+(100-exFlu)+"% </br>"+
+        "&nbsp;&nbsp;&nbsp;&nbsp-Exatidão: "+auxAnalisar.exatidao+" palavras erradas, acertou: "+(100-exPer)+"% </br>"+
+        "&nbsp;&nbsp;&nbsp;&nbsp-Fluidez: "+auxAnalisar.fluidez+" palavras, acertou: "+(100-exFlu)+"% </br>"+
         "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp---[ Total:"+(100-(exPer+exFlu))+"% certo ]--- </br>"+
         "Expressividade: </br>"+
         "&nbsp-Sinais: "+$('#DropExprSinais').val()+ " || -Entoação: "+$('#DropExprEntoacao').val() +" || -Texto: "+$('#DropExprTexto').val()
@@ -416,11 +420,11 @@ define(function(require) {
       var tempoSegProf = $('#AudioPlayerProf').prop("duration");
 
        $('#LBCtempoAluno').html("Tempo do Aluno: </br>"+
-            "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+readableDuration(tempoSeg)+" </br>"+
+            "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+self.readableDuration(tempoSeg)+" </br>"+
             "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*palavrasTotal/tempoSeg))+" ");
 
       $('#LBCtempoProf').html("Tempo do Professor: </br>"+
-      "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+readableDuration(tempoSegProf)+" </br>"+
+      "&nbsp;&nbsp;&nbsp;&nbsp-Duração: "+self.readableDuration(tempoSegProf)+" </br>"+
       "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: "+(Math.round(60*palavrasTotal/tempoSegProf))+" ");
 
       }

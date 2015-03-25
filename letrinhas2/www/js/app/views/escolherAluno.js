@@ -44,15 +44,17 @@ define(function(require) {
                     '</div>' +
                     '</div>';
                   var $container = $('#outputAlunos'); //Adiciona ao Div
-
+        
                   for (var i = 0; i < escolaDoc.turmas.length; i++) {
                     //Se o id do aluno da turma é igual ao id do aluno entao vai buscar seus dados//
                     if (escolaDoc.turmas[i]._id == turmaId) {
                       for (var y = 0; y < escolaDoc.turmas[i].alunos.length; y++) {
                         var idAlunox = escolaDoc.turmas[i].alunos[y].id;
+
                         alunos_local2.get(idAlunox, function(err, alunoDoc) {
                         if (err) console.log(err);
-                          alunos_local2.getAttachment(idAlunox, 'aluno.png', function(err2, DataImg) {
+                        console.log(alunoDoc._id);
+                          alunos_local2.getAttachment(alunoDoc._id, 'aluno.png', function(err2, DataImg) {
                               if (err2) console.log(err2);
                               var url = URL.createObjectURL(DataImg);
                               var $btn = $(

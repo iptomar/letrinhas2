@@ -1,9 +1,6 @@
 var nano = require('nano')('http://127.0.0.1:5984');
 
-var professores = nano.use('professores');
-var escolas = nano.use('escolas');
-var testes = nano.use('testes');
-var alunos = nano.use('alunos');
+var professores = nano.use('dev_professores');
 var imgData = require('fs').readFileSync('prof.png');
 
 function insertProfessor(counter) {
@@ -12,7 +9,6 @@ function insertProfessor(counter) {
     'password': '123qwe',
     'telefone': '123456789',
     '_id': 'xpto@gmail.com' + counter,
-    'photo': 'path',
     'estado': true,
     'pin': 1234
   };

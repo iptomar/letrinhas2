@@ -21,9 +21,9 @@ function insertEscola(counter, uids) {
 
     var turma = {
       '_id': ids,
-      'ano': 1,
+      'ano': Math.floor((Math.random() * 4) + 1),
       'anoLectivo': 2014,
-      'nome': 'turma A',
+      'nome': 'turma '+ids.substring(27),
       'alunos': [],
       'professores': []
     };

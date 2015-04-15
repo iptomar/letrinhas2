@@ -9,8 +9,8 @@ function insertProfessor(counter) {
     'password': '123qwe',
     'telefone': '123456789',
     '_id': 'xpto@gmail.com' + counter,
-    'estado': true,
-    'pin': 1234
+    'estado': 1,
+    'pin': 1+ ''+counter
   };
 
 

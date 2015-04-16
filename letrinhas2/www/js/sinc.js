@@ -2,9 +2,14 @@
 //##########################################################################
 
 var btnBloqueado = false;
-//var IP= "127.0.0.1";
+var IP= "127.0.0.1";
 
-var IP= "ince.pt";
+//var IP= "ince.pt";
+var escolasVar = "dev_escolas";
+var professoresVar = "dev_professores";
+var alunosVar = "dev_alunos";
+var testesVar = "dev_testes";
+var correcoesVar = "dev_correcoes";
 
 
 var alunos_local2 = new PouchDB('alunos_local2');
@@ -26,7 +31,7 @@ btnBloqueado = false;
 }
 
 function sinEscolasForev(){
-var repEscolas = PouchDB.sync('http://'+IP+':5984/escolas', 'escolas_local2', {
+var repEscolas = PouchDB.sync('http://'+IP+':5984/'+escolasVar, 'escolas_local2', {
     live: true,
     batch_size: 100,
     retry: true
@@ -40,7 +45,7 @@ var repEscolas = PouchDB.sync('http://'+IP+':5984/escolas', 'escolas_local2', {
 
 
 function sinAlunosForev(){
-var repAlunos = PouchDB.sync('http://'+IP+':5984/alunos', 'alunos_local2', {
+var repAlunos = PouchDB.sync('http://'+IP+':5984/'+alunosVar, 'alunos_local2', {
       live: true,
       batch_size: 300,
       retry: true
@@ -52,7 +57,7 @@ var repAlunos = PouchDB.sync('http://'+IP+':5984/alunos', 'alunos_local2', {
 }
 
 function sinProfsForev(){
-  var repProfs = PouchDB.sync('http://'+IP+':5984/professores', 'professores_local2', {
+  var repProfs = PouchDB.sync('http://'+IP+':5984/'+professoresVar, 'professores_local2', {
       live: true,
       batch_size: 200,
       retry: true
@@ -64,7 +69,7 @@ function sinProfsForev(){
 }
 
 function sinTestesForev(){
-  var repProfs = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
+  var repProfs = PouchDB.sync('http://'+IP+':5984/'+testesVar, 'testes_local2', {
       live: true,
       batch_size: 200,
       retry: true
@@ -76,7 +81,7 @@ function sinTestesForev(){
 }
 
 function sinCorrecoesForev(){
-  var repProfs = PouchDB.sync('http://'+IP+':5984/correcoes', 'correcoes_local2', {
+  var repProfs = PouchDB.sync('http://'+IP+':5984/'+correcoesVar, 'correcoes_local2', {
       live: true,
       batch_size: 200,
       retry: true
@@ -94,7 +99,7 @@ function sinCorrecoesForev(){
 escolas_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
   btnBloqueado = true;
-var repEscolas = PouchDB.sync('http://'+IP+':5984/escolas', 'escolas_local2', {
+var repEscolas = PouchDB.sync('http://'+IP+':5984/'+escolasVar, 'escolas_local2', {
     live: false,
     batch_size: 100,
     retry: true
@@ -120,7 +125,7 @@ alunos_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
   btnBloqueado = true;
-var repEscolas = PouchDB.sync('http://'+IP+':5984/alunos', 'alunos_local2', {
+var repEscolas = PouchDB.sync('http://'+IP+':5984/'+alunosVar, 'alunos_local2', {
     live: false,
     batch_size: 200,
     retry: true
@@ -146,7 +151,7 @@ professores_local2.info().then(function(info1) {
 
 if (info1.doc_count == 0){
   btnBloqueado = true;
-var repProfs = PouchDB.sync('http://'+IP+':5984/professores', 'professores_local2', {
+var repProfs = PouchDB.sync('http://'+IP+':5984/'+professoresVar, 'professores_local2', {
     live: false,
     batch_size: 200,
     retry: true
@@ -174,7 +179,7 @@ var repProfs = PouchDB.sync('http://'+IP+':5984/professores', 'professores_local
 testes_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
   btnBloqueado = true;
-var repTestes = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
+var repTestes = PouchDB.sync('http://'+IP+':5984/'+testesVar, 'testes_local2', {
     live: false,
     batch_size: 200,
     retry: true
@@ -202,7 +207,7 @@ var repTestes = PouchDB.sync('http://'+IP+':5984/testes', 'testes_local2', {
 correcoes_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
   btnBloqueado = true;
-var repTestes = PouchDB.sync('http://'+IP+':5984/correcoes', 'correcoes_local2', {
+var repTestes = PouchDB.sync('http://'+IP+':5984/'+correcoesVar, 'correcoes_local2', {
     live: false,
     batch_size: 200,
     retry: true

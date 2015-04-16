@@ -1,20 +1,19 @@
 var nano = require('nano')('http://127.0.0.1:5984');
-
-var professores = nano.use('professores');
-var escolas = nano.use('escolas');
-var testes = nano.use('testes');
-var alunos = nano.use('alunos');
-var correcoes = nano.use('correcoes');
-
+var resolucoes = nano.use('dev_resolucoes');
 function insertCorrecao(count) {
 
-  var testeMULTIMEDIA = {
-    'opcaoAluno': '1',
-  };
 
-  var testeTexto = {
-    'exatidao': '1',
-    'velocidade': '2', 
+  var correcao = {
+      'palavra': 'menino',
+      'categoria': 'Exatidão',
+      'erro': 'Substituição de letras',
+      'posicao': '4',
+      };
+
+  var resposta = {
+    'idpergunta': '1',
+    'conteudo': '??????', 
+    'correcao': correcao, 
     'fluidez': '2', 
     'expressividade': '2', 
     'compreensao': '2', 
@@ -23,12 +22,13 @@ function insertCorrecao(count) {
 
   var correcao = {
     '_id': 'Corr' + count,
-    'id_Teste': '6f54b0cf4798b3433b7c511485b5ff5e',
+    'id_Teste': 'Teste_N7',
     'id_Aluno': 'Joao1',
     'id_Prof': 'xpto@gmail.com0',
     'tipoCorrecao': 'texto',
-    'conteudo': testeTexto,
-    'estado': '0',
+    'respostas': resposta,
+    'nota': '0',
+    'observacoes': 'bla bla',
   };
 ////tipoTeste
 ////texto - Teste Texto
@@ -38,7 +38,7 @@ function insertCorrecao(count) {
 
  
 
-  correcoes.insert(correcao, function(err, body) {
+  resolucoes.insert(correcao, function(err, body) {
     if (!err) {
       console.log('correcao ' + correcao._id + ' inserted');
     }

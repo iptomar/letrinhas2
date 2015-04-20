@@ -92,7 +92,7 @@ function insertPerguntas(count) {
   };
 
 
-  perguntas.multipart.insert(pergunta, [attach1], 'Teste_N' + count , function(err, body) {
+  perguntas.multipart.insert(pergunta, [attach1], 'Pergunta_N' + count , function(err, body) {
 
   //testes.multipart.insert(enunciado, [attach1, attach2], 'Teste_N' + count , function(err, body) {
     if (!err) {

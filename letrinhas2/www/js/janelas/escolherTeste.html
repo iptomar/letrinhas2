@@ -4,39 +4,50 @@
 
     <div class="topcoat-navigation-bar">
       <div class="topcoat-navigation-bar__item left quarter">
-        <button id="BackButtonEscTest" type="button" class="btn btn-default btn-lg">
-          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Voltar
-        </button>
+        <img id="imgProf" src="img/RealizarTestes.png" style='height:44px;'>
+        <label id="lbNomeProf" style="color:#FFFFF;">Professor</label>
         </div>
       <div class="topcoat-navigation-bar__item center half">
-          <h1 id="titleEscolherTeste" class="topcoat-navigation-bar__title">Escolher Teste</h1>
+        <label id="titleBarlb" style=" font-size: 15px;">Escolher Teste</label>
+          <img id="imgDisciplinaIcon" src="img/RealizarTestes.png" style='height:44px;'>
       </div>
       <div class="topcoat-navigation-bar__item right quarter">
-        <label id="lbNomeProf" style="color:#FFFFF;">Professor</label>
-        <img id="imgProf" src="" style='height:44px;'>
-        </div>
+        <label id="lbNomeAluno" style="color:#FFFFF;">Aluno</label>
+        <img id="imgAluno" src="img/RealizarTestes.png" style='height:44px;'>
+     </div>
   </div>
 
 
   <nav class="navbar navbar-default navbar-fixed-bottom " style=" background: #3399CC; color:#FFFFFF; ">
-    <div class="nav navbar-nav navbar-left">
-      <a id="btnNavINI" class="navbar-brand">
-        <span class="glyphicon glyphicon glyphicon-home" style="color:#FFFFFF;" aria-hidden="true"> Inicio</span>
+    <div class="nav navbar-nav navbar-left ">
+      <a id="btnNavINI" class="navbar-brand fontsizeBarDown">
+        <span class="glyphicon glyphicon glyphicon-home " style="color:#FFFFFF;" aria-hidden="true"> Inicio</span>
       </a>
-      <a id="btnNavProf" class="navbar-brand">
-        <span class="glyphicon glyphicon glyphicon-user" style="color:#FFFFFF;" aria-hidden="true"> Professores</span>
+      <a  class="navbar-brand ">
+        <span style="color:#FFFFFF;">/</span>
+     </a>
+      <a id="btnNavDisci" class="navbar-brand fontsizeBarDown">
+        <span class="glyphicon glyphicon glyphicon-book" style="color:#FFFFFF;" aria-hidden="true"> Disciplina</span>
       </a>
-      <a id="btnNavAlu" class="navbar-brand">
-        <span class="glyphicon glyphicon glyphicon-education" style="color:#FFFFFF;" aria-hidden="true"> Alunos</span>
+      <a  class="navbar-brand">
+        <span style="color:#FFFFFF;">/</span>
+     </a>
+      <a id="btnNavMenu" class="navbar-brand fontsizeBarDown">
+        <span class="glyphicon glyphicon-list-alt" style="color:#FFFFFF;" aria-hidden="true"> Menu</span>
       </a>
-      <a id="btnNavCorrecao" class="navbar-brand">
-        <span class="glyphicon glyphicon glyphicon-tasks" style="color:#FFFFFF;" aria-hidden="true"> Menu</span>
+      <a  class="navbar-brand">
+        <span style="color:#FFFFFF;">/</span>
+     </a>
+      <a id="btnNavTurmas" class="navbar-brand fontsizeBarDown">
+        <span class="glyphicon glyphicon-education" style="color:#FFFFFF;" aria-hidden="true"> Turmas</span>
+      </a>
+      <a  class="navbar-brand">
+        <span style="color:#FFFFFF;">/</span>
+     </a>
+      <a id="btnNavAlunos" class="navbar-brand fontsizeBarDown">
+        <span class="glyphicon glyphicon-user" style="color:#FFFFFF;" aria-hidden="true"> Alunos</span>
       </a>
     </div>
-     <div class="nav navbar-nav navbar-right">
-       <label id="lbNomeAluno" style="color:#FFFFFF;">Aluno</label>
-       <img id="imgAluno" src="" style='height:44px;'>
-     </div>
   </nav>
 
     <div class="loader" style="display:none">
@@ -71,10 +82,41 @@
       <!-- ##################### END ################# -->
 <div class="panel panel-info">
   <div class="panel-heading">
-    <center>
-  <img id="imgDisciplinaIcon" style='height:44px;'>
-   <label id="labelDisciplina" style="color:#000000;"></label>
- </center>  </div>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <button id="btnTesteLeituraPalav"  type="button" class="btn  btn-block activeXF">
+          <img src="img/testLista.png" style='height:32px;'>
+          <p>Leitura de Palavras</p>
+        </button>
+        </div>
+
+        <div class="col-md-3">
+          <button  id="btnTesteLeituraTextos" type="button" class="btn  btn-block  activeXF">
+            <img src="img/testeTexto.png"  style='height:32px;'>
+            <p>Leitura de Textos</p>
+          </button>
+     </div>
+
+      <div class="col-md-3">
+        <button id="btnTesteLeituraMultimedia" type="button" class="btn  btn-block activeXF">
+        <img src="img/testMul.png"  style='height:32px;' >
+        <p>Testes Multimedia</p>
+      </button>
+    </div>
+
+    <div class="col-md-3">
+      <button id="btnTesteLeituraInterpretacao" type="button" class="btn  btn-block activeXF">
+        <img src="img/testInterpretacao.png"  style='height:32px;' >
+        <p>Testes de Interpretação</p>
+      </button>
+  </div>
+    </div>
+
+
+
+  </div>
 <div class="panel-body croool" id="outputTestes" class="row"></div>
 <div class="panel-body croool2" id="outputTestesConteudo" class="row"></div>
 </div>

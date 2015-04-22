@@ -41,13 +41,11 @@ define(function(require) {
     routes: {
       "": "login",
       "login": "login",
-      "escolherEscola": "escolherEscola",
       "escolherProf": "escolherProf",
       "escolherTurma": "escolherTurma",
       "escolherAluno": "escolherAluno",
       "menuTipoOpcao": "menuTipoOpcao",
       "escolherDisciplina": "escolherDisciplina",
-      "escolherTipoTeste": "escolherTipoTeste",
       "escolherTeste": "escolherTeste",
       "testeTexto": "testeTexto",
       "testeLista": "testeLista",
@@ -57,7 +55,6 @@ define(function(require) {
       "escolherResultados":"escolherResultados",
       "mostraResultadoLista":"mostraResultadoLista",
       "mostraResultadoTexto":"mostraResultadoTexto",
-      "testes":"testes",
 
     },
 
@@ -67,13 +64,7 @@ define(function(require) {
     },
 
 
-    testes: function() {
-      var self = this;
-      require(["app/views/testes"], function(TestesView) {
-        var view = new TestesView();
-        self.showView(view);
-      });
-    },
+
 
     mostraResultadoLista: function() {
       var self = this;
@@ -147,17 +138,10 @@ define(function(require) {
       });
     },
 
-    escolherTipoTeste: function() {
-      var self = this;
-      require(["app/views/escolherTipoTeste"], function(EscolherTipoTesteView) {
-        var view = new EscolherTipoTesteView();
-        self.showView(view);
-      });
-    },
-
 
     escolherDisciplina: function() {
       var self = this;
+
       require(["app/views/escolherDisciplina"], function(EscolherDisciplinaView) {
         var view = new EscolherDisciplinaView();
         self.showView(view);
@@ -165,18 +149,6 @@ define(function(require) {
     },
 
 
-    escolherEscola: function() {
-      var self = this;
-      var alunos_local2 = new PouchDB('alunos_local2');
-      var escolas_local2 = new PouchDB('escolas_local2');
-      var professores_local2 = new PouchDB('professores_local2');
-      var testes_local2 = new PouchDB('testes_local2');
-      var correcoes_local2 = new PouchDB('correcoes_local2');
-      require(["app/views/escolherEscola"], function(EscolherEscolaView) {
-        var view = new EscolherEscolaView();
-        self.showView(view);
-      });
-    },
 
     menuTipoOpcao: function() {
       var self = this;

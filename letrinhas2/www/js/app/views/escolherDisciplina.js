@@ -10,10 +10,6 @@ var BtnNavPress;
     janelas = require('text!janelas/escolherDisciplina.html'),
     template = _.template(janelas);
 
-  function onBKey() {
-    $('#BackButtonED').click();
-  }
-
   return Backbone.View.extend({
 
     highlight: function(e) {
@@ -22,32 +18,7 @@ var BtnNavPress;
     },
     /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
-      ////Carrega dados da janela anterior////
-      var profId = window.localStorage.getItem("ProfSelecID");
-      var profNome = window.localStorage.getItem("ProfSelecNome");
-      var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
-      var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
-      var alunoId = window.localStorage.getItem("AlunoSelecID");
-      var alunoNome = window.localStorage.getItem("AlunoSelecNome");
-      var turmaId = window.localStorage.getItem("TurmaSelecID");
-      var turmaNome = window.localStorage.getItem("TurmaSelecNome");
 
-      document.addEventListener("backbutton", onBKey, false); //Adicionar o evento
-
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
-        if (err2)  console.log(err2);
-        var url = URL.createObjectURL(DataImg);
-        $('#lbNomeTurma').text("  ["+turmaNome+"  ]");
-        $('#lbNomeProf').text(profNome);
-        $('#imgProf').attr("src",url);
-      });
-
-      alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
-        if (err2)  console.log(err2);
-        var url = URL.createObjectURL(DataImg);
-        $('#lbNomeAluno').text("["+turmaNome+" ] -- "+alunoNome);
-        $('#imgAluno').attr("src",url);
-      });
     },
 
     events: {
@@ -57,86 +28,27 @@ var BtnNavPress;
       "click #btnSelecEstuMeio": "clickbtnSelecEstuMeio",
       "click #btnSelecIngles": "clickbtnSelecIngles",
       "click #btnNavINI": "clickbtnNavINI",
-      "click #btnNavAlu": "clickbtnNavAlu",
-      "click #btnNavProf": "clickbtnNavProf",
-      "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
     },
-
-    clickbtnConfirmarPIN: function(e) {
-      var pinDigitado = $('#inputPIN').val();
-      var pinProfAux = window.localStorage.getItem("ProfSelecPIN");
-      if (pinProfAux == pinDigitado) {
-        $('#myModal').modal("hide");
-        $('#myModal').on('hidden.bs.modal', function (e) {
-          document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
-          window.history.go(BtnNavPress);
-        });
-      } else {
-        $('#inputPINErr').addClass("has-error");
-        $('#labelErr').text("PIN errado!");
-      }
-    },
-
-
-    clickbtnNavProf: function(e) {
-      e.stopPropagation(); e.preventDefault();
-      BtnNavPress = -4;
-      $('#labelErr').text("");  //limpa campos
-      $('#inputPIN').val("");   //limpa campos
-      $('#inputPINErr').removeClass("has-error"); //limpa campos
-      $('#myModal').modal("show");
-      $('#myModal').on('shown.bs.modal', function (e) {
-         $("#inputPIN").focus();
-      });
-    },
-
-    clickbtnNavAlu: function(e) {
-      e.stopPropagation(); e.preventDefault();
-      BtnNavPress = -2;
-      $('#labelErr').text("");  //limpa campos
-      $('#inputPIN').val("");   //limpa campos
-      $('#inputPINErr').removeClass("has-error"); //limpa campos
-      $('#myModal').modal("show");
-      $('#myModal').on('shown.bs.modal', function (e) {
-         $("#inputPIN").focus();
-      });
-    },
-
 
     clickbtnNavINI: function(e) {
       e.stopPropagation(); e.preventDefault();
-      BtnNavPress = -6;
-      $('#labelErr').text("");  //limpa campos
-      $('#inputPIN').val("");   //limpa campos
-      $('#inputPINErr').removeClass("has-error"); //limpa campos
-      $('#myModal').modal("show");
-      $('#myModal').on('shown.bs.modal', function (e) {
-         $("#inputPIN").focus();
-      });
+      window.history.go(-1);
     },
 
     clickBackButtonED: function(e) {
       e.stopPropagation(); e.preventDefault();
-      BtnNavPress = -1;
-      $('#labelErr').text("");  //limpa campos
-      $('#inputPIN').val("");   //limpa campos
-      $('#inputPINErr').removeClass("has-error"); //limpa campos
-      $('#myModal').modal("show");
-      $('#myModal').on('shown.bs.modal', function (e) {
-         $("#inputPIN").focus();
-      });
+      window.history.go(-1);
     },
 
     clickbtnSelecPortugues: function(e) {
       e.stopPropagation(); e.preventDefault();
       window.localStorage.setItem("DiscplinaSelecionada", 1); //enviar variavel 1 -Portugues
-      document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
       var self = this;
-      if (Backbone.history.fragment != 'escolherTipoTeste') {
+      if (Backbone.history.fragment != 'menuTipoOpcao') {
         utils.loader(function() {
           e.preventDefault();
           self.highlight(e);
-          app.navigate('/escolherTipoTeste', {
+          app.navigate('/menuTipoOpcao', {
             trigger: true
           });
         });
@@ -145,14 +57,13 @@ var BtnNavPress;
 
     clickbtnSelecMate: function(e) {
       e.stopPropagation(); e.preventDefault();
-      document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
       window.localStorage.setItem("DiscplinaSelecionada", 2); //enviar variavel 2- Matematica
       var self = this;
-      if (Backbone.history.fragment != 'escolherTipoTeste') {
+      if (Backbone.history.fragment != 'menuTipoOpcao') {
         utils.loader(function() {
           e.preventDefault();
           self.highlight(e);
-          app.navigate('/escolherTipoTeste', {
+          app.navigate('/menuTipoOpcao', {
             trigger: true
           });
         });
@@ -161,14 +72,13 @@ var BtnNavPress;
 
     clickbtnSelecEstuMeio: function(e) {
       e.stopPropagation(); e.preventDefault();
-      document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
       window.localStorage.setItem("DiscplinaSelecionada", 3); //enviar variavel 3 -EstudoMeio
       var self = this;
-      if (Backbone.history.fragment != 'escolherTipoTeste') {
+      if (Backbone.history.fragment != 'menuTipoOpcao') {
         utils.loader(function() {
           e.preventDefault();
           self.highlight(e);
-          app.navigate('/escolherTipoTeste', {
+          app.navigate('/menuTipoOpcao', {
             trigger: true
           });
         });
@@ -177,14 +87,13 @@ var BtnNavPress;
 
     clickbtnSelecIngles: function(e) {
       e.stopPropagation(); e.preventDefault();
-      document.removeEventListener("backbutton", onBKey, false); ///RETIRAR EVENTO DO BOTAO
       window.localStorage.setItem("DiscplinaSelecionada", 4); //enviar variavel 4- Ingles
       var self = this;
-      if (Backbone.history.fragment != 'escolherTipoTeste') {
+      if (Backbone.history.fragment != 'menuTipoOpcao') {
         utils.loader(function() {
           e.preventDefault();
           self.highlight(e);
-          app.navigate('/escolherTipoTeste', {
+          app.navigate('/menuTipoOpcao', {
             trigger: true
           });
         });
@@ -193,6 +102,16 @@ var BtnNavPress;
 
     render: function() {
       this.$el.html(template({}));
+      ////Carrega dados da janela anterior////
+      var profId = window.localStorage.getItem("ProfSelecID");
+      var profNome = window.localStorage.getItem("ProfSelecNome");
+      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+        if (err2)  console.log(err2);
+        var url = URL.createObjectURL(DataImg);
+        $('#lbNomeProf').text(profNome);
+        $('#imgProf').attr("src",url);
+      });
+      ////////////////////////
       return this;
     }
   });

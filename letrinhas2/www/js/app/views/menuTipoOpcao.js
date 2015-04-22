@@ -1,5 +1,6 @@
 define(function(require) {
   var BtnNavPress;
+  
   "use strict";
 
   var $ = require('jquery'),
@@ -15,37 +16,9 @@ define(function(require) {
       $(e.target).parent().addClass('is-active');
     },
 
-    onBackKeyDown: function() {
-      ////nada///
-    },
-
     initialize: function() {
-      var profId = window.localStorage.getItem("ProfSelecID");
-      var profNome = window.localStorage.getItem("ProfSelecNome");
-      var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
-      var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
-      var alunoId = window.localStorage.getItem("AlunoSelecID");
-      var alunoNome = window.localStorage.getItem("AlunoSelecNome");
-      var turmaId = window.localStorage.getItem("TurmaSelecID");
-      var turmaNome = window.localStorage.getItem("TurmaSelecNome");
-
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
-        if (err2)  console.log(err2);
-        var url = URL.createObjectURL(DataImg);
-        $('#lbNomeProf').text(profNome);
-        $('#imgProf').attr("src",url);
-      });
-
-
-      alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
-        if (err2)  console.log(err2);
-        var url = URL.createObjectURL(DataImg);
-        $('#lbNomeAluno').text("["+turmaNome+" ] -- "+alunoNome);
-        $('#imgAluno').attr("src",url);
-      });
 
     },
-
 
 
     events: {
@@ -54,52 +27,20 @@ define(function(require) {
       "click #btnCorrigirTeste": "clickBtnCorrigirTeste",
       "click #btnConsultarTeste": "clickBtnConsultarTeste",
       "click #btnNavINI": "clickbtnNavINI",
-      "click #btnNavAlu": "clickbtnNavAlu",
-      "click #btnNavProf": "clickbtnNavProf",
-      "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
-    },
-
-    clickbtnConfirmarSUB: function(e) {
-      document.removeEventListener("backbutton", function() {  }, false); ///RETIRAR EVENTO DO BOTAO
-        $('#myModalSUB').modal("hide");
-        $('#myModalSUB').on('hidden.bs.modal', function (e) {
-          window.history.go(BtnNavPress);
-        });
+      "click #btnNavDisci": "clickbtnNavDisci",
     },
 
 
-    clickbtnNavProf: function(e) {
-      var self = this;
+
+    clickbtnNavDisci: function(e) {
       e.stopPropagation(); e.preventDefault();
-      document.addEventListener("backbutton", self.onBackKeyDown, false); //Adicionar o evento
-      BtnNavPress = -3;
-      $('#myModalSUB').modal("show");
-      $('#myModalSUB').on('hidden.bs.modal', function (e) {
-        document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
-      });
-    },
-
-    clickbtnNavAlu: function(e) {
-      var self = this;
-      e.stopPropagation(); e.preventDefault();
-      document.addEventListener("backbutton", self.onBackKeyDown, false); //Adicionar o evento
-      BtnNavPress = -1;
-      $('#myModalSUB').modal("show");
-      $('#myModalSUB').on('hidden.bs.modal', function (e) {
-        document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
-      });
+      window.history.go(-1);
     },
 
 
     clickbtnNavINI: function(e) {
-      var self = this;
       e.stopPropagation(); e.preventDefault();
-      document.addEventListener("backbutton", self.onBackKeyDown, false); //Adicionar o evento
-      BtnNavPress = -5;
-      $('#myModalSUB').modal("show");
-      $('#myModalSUB').on('hidden.bs.modal', function (e) {
-        document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
-      });
+      window.history.go(-2);
     },
 
 
@@ -110,10 +51,10 @@ define(function(require) {
 
     clickBtnRealizarTeste: function(e) {
       var self = this;
-      if (Backbone.history.fragment != 'escolherDisciplina') {
+      if (Backbone.history.fragment != 'escolherTurma') {
         utils.loader(function() {
           e.preventDefault();
-          app.navigate('/escolherDisciplina', {
+          app.navigate('/escolherTurma', {
             trigger: true
           });
         });
@@ -146,6 +87,16 @@ define(function(require) {
 
     render: function() {
       this.$el.html(template({}));
+
+      var profId = window.localStorage.getItem("ProfSelecID");
+      var profNome = window.localStorage.getItem("ProfSelecNome");
+        professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+        if (err2)  console.log(err2);
+        var url = URL.createObjectURL(DataImg);
+        $('#lbNomeProf').text(profNome);
+        $('#imgProf').attr("src",url);
+      });
+
       return this;
     }
   });

@@ -67,7 +67,7 @@ function preencheColuna(colunaIn, resultado,posicoes){
 
 function getSrc(obj){
     if($(obj).val()==0){
-    correcoes_local2.getAttachment(obj.id, 'gravacao.amr', function(err2, DataAudio) {
+    resolucoes_local2.getAttachment(obj.id, 'gravacao.amr', function(err2, DataAudio) {
       if (err2) console.log(err2);
       GravarSOMfile(obj.id+'.amr', DataAudio, function() {
         obj.src=""+cordova.file.dataDirectory + "/files/"+obj.id+".amr";
@@ -125,7 +125,7 @@ define(function(require) {
 
 
       var resultados = new Array();
-      correcoes_local2.get(resultadoID, function(err, correcaoDoc){
+      resolucoes_local2.get(resultadoID, function(err, correcaoDoc){
         if(err) console.log(err);
 
         testeID = correcaoDoc.id_Teste;
@@ -163,7 +163,7 @@ define(function(require) {
           }
         }
 
-        correcoes_local2.query({map: map}, {reduce: false}, function(errx, response) {
+        resolucoes_local2.query({map: map}, {reduce: false}, function(errx, response) {
           if (errx) console.log("Erro: "+errx);
           else {
             if(response.rows.length > 0){

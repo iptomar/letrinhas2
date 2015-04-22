@@ -17,79 +17,6 @@ define(function(require) {
 
     /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
-      ////Carrega dados da janela anterior////
-      var profId = window.localStorage.getItem("ProfSelecID");
-      var profNome = window.localStorage.getItem("ProfSelecNome");
-      var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
-      var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
-      var turmaId = window.localStorage.getItem("TurmaSelecID");
-      var turmaNome = window.localStorage.getItem("TurmaSelecNome");
-
-
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
-        if (err2) console.log(err2);
-        var url = URL.createObjectURL(DataImg);
-        $('#lbNomeProf').text(profNome);
-        $('#imgProf').attr("src", url);
-      });
-
-
-      /// Vai buscar todas as escolas da base de dados //
-              escolas_local2.get(escolaId, function(err, escolaDoc) {
-                  if (err) console.log(err);
-                  document.querySelector("#outputAlunos").innerHTML =
-                    '<div class="panel panel-default">' +
-                    '<div class="panel-body">' +
-                    '<center style=" font-size: 120%;">[ '+turmaNome + ' ]</center>' +
-                    '</div>' +
-                    '</div>';
-                  var $container = $('#outputAlunos'); //Adiciona ao Div
-        
-                  for (var i = 0; i < escolaDoc.turmas.length; i++) {
-                    //Se o id do aluno da turma é igual ao id do aluno entao vai buscar seus dados//
-                    if (escolaDoc.turmas[i]._id == turmaId) {
-                      for (var y = 0; y < escolaDoc.turmas[i].alunos.length; y++) {
-                        var idAlunox = escolaDoc.turmas[i].alunos[y].id;
-
-                        alunos_local2.get(idAlunox, function(err, alunoDoc) {
-                        if (err) console.log(err);
-                        console.log(alunoDoc._id);
-                          alunos_local2.getAttachment(alunoDoc._id, 'aluno.png', function(err2, DataImg) {
-                              if (err2) console.log(err2);
-                              var url = URL.createObjectURL(DataImg);
-                              var $btn = $(
-                                '<div class="col-md-4">' +
-                                '<div class="thumbnail" style="height:160px;"  >' +
-                                '<div class="caption">' +
-                                "<button id='" + alunoDoc._id + "' type='button' class='btn btn-info btn-lg btn-block btn-aluno' >" +
-                                "<img style='height:100px;' src='" + url + "' class='pull-left'/>" + alunoDoc.nome + "</button>" +
-                                '</div>' +
-                                '</div></br>' +
-                                '</div>');
-                              $btn.appendTo($container);//Adiciona ao Div
-                            });
-                          });
-                        }
-
-                      }
-                    }
-                    //// Analisa todos os botoes do div e aqueles que forem botoes de escola escuta o evento click//
-                    $container.on('click', '.btn-aluno', function(ev) {
-                      ev.stopPropagation(); ev.preventDefault();
-                      var $btn = $(this); // O jQuery passa o btn clicado pelo this
-                      var self = this;
-                      if (Backbone.history.fragment != 'menuTipoOpcao') {
-                        utils.loader(function() {
-                          ev.preventDefault();
-                          window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
-                          window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
-                          app.navigate('/menuTipoOpcao', {
-                            trigger: true
-                          });
-                        });
-                      }
-                    });
-                  });
 
 
 
@@ -98,6 +25,35 @@ define(function(require) {
     events: {
       "click #btnTeste": "clickTeste",
       "click #BackButtonEA": "clickBackButtonEA",
+      "click #btnNavINI": "clickbtnNavINI",
+      "click #btnNavDisci": "clickbtnNavDisci",
+      "click #btnNavMenu": "clickbtnNavMenu",
+      "click #btnNavTurmas": "clickbtnNavTurmas",
+    },
+
+    clickbtnNavTurmas: function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      window.history.go(-1);
+    },
+
+    clickbtnNavMenu: function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      window.history.go(-2);
+    },
+
+    clickbtnNavDisci: function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      window.history.go(-3);
+    },
+
+
+    clickbtnNavINI: function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      window.history.go(-4);
     },
 
 
@@ -109,6 +65,78 @@ define(function(require) {
 
     render: function() {
       this.$el.html(template({}));
+
+      ////Carrega dados da janela anterior////
+      var profId = window.localStorage.getItem("ProfSelecID");
+      var profNome = window.localStorage.getItem("ProfSelecNome");
+      var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
+      var turmaId = window.localStorage.getItem("TurmaSelecID");
+
+      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+        if (err2) console.log(err2);
+        var url = URL.createObjectURL(DataImg);
+        $('#imgProf').attr("src", url);
+      });
+
+          /// Vai buscar todas as escolas da base de dados //
+          escolas_local2.get(escolaId, function(err, escolaDoc) {
+            if (err) console.log(err);
+            window.localStorage.setItem("EscolaSelecionadaNome", escolaDoc.nome + ''); //enviar variavel
+            $('#lbNomeProf').text(profNome + " - [ " +escolaDoc.nome+" ]");
+            var $container = $('#outputAlunos'); //Adiciona ao Div
+            console.log(escolaDoc);
+            for (var i = 0; i < escolaDoc.turmas.length; i++) {
+              //Se o id do aluno da turma é igual ao id do aluno entao vai buscar seus dados//
+
+
+              if (escolaDoc.turmas[i]._id == turmaId) {
+                $('#lbNomeAluno').text("[ "+escolaDoc.turmas[i].nome+" ]  ");
+                window.localStorage.setItem("TurmaSelecNome", escolaDoc.turmas[i].nome + ''); //enviar variavel
+                for (var y = 0; y < escolaDoc.turmas[i].alunos.length; y++) {
+                  var idAlunox = escolaDoc.turmas[i].alunos[y].id;
+
+                  alunos_local2.get(idAlunox, function(err, alunoDoc) {
+                    if (err) console.log(err);
+
+                    alunos_local2.getAttachment(alunoDoc._id, 'aluno.png', function(err2, DataImg) {
+                      if (err2) console.log(err2);
+                      var url = URL.createObjectURL(DataImg);
+                      var $btn = $(
+                        '<div class="col-md-4">' +
+                        '<div class="thumbnail" style="height:160px;"  >' +
+                        '<div class="caption">' +
+                        "<button id='" + alunoDoc._id + "' type='button' class='btn btn-info btn-lg btn-block btn-aluno' >" +
+                        "<img style='height:100px;' src='" + url + "' class='pull-left'/>" + alunoDoc.nome + "</button>" +
+                        '</div>' +
+                        '</div></br>' +
+                        '</div>');
+                      $btn.appendTo($container); //Adiciona ao Div
+                    });
+                  });
+                }
+
+              }
+            }
+            //// Analisa todos os botoes do div e aqueles que forem botoes de escola escuta o evento click//
+            $container.on('click', '.btn-aluno', function(ev) {
+              ev.stopPropagation();
+              ev.preventDefault();
+              var $btn = $(this); // O jQuery passa o btn clicado pelo this
+              var self = this;
+              if (Backbone.history.fragment != 'escolherTeste') {
+                utils.loader(function() {
+                  ev.preventDefault();
+                  window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
+                  window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
+                  app.navigate('/escolherTeste', {
+                    trigger: true
+                  });
+                });
+              }
+            });
+          });
+
+
       return this;
     }
   });

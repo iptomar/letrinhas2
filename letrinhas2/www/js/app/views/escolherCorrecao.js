@@ -43,7 +43,7 @@ define(function(require) {
           if(n<10) return("0"+n);
           else return(""+n);	}
 
-      correcoes_local2.query({map: map}, {reduce: false}, function(errx, response) {
+      resolucoes_local2.query({map: map}, {reduce: false}, function(errx, response) {
         if (errx) console.log("Erro: "+errx);
         else {
 

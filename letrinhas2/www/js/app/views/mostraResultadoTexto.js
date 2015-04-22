@@ -1,6 +1,7 @@
 define(function(require) {
 
   "use strict";
+
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
@@ -10,13 +11,13 @@ define(function(require) {
 
 
   return Backbone.View.extend({
-    auxy: this,
+
 
     getSrcAUDIO: function (obj) {
       var self= this;
       if($(obj).val()==0){
       var aux = obj.id.substring(2);
-      correcoes_local2.getAttachment(aux, 'gravacao.amr', function(err2, DataAudio) {
+      resolucoes_local2.getAttachment(aux, 'gravacao.amr', function(err2, DataAudio) {
         if (err2) console.log(err2);
         self.GravarSOMfiD(aux + '.amr', DataAudio, function() {
           obj.src = "" + cordova.file.dataDirectory + "/files/" + aux + ".amr";
@@ -60,7 +61,7 @@ define(function(require) {
 
     auxRemoveAll:  function() {
       var self = this;
-      correcoes_local2.query({
+      resolucoes_local2.query({
           map: function (doc) {
             if (doc.estado == 1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == window.localStorage.getItem("auxIDtext1")) {
               emit(doc);
@@ -97,7 +98,7 @@ define(function(require) {
 
     desenhaJanelas: function(idCorr, inic) {
       var self = this;
-      correcoes_local2.get(idCorr, function(err, correcaoDoc) {
+      resolucoes_local2.get(idCorr, function(err, correcaoDoc) {
         if (err) console.log(err);
         var $containerCorr = $('#carroselT');
         var $div = "";
@@ -266,7 +267,7 @@ define(function(require) {
 
         self.desenhaJanelas(resultadoID, true);
 
-        correcoes_local2.get(resultadoID, function(err, CorrrecaoDoc) {
+        resolucoes_local2.get(resultadoID, function(err, CorrrecaoDoc) {
           if (err) console.log(err);
           window.localStorage.setItem("auxIDtext1", CorrrecaoDoc.id_Teste + ''); //enviar variavel
 
@@ -295,7 +296,7 @@ define(function(require) {
               emit(doc);
             }
           }
-          correcoes_local2.query({
+          resolucoes_local2.query({
             map: map
           }, {
             reduce: false

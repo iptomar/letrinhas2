@@ -69,7 +69,7 @@ define(function(require) {
       var tempoSeg = $('#AudioPlayerAluno').prop("duration");
       var palavrasErr = 0;
 
-      correcoes_local2.get(IdCorr, function(err, otherDoc) {
+      resolucoes_local2.get(IdCorr, function(err, otherDoc) {
         otherDoc.estado = 1;
         otherDoc.TotalPalavras = maxEle;
         otherDoc.dataCorr = agora;
@@ -93,7 +93,7 @@ define(function(require) {
         }
         var pcl = maxEle - palavrasErr;
         otherDoc.velocidade = Math.round((pcl * 60 / tempoSeg));
-        correcoes_local2.put(otherDoc, IdCorr, otherDoc._rev, function(err, response) {
+        resolucoes_local2.put(otherDoc, IdCorr, otherDoc._rev, function(err, response) {
           if (err) {
             console.log('Correcao ' + err + ' erro');
           } else {
@@ -229,7 +229,7 @@ define(function(require) {
 
       });
 
-      correcoes_local2.get(correcaoID, function(err, correcaoDoc) {
+      resolucoes_local2.get(correcaoID, function(err, correcaoDoc) {
         if (err) console.log(err);
 
 
@@ -248,7 +248,7 @@ define(function(require) {
 
         });
 
-        correcoes_local2.getAttachment(correcaoID, 'gravacao.amr', function(err2, DataAudio) {
+        resolucoes_local2.getAttachment(correcaoID, 'gravacao.amr', function(err2, DataAudio) {
           if (err2) console.log(err2);
           console.log(DataAudio);
           self.GravarSOMfile('gravacao.amr', DataAudio, function() {

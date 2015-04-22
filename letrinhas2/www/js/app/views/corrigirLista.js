@@ -98,7 +98,7 @@ define(function(require) {
       var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
       var correcaoID = window.localStorage.getItem("CorrecaoID"); //enviar variavel
 
-      correcoes_local2.get(correcaoID, function(err, correcaoDoc){
+      resolucoes_local2.get(correcaoID, function(err, correcaoDoc){
         if(err) console.log(err);
 
         var data = new Date(correcaoDoc.dataSub);
@@ -206,7 +206,7 @@ define(function(require) {
         });
 
 
-        correcoes_local2.getAttachment(correcaoID, 'gravacao.amr', function(err2, DataAudio) {
+        resolucoes_local2.getAttachment(correcaoID, 'gravacao.amr', function(err2, DataAudio) {
           if (err2) console.log(err2);
           self.GravarSOMfile('gravacao.amr', DataAudio, function() {
             console.log('FUNCIONA');
@@ -359,7 +359,7 @@ define(function(require) {
 
             //Fazer o update
             var CorrID= window.localStorage.getItem("CorrecaoID");
-            correcoes_local2.get(CorrID, function(err, docmnt){
+            resolucoes_local2.get(CorrID, function(err, docmnt){
               //total de palavras
               docmnt.TotalPalavras = self.totalPalavras;
               //conteúdo onde estão identificadas as palavras erradas
@@ -378,7 +378,7 @@ define(function(require) {
               docmnt.velocidade = vl;
 
               //actualizar o documento (correcao)
-              correcoes_local2.put(docmnt, CorrID, docmnt._rev, function(err, response) {
+              resolucoes_local2.put(docmnt, CorrID, docmnt._rev, function(err, response) {
                 if (err) {
                   console.log('Correcao ' + err + ' erro');
                 } else {

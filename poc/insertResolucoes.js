@@ -1,7 +1,7 @@
 var nano = require('nano')('http://127.0.0.1:5984');
 var resolucoes = nano.use('dev_resolucoes');
-function insertCorrecao(count) {
 
+function insertCorrecao(count) {
 
   var correcao = {
       'palavra': 'menino',
@@ -14,13 +14,13 @@ function insertCorrecao(count) {
     'idpergunta': '1',
     'conteudo': '??????', 
     'correcao': correcao, 
-    'fluidez': '2', 
-    'expressividade': '2', 
-    'compreensao': '2', 
+    'fluidez': Math.floor((Math.random() * 4) + 1), 
+    'expressividade': Math.floor((Math.random() * 4) + 1), 
+    'compreensao': Math.floor((Math.random() * 4) + 1), 
   };
 
 
-  var correcao = {
+  var resolucao = {
     '_id': 'Corr' + count,
     'id_Teste': 'Teste_N7',
     'id_Aluno': 'Joao1',
@@ -28,7 +28,7 @@ function insertCorrecao(count) {
     'tipoCorrecao': 'texto',
     'respostas': resposta,
     'nota': '0',
-    'observacoes': 'bla bla',
+    'observacoes': 'bla bla'+Math.floor((Math.random() * 4) + 1),
   };
 ////tipoTeste
 ////texto - Teste Texto
@@ -38,9 +38,9 @@ function insertCorrecao(count) {
 
  
 
-  resolucoes.insert(correcao, function(err, body) {
+  resolucoes.insert(resolucao, function(err, body) {
     if (!err) {
-      console.log('correcao ' + correcao._id + ' inserted');
+      console.log('correcao ' + resolucao._id + ' inserted');
     }
     if(count < 4) {
       insertCorrecao(count+1);

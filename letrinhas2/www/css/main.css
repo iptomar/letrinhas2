@@ -9,6 +9,25 @@
   height: 48px;
   font-size: 20px !important;
 }
+
+.input-large_PINxl {
+  height: 60px;
+  font-size: 26px !important;
+  border: 2px solid black;
+   border-radius: 7px;
+}
+
+.forMargin{
+  margin-bottom: 50px;
+}
+
+.fontsizeBarDown{
+  font-size: 12pt;
+}
+
+
+
+
 .btn_mineLarge{
   height: 80px;
 }
@@ -31,7 +50,7 @@
 
 .croool {
   position: absolute;
-      top: 150px;
+      top: 175px;
       bottom: 50px;
       left: 30px;
       width: 36%;
@@ -40,7 +59,7 @@
 
 .croool2 {
   position: absolute;
-    top: 150px;
+    top: 175px;
     bottom: 150px;
     right:30px;
     overflow-y: auto;

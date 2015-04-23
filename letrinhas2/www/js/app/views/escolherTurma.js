@@ -16,7 +16,7 @@ define(function(require) {
 
     /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
-      
+
     },
 
     //Eventos Click

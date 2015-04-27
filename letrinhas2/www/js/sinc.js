@@ -85,7 +85,7 @@ function sinCorrecoesForev(){
 
 
 ///////////////////////////////////////////////////////////
-escolas_local2.info().then(function(info1) {
+ escolas_local2.info().then(function(info1) {
 if (info1.doc_count == 0){
   btnBloqueado = true;
 }

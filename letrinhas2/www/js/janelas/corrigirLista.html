@@ -2,24 +2,16 @@
   <div class="globalcontent">
     <div class="topcoat-navigation-bar">
       <div class="topcoat-navigation-bar__item left quarter">
-        <button id="BtnCancelar"
-                type="button"
-                class="btn btn-default btn-lg">
-          <span class="glyphicon glyphicon-chevron-left"
-                aria-hidden="true">
-          </span>
-          Cancelar
-        </button>
-      </div>
+        <img id="imgProf" src="img/RealizarTestes.png" style='height:44px;'>
+        <label id="lbNomeProf" style="color:#FFFFF;">Professor</label>
+        </div>
       <div class="topcoat-navigation-bar__item center half">
-        <h1 id="titleTestePagina"
-            class="topcoat-navigation-bar__title">Corrigir...
-        </h1>
+        <h1 id="titleTestePagina" class="topcoat-navigation-bar__title"></h1>
       </div>
       <div class="topcoat-navigation-bar__item right quarter">
         <label id="lbNomeAluno" style="color:#FFFFF;">Aluno</label>
-        <img id="alunoFoto" src="img/inConstruction.jpg" style='height:50px;'>
-      </div>
+        <img id="imgAluno" src="img/RealizarTestes.png" style='height:44px;'>
+     </div>
     </div>
 
     <div class="loader" style="display:none">
@@ -31,10 +23,11 @@
     <div class="container">
       <div id="popUpAviso"></div>
 
-      <div class="panel panel-default">
-        <div class="panel-body centerEX">
-          <img id="imgDisciplina" src="img/inConstruction.jpg" style="height:44px"/>
-          <label id="lbTituloTeste">titulo</label>
+      <div class="panel panel-default centerEX">
+        <div class="panel-body">
+          <label id="titlePerguntaLB" class="textareaParaTestes" style="color:#000000;">titulo</label>
+        </div>
+        <div class="nav navbar-nav navbar-left">
         </div>
       </div>
       <!-- ##################### POPUP SIM NAO################# -->
@@ -60,6 +53,8 @@
                 </p>
                 </p>
                 <label id="LBCtempoAluno" class="textareaParaTestes fontEX" style="color:#000000;">tempoAluno: </label>
+                </p>
+                <label id="LBCNota" class="textareaParaTestes fontEX" style="color:#000000;">Nota: </label>
                 </p>
               </div>
 
@@ -115,7 +110,32 @@
       </nav>
 
       <!-- Agora o conteúdo, Div onde se vai construir tudo dinamicamente -->
-
+      <div id="divPopOverOp" style="display:none;" >
+        <div class="dropdown" >
+          <button class="btn btn-info testMedioDrops" type="button" id="menu1" data-toggle="dropdown" style="width:115px; "> Exatidão
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu testMedioDrops" role="menu" aria-labelledby="menu1">
+          <li role="presentation"><a id="BTOpcPopOver1" name="11" role="menuitem" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Substituição de letras</a></li>
+          <li role="presentation"><a id="BTOpcPopOver1" name="12" role="menuitem" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Substituição de palavras</a></li>
+          <li role="presentation"><a id="BTOpcPopOver1" name="13" role="menuitem" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Adições</a></li>
+          <li role="presentation"><a id="BTOpcPopOver1" name="14" role="menuitem" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de letras</a></li>
+          <li role="presentation"><a id="BTOpcPopOver1" name="15" role="menuitem" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de sílabas</a></li>
+          <li role="presentation"><a id="BTOpcPopOver1" name="16" role="menuitem" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Omissões de palavras</a></li>
+          <li role="presentation"><a id="BTOpcPopOver1" name="17" role="menuitem" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Inversões</a></li>
+          </ul>
+          </div>
+          <div class="dropdown">
+          <button class="btn btn-info testMedioDrops" type="button" id="menu1" data-toggle="dropdown" style="width:	115px;"> Fluidez
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu testMedioDrops" role="menu" aria-labelledby="menu1">
+          <li id="op2_1" role="presentation"><a id="BTOpcPopOver2" name="21" role="menuitem" tabindex="-1" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Vacilação</a></li>
+          <li id="op2_2" role="presentation"><a id="BTOpcPopOver2" name="22" role="menuitem" tabindex="-1" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Repetições</a></li>
+          <li id="op2_3" role="presentation"><a id="BTOpcPopOver2" name="23" role="menuitem" tabindex="-1" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Soletração</a></li>
+          <li id="op2_4" role="presentation"><a id="BTOpcPopOver2" name="24" role="menuitem" tabindex="-1" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Fragmentação de palavras</a></li>
+          <li id="op2_5" role="presentation"><a id="BTOpcPopOver2" name="25" role="menuitem" tabindex="-1" class="close-me" ><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span> Retificação espontânea</a></li>
+          </ul>
+          </div>
+      </div>
 
       <div id="listaAreaConteudo" class="well well-lg textareaTextoCorr container " style="overflow:auto" align="center"></div>
     </div>

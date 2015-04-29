@@ -1,39 +1,52 @@
 <section>
 
   <div class="globalcontent">
-
     <div class="topcoat-navigation-bar">
       <div class="topcoat-navigation-bar__item left quarter">
-        <button id="BackButton" type="button" class="btn btn-default btn-lg">
-          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Voltar
-        </button>
-      </div>
+        <img id="imgProf" src="img/RealizarTestes.png" style='height:44px;'>
+        <label id="lbNomeProf" style="color:#FFFFF;">Professor</label>
+        </div>
       <div class="topcoat-navigation-bar__item center half">
-          <h1 id="titleEscolherResult" class="topcoat-navigation-bar__title">Escolher os reultados do aluno selecionado</h1>
+        <label id="titleBarlb" style=" font-size: 15px;">Escolher os Resultados do Aluno selecionado</label>
       </div>
       <div class="topcoat-navigation-bar__item right quarter">
-          <img src="img/resultados.png" style='height:44px;'>
-      </div>
+        <label id="lbNomeAluno" style="color:#FFFFF;">Aluno</label>
+        <img id="imgAluno" src="img/RealizarTestes.png" style='height:44px;'>
+     </div>
+  </div>
+
+
+  <nav class="navbar navbar-default navbar-fixed-bottom " style=" background: #3399CC; color:#FFFFFF; ">
+    <div class="nav navbar-nav navbar-left ">
+      <a id="btnNavINI" class="navbar-brand fontsizeBarDown">
+        <span class="glyphicon glyphicon glyphicon-home " style="color:#FFFFFF;" aria-hidden="true"> Inicio</span>
+      </a>
+      <a  class="navbar-brand ">
+        <span style="color:#FFFFFF;">/</span>
+     </a>
+      <a id="btnNavDisci" class="navbar-brand fontsizeBarDown">
+        <span class="glyphicon glyphicon glyphicon-book" style="color:#FFFFFF;" aria-hidden="true"> Disciplina</span>
+      </a>
+      <a  class="navbar-brand">
+        <span style="color:#FFFFFF;">/</span>
+     </a>
+      <a id="btnNavMenu" class="navbar-brand fontsizeBarDown">
+        <span class="glyphicon glyphicon-list-alt" style="color:#FFFFFF;" aria-hidden="true"> Menu</span>
+      </a>
+      <a  class="navbar-brand">
+        <span style="color:#FFFFFF;">/</span>
+     </a>
+      <a id="btnNavTurmas" class="navbar-brand fontsizeBarDown">
+        <span class="glyphicon glyphicon-education" style="color:#FFFFFF;" aria-hidden="true"> Turmas</span>
+      </a>
+      <a  class="navbar-brand">
+        <span style="color:#FFFFFF;">/</span>
+     </a>
+      <a id="btnNavAlunos" class="navbar-brand fontsizeBarDown">
+        <span class="glyphicon glyphicon-user" style="color:#FFFFFF;" aria-hidden="true"> Alunos</span>
+      </a>
     </div>
-
-
-    <nav class="navbar navbar-default navbar-fixed-bottom " style=" background: #3399CC; color:#FFFFFF; ">
-      <div class="nav navbar-nav navbar-left">
-        <a id="btnNavINI" class="navbar-brand">
-          <span class="glyphicon glyphicon glyphicon-home" style="color:#FFFFFF;" aria-hidden="true"> Inicio</span>
-        </a>
-        <a id="btnNavProf" class="navbar-brand">
-          <span class="glyphicon glyphicon glyphicon-user" style="color:#FFFFFF;" aria-hidden="true"> Professores</span>
-        </a>
-        <a id="btnNavAlu" class="navbar-brand">
-          <span class="glyphicon glyphicon glyphicon-education" style="color:#FFFFFF;" aria-hidden="true"> Alunos</span>
-        </a>
-      </div>
-      <div class="nav navbar-nav navbar-right">
-        <label id="alNome" style="color:#FFFFF;">Professor</label>
-        <img id="alFoto" src="" style='height:44px;'/>
-      </div>
-   </nav>
+  </nav>
 
    <div class="loader" style="display:none">
      <div class="placeholder light">

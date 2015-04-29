@@ -134,7 +134,7 @@ define(function(require) {
                 //   //construir o botão
                 var $btn = $(
                   '<div class="col-sm-20">' +
-                  '<button id="' + resolucoes.key._id + '" value="' + resolucoes.key.tipoCorrecao + '" name ="' + alunoDoc.nome + '" type="button"' +
+                  '<button id="' + resolucoes.key._id + '" value="' + tipoTeste + '" name ="' + alunoDoc.nome + '" type="button"' +
                   'style="height:100px;  padding: 0px 10px 0px 10px;"' +
                   'class="btn btn-info btn-lg btn-block btn-Corr" >' +
                   '<img  src="' + url + '" style=" float: left; height:60px;"/>' +
@@ -162,7 +162,7 @@ define(function(require) {
                       });
                     }
                   }else{
-                    if($btn.val() == "lista" ){
+                    if($btn.val() == "palavras" ){
                       if (Backbone.history.fragment != 'corrigirLista') {
                         utils.loader(function() {
                           ev.preventDefault();

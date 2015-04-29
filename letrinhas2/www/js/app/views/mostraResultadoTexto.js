@@ -9,9 +9,11 @@ define(function(require) {
     classList = require('classList.min'),
     template = _.template(janelas);
 
-
   return Backbone.View.extend({
 
+    initialize: function() {
+
+    },
 
     getSrcAUDIO: function (obj) {
       var self= this;
@@ -49,21 +51,19 @@ define(function(require) {
       window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
     },
 
-    onBKey:  function() {
-    //  var self = this;
-      //console.log(self);
-    //  console.log(this.auxy);
-    //  document.removeEventListener("backbutton", this.onBKey, false); ///RETIRAR EVENTO DO BOTAO
-    //  $('.SpansTxt').popover('destroy');
-    //  self.auxRemoveAll();
-      //window.history.back();
-    },
+
+    bKey: function (e) {
+      $('.SpansTxt').popover('destroy');
+      this.auxRemoveAll();
+     document.removeEventListener('backbutton', this.boundBKey);
+     window.history.back();
+   },
 
     auxRemoveAll:  function() {
       var self = this;
       resolucoes_local2.query({
           map: function (doc) {
-            if (doc.estado == 1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == window.localStorage.getItem("auxIDtext1")) {
+            if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == window.localStorage.getItem("auxIDtext1")) {
               emit(doc);
             }
           }
@@ -112,9 +112,11 @@ define(function(require) {
 
         testes_local2.get(correcaoDoc.id_Teste, function(err, testeDoc) {
           if (err) console.log("errr" + err);
+          perguntas_local2.get(testeDoc.perguntas[0], function(err, perguntasDoc) {
+            if (err) console.log(" ddds" + err);
 
-          $('#lbTituloTeste').text("Ver resultados: [ " + testeDoc.titulo + " ]");
-          var data = new Date(correcaoDoc.dataSub);
+          $('#lbTituloTeste').text("Ver resultados: [ " + perguntasDoc.titulo + " ]");
+          var data = new Date(correcaoDoc.dataReso);
           var day = data.getDate().toString();
           var month = data.getMonth().toString();
           var hours = data.getHours().toString();
@@ -124,13 +126,11 @@ define(function(require) {
           hours = hours.length === 2 ? hours : '0' + hours;
           minutes = minutes.length === 2 ? minutes : '0' + minutes;
           var dataFinal = day + "/" + month + "/" + data.getFullYear() + " - " + hours + ":" + minutes;
-
           var $btn = $('<h3> ' + testeDoc.titulo + ' - (' + dataFinal + ') </h3>' +
-            '<div id="Div' + idCorr + '" class="relatorioDiv container">' + testeDoc.conteudo.texto + '</div>'
+            '<div id="Div' + idCorr + '" class="relatorioDiv container">' +  perguntasDoc.conteudo.texto +'</div>'
           );
+          //
           $btn.appendTo($containerPrin); //Adiciona ao Div
-
-
           var $container = $('#Div' + idCorr); //Adiciona ao Div
           var trigger = false;
           var words = $('#Div' + idCorr).text().split(' ');
@@ -140,7 +140,7 @@ define(function(require) {
             if (val == "\n")
               $span = $('</br>');
             else
-              $span = $('<span  data-toggle="collapse" value=" " id="c' + i + '" >' + val + ' </span>');
+            $span = $('<span  data-toggle="collapse" value=" " id="c' + i + '" >' + val + ' </span>');
             $span.css("color", "#000000");
             $span.appendTo($container); //Adiciona ao Div
           });
@@ -149,69 +149,86 @@ define(function(require) {
           var maxEle = $('#Div' + idCorr + ' > span').length;
           var exatidao = 0;
           var fluidez = 0;
-          for (var i = 0; i < correcaoDoc.conteudoResult.length; i++) {
-            if (correcaoDoc.conteudoResult[i].categoria == "Exatidão") {
-              sapns[correcaoDoc.conteudoResult[i].posicao].style.color = 'rgb(255, 0, 0)';
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).addClass('SpansTxt');
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).attr('data-placement', "top");
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).attr('data-toggle', "popover");
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).attr('data-container', "body");
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).attr('data-content', correcaoDoc.conteudoResult[i].erro);
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).popover();
+          var errosList = correcaoDoc.respostas[0].correcao;
+          for (var i = 0; i < errosList.length; i++) {
+            if (errosList[i].categoria == "Exatidão") {
+              sapns[errosList[i].posicao].style.color = 'rgb(255, 0, 0)';
+              $(sapns[errosList[i].posicao]).addClass('SpansTxt');
+              $(sapns[errosList[i].posicao]).attr('data-placement', "top");
+              $(sapns[errosList[i].posicao]).attr('data-toggle', "popover");
+              $(sapns[errosList[i].posicao]).attr('data-container', "body");
+              $(sapns[errosList[i].posicao]).attr('data-content', errosList[i].erro);
+              $(sapns[errosList[i].posicao]).popover();
               exatidao++;
             } else {
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).addClass('SpansTxt');
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).attr('data-placement', "top");
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).attr('data-toggle', "popover");
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).attr('data-container', "body");
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).attr('data-content', correcaoDoc.conteudoResult[i].erro);
-              $(sapns[correcaoDoc.conteudoResult[i].posicao]).popover();
+              $(sapns[errosList[i].posicao]).addClass('SpansTxt');
+              $(sapns[errosList[i].posicao]).attr('data-placement', "top");
+              $(sapns[errosList[i].posicao]).attr('data-toggle', "popover");
+              $(sapns[errosList[i].posicao]).attr('data-container', "body");
+              $(sapns[errosList[i].posicao]).attr('data-content', errosList[i].erro);
+              $(sapns[errosList[i].posicao]).popover();
               fluidez++;
-              sapns[correcaoDoc.conteudoResult[i].posicao].style.color = 'rgb(51, 153, 255)';
+              sapns[errosList[i].posicao].style.color = 'rgb(51, 153, 255)';
             }
           }
 
           $("#Div" + idCorr).scroll(function() {
             $('.SpansTxt').popover('hide');
           });
-
+          console.log(maxEle);
           var exPer = Math.round((exatidao / maxEle) * 100);
           var exFlu = Math.round((fluidez / maxEle) * 100);
 
-          var $btn = $('</br><div class="row centerEX">' +
+          var disciplina = perguntasDoc.disciplina;
+            //imagem da disciplina e tipo de teste
+            var urlDiscp;
+            switch (disciplina){
+              case 1:urlDiscp = "img/portugues.png";
+                break;
+              case 2:urlDiscp = "img/mate.png";
+                break;
+              case 3:urlDiscp = "img/estudoMeio.png";
+                break;
+              case 4:urlDiscp = "img/ingles.png";
+                break;
+            }
+
+          var $btn = $('</br>  <nav class="navbar  navbar-fixed-bottom "><div class="row centerEX">' +
             '  <div class="col-md-4">' +
-            '      <div class="panel panel-success" style="height: 150px">' +
+            '      <div class="panel panel-success" style="height: 162px">' +
             '        <div class="panel-heading">' +
             '          Texto:' +
             '        </div>' +
-            '          Titulo:' + testeDoc.titulo + "</br>" +
-            '          Pergunta:' + testeDoc.conteudo.pergunta + "</br>" +
+            '          Titulo:' + perguntasDoc.titulo + "</br>" +
+            '          Pergunta:' + perguntasDoc.pergunta + "</br>" +
             '          Total Palavras:' + maxEle + "</br>" +
+            '          <img id="IMGDisc' + idCorr + '" src="'+urlDiscp+'" style="height:50px;">' +
             '      </div>' +
             '    </div>' +
             '    <div class=" col-md-4">' +
-            '      <div class="panel panel-danger" style="height: 150px">' +
+            '      <div class="panel panel-danger" style="height: 162px">' +
             '        <div class="panel-heading">' +
             '          Correção:' +
             '        </div>' +
             '          Erros de Exatidão: ' + exatidao + '  - acertou: ' + (100 - exPer) + '% </br>' +
             '          Erros de Fluidez: ' + fluidez + '  - acertou: ' + (100 - exFlu) + '% </br>' +
             '          ---- Total:' + (100 - (exPer + exFlu)) + '% certo ----</br>' +
-            '          Expressividade: </br>' +
-            '          Sinais: ' + correcaoDoc.expresSinais + ' || Entoação: ' + correcaoDoc.expresEntoacao + ' ||Texto: ' + correcaoDoc.expresTexto +
+            '          Palavras corretamente lidas: '+(correcaoDoc.respostas[0].TotalPalavras - exatidao - fluidez)+' </br>' +
+            '         Expressividade:  - Sinais: ' + correcaoDoc.respostas[0].expresSinais + ' || - Entoação: ' + correcaoDoc.respostas[0].expresEntoacao + ' || - Texto: ' + correcaoDoc.respostas[0].expresTexto + ' </br>'+
+            '          Velocidade da leitura: '+correcaoDoc.respostas[0].velocidade+' plv/min </br>' +
             '      </div>' +
             '    </div>' +
             '    <div class=" col-md-4">' +
-            '      <div class="panel panel-info" style="height: 150px">' +
+            '      <div class="panel panel-info" style="height: 162px">' +
             '        <div class="panel-heading">' +
             '          Aluno' +
             '        </div>' +
             '        <label id="LB' + idCorr + '"></label>' +
-            '        <img id="IMG' + idCorr + '" src="" style="height:44px;">' +
+            '        <img id="IMG' + idCorr + '" src="" style="height:58px;">' +
             '        <audio id="AU' + idCorr + '" val=0 controls="controls"  style="width: 100%"></audio>' +
             '      </div>' +
             '    </div>' +
-            '  </div>'
+            '  </div> </nav>'
 
           );
           $btn.appendTo($containerPrin); //Adiciona ao Div
@@ -231,7 +248,7 @@ define(function(require) {
             if (err) console.log(err);
             $('#LB' + idCorr).text("Aluno: " + alunoDoc.nome);
           });
-
+        });
         });
       });
     },
@@ -241,79 +258,6 @@ define(function(require) {
         $(e.target).parent().addClass('is-active');
       },
 
-      initialize: function() {
-        var self = this;
-        var profId = window.localStorage.getItem("ProfSelecID");
-        var profNome = window.localStorage.getItem("ProfSelecNome");
-        var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
-        var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
-        var alunoId = window.localStorage.getItem("AlunoSelecID");
-        var alunoNome = window.localStorage.getItem("AlunoSelecNome");
-        var turmaId = window.localStorage.getItem("TurmaSelecID");
-        var turmaNome = window.localStorage.getItem("TurmaSelecNome");
-        var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
-        var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
-        var resultadoID = window.localStorage.getItem("resultadoID");
-
-        document.addEventListener("backbutton", this.onBKey, false);
-
-
-        professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
-          if (err2) console.log(err2);
-          var url = URL.createObjectURL(DataImg);
-          $('#lbNomeProf').text(profNome);
-          $('#imgProf').attr("src", url);
-        });
-
-        self.desenhaJanelas(resultadoID, true);
-
-        resolucoes_local2.get(resultadoID, function(err, CorrrecaoDoc) {
-          if (err) console.log(err);
-          window.localStorage.setItem("auxIDtext1", CorrrecaoDoc.id_Teste + ''); //enviar variavel
-
-          $('#carouselPrincipal').on('slide.bs.carousel', function() {
-            $('.SpansTxt').popover('hide');
-          });
-          /////////////////FUNCAO PARA O SWIPE SO ISTO xD ////////////////////////////////
-          $("#carouselPrincipal").swipe({
-            //Generic swipe handler for all directions
-            swipeLeft: function(event, direction, distance, duration, fingerCount, fingerData) {
-              $('#carouselPrincipal').carousel('next');
-            },
-            swipeRight: function(event, direction, distance, duration, fingerCount, fingerData) {
-              $('#carouselPrincipal').carousel('prev');
-            },
-          });
-          ////////////////fim ////////////////////////////////
-
-          var $containerIND = $('#IndicatorsCorr');
-          var $li = $('<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>');
-          $li.appendTo($containerIND);
-          var count = 0;
-
-          function map(doc) {
-            if (doc.estado == 1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == window.localStorage.getItem("auxIDtext1")) {
-              emit(doc);
-            }
-          }
-          resolucoes_local2.query({
-            map: map
-          }, {
-            reduce: false
-          }, function(errx, response) {
-            if (errx) console.log("Erro: " + errx);
-            for (var i = 0; i < response.rows.length; i++) {
-              if (response.rows[i].id != CorrrecaoDoc._id) {
-                count++;
-                self.desenhaJanelas(response.rows[i].id, false);
-                var $containerIND = $('#IndicatorsCorr');
-                var $li = $('<li data-target="#carouselPrincipal" data-slide-to="' + count + '" ></li>');
-                $li.appendTo($containerIND);
-              }
-            }
-          });
-        });
-      },
 
       //Eventos Click
       events: {
@@ -321,10 +265,11 @@ define(function(require) {
       },
 
       clickBackButton: function(e) {
-        var self = this;
+
         e.stopPropagation();
         e.preventDefault();
-        document.removeEventListener("backbutton", self.onBKey, false); ///RETIRAR EVENTO DO BOTAO
+        var self = this;
+      //  document.removeEventListener("backbutton", self.onBKey, false); ///RETIRAR EVENTO DO BOTAO
         $('.SpansTxt').popover('destroy');
 
         self.auxRemoveAll();
@@ -333,6 +278,90 @@ define(function(require) {
 
     render: function() {
       this.$el.html(template());
+      this.boundBKey = this.bKey.bind(this);
+      document.addEventListener('backbutton', this.boundBKey);
+
+      var self = this;
+      var profId = window.localStorage.getItem("ProfSelecID");
+      var profNome = window.localStorage.getItem("ProfSelecNome");
+      var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
+      var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
+      var alunoId = window.localStorage.getItem("AlunoSelecID");
+      var alunoNome = window.localStorage.getItem("AlunoSelecNome");
+      var turmaId = window.localStorage.getItem("TurmaSelecID");
+      var turmaNome = window.localStorage.getItem("TurmaSelecNome");
+      var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
+      var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
+      var resultadoID = window.localStorage.getItem("resultadoID");
+
+
+
+      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+        if (err2) console.log(err2);
+        var url = URL.createObjectURL(DataImg);
+        $('#lbNomeProf').text(profNome + " - [ " +escolaNome+" ]");
+        $('#imgProf').attr("src", url);
+      });
+
+      alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
+        if (err2) console.log(err2);
+        var url = URL.createObjectURL(DataImg);
+        $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
+        $('#imgAluno').attr("src", url);
+      });
+
+
+      self.desenhaJanelas(resultadoID, true);
+
+      resolucoes_local2.get(resultadoID, function(err, CorrrecaoDoc) {
+        if (err) console.log(err);
+
+        window.localStorage.setItem("auxIDtext1", CorrrecaoDoc.id_Teste + ''); //enviar variavel
+
+        $('#carouselPrincipal').on('slide.bs.carousel', function() {
+          $('.SpansTxt').popover('hide');
+        });
+        /////////////////FUNCAO PARA O SWIPE SO ISTO xD ////////////////////////////////
+        $("#carouselPrincipal").swipe({
+          //Generic swipe handler for all directions
+          swipeLeft: function(event, direction, distance, duration, fingerCount, fingerData) {
+            $('#carouselPrincipal').carousel('next');
+          },
+          swipeRight: function(event, direction, distance, duration, fingerCount, fingerData) {
+            $('#carouselPrincipal').carousel('prev');
+          },
+        });
+        ////////////////fim ////////////////////////////////
+
+        var $containerIND = $('#IndicatorsCorr');
+        var $li = $('<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>');
+        $li.appendTo($containerIND);
+        var count = 0;
+
+        function map(doc) {
+
+          if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == window.localStorage.getItem("auxIDtext1")) {
+            emit(doc);
+          }
+        }
+        resolucoes_local2.query({
+          map: map
+        }, {
+          reduce: false
+        }, function(errx, response) {
+          if (errx) console.log("Erro: " + errx);
+          for (var i = 0; i < response.rows.length; i++) {
+            if (response.rows[i].id != CorrrecaoDoc._id) {
+              count++;
+              self.desenhaJanelas(response.rows[i].id, false);
+              var $containerIND = $('#IndicatorsCorr');
+              var $li = $('<li data-target="#carouselPrincipal" data-slide-to="' + count + '" ></li>');
+              $li.appendTo($containerIND);
+            }
+          }
+        });
+      });
+
       return this;
     }
   });

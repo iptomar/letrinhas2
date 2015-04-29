@@ -67,7 +67,7 @@ define(function(require) {
                 'id_Aluno': alunoId,
                 'id_Prof': profId,
                 'id_Teste': TesteTextArealizarID,
-                'tipoCorrecao': 'lista',
+                'tipoCorrecao': 'palavras',
                 'nota': '-1',
                 'respostas': [],
                 'observ': null,

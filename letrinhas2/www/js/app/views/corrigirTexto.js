@@ -418,7 +418,7 @@ define(function(require) {
 
               var color = $(this).css('color');
               if (color == 'rgb(255, 153, 0)' || color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
-              {
+              {if (self.triggerSelec == false){
                 $(this).css("color", "#000000");
                 $meuSpan.popover('destroy');
                 $meuSpan.attr("value", " ");
@@ -427,6 +427,7 @@ define(function(require) {
                 self.triggerSelecionado = false;
                 $('body').unbind('touchmove');
                 self.aux = null;
+              }
               } else if (self.triggerSelecionado == false) {
                 $("#AudioPlayerAluno").trigger('pause');
                 $(this).css("color", "#FF9900");

@@ -123,15 +123,33 @@ define(function(require) {
               ev.preventDefault();
               var $btn = $(this); // O jQuery passa o btn clicado pelo this
               var self = this;
-              if (Backbone.history.fragment != 'escolherTeste') {
-                utils.loader(function() {
-                  ev.preventDefault();
-                  window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
-                  window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
-                  app.navigate('/escolherTeste', {
-                    trigger: true
+              var tipoOpcao = window.localStorage.getItem("TipoOpaoSelec");
+              if (tipoOpcao == 'realizarTeste')
+              {
+                if (Backbone.history.fragment != 'escolherTeste') {
+                  utils.loader(function() {
+                    ev.preventDefault();
+                    window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
+                    window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
+                    app.navigate('/escolherTeste', {
+                      trigger: true
+                    });
                   });
-                });
+                }
+              }
+              else
+              {
+
+                if (Backbone.history.fragment != 'escolherResultados') {
+                  utils.loader(function() {
+                    ev.preventDefault();
+                    window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
+                    window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
+                    app.navigate('/escolherResultados', {
+                      trigger: true
+                    });
+                  });
+                }
               }
             });
           });

@@ -20,7 +20,6 @@ define(function(require) {
 
     },
 
-
     events: {
       "click #BackButtonMO": "clickBackButtonMO",
       "click #btnRealizarTeste": "clickBtnRealizarTeste",
@@ -54,6 +53,7 @@ define(function(require) {
       if (Backbone.history.fragment != 'escolherTurma') {
         utils.loader(function() {
           e.preventDefault();
+          window.localStorage.setItem("TipoOpaoSelec", 'realizarTeste'); //enviar variavel
           app.navigate('/escolherTurma', {
             trigger: true
           });
@@ -75,10 +75,11 @@ define(function(require) {
 
     clickBtnConsultarTeste: function(e) {
       var self = this;
-      if (Backbone.history.fragment != 'escolherResultados') {
+      if (Backbone.history.fragment != 'escolherTurma') {
         utils.loader(function() {
           e.preventDefault();
-          app.navigate('/escolherResultados', {
+          window.localStorage.setItem("TipoOpaoSelec", 'consultarResolucao'); //enviar variave
+          app.navigate('/escolherTurma', {
             trigger: true
           });
         });

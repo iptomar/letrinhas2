@@ -2,70 +2,50 @@
   <div class="globalcontent">
     <div class="topcoat-navigation-bar">
       <div class="topcoat-navigation-bar__item left quarter">
-        <button id="BtnVoltar"
-                type="button"
-                class="btn btn-default btn-lg">
-          <span class="glyphicon glyphicon-chevron-left"
-                aria-hidden="true">
-          </span>
-          Voltar
-        </button>
-        <img src="img/resultados.png" style=" float: center; height:44px; margin-left:5px"/>
-        <img id="bTipo" src="img/inConstruction.jpg" style=" float: center; height:44px; margin-left:5px"/>
-        <img id="imgDisciplina" src="img/inConstruction.jpg" style="float: center; height:44px; margin-left:5px "/>
-
-      </div>
+        <img id="imgProf" src="img/RealizarTestes.png" style='height:44px;'>
+        <label id="lbNomeProf" style="color:#FFFFF;">Professor</label>
+        </div>
       <div class="topcoat-navigation-bar__item center half">
-        <h1 id="lbTituloTeste"
-            class="topcoat-navigation-bar__title">titulo</h1>
+        <h1 id="titleTestePagina" class="topcoat-navigation-bar__title">Consultar Resoluções</h1>
       </div>
       <div class="topcoat-navigation-bar__item right quarter">
         <label id="lbNomeAluno" style="color:#FFFFF;">Aluno</label>
-        <img id="alunoFoto" src="img/inConstruction.jpg" style='height:44px;margin-right:2px'>
-      </div>
+        <img id="imgAluno" src="img/RealizarTestes.png" style='height:44px;'>
+     </div>
     </div>
 
+
+
+    <div  class="container">
+      <a class="left carousel-control2" href="#carouselPrincipal" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" style="font-size: 25pt"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control2" href="#carouselPrincipal" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" style="font-size: 25pt"></span>
+        <span class="sr-only">Next</span>
+      </a>
+
+
+
+
+    <div id="carouselPrincipal" class="carousel slide" data-ride="carousel">
+      <ol id ="IndicatorsCorr" class="carousel-indicators2">
+     </ol>
+
+    <!-- Wrapper for slides -->
+    <div id="carroselT" class="carousel-inner" role="listbox">
+
+
+    </div>
+    <!-- Controls -->
+
+
   </div>
 
 
-<!--########## carrossel, onde irá mostrar todos o conteúdo, resultado por slide ######## -->
-<!--<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-
-
-  <!-- Wrapper for slides -->
-<!--  <div id="innerPages" class="carousel-inner" role="listbox">
-
-  </div>
-
-<!--
-</div>
-
--->
-
-<div class="container">
-  <!-- Controlos -->
-  <div id="controlos"></div>
-
-
-<div id="carouselLista" class="carousel slide" data-ride="carousel">
-  <!-- Indicadores -->
-  <ol id="indicadores" class="carousel-indicators"></ol>
-<!-- Wrapper for slides -->
-<div id="innerPages" class="carousel-inner" role="listbox">
+    </div>
 
 
 </div>
-<!-- Controls -->
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
 </section>

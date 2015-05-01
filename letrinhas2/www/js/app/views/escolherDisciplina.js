@@ -31,17 +31,17 @@ var BtnNavPress;
     },
 
     clickbtnNavINI: function(e) {
-      e.stopPropagation(); e.preventDefault();
+    //  e.stopPropagation(); e.preventDefault();
       window.history.go(-1);
     },
 
     clickBackButtonED: function(e) {
-      e.stopPropagation(); e.preventDefault();
+    //  e.stopPropagation(); e.preventDefault();
       window.history.go(-1);
     },
 
     clickbtnSelecPortugues: function(e) {
-      e.stopPropagation(); e.preventDefault();
+      //e.stopPropagation(); e.preventDefault();
       window.localStorage.setItem("DiscplinaSelecionada", 1); //enviar variavel 1 -Portugues
       var self = this;
       if (Backbone.history.fragment != 'menuTipoOpcao') {
@@ -56,7 +56,7 @@ var BtnNavPress;
     },
 
     clickbtnSelecMate: function(e) {
-      e.stopPropagation(); e.preventDefault();
+      //e.stopPropagation(); e.preventDefault();
       window.localStorage.setItem("DiscplinaSelecionada", 2); //enviar variavel 2- Matematica
       var self = this;
       if (Backbone.history.fragment != 'menuTipoOpcao') {
@@ -71,7 +71,7 @@ var BtnNavPress;
     },
 
     clickbtnSelecEstuMeio: function(e) {
-      e.stopPropagation(); e.preventDefault();
+    //  e.stopPropagation(); e.preventDefault();
       window.localStorage.setItem("DiscplinaSelecionada", 3); //enviar variavel 3 -EstudoMeio
       var self = this;
       if (Backbone.history.fragment != 'menuTipoOpcao') {
@@ -86,7 +86,7 @@ var BtnNavPress;
     },
 
     clickbtnSelecIngles: function(e) {
-      e.stopPropagation(); e.preventDefault();
+    //  e.stopPropagation(); e.preventDefault();
       window.localStorage.setItem("DiscplinaSelecionada", 4); //enviar variavel 4- Ingles
       var self = this;
       if (Backbone.history.fragment != 'menuTipoOpcao') {

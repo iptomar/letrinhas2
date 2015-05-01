@@ -332,6 +332,15 @@ define(function(require) {
             });
           });
         }
+      } else if (self.tipoTesteSelecionado == 'interpretacao') {
+        if (Backbone.history.fragment != 'testeInterpretacao') {
+          utils.loader(function() {
+            e.preventDefault();
+            app.navigate('/testeInterpretacao', {
+              trigger: true
+            });
+          });
+        }
       } else {
 
 

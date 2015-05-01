@@ -16,14 +16,6 @@
     </div>
 
 
-
-    <div class="loader" style="display:none">
-      <div class="placeholder light">
-        <div class="spinner"></div>
-      </div>
-    </div>
-
-
     <nav class="navbar navbar-default navbar-fixed-bottom ">
       <div id="div1">
         <div class="col-md-3">
@@ -35,11 +27,7 @@
         </div>
 
         <div class=" col-md-3">
-        </p>
-          <button id="btnRec" type="button" class="btn btn-success btn-lg btn-block">
-            <span class="glyphicon glyphicon glyphicon-record"></span> Gravar
-          </button>
-        </p>
+
         </div>
         <div class=" col-md-3">
         </p>
@@ -50,7 +38,7 @@
         </div>
         <div class=" col-md-3">
         </p>
-          <button id="btnFinalizar" type="button" class="btn btn-success btn-lg btn-block" style=" display: none;">
+          <button id="btnFinalizar" type="button" class="btn btn-success btn-lg btn-block" >
             <span class="glyphicon glyphicon glyphicon-ok" ></span> Finalizar
           </button>
         </p>
@@ -69,30 +57,10 @@
         </p>
         </div>
       </div>
-
-      <div id="div3" style=" display: none;">
-        <div class="col-md-3">
-          <button id="btnParar2" type="button" class="btn btn-danger btn-lg btn-block">
-            <span class="glyphicon glyphicon glyphicon-stop"></span> Parar
-          </button>
-        </div>
-        <div class=" col-md-9">
-        </p>
-          <audio id="AudioPlayerAluno"  controls="controls"  style="width: 100%"></audio>
-        </p>
-        </div>
-      </div>
     </nav>
 
     <div class="container">
 
-
-
-      <div class="panel panel-default">
-        <div class="panel-body centerEX">
-          <label id="lbTituloTeste" class="textareaParaTestes" style="color:#000000;">titulo</label>
-        </div>
-      </div>
 
       <!-- ##################### POPUP PIN PROF ################# -->
       <div class="modal fade" id="myModalProf" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -143,40 +111,17 @@
       <!-- ##################### END ################# -->
 
 
-      <!-- ##################### POPUP SIM NAO Gravacao################# -->
-      <div class="modal fade" id="myModalSUBGravar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <h4 class="modal-title" id="myModalLabel">AVISO:</h4>
-            </div>
-            <div class="modal-body">
-              <h3 id="labelModelMsg" style="color:#D80000;">Têm a certeza que deseja repetir a gravação?</h3>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
-              <button id="btnConfirmarSUBGrav" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge">Confirmar</button>
-            </div>
-          </div>
+
+
+      <div class="panel panel-default">
+        <div class="panel-body centerEX">
+          <label id="lbTituloTeste" style="color:#000000; font-size: 25px;">titulo</label>
         </div>
       </div>
-      <!-- ##################### END ################# -->
+      <div id="DivContentorArea" class="textareaTextoCorr container"></div>
 
-      <div class="modal fade" id="myModalCont" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div align="center" style="background: transparent; color:#ffffff">
-            <button id="pik" type="button" style="visibility:hidden"></button>
-          </br>
-            <h1 id="semafroLB"style="font-size:72px; " >A gravar em</h1>
-          </div>
-        </div>
-      </div>
-      <!-- ##################### END ################# -->
 
-      <div id="txtAreaConteud" class="textareaTexto container"> </div>
-    </div>
+  </div>
+
   </div>
 </section>

@@ -15,6 +15,7 @@ define(function(require) {
 
   var $body = $('#main_content');
   var $header = $('#header');
+  var my_media;
 
   return Backbone.Router.extend({
     currentView: undefined,
@@ -49,13 +50,13 @@ define(function(require) {
       "escolherTeste": "escolherTeste",
       "testeTexto": "testeTexto",
       "testeLista": "testeLista",
-      "escolherCorrecao":"escolherCorrecao",
-      "corrigirLista":"corrigirLista",
-      "corrigirTexto":"corrigirTexto",
-      "escolherResultados":"escolherResultados",
-      "mostraResultadoLista":"mostraResultadoLista",
-      "mostraResultadoTexto":"mostraResultadoTexto",
-
+      "escolherCorrecao": "escolherCorrecao",
+      "corrigirLista": "corrigirLista",
+      "corrigirTexto": "corrigirTexto",
+      "escolherResultados": "escolherResultados",
+      "mostraResultadoLista": "mostraResultadoLista",
+      "mostraResultadoTexto": "mostraResultadoTexto",
+      "testeInterpretacao": "testeInterpretacao",
     },
 
     boot: function() {
@@ -64,7 +65,13 @@ define(function(require) {
     },
 
 
-
+    testeInterpretacao: function() {
+      var self = this;
+      require(["app/views/testeInterpretacao"], function(testeInterpretacaoView) {
+        var view = new testeInterpretacaoView();
+        self.showView(view);
+      });
+    },
 
     mostraResultadoLista: function() {
       var self = this;
@@ -184,8 +191,39 @@ define(function(require) {
     },
 
 
+    // acb: function() {
+    //   try {
+    //     my_media = new Media("/android_asset/www/img/btn.mp3",
+    //       // success callback
+    //       function() {
+    //         console.log("playAudio():Audio Success");
+    //       },
+    //       // error callback
+    //       function(err) {
+    //         console.log("playAudio():Audio Error: " + err);
+    //       }
+    //     );
+    //   } catch (err) {
+    //   }
+    // },
+
+
     login: function() {
       var self = this;
+      //
+      //
+      //
+      //
+      //
+      // $('body').on('click', 'button', function() {
+      //
+      //
+      //   // Play audio
+      //   my_media.play();
+      //
+      // });
+
+
       require(["app/views/login"], function(LoginView) {
         $header.html('');
         $body.html('');

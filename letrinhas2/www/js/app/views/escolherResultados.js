@@ -185,11 +185,17 @@ define(function(require) {
               }
               if (tipoTeste == "palavras") {
                 urlTipo = "img/testLista.png";
-              } else {
+              } else
                 if (tipoTeste == "texto") {
                   urlTipo = "img/testeTexto.png";
                 }
-              }
+               else
+               if (tipoTeste == "interpretacao") {
+                 urlTipo = "img/testInterpretacao.png";
+               }
+
+
+
               var $container = $('#outputResultado');
               //construir o botão
               var $btn = $(
@@ -197,7 +203,7 @@ define(function(require) {
                 '<button id="' + correcaoEncontrada._id + '" value="' + correcaoEncontrada.tipoCorrecao + '" type="button"' +
                 'style="height:100px;  padding: 0px 10px 0px 10px;"' +
                 'class="btn btn-info btn-lg btn-block btn-Corr" >' +
-                '<img  src="' + urlTipo + '" style=" float: right; height:60px; margin-left:5px"/>' +
+                '<img  src="' + urlTipo + '" style=" float: right; height:65px; margin-left:5px"/>' +
                 '<img  src="' + urlDiscp + '" style=" float: right; height:60px; margin-left:5px"/>' +
                 '<a style="color:#FFFFFF;" aria-hidden="true">' +
                 '<p>' + tituloBtn + '</p>' +

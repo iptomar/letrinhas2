@@ -75,7 +75,7 @@ define(function(require) {
         if (err) console.log(err);
 
         for (var i = 0; i < maxEle; i++) {
-          var color = sapns[i].style.color
+          var color = sapns[i].style.color;
           if (color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
           {
              var cenas = sapns[i].getAttribute("value");

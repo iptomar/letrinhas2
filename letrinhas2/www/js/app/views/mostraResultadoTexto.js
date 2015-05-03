@@ -95,6 +95,31 @@ define(function(require) {
       window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, gotFileSystems, fail);
     },
 
+    desenhaEstatistica: function(idCorr, inic) {
+
+      var self = this;
+
+      resolucoes_local2.get(idCorr, function(err, correcaoDoc) {
+        if (err) console.log(err);
+        var $containerCorr = $('#carroselT');
+        var $div = "";
+        if (inic == true)
+          $div = $('<div id="EstativDiv" class="item active"></div>');
+        else
+          $div = $('<div id="EstativDiv" class="item"></div>');
+
+        $div.appendTo($containerCorr); //Adiciona ao Div
+        var $containerPrin = $('#EstativDiv');
+
+        var $btn = $('</br></br><canvas id="canvas" ></canvas><div id="legendDiv"></div>');
+        //
+        $btn.appendTo($containerPrin); //Adiciona ao Div
+
+
+      });
+    },
+
+
 
     desenhaJanelas: function(idCorr, inic) {
       var self = this;
@@ -175,7 +200,6 @@ define(function(require) {
           $("#Div" + idCorr).scroll(function() {
             $('.SpansTxt').popover('hide');
           });
-          console.log(maxEle);
           var exPer = Math.round((exatidao / maxEle) * 100);
           var exFlu = Math.round((fluidez / maxEle) * 100);
 
@@ -310,8 +334,11 @@ define(function(require) {
         $('#imgAluno').attr("src", url);
       });
 
+      self.desenhaEstatistica(resultadoID, true);
 
-      self.desenhaJanelas(resultadoID, true);
+    //  self.desenhaJanelas(resultadoID, false);
+
+
 
       resolucoes_local2.get(resultadoID, function(err, CorrrecaoDoc) {
         if (err) console.log(err);
@@ -336,13 +363,19 @@ define(function(require) {
         var $containerIND = $('#IndicatorsCorr');
         var $li = $('<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>');
         $li.appendTo($containerIND);
+
+        // var $containerIND = $('#IndicatorsCorr');
+        // var $li = $('<li data-target="#carouselPrincipal" data-slide-to="1" ></li>');
+        // $li.appendTo($containerIND);
+
+
         var count = 0;
 
         function map(doc) {
 
-          if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == window.localStorage.getItem("auxIDtext1")) {
-            emit(doc);
-          }
+         if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == window.localStorage.getItem("auxIDtext1")) {
+            emit([doc.dataReso], doc);
+         }
         }
         resolucoes_local2.query({
           map: map
@@ -350,15 +383,110 @@ define(function(require) {
           reduce: false
         }, function(errx, response) {
           if (errx) console.log("Erro: " + errx);
-          for (var i = 0; i < response.rows.length; i++) {
-            if (response.rows[i].id != CorrrecaoDoc._id) {
+          var exatidaoArr = [];
+          var fluidezArr = [];
+          var arr3 = [];
+
+
+
+
+          for (var i = response.rows.length-1; i >= 0; i--) {
+
+            console.log(response.rows[i].value.respostas[0].correcao.length);
+
+
+      var TotalPalav= response.rows[i].value.respostas[0].TotalPalavras;
+      var exatidao = 0;
+      var fluidez = 0;
+      // append new value to the array
+
+
+
+        for (var y = 0; y < response.rows[i].value.respostas[0].correcao.length; y++) {
+          if(response.rows[i].value.respostas[0].correcao[y].categoria == "Exatidão")
+          exatidao++;
+          else
+          fluidez++;
+        }
+
+        var exPer = Math.round((exatidao / TotalPalav) * 100);
+        var exFlu = Math.round((fluidez / TotalPalav) * 100);
+
+
+
+        // append new value to the array
+        exatidaoArr.push((100 - exPer));
+        fluidezArr.push((100 - exFlu));
+
+        var data = new Date(response.rows[i].value.dataReso);
+        var day = data.getDate().toString();
+        var month = data.getMonth().toString();
+        var hours = data.getHours().toString();
+        var minutes = data.getMinutes().toString();
+        day = day.length === 2 ? day : '0' + day;
+        month = month.length === 2 ? month : '0' + month;
+        hours = hours.length === 2 ? hours : '0' + hours;
+        minutes = minutes.length === 2 ? minutes : '0' + minutes;
+        var dataFinal = day + "/" + month + "/" + data.getFullYear() + " - " + hours + ":" + minutes+"h";
+
+
+        arr3.push(dataFinal);
+
+
               count++;
               self.desenhaJanelas(response.rows[i].id, false);
               var $containerIND = $('#IndicatorsCorr');
               var $li = $('<li data-target="#carouselPrincipal" data-slide-to="' + count + '" ></li>');
               $li.appendTo($containerIND);
-            }
+
           }
+
+
+          var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+          var lineChartData = {
+            labels : arr3,
+
+            datasets : [
+              {
+                label: "Exatidão",
+                fillColor : "rgba(255,100,100,0.2)",
+                strokeColor : "rgba(255,170,170,1)",
+                pointColor : "rgba(255,170,170,1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill : "#fff",
+                pointHighlightStroke : "rgba(255,170,170,1)",
+                data : exatidaoArr
+              },
+
+              {
+                label: "Fluidez",
+                fillColor : "rgba(151,187,205,0.2)",
+                strokeColor : "rgba(151,187,205,1)",
+                pointColor : "rgba(151,187,205,1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill : "#fff",
+                pointHighlightStroke : "rgba(151,187,205,1)",
+                data : fluidezArr
+              }
+            ]
+          }
+          var ctx = document.getElementById("canvas").getContext("2d");
+          var myLineChart = new Chart(ctx).Line(lineChartData, {
+              responsive: true,
+              animationEasing: "easeInCubic",
+              legendTemplate : '<% for (var i=0; i<datasets.length; i++){%>'+
+              '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt"> </span><span style="font-size: 20pt"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></span></br>'+
+              '<%}%>'
+
+             });
+
+             var $containerPrin = $('#legendDiv');
+             //
+            var $btn = $(myLineChart.generateLegend());
+            //  //
+             $btn.appendTo($containerPrin); //Adiciona ao Div
+
+            console.log();
         });
       });
 

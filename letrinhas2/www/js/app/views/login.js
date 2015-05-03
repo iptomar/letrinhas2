@@ -28,24 +28,19 @@ define(function(require) {
     },
 
     initialize: function() {
-
     },
 
     //Eventos Click
     events: {
       "click #btn_login": "clickLogin",
-      "click #btn_testes": "btn_testes"
     },
 
     clickLogin: function(e) {
-      e.stopPropagation();
+     e.stopPropagation();
       e.preventDefault();
       var self = this;
       var pinDigitado = $('#inputPIN').val();
       if (pinDigitado != "") {
-
-
-
         professores_local2.query({
           map: function (doc) {
             if (doc.pin == $('#inputPIN').val() && doc.estado == 1) {
@@ -83,21 +78,12 @@ define(function(require) {
       {
         $('#inputPINErr').addClass("has-error");
       }
-    },
-
-
-    btn_testes: function(e) {
-      console.log("PARA TESTES");
-
 
     },
+
 
     render: function() {
       this.$el.html(template());
-
-
-
-
       return this;
     }
   });

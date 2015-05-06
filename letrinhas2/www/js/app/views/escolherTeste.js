@@ -101,6 +101,18 @@ define(function(require) {
       $('#outputTestes').empty();
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
 
+
+      testes_local2.allDocs({
+        include_docs: true,
+        attachments: false
+      }, function(err, testesDoc) {
+        if (err) console.log(err);
+        for (var i = 0; i < testesDoc.rows.length; i++) {
+          var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
+          perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+        }
+      });
+
       function obtemDadosParaRow(disciplinaSelecionada, i, perguntaSelc) {
         return function(errx, perguntaDoc) {
           if (errx) {
@@ -108,8 +120,8 @@ define(function(require) {
           }
 
           if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
-            if (ponteiro == null)
-              ponteiro = perguntaSelc.id;
+             if (self.ponteiro == null)
+             self.ponteiro = perguntaSelc.id;
 
             var $container = $('#outputTestes');
             var img;
@@ -143,24 +155,117 @@ define(function(require) {
             });
 
             //Selecionar o 1º Item
-            $('#' + ponteiro).click();
+            $('#' + self.ponteiro).click();
           }
         };
       }
-
-      testes_local2.allDocs({
-        include_docs: true,
-        attachments: false
-      }, function(err, testesDoc) {
-        if (err) console.log(err);
-        for (var i = 0; i < testesDoc.rows.length; i++) {
-          var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
-          perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
-        }
-      });
-
     },
 
+
+    pesquisarEcriarBTN: function(pesquisa) {
+      var self = this
+      $('#outputTestes').empty();
+      $('#outputTestesConteudo').empty();
+      var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
+      var tipoTeste = self.tipoTesteSelecionado;
+
+      testes_local2.search({
+        query: pesquisa,
+        fields: ['titulo'],
+        include_docs: true
+      }).then(function (testesDoc) {
+        console.log(testesDoc);
+
+        for (var i = 0; i < testesDoc.rows.length; i++) {
+         var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
+         console.log(perguntaSelc);
+         perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+         }
+
+
+      }).catch(function (err) {
+        console.log(err);
+        // handle error
+      });
+
+      function obtemDadosParaRow(disciplinaSelecionada, i, perguntaSelc) {
+        return function(errx, perguntaDoc) {
+          if (errx) {
+            console.log(errx);
+          }
+
+          if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
+             if (self.ponteiro == null)
+             self.ponteiro = perguntaSelc.id;
+
+            var $container = $('#outputTestes');
+            var img;
+            if (tipoTeste == "texto")
+              img = "testeTexto"
+            if (tipoTeste == "palavras")
+              img = "testLista"
+            if (tipoTeste == "multimedia")
+              img = "testMul"
+            if (tipoTeste == "interpretacao")
+              img = "testInterpretacao"
+
+            var $btn = $(
+              '<button id="' + perguntaSelc.id + '"  name="' + perguntaDoc._id + '"  type="button" style="height:62px;"" class="btn btn-lg btn-block btn-teste activeXF " >' +
+              ' <img src="img/' + img + '.png"  style="height:32px;" > ' +
+              perguntaSelc.doc.titulo + '</button>');
+            $btn.appendTo($container); //Adiciona ao Div
+
+            $("#" + perguntaSelc.id).click(function() {
+              var $btn = $(this); // O jQuery passa o btn clicado pelo this
+
+              if (self.btns != null) {
+                self.btns.removeClass("btn-primary");
+                self.btns.addClass("activeXF");
+              }
+              self.btns = $(this);
+              $(this).removeClass("activeXF");
+              $(this).addClass("btn-primary");
+              window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
+              self.criarDemostracao(tipoTeste, $btn[0].name);
+            });
+            console.log("a");
+            //Selecionar o 1º Item
+            $('#' + self.ponteiro).click();
+          }
+        };
+      }
+    },
+
+
+
+
+    selecionarTipoTesteColor: function(tipoTeste) {
+      $('#btnTesteLeituraMultimedia').removeClass("btn-primary");
+      $('#btnTesteLeituraMultimedia').addClass("activeXF");
+      $('#btnTesteLeituraPalav').removeClass("btn-primary");
+      $('#btnTesteLeituraPalav').addClass("activeXF");
+      $('#btnTesteLeituraTextos').removeClass("btn-primary");
+      $('#btnTesteLeituraTextos').addClass("activeXF");
+      $('#btnTesteLeituraInterpretacao').removeClass("btn-primary");
+      $('#btnTesteLeituraInterpretacao').addClass("activeXF");
+
+      if (tipoTeste == "interpretacao") {
+        $('#btnTesteLeituraInterpretacao').removeClass("activeXF");
+        $('#btnTesteLeituraInterpretacao').addClass("btn-primary");
+      }
+      if (tipoTeste == "multimedia") {
+        $('#btnTesteLeituraMultimedia').removeClass("activeXF");
+        $('#btnTesteLeituraMultimedia').addClass("btn-primary");
+      }
+      if (tipoTeste == "texto") {
+        $('#btnTesteLeituraTextos').removeClass("activeXF");
+        $('#btnTesteLeituraTextos').addClass("btn-primary");
+      }
+      if (tipoTeste == "palavras") {
+        $('#btnTesteLeituraPalav').removeClass("activeXF");
+        $('#btnTesteLeituraPalav').addClass("btn-primary");
+      }
+    },
 
     events: {
       "click #BackButtonEscTest": "clickBackButtonEscTest",
@@ -180,8 +285,15 @@ define(function(require) {
       "click #btnNavMenu": "clickbtnNavMenu",
       "click #btnNavTurmas": "clickbtnNavTurmas",
       "click #btnNavAlunos": "clickbtnNavAlunos",
-
+      "click #btnPesquisar": "clickbtnPesquisar",
     },
+
+    clickbtnPesquisar: function(e) {
+      var self = this;
+      var pesquisa = $('#txtBoxPesquisa').val();
+      if ( pesquisa != "")
+      self.pesquisarEcriarBTN(pesquisa);
+  },
 
     clickbtnNavAlunos: function(e) {
       var self = this;
@@ -273,37 +385,43 @@ define(function(require) {
 
     clickbtnTesteLeituraPalav: function(e) {
       var self = this;
-      ponteiro = null;
+      self.ponteiro = null;
       $('#outputTestes').empty();
       $('#outputTestesConteudo').empty();
       self.tipoTesteSelecionado = "palavras";
+      self.selecionarTipoTesteColor("palavras");
       self.mostrarListaTestes("palavras");
     },
 
     clickbtnTesteLeituraTextos: function(e) {
       var self = this;
-      ponteiro = null;
+      self.ponteiro = null;
       $('#outputTestes').empty();
       $('#outputTestesConteudo').empty();
       self.tipoTesteSelecionado = "texto";
+      self.selecionarTipoTesteColor("texto");
       self.mostrarListaTestes("texto");
     },
 
     clickbtnTesteLeituraMultimedia: function(e) {
       var self = this;
-      ponteiro = null;
+      self.ponteiro = null;
+      $('#btnTesteLeituraMultimedia').removeClass("activeXF");
+      $('#btnTesteLeituraMultimedia').addClass("btn-primary");
       $('#outputTestes').empty();
       $('#outputTestesConteudo').empty();
       self.tipoTesteSelecionado = "multimedia";
+      self.selecionarTipoTesteColor("multimedia");
       self.mostrarListaTestes("multimedia");
     },
 
     clickbtnTesteLeituraInterpretacao: function(e) {
       var self = this;
-      ponteiro = null;
+      self.ponteiro = null;
       $('#outputTestes').empty();
       $('#outputTestesConteudo').empty();
       self.tipoTesteSelecionado = "interpretacao";
+      self.selecionarTipoTesteColor("interpretacao");
       self.mostrarListaTestes("interpretacao");
     },
 
@@ -346,16 +464,6 @@ define(function(require) {
 
 
       }
-
-      //    if (Backbone.history.fragment != 'testeLista') {
-      //    utils.loader(function() {
-      //    e.preventDefault();
-      //    app.navigate('/testeLista', {
-      //      trigger: true
-      //    });
-      //    });
-      //  }
-
     },
 
     clickBackButtonEscTest: function(e) {
@@ -398,8 +506,7 @@ define(function(require) {
           $('#titleBarlb').text("Escolher Teste de: Inglês");
           $('#imgDisciplinaIcon').attr("src", "img/ingles.png");
         }
-
-        $('#lbNomeProf').text(profNome + " - [ " +escolaNome+" ]");
+        $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
         $('#imgProf').attr("src", url);
       });
 
@@ -410,6 +517,7 @@ define(function(require) {
         $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
         $('#imgAluno').attr("src", url);
       });
+
 
 
       return this;

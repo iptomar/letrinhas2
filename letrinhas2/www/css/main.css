@@ -10,6 +10,13 @@
   font-size: 20px !important;
 }
 
+
+.carousel .carousel-inner .item {
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
 .input-large_PINxl {
   height: 60px;
   font-size: 26px !important;
@@ -63,6 +70,8 @@
     overflow-y: auto;
     width: 58%;
 }
+
+
 
 .btnCroool {
     position: absolute;

@@ -416,7 +416,7 @@ define(function(require) {
           var exatidaoArr = [];
           var fluidezArr = [];
           var arr3 = [];
-          for (var i = response.rows.length - 1; i >= 0; i--) {
+          for (var i = 0; i < response.rows.length; i++) {
             var TotalPalav = response.rows[i].value.respostas[0].TotalPalavras;
             var exatidao = 0;
             var fluidez = 0;
@@ -427,11 +427,8 @@ define(function(require) {
               else
                 fluidez++;
             }
-
             var exPer = Math.round((exatidao / TotalPalav) * 100);
             var exFlu = Math.round((fluidez / TotalPalav) * 100);
-
-
 
             // append new value to the array
             exatidaoArr.push((100 - exPer));
@@ -448,12 +445,14 @@ define(function(require) {
             minutes = minutes.length === 2 ? minutes : '0' + minutes;
             var dataFinal = day + "/" + month + "/" + data.getFullYear() + " - " + hours + ":" + minutes + "h";
             arr3.push(dataFinal);
+          }
+
+          for (var i = response.rows.length - 1; i >= 0; i--) {
             count++;
             self.desenhaJanelas(response.rows[i].id, false);
             var $containerIND = $('#IndicatorsCorr');
             var $li = $('<li data-target="#carouselPrincipal" data-slide-to="' + count + '" ></li>');
             $li.appendTo($containerIND);
-
           }
 
 
@@ -486,13 +485,20 @@ define(function(require) {
           var ctx = document.getElementById("canvasGrafico").getContext("2d");
           var myLineChart = new Chart(ctx).Line(lineChartData, {
             responsive: true,
-
+            showScale: true,
+            scaleOverride: true,
+            animationEasing: "easeOutBounce",
+            // Number - The number of steps in a hard coded scale
+              scaleSteps: 5,
+            // Number - The value jump in the hard coded scale
+           scaleStepWidth: 20,
+           // Number - The scale starting value
+           scaleStartValue: 0,
             multiTooltipTemplate: "<%= datasetLabel %> - <%= value %> %",
             legendTemplate: '<% for (var i=0; i<datasets.length; i++){%>' +
               '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt">' +
               '</span><span style="font-size: 20pt"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></span>&nbsp&nbsp&nbsp' +
               '&nbsp&nbsp<%}%>'
-
           });
 
           var $containerPrin = $('#legendDiv');

@@ -222,7 +222,7 @@ define(function(require) {
                     app.navigate('/mostraResultadoTexto', {trigger: true});
                   });
                 }
-              }else{
+              }else
                 if($btn.val() == "palavras" ){
                   if (Backbone.history.fragment != 'mostraResultadoLista') {
                     utils.loader(function() {
@@ -231,7 +231,15 @@ define(function(require) {
                     });
                   }
                 }
-              }
+              else
+                if($btn.val() == "interpretacao" ){
+                  if (Backbone.history.fragment != 'mostraResultadoInterpretacao') {
+                    utils.loader(function() {
+                      ev.preventDefault();
+                      app.navigate('/mostraResultadoInterpretacao', {trigger: true});
+                    });
+                  }
+                }
               });
 
             });

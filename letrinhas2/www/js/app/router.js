@@ -57,6 +57,9 @@ define(function(require) {
       "mostraResultadoLista": "mostraResultadoLista",
       "mostraResultadoTexto": "mostraResultadoTexto",
       "testeInterpretacao": "testeInterpretacao",
+      "mostraResultadoInterpretacao": "mostraResultadoInterpretacao",
+
+
     },
 
     boot: function() {
@@ -64,6 +67,14 @@ define(function(require) {
       this.showView(bootView);
     },
 
+
+    mostraResultadoInterpretacao: function() {
+      var self = this;
+      require(["app/views/mostraResultadoInterpretacao"], function(mostraResultadoInterpretacaoView) {
+        var view = new mostraResultadoInterpretacaoView();
+        self.showView(view);
+      });
+    },
 
     testeInterpretacao: function() {
       var self = this;

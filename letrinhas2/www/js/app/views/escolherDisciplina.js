@@ -1,7 +1,6 @@
 define(function(require) {
 //// 1 -Portugues  2- Matematica
 ///  3 -EstudoMeio 4- Ingles
-var BtnNavPress;
   "use strict";
 
   var $ = require('jquery'),

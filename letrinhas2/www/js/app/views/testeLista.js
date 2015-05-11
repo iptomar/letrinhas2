@@ -211,7 +211,6 @@ define(function(require) {
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
       "click #btnConfirmarRep": "clickbtnConfirmarRep",
       "click #pik": "clickpik",
-
     },
 
     ///////////////////////Fora de serviço///////////////////////////////////
@@ -223,7 +222,6 @@ define(function(require) {
       self.vaiGravar();
     },
     /////////////////////////////////////////////////////////////////////////
-
 
     //Controlo para repetição da gravação de leitura
     clickbtnConfirmarRep: function(e) {
@@ -255,7 +253,6 @@ define(function(require) {
         $('#demoButton').attr("style", "visibility:initial;background-color: #ffc060");
         $('#playMyTestButton').attr("style", "visibility:initial; background-color: #c065ff");
         $('#submitButton').attr("style", "visibility:initial; background-color: #00ee00");
-
         //parar a gravação!
         self.StopRec();
         self.isFeito = true;
@@ -286,6 +283,7 @@ define(function(require) {
         audio.pause();
       }
     },
+
 
     clickbtnConfirmarSUB: function(e) {
       var self = this;

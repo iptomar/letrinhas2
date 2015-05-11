@@ -201,40 +201,8 @@ define(function(require) {
       });
     },
 
-
-    // acb: function() {
-    //   try {
-    //     my_media = new Media("/android_asset/www/img/btn.mp3",
-    //       // success callback
-    //       function() {
-    //         console.log("playAudio():Audio Success");
-    //       },
-    //       // error callback
-    //       function(err) {
-    //         console.log("playAudio():Audio Error: " + err);
-    //       }
-    //     );
-    //   } catch (err) {
-    //   }
-    // },
-
-
     login: function() {
       var self = this;
-      //
-      //
-      //
-      //
-      //
-      // $('body').on('click', 'button', function() {
-      //
-      //
-      //   // Play audio
-      //   my_media.play();
-      //
-      // });
-
-
       require(["app/views/login"], function(LoginView) {
         $header.html('');
         $body.html('');
@@ -243,8 +211,6 @@ define(function(require) {
         view.delegateEvents();
         var rendered = view.render();
         $('#login_content').html(rendered.el);
-        //navigator.splashscreen.hide();
-
         self.currentView = view;
       });
     },

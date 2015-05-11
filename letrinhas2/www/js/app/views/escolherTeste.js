@@ -23,11 +23,33 @@ define(function(require) {
 
     },
 
+    GravarSOMfiles: function(name, data, success, fail) {
+      var gotFileSystem = function(fileSystem) {
+        fileSystem.root.getFile(name, {
+          create: true,
+          exclusive: false
+        }, gotFileEntry, fail);
+      };
+
+      var gotFileEntry = function(fileEntry) {
+        fileEntry.createWriter(gotFileWriter, fail);
+      };
+
+      var gotFileWriter = function(writer) {
+        writer.onwrite = success;
+        writer.onerror = fail;
+        writer.write(data);
+      };
+      window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
+    },
+
     criarDemostracao: function(tipoTeste, perguntaDoc) {
+      var self = this;
       var $container2 = $('#outputTestesConteudo');
       $container2.empty();
-      perguntas_local2.get(perguntaDoc, function(err, testeDoc) {
-        if (err) console.log(err);
+      perguntas_local2.get(perguntaDoc,{attachments: true}).then(function (testeDoc) {
+
+        console.log(testeDoc);
         if (tipoTeste == 'texto') { /////////////////////////////////////////TEXTO
           var txtAux = testeDoc.conteudo.texto;
           var $exemp = $(
@@ -70,14 +92,97 @@ define(function(require) {
           $exemp.appendTo($container2);
         }
         if (tipoTeste == 'multimedia') { ////////////////////////////////////multimedia/////
-          var $exemp = $(
-            '<div class="panel panel-primary">' +
+
+
+          // console.log(testeDoc);
+          // console.log(testeDoc.conteudo.tipoDoCorpo);
+          var construirJanela = '<div class="panel panel-primary">' +
             '<div class="panel-heading centerEX">' +
-            '<h3 class="panel-title">NÃO IMPLEMENTADO</h3>' +
-            '</div>' +
-            '<div class="panel-body fontEX2">NÃO IMPLEMENTADO.... </div></div>');
+            '<h3 class="panel-title">' + testeDoc.titulo + '</h3>' +
+            '</div>';
+
+          if (testeDoc.conteudo.tipoDoCorpo == "texto") {
+            construirJanela +=
+              '<div class="panel-body fontEX2"><div class="panel panel-info centerEX">' +
+              ' <div class="panel-heading"> ' + testeDoc.conteudo.corpo +
+              '</div></div>';
+          } else if (testeDoc.conteudo.tipoDoCorpo == "imagem") {
+            construirJanela +=
+              '<div class="panel-body fontEX2"><div class="panel panel-info centerEX">' +
+              ' <div class="panel-heading"> <img src="data:image/png;base64,' + testeDoc._attachments['corpo.png'].data + '" style="height:150px;" /> ' +
+              '</div></div>';
+        } else if (testeDoc.conteudo.tipoDoCorpo == "audio") {
+          construirJanela +=
+            '<div class="panel-body fontEX2"><div class="panel panel-info centerEX">' +
+            ' <div class="panel-heading">   <audio id="AudioPlayerProf" controls="controls"  style="width: 100%"></audio>' +
+            '</div></div>';
+        }
+          construirJanela += '<div class="row centerEX">';
+
+          //
+          var  tamanhoTotalOpc = testeDoc.conteudo.opcoes.length;
+
+
+          var sorteados = [];
+          var valorMaximo = tamanhoTotalOpc;
+          var valorMaximo2 = valorMaximo-1;
+              while (sorteados.length != valorMaximo) {
+              var sugestao = Math.round(Math.random() * valorMaximo2); // Escolher um numero ao acaso
+              while (sorteados.indexOf(sugestao) >= 0) {  // Enquanto o numero já existir, escolher outro
+                  sugestao = Math.round(Math.random() * valorMaximo2);
+              }
+              sorteados.push(sugestao); // adicionar este numero à array de numeros sorteados para futura referência
+            }
+
+            var sorteados2 = [];
+            var valorMaximo2 = tamanhoTotalOpc;
+                while (sorteados2.length != valorMaximo2) {
+                var sugestao2 = Math.ceil(Math.random() * valorMaximo2); // Escolher um numero ao acaso
+                while (sorteados2.indexOf(sugestao2) >= 0) {  // Enquanto o numero já existir, escolher outro
+                    sugestao2 = Math.ceil(Math.random() * valorMaximo2);
+                }
+                sorteados2.push(sugestao2); // adicionar este numero à array de numeros sorteados para futura referência
+              }
+              console.log(sorteados2);
+
+          for (var y = 0; y < tamanhoTotalOpc; y++) {
+
+            if(tamanhoTotalOpc == 3)
+            construirJanela += '<div class="col-md-4">';
+            else  if(tamanhoTotalOpc == 2)
+            construirJanela += '<div class="col-md-6">';
+            else  if(tamanhoTotalOpc == 4)
+            construirJanela += '<div class="col-md-3">';
+
+            if (testeDoc.conteudo.opcoes[y].tipo == "texto") {
+
+             construirJanela += '<button type="button" class="btn btn-info btn-lg btn-block disabled"> ' +
+                testeDoc.conteudo.opcoes[sorteados[y]].conteudo + '</button></div>';
+            } else if (testeDoc.conteudo.opcoes[y].tipo == "imagem") {
+              var auxY = y + 1;
+              construirJanela += '<button type="button" class="btn btn-info btn-lg btn-block disabled"> ' +
+                '<img id="imgOp' + auxY + '" src="data:image/png;base64,' + testeDoc._attachments['op'+sorteados2[y]+'.png'].data + '" style="height:120px;" class="pull-center"/></button></div>';
+            }
+          }
+
+          construirJanela += '</div></div></div>';
+          var $exemp = $(construirJanela);
           $container2.empty();
           $exemp.appendTo($container2);
+
+
+          perguntas_local2.getAttachment(testeDoc._id, 'corpo.mp3', function(err2, mp3Aud) {
+            if (err2) console.log(err2);
+            self.GravarSOMfiles('corpo.mp3', mp3Aud, function() {
+              console.log('FUNCIONA');
+              $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/corpo.mp3")
+
+            }, function(err) {
+              console.log("DEU ERRO" + err);
+            });
+          });
+
+
         }
         if (tipoTeste == 'interpretacao') { ////////////////////////////////////multimedia/////
           var txtAux = testeDoc.conteudo.texto;
@@ -108,6 +213,7 @@ define(function(require) {
       }, function(err, testesDoc) {
         if (err) console.log(err);
         for (var i = 0; i < testesDoc.rows.length; i++) {
+
           var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
           perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
         }
@@ -118,10 +224,10 @@ define(function(require) {
           if (errx) {
             console.log(errx);
           }
-
           if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
-             if (self.ponteiro == null)
-             self.ponteiro = perguntaSelc.id;
+
+            if (self.ponteiro == null)
+              self.ponteiro = perguntaSelc.id;
 
             var $container = $('#outputTestes');
             var img;
@@ -173,17 +279,17 @@ define(function(require) {
         query: pesquisa,
         fields: ['titulo'],
         include_docs: true
-      }).then(function (testesDoc) {
+      }).then(function(testesDoc) {
         console.log(testesDoc);
 
         for (var i = 0; i < testesDoc.rows.length; i++) {
-         var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
-         console.log(perguntaSelc);
-         perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
-         }
+          var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
+          console.log(perguntaSelc);
+          perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+        }
 
 
-      }).catch(function (err) {
+      }).catch(function(err) {
         console.log(err);
         // handle error
       });
@@ -195,8 +301,8 @@ define(function(require) {
           }
 
           if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
-             if (self.ponteiro == null)
-             self.ponteiro = perguntaSelc.id;
+            if (self.ponteiro == null)
+              self.ponteiro = perguntaSelc.id;
 
             var $container = $('#outputTestes');
             var img;
@@ -291,9 +397,9 @@ define(function(require) {
     clickbtnPesquisar: function(e) {
       var self = this;
       var pesquisa = $('#txtBoxPesquisa').val();
-      if ( pesquisa != "")
-      self.pesquisarEcriarBTN(pesquisa);
-  },
+      if (pesquisa != "")
+        self.pesquisarEcriarBTN(pesquisa);
+    },
 
     clickbtnNavAlunos: function(e) {
       var self = this;

@@ -58,7 +58,7 @@ define(function(require) {
       "mostraResultadoTexto": "mostraResultadoTexto",
       "testeInterpretacao": "testeInterpretacao",
       "mostraResultadoInterpretacao": "mostraResultadoInterpretacao",
-
+      "testeMultimedia": "testeMultimedia",
 
     },
 
@@ -67,6 +67,13 @@ define(function(require) {
       this.showView(bootView);
     },
 
+    testeMultimedia: function() {
+      var self = this;
+      require(["app/views/testeMultimedia"], function(testeMultimediaView) {
+        var view = new testeMultimediaView();
+        self.showView(view);
+      });
+    },
 
     mostraResultadoInterpretacao: function() {
       var self = this;

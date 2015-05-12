@@ -92,10 +92,6 @@ define(function(require) {
           $exemp.appendTo($container2);
         }
         if (tipoTeste == 'multimedia') { ////////////////////////////////////multimedia/////
-
-
-          // console.log(testeDoc);
-          // console.log(testeDoc.conteudo.tipoDoCorpo);
           var construirJanela = '<div class="panel panel-primary">' +
             '<div class="panel-heading centerEX">' +
             '<h3 class="panel-title">' + testeDoc.titulo + '</h3>' +
@@ -170,7 +166,7 @@ define(function(require) {
           $container2.empty();
           $exemp.appendTo($container2);
 
-
+          if (testeDoc.conteudo.tipoDoCorpo == "audio") {
           perguntas_local2.getAttachment(testeDoc._id, 'corpo.mp3', function(err2, mp3Aud) {
             if (err2) console.log(err2);
             self.GravarSOMfiles('corpo.mp3', mp3Aud, function() {
@@ -181,7 +177,7 @@ define(function(require) {
               console.log("DEU ERRO" + err);
             });
           });
-
+        }
 
         }
         if (tipoTeste == 'interpretacao') { ////////////////////////////////////multimedia/////
@@ -257,6 +253,7 @@ define(function(require) {
               $(this).removeClass("activeXF");
               $(this).addClass("btn-primary");
               window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
+              window.localStorage.setItem("PerguntaMultiNext", 0); //enviar variavel
               self.criarDemostracao(tipoTeste, $btn[0].name);
             });
 
@@ -280,7 +277,6 @@ define(function(require) {
         fields: ['titulo'],
         include_docs: true
       }).then(function(testesDoc) {
-        console.log(testesDoc);
 
         for (var i = 0; i < testesDoc.rows.length; i++) {
           var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
@@ -331,6 +327,7 @@ define(function(require) {
               self.btns = $(this);
               $(this).removeClass("activeXF");
               $(this).addClass("btn-primary");
+              window.localStorage.setItem("PerguntaMultiNext", 0); //enviar variavel
               window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
               self.criarDemostracao(tipoTeste, $btn[0].name);
             });
@@ -565,10 +562,15 @@ define(function(require) {
             });
           });
         }
-      } else {
-
-
-
+      } else if (self.tipoTesteSelecionado == 'multimedia') {
+        if (Backbone.history.fragment != 'testeMultimedia') {
+          utils.loader(function() {
+            e.preventDefault();
+            app.navigate('/testeMultimedia', {
+              trigger: true
+            });
+          });
+        }
       }
     },
 

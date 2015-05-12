@@ -152,6 +152,17 @@
   font-size: 14pt;
 }
 
+.fontEX_XL{
+  font-size: 40pt;
+}
+
+.fontEX_XS{
+  font-size: 32pt;
+}
+
+.fontEX_XSS{
+  font-size: 26pt;
+}
 
 .centerEX{
   text-align: center;

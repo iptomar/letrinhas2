@@ -1,5 +1,4 @@
 define(function(require) {
-  var BtnNavPress;
 
   "use strict";
 

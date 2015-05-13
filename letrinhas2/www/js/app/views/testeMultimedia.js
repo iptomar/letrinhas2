@@ -38,19 +38,18 @@ define(function(require) {
     },
 
 
-    ConstruirJanela: function(IdtesteSelecionado, PerguntaMultiNext) {
-
+    ConstruirJanela: function ConstruirJanela(IdtesteSelecionado, PerguntaMultiNext) {
       testes_local2.get(IdtesteSelecionado, function(err, testeDoc) {
         if (err) console.log(err);
 
         var testeDocPergunta = testeDoc.perguntas[PerguntaMultiNext];
-
-
         perguntas_local2.get(testeDocPergunta, {
           attachments: true
         }).then(function(perguntaDoc) {
           $('#titleTestePagina').text(perguntaDoc.titulo);
           $('#titlePerguntatxt').text(perguntaDoc.pergunta);
+          $('#divTitulo').empty();
+          $('#txtAreaConteud').empty();
           var $container2 = $('#divTitulo');
           var $containerCorpo = $('#txtAreaConteud');
           var construirJanela = "";
@@ -143,9 +142,12 @@ define(function(require) {
             window.localStorage.setItem("PerguntaMultiNext", aux); //enviar variavel
             window.localStorage.setItem("TesteTextArealizarID", testeDoc._id + ''); //enviar variavel
             if (testeDoc.perguntas.length != aux)
-            window.history.go(0);
-            else
-            window.history.go(-1);
+          {
+            ConstruirJanela(testeDoc._id, aux);
+          }
+        //  window.history.go(0);
+          else
+          window.history.go(-1);
 
           });
 

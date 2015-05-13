@@ -39,6 +39,7 @@ define(function(require) {
 
 
     ConstruirJanela: function ConstruirJanela(IdtesteSelecionado, PerguntaMultiNext) {
+      var self = this;
       testes_local2.get(IdtesteSelecionado, function(err, testeDoc) {
         if (err) console.log(err);
 
@@ -148,7 +149,6 @@ define(function(require) {
         //  window.history.go(0);
           else
           window.history.go(-1);
-
           });
 
 

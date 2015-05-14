@@ -12,30 +12,15 @@ function insertEscola(counter, uids) {
     'turmas': []
   };
 
-  for (var i = 0; i < 20; i++) {
-
- nano.request({db: "_uuids"}, function(_,uuids){
-      var ids = uuids['uuids'][0];
-
-
-
+  for (var i = 0; i < 5; i++) {
+      var ids = "Turma"+counter+"-"+i;
     var turma = {
       '_id': ids,
       'ano': Math.floor((Math.random() * 4) + 1),
       'anoLectivo': 2014,
-      'nome': 'turma '+ids.substring(27),
-      'alunos': [],
+      'nome': ids,
       'professores': []
     };
-
-
-    for (var y = 0; y < 40; y++) {
-      var idaluno = Math.floor((Math.random() * 200) + 1);
-      turma.alunos.push({
-        'id': "Joao"+idaluno
-      });
-    }
-   
 
 for (var z = 0; z < 2; z++) {
     var idaluno = Math.floor((Math.random() * 20) + 1);
@@ -46,7 +31,7 @@ for (var z = 0; z < 2; z++) {
 
  escola.turmas.push(turma);
 
-    });
+    
   }
 
 

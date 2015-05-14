@@ -103,6 +103,11 @@ var teste = {
     'titulo': 'Teste' + count,
     'perguntas': ['Pergunta_N' + count],
     'descricao': 'Teste para alunos com dificuldade a ler',
+    'estado': true,
+    'data': "27-05-2015",
+    'professorId': "xpto@gmail.com0",
+    'disciplina': 1,
+    'anoEscolar': 1
   };
        if(count > 8 && count <= 12) {
   teste= {

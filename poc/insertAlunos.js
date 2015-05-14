@@ -5,10 +5,24 @@ var alunos = nano.use('dev_alunos');
 var imgData = require('fs').readFileSync('aluno.png');
 
 function insertAluno(counteri) {
+
+var turma;
+
+if (counteri >= 0 && counteri <= 50)
+turma = "Turma0-1";
+if (counteri >50 && counteri <= 100)
+turma = "Turma0-2";
+if (counteri >100 && counteri <= 150)
+turma = "Turma0-3";
+if (counteri >150 && counteri <= 200)
+turma = "Turma0-4";
+
+
   var aluno = {
     'nome': 'Joao'+counteri,
     'numero': counteri,
-    'estado': true
+    'estado': true,
+    'turma': turma
   };
 
   alunos.multipart.insert(aluno, [{

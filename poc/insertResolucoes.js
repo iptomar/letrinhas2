@@ -42,7 +42,7 @@ function insertCorrecao(count) {
     if (!err) {
       console.log('correcao ' + resolucao._id + ' inserted');
     }
-    if(count < 4) {
+    if(count < 1) {
       insertCorrecao(count+1);
     }
   });

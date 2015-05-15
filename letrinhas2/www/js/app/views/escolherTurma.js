@@ -92,8 +92,8 @@ define(function(require) {
                   '<div class="col-sm-4">' +
                   '<div class="thumbnail" style="height:170px;">' +
                   '<div class="caption"> ' +
-                  "<button id='" + data.rows[i].doc._id + "' type='button' name='" + docsEscolasTurmas[y]._id + "' class='btn btn-info btn-lg btn-block btn-escola' >" +
-                  " <img style='height:60px;' src='data:image/png;base64," + data.rows[i].doc._attachments['escola.png'].data + "'><p>" + data.rows[i].doc.nome + " </br>[" + docsEscolasTurmas[y].ano + " - " + docsEscolasTurmas[y].nome + "] </p> " +
+                  '<button id="' + data.rows[i].doc._id +'" type="button" name="' + docsEscolasTurmas[y]._id + '" value="'+docsEscolasTurmas[y].ano + " - " + docsEscolasTurmas[y].nome+'" class="btn btn-info btn-lg btn-block btn-escola" >' +
+                  " <img style='height:60px;' src='data:image/png;base64," + data.rows[i].doc._attachments['escola.png'].data + "'><p>" + data.rows[i].doc.nome + " </br><b>[" + docsEscolasTurmas[y].ano + " - " + docsEscolasTurmas[y].nome + "]</b> </p> " +
                   '</button>' +
                   '</div>' +
                   '</div></br>' +
@@ -113,6 +113,7 @@ define(function(require) {
           if (Backbone.history.fragment != 'escolherAluno') {
             utils.loader(function() {
               ev.preventDefault();
+              window.localStorage.setItem("TurmaSelecNome", $btn[0].value + ''); //enviar variavel
               window.localStorage.setItem("TurmaSelecID", $btn[0].name + ''); //enviar variavel
               window.localStorage.setItem("EscolaSelecionadaID", $btn[0].id + ''); //enviar variavel
               app.navigate('/escolherAluno', {
@@ -121,9 +122,7 @@ define(function(require) {
             });
           }
         });
-
       });
-
 
       return this;
     }

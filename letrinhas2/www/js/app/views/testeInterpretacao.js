@@ -169,7 +169,7 @@ define(function(require) {
 
     clickbtnConfirmarSUB: function(e) {
       var self = this;
-      this.modelTrue = false;
+      self.modelTrue = false;
       $('#myModalSUB').modal("hide");
       $('#myModalSUB').on('hidden.bs.modal', function(e) {
         $("#myModalCont").modal("show");
@@ -205,7 +205,7 @@ define(function(require) {
       var self = this;
       e.stopPropagation();
       e.preventDefault();
-      this.modelTrue = true;
+      self.modelTrue = true;
       self.GetRespostasCertas();
       $('#myModalSUB').modal("show");
     },

@@ -62,6 +62,8 @@
       overflow-y: auto;
 }
 
+
+
 .croool2 {
   position: absolute;
     top: 175px;
@@ -103,6 +105,7 @@
     background-color: white;
 }
 
+
 .relatorioDiv {
     -moz-appearance: textfield-multiline;
     -webkit-appearance: textarea;
@@ -115,6 +118,13 @@
     padding: 15px;
     overflow-y: auto;
     background-color: white;
+}
+
+
+.imgMultimedia {
+  position: relative;
+   top: 50%;
+   transform: translateY(-50%);
 }
 
 .relatorioDiv2 {
@@ -167,6 +177,8 @@
 .centerEX{
   text-align: center;
 }
+
+
 .semUso{
   min-height: 100%;
   min-height: 100vh;

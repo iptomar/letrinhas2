@@ -43,13 +43,12 @@ define(function(require) {
       window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
     },
 
-    criarDemostracao: function(tipoTeste, perguntaDoc) {
+    criarDemostracao: function(tipoTeste, perguntaDoc, totalPerguntas) {
       var self = this;
       var $container2 = $('#outputTestesConteudo');
       $container2.empty();
       perguntas_local2.get(perguntaDoc,{attachments: true}).then(function (testeDoc) {
 
-        console.log(testeDoc);
         if (tipoTeste == 'texto') { /////////////////////////////////////////TEXTO
           var txtAux = testeDoc.conteudo.texto;
           var $exemp = $(
@@ -64,6 +63,7 @@ define(function(require) {
           $exemp.appendTo($container2);
         }
         if (tipoTeste == 'palavras') { ////////////////////////////////////LISTAS/////
+          console.log("sorteados2");
           var colum1 = "";
           var colum2 = "";
           var colum3 = "";
@@ -92,10 +92,11 @@ define(function(require) {
           $exemp.appendTo($container2);
         }
         if (tipoTeste == 'multimedia') { ////////////////////////////////////multimedia/////
+
           var construirJanela = '<div class="panel panel-primary">' +
             '<div class="panel-heading centerEX">' +
-            '<h3 class="panel-title">' + testeDoc.titulo + '</h3>' +
-            '</div>';
+            '<h3 class="panel-title">' + testeDoc.titulo + ' - (Perguntas: '+totalPerguntas+')</h3>' +
+            '</div><h4 class="centerEX">' + testeDoc.pergunta + '</h4>';
 
           if (testeDoc.conteudo.tipoDoCorpo == "texto") {
             construirJanela +=
@@ -139,8 +140,6 @@ define(function(require) {
                 }
                 sorteados2.push(sugestao2); // adicionar este numero à array de numeros sorteados para futura referência
               }
-              console.log(sorteados2);
-
           for (var y = 0; y < tamanhoTotalOpc; y++) {
 
             if(tamanhoTotalOpc == 3)
@@ -157,7 +156,7 @@ define(function(require) {
             } else if (testeDoc.conteudo.opcoes[y].tipo == "imagem") {
               var auxY = y + 1;
               construirJanela += '<button type="button" class="btn btn-info btn-lg btn-block disabled"> ' +
-                '<img id="imgOp' + auxY + '" src="data:image/png;base64,' + testeDoc._attachments['op'+sorteados2[y]+'.png'].data + '" style="height:120px;" class="pull-center"/></button></div>';
+                '<img id="imgOp' + auxY + '" src="data:image/png;base64,' + testeDoc._attachments['op'+sorteados2[y]+'.png'].data + '" style="height:110px;" class="pull-center"/></button></div>';
             }
           }
 
@@ -209,10 +208,16 @@ define(function(require) {
       }, function(err, testesDoc) {
         if (err) console.log(err);
         for (var i = 0; i < testesDoc.rows.length; i++) {
+          console.log();
+          if(testesDoc.rows[i].doc.estado == true)
+          {
 
           var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
           perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
-        }
+         }
+      }
+
+    //  $('#' + self.ponteiro).click();
       });
 
       function obtemDadosParaRow(disciplinaSelecionada, i, perguntaSelc) {
@@ -220,12 +225,8 @@ define(function(require) {
           if (errx) {
             console.log(errx);
           }
+          var $container = $('#outputTestes');
           if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
-
-            if (self.ponteiro == null)
-              self.ponteiro = perguntaSelc.id;
-
-            var $container = $('#outputTestes');
             var img;
             if (tipoTeste == "texto")
               img = "testeTexto"
@@ -254,11 +255,15 @@ define(function(require) {
               $(this).addClass("btn-primary");
               window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
               window.localStorage.setItem("PerguntaMultiNext", 0); //enviar variavel
-              self.criarDemostracao(tipoTeste, $btn[0].name);
+             self.criarDemostracao(tipoTeste, $btn[0].name, perguntaSelc.doc.perguntas.length);
             });
-
             //Selecionar o 1º Item
-            $('#' + self.ponteiro).click();
+            if (self.ponteiro == null)
+            {
+              console.log(perguntaSelc.id);
+              $('#' +  perguntaSelc.id).click();
+              self.ponteiro = true;
+            }
           }
         };
       }
@@ -280,8 +285,8 @@ define(function(require) {
 
         for (var i = 0; i < testesDoc.rows.length; i++) {
           var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
-          console.log(perguntaSelc);
-          perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+          if(testesDoc.rows[i].doc.estado == true)
+          perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]), totalPerguntas);
         }
 
 
@@ -290,15 +295,12 @@ define(function(require) {
         // handle error
       });
 
-      function obtemDadosParaRow(disciplinaSelecionada, i, perguntaSelc) {
+      function obtemDadosParaRow(disciplinaSelecionada, i, perguntaSelc, totalPerguntas) {
         return function(errx, perguntaDoc) {
           if (errx) {
             console.log(errx);
           }
-
           if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
-            if (self.ponteiro == null)
-              self.ponteiro = perguntaSelc.id;
 
             var $container = $('#outputTestes');
             var img;
@@ -315,7 +317,7 @@ define(function(require) {
               '<button id="' + perguntaSelc.id + '"  name="' + perguntaDoc._id + '"  type="button" style="height:62px;"" class="btn btn-lg btn-block btn-teste activeXF " >' +
               ' <img src="img/' + img + '.png"  style="height:32px;" > ' +
               perguntaSelc.doc.titulo + '</button>');
-            $btn.appendTo($container); //Adiciona ao Div
+              $btn.appendTo($container); //Adiciona ao Div
 
             $("#" + perguntaSelc.id).click(function() {
               var $btn = $(this); // O jQuery passa o btn clicado pelo this
@@ -329,18 +331,20 @@ define(function(require) {
               $(this).addClass("btn-primary");
               window.localStorage.setItem("PerguntaMultiNext", 0); //enviar variavel
               window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
-              self.criarDemostracao(tipoTeste, $btn[0].name);
+              self.criarDemostracao(tipoTeste, $btn[0].name, perguntaSelc.doc.perguntas.length);
             });
-            console.log("a");
+            console.log(self.ponteiro);
             //Selecionar o 1º Item
-            $('#' + self.ponteiro).click();
+            if (self.ponteiro == null)
+            {
+              console.log(perguntaSelc.id);
+              $('#' +  perguntaSelc.id).click();
+              self.ponteiro = true;
+            }
           }
         };
       }
     },
-
-
-
 
     selecionarTipoTesteColor: function(tipoTeste) {
       $('#btnTesteLeituraMultimedia').removeClass("btn-primary");
@@ -395,7 +399,10 @@ define(function(require) {
       var self = this;
       var pesquisa = $('#txtBoxPesquisa').val();
       if (pesquisa != "")
+      {
+        self.ponteiro = null;
         self.pesquisarEcriarBTN(pesquisa);
+      }
     },
 
     clickbtnNavAlunos: function(e) {
@@ -590,8 +597,6 @@ define(function(require) {
       var turmaId = window.localStorage.getItem("TurmaSelecID");
       var turmaNome = window.localStorage.getItem("TurmaSelecNome");
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
-
-
 
       testeID_Aux = false;
       professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {

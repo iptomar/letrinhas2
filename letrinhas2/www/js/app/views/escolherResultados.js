@@ -96,7 +96,7 @@ define(function(require) {
 
       //procurar os resultados das correções do aluno selecionado.
       function map(doc) {
-       if (doc.estado != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID")) {
+       if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID")) {
          emit(doc);
        }
       }
@@ -112,6 +112,7 @@ define(function(require) {
           if (errx) {
             console.log(errx);
           } else {
+
             if (response.rows.length > 0) {
               //criar um array para receber as correções
             var l=response.rows.length;
@@ -198,8 +199,6 @@ define(function(require) {
                  urlTipo = "img/testMul.png";
                }
 
-
-
               var $container = $('#outputResultado');
               //construir o botão
               var $btn = $(
@@ -243,6 +242,15 @@ define(function(require) {
                       app.navigate('/mostraResultadoInterpretacao', {trigger: true});
                     });
                   }
+                }
+                else
+                if($btn.val() == "multimedia" ){
+                  // if (Backbone.history.fragment != 'mostraResultadoMultimedia') {
+                  //   utils.loader(function() {
+                  //     ev.preventDefault();
+                  //     app.navigate('/mostraResultadoMultimedia', {trigger: true});
+                  //   });
+                  // }
                 }
               });
 

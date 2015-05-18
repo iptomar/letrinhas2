@@ -1,0 +1,138 @@
+<section>
+
+  <div class="globalcontent">
+    <div class="topcoat-navigation-bar">
+      <div class="topcoat-navigation-bar__item left quarter">
+        <img id="imgProf" src="img/RealizarTestes.png" style='height:44px;'>
+        <label id="lbNomeProf" style="color:#FFFFF;">Professor</label>
+        </div>
+      <div class="topcoat-navigation-bar__item center half">
+        <h1 id="titleTestePagina" class="topcoat-navigation-bar__title"></h1>
+      </div>
+      <div class="topcoat-navigation-bar__item right quarter">
+        <label id="lbNomeAluno" style="color:#FFFFF;">Aluno</label>
+        <img id="imgAluno" src="img/RealizarTestes.png" style='height:44px;'>
+     </div>
+    </div>
+
+
+    <nav class="navbar navbar-default navbar-fixed-bottom ">
+      <div id="div1">
+        <div class="col-md-3">
+        </p>
+          <button id="btnDemonstracao" type="button" class="btn btn-warning btn-lg btn-block">
+            <span class="glyphicon glyphicon glyphicon-headphones"></span> Demonstração
+          </button>
+        </p>
+        </div>
+
+        <div class=" col-md-3">
+
+        </div>
+        <div class=" col-md-3">
+        </p>
+          <button id="btnOuvirme" type="button" class="btn btn-roxo btn-lg btn-block" style=" display: none;">
+            <span class="glyphicon glyphicon glyphicon-play"></span> Ouvir-me
+          </button>
+        </p>
+        </div>
+        <div class=" col-md-3">
+        </p>
+          <button id="btnFinalizar" type="button" class="btn btn-success btn-lg btn-block" >
+            <span class="glyphicon glyphicon glyphicon-ok" ></span> Finalizar
+          </button>
+        </p>
+        </div>
+      </div>
+
+      <div id="div2" style=" display: none;">
+        <div class="col-md-3">
+          <button id="btnParar1" type="button" class="btn btn-danger btn-lg btn-block">
+            <span class="glyphicon glyphicon glyphicon-stop"></span> Parar
+          </button>
+        </div>
+        <div class=" col-md-9">
+        </p>
+          <audio id="AudioPlayerProf"  controls="controls"  style="width: 100%"></audio>
+        </p>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+
+      <!-- ##################### POPUP PIN PROF ################# -->
+      <div class="modal fade" id="myModalProf" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">Insira o seu PIN de Professor!</h4>
+            </div>
+            <div class="modal-body">
+
+              <div id="inputPINErr" class="form-group ">
+                <input id="inputPIN" type="number" maxlength="4" style="-webkit-text-security: disc;" ng-model='data.caption' overflow-scroll='true' class="form-control input-large_PIN" placeholder="PIN">
+              </div>
+              <h4 id="labelErr" style="color:#D80000;"></h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
+              <button id="btnConfirmarPIN" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ##################### END ################# -->
+
+      <!-- ##################### POPUP SIM NAO################# -->
+      <div class="modal fade" id="myModalSUB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">AVISO:</h4>
+            </div>
+            <div class="modal-body">
+              <h3 id="labelModelMsg" style="color:#D80000;">Têm a certeza que deseja Submeter?</h3>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default btn_mine-MediumLarge" data-dismiss="modal">Cancelar</button>
+              <button id="btnConfirmarSUB" type="button" class="btn btn-primary btn-conf btn_mine-MediumLarge">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ##################### END ################# -->
+
+      <!-- ##################### Contagem regressiva ################# -->
+      <div class="modal fade" id="myModalCont" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div align="center" style="background: transparent; color:#ffffff">
+            <button id="pik" type="button" style="visibility:hidden"></button>
+          </br>
+            <h1 id="semafro"style="font-size:90px; font-style:bold">Acertou  Palavra(s)</h1>
+          </br>  <h3 style="font-size:35px; font-style:bold">(Toque para sair)</h3>
+          </div>
+        </div>
+      </div>
+      <!-- ##################### END ################# -->
+
+
+      <div class="panel panel-default">
+        <div class="panel-body centerEX">
+          <label id="lbTituloTeste" style="color:#000000; font-size: 25px;">titulo</label>
+        </div>
+      </div>
+      <div id="DivContentorArea" class="textareaTextoInterpreta container"></div>
+
+
+  </div>
+
+  </div>
+</section>

@@ -59,12 +59,22 @@ define(function(require) {
       "testeInterpretacao": "testeInterpretacao",
       "mostraResultadoInterpretacao": "mostraResultadoInterpretacao",
       "testeMultimedia": "testeMultimedia",
+      "mostraResultadoMultimedia": "mostraResultadoMultimedia",
+
 
     },
 
     boot: function() {
       var bootView = new BootView();
       this.showView(bootView);
+    },
+
+    mostraResultadoMultimedia: function() {
+      var self = this;
+      require(["app/views/mostraResultadoMultimedia"], function(mostraResultadoMultimediaView) {
+        var view = new mostraResultadoMultimediaView();
+        self.showView(view);
+      });
     },
 
     testeMultimedia: function() {

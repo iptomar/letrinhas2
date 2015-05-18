@@ -325,6 +325,7 @@ define(function(require) {
           var myLineChart = new Chart(ctx).Line(lineChartData, {
             responsive: true,
             showScale: true,
+            bezierCurve : false,
             scaleOverride: false,
             // Number - The number of steps in a hard coded scale
               scaleSteps: 5,
@@ -344,6 +345,7 @@ define(function(require) {
           var $containerPrin = $('#legendDiv');
           var $btn = $(myLineChart.generateLegend());
           $btn.appendTo($containerPrin); //Adiciona ao Div
+
         });
       });
 

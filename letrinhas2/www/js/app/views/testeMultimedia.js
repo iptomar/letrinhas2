@@ -8,7 +8,19 @@ define(function(require) {
 
   return Backbone.View.extend({
     array: [],
+    filesApagar: [],
+    modelTrue: false,
 
+    onBackKeyDowns: function() {
+      if (this.modelTrue == false)
+        $('#labelErr').text(""); //limpa campos
+      $('#inputPIN').val(""); //limpa campos
+      $('#inputPINErr').removeClass("has-error"); //limpa campos
+      $('#myModalProf').modal("show");
+      $('#myModalProf').on('shown.bs.modal', function(e) {
+        $("#inputPIN").focus();
+      });
+    },
 
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
@@ -17,6 +29,34 @@ define(function(require) {
 
     initialize: function() {
 
+    },
+
+
+
+    auxRemoveAll: function() {
+      var self = this;
+        for (var i = 0; i < self.filesApagar.length; i++) {
+          self.Removefile(self.filesApagar[i], function() {
+            console.log("APAGADO");
+          }, function(err) {
+            console.log("DEU ERRO APAGAR" + err);
+          });
+        }
+    },
+
+
+    //////////// RemoverFicheiro /////////////////
+    Removefile: function(name, success, fail) {
+      var gotFileSystems = function(fileSystem) {
+        fileSystem.root.getFile(name, {
+          create: false,
+          exclusive: false
+        }, gotRemoveFileEntry, fail);
+      };
+      var gotRemoveFileEntry = function(fileEntry) {
+        fileEntry.remove(success, fail);
+      };
+      window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, gotFileSystems, fail);
     },
 
     GravarSOMfiles: function(name, data, success, fail) {
@@ -86,7 +126,7 @@ define(function(require) {
             '</h2></div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "imagem") {
           construirJanelaConteudo +=
-            ' <div class="panel-heading" style="height:30vh;"> <img class="imgMultimedia" src="data:image/png;base64,' + perguntaDoc._attachments['corpo.png'].data + '" style="height:190px;" /> ' +
+            ' <div class="panel-heading" style="height:30vh;"> <img  src="data:image/png;base64,' + perguntaDoc._attachments['corpo.png'].data + '" style="height:190px;" /> ' +
             '</div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "audio") {
           construirJanelaConteudo +=
@@ -139,13 +179,13 @@ define(function(require) {
         }
         var $exemp = $(construirJanelaConteudo);
         $exemp.appendTo($containerPrin);
-          console.log();
         if (perguntaDoc.conteudo.tipoDoCorpo == "audio") {
-          perguntas_local2.getAttachment(testeDoc._id, 'corpo.mp3', function(err2, mp3Aud) {
+          self.filesApagar.push(perguntaDoc._id+'.mp3');
+          perguntas_local2.getAttachment(perguntaDoc._id, 'corpo.mp3', function(err2, mp3Aud) {
             if (err2) console.log(err2);
-            self.GravarSOMfiles('corpo.mp3', mp3Aud, function() {
+            self.GravarSOMfiles(perguntaDoc._id+'.mp3', mp3Aud, function() {
               console.log('FUNCIONA');
-              $('#Audio'+ perguntaDoc._id).attr("src", cordova.file.dataDirectory + "/files/corpo.mp3")
+              $('#Audio'+ perguntaDoc._id).attr("src", cordova.file.dataDirectory + "/files/"+ perguntaDoc._id+".mp3")
 
             }, function(err) {
               console.log("DEU ERRO" + err);
@@ -154,14 +194,11 @@ define(function(require) {
         }
 
         $containerPrin.on('click', '.btnOP', function(ev) {
-          console.log("oi");
           var $btn = $(this); // O jQuery passa o btn clicado pelo this
           $('.btn-opcao-' + idPergunta).removeClass("btn-success");
           $('.btn-opcao-' + idPergunta).addClass("btn-info");
           $(this).removeClass("btn-info");
           $(this).addClass("btn-success");
-
-
 
             self.array[_.findIndex(self.array, function(i) {
               return i[0] == $btn[0].name
@@ -177,8 +214,27 @@ define(function(require) {
     events: {
       "click #btnFinalizar": "clickbtnFinalizar",
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
-
+      "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
     },
+
+    clickbtnConfirmarPIN: function(e) {
+      var self = this;
+      var pinDigitado = $('#inputPIN').val();
+      var pinProfAux = window.localStorage.getItem("ProfSelecPIN");
+      if (pinProfAux == pinDigitado) {
+        $('#myModalProf').modal("hide");
+        $('#myModalProf').on('hidden.bs.modal', function(e) {
+          self.auxRemoveAll();
+          document.removeEventListener("backbutton", self.onBackKeyDowns, false); ////// RETIRAR EVENTO DO BOTAO
+          window.history.go(-1);
+        });
+      } else {
+        $('#inputPINErr').addClass("has-error");
+        $('#labelErr').text("PIN errado!");
+        $('#inputPIN').val("");
+      }
+    },
+
 
     clickbtnConfirmarSUB: function(e) {
       var self = this;
@@ -222,7 +278,7 @@ define(function(require) {
             'correcao': {'certa': self.array[i][2]},
           });
         }
-         console.log(resolucao);
+
          resolucoes_local2.post(resolucao, function(err, response) {
            if (err) {
              console.log('Resolucao ' + err + ' erro');
@@ -235,7 +291,8 @@ define(function(require) {
                $("#semafro").text("Acertou "+contVENC+" pergunta(s)");
                $('#myModalCont').on('hidden.bs.modal', function(e) {
                   self.modelTrue = false;
-              //    document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
+                  self.auxRemoveAll();
+                  document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
                   window.history.back();
                });
              });
@@ -271,8 +328,9 @@ define(function(require) {
       this.$el.html(template({}));
 
       var self = this;
-      this.TotalPalavas = 0;
-      this.modelTrue = false;
+      self.TotalPalavas = 0;
+      self.modelTrue = false;
+      document.addEventListener("backbutton", self.onBackKeyDowns, false); //Adicionar o evento
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");

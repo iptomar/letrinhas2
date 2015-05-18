@@ -193,6 +193,10 @@ define(function(require) {
                if (tipoTeste == "interpretacao") {
                  urlTipo = "img/testInterpretacao.png";
                }
+               else
+               if (tipoTeste == "multimedia") {
+                 urlTipo = "img/testMul.png";
+               }
 
 
 

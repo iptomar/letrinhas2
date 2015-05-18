@@ -16,7 +16,7 @@ function insertPerguntas(count) {
 
   var perguntaInterpretacao = {
  'texto': 'Era um cão que comeu um pão perto do latão, onde vivia o tio António',
- 'posicaoResposta': [3, 7, 10],
+ 'posicaoResposta': [2, 6, 9],
   };
 
   var perguntaTexto = {

@@ -56,7 +56,7 @@ define(function(require) {
           if (err) console.log("errr" + err);
           perguntas_local2.get(testeDoc.perguntas[0], function(err, perguntasDoc) {
             if (err) console.log(" ddds" + err);
-
+              console.log(perguntasDoc);
             $('#lbTituloTeste').text("Ver resultados: [ " + perguntasDoc.titulo + " ]");
             var data = new Date(correcaoDoc.dataReso);
             var day = data.getDate().toString();

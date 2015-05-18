@@ -286,7 +286,7 @@ define(function(require) {
         for (var i = 0; i < testesDoc.rows.length; i++) {
           var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
           if(testesDoc.rows[i].doc.estado == true)
-          perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]), totalPerguntas);
+          perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
         }
 
 

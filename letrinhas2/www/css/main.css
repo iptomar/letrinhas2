@@ -96,7 +96,7 @@
     -moz-appearance: textfield-multiline;
     -webkit-appearance: textarea;
     border: 1px solid gray;
-    font-size: 20pt;
+    font-size: 22pt;
     font-family: Arial;
     position:fixed;
     padding: 15px;
@@ -148,6 +148,19 @@
     -webkit-appearance: textarea;
     border: 1px solid gray;
     font-size: 20pt;
+    font-family: Arial;
+    padding: 15px;
+    height: 494px;
+    background-color: white;
+    overflow-y: auto;
+}
+
+
+.textareaTextoInterpreta {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    font-size: 30pt;
     font-family: Arial;
     padding: 15px;
     height: 494px;

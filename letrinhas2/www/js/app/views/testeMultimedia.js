@@ -123,7 +123,7 @@ define(function(require) {
         var construirJanelaConteudo = '<div class="panel fontEX_XL centerEX">';
         if (perguntaDoc.conteudo.tipoDoCorpo == "texto") {
           construirJanelaConteudo +=
-            ' <div class="panel-heading" style="height:30vh;"> <h2 style="font-size:8vh;">' + perguntaDoc.conteudo.corpo +
+            ' <div class="panel-heading" style="height:30vh;"> <h2 style="font-size:35px;">' + perguntaDoc.conteudo.corpo +
             '</h2></div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "imagem") {
           construirJanelaConteudo +=

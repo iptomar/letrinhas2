@@ -297,6 +297,13 @@ define(function(require) {
             var $li = $('<li data-target="#carouselPrincipal" data-slide-to="' + count + '" ></li>');
             $li.appendTo($containerIND);
           }
+          if (arr3.length == 1)
+          {
+            arr3.push(arr3[0]);
+            certasAlunoArr.push(certasAlunoArr[0]);
+            erradasAlunoArr.push(erradasAlunoArr[0]);
+          }
+
 
           var lineChartData = {
             labels: arr3,

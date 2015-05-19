@@ -496,7 +496,6 @@ define(function(require) {
           });
 
           self.myLineGra = myLineChart;
-
           var $containerPrin = $('#legendDiv');
           var auxLengda = '<div class="row"><div class="col-md-6">'+myLineChart.generateLegend()+'</div>';
           auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';

@@ -245,12 +245,12 @@ define(function(require) {
                 }
                 else
                 if($btn.val() == "multimedia" ){
-                  // if (Backbone.history.fragment != 'mostraResultadoMultimedia') {
-                  //   utils.loader(function() {
-                  //     ev.preventDefault();
-                  //     app.navigate('/mostraResultadoMultimedia', {trigger: true});
-                  //   });
-                  // }
+                  if (Backbone.history.fragment != 'mostraResultadoMultimedia') {
+                    utils.loader(function() {
+                      ev.preventDefault();
+                      app.navigate('/mostraResultadoMultimedia', {trigger: true});
+                    });
+                  }
                 }
               });
 

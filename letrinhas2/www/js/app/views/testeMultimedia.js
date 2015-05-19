@@ -99,7 +99,8 @@ define(function(require) {
       }).then(function(perguntaDoc) {
 
 
-        self.array.push([perguntaDoc._id, 0 , -1]);
+
+        console.log("cenas");
 
         var $containerCorr = $('#carroselT');
         var $div = "";
@@ -200,10 +201,12 @@ define(function(require) {
           $(this).removeClass("btn-info");
           $(this).addClass("btn-success");
 
-            self.array[_.findIndex(self.array, function(i) {
-              return i[0] == $btn[0].name
-            })] = [$btn[0].name, $btn[0].id ,$btn[0].value];
+          var qwerty = _.findIndex(self.array, function(i) {
+            return i[0] == $btn[0].name
+          });
+           self.array[qwerty] = [$btn[0].name, $btn[0].id ,$btn[0].value];
 
+           $('#carouselPrincipal').carousel('next');
         });
 
         if (fini == true)
@@ -305,6 +308,8 @@ define(function(require) {
       var self = this;
 
       var semResposta = false;
+      console.log(self.array.length);
+      console.log(self.array)
       for (var i = 0; i < self.array.length; i++) {
         if (self.array[i][1] == 0)
         semResposta = true;
@@ -377,7 +382,9 @@ define(function(require) {
         ////////////////fim ////////////////////////////////
 
 
+
         for (var i = 0; i < testeDoc.perguntas.length; i++) {
+            self.array[i] = [testeDoc.perguntas[i], 0 , -1];
           if (i == 0) {
             var $containerIND = $('#IndicatorsCorr');
             var $li = $('<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>');

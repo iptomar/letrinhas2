@@ -33,10 +33,10 @@ function insertPerguntas(count) {
     '_id': 'Pergunta_N' + count,
     'titulo': 'Pergunta' + count,
     'pergunta': "Leia o seguinte Texto",
-    'disciplina': Math.floor((Math.random() * 4) + 1),
+    'disciplina': "Português",
     'professorId':"xpto@gmail.com" + Math.floor((Math.random() * 20) + 1),
     'dataCri': '12-12-2015',
-    'ano_escolar': [],
+    'anoEscolar': [],
     'tipoTeste': 'texto',
     'conteudo': perguntaTexto,
   };
@@ -52,7 +52,7 @@ function insertPerguntas(count) {
     var aux = 7;
     for (var y = 0; y < 3; y++) {
       perguntaMultimedia.opcoes.push({
-        'tipo': 'texto',
+        'tipo': 'Texto',
         'conteudo': aux
       });
       aux++;
@@ -69,13 +69,13 @@ function insertPerguntas(count) {
 
     if(count > 7 && count <= 12) {
       pergunta.conteudo = perguntaMultimedia;
-      pergunta.tipoTeste = 'multimedia';
+      pergunta.tipoTeste = 'Multimédia';
   }else if(count > 12 && count <= 17) {
       pergunta.conteudo = perguntaPalavras;
-      pergunta.tipoTeste = 'palavras';
+      pergunta.tipoTeste = 'Lista';
   }else if(count > 18 && count <= 27) {
       pergunta.conteudo = perguntaInterpretacao;
-      pergunta.tipoTeste = 'interpretacao';
+      pergunta.tipoTeste = 'Interpretação';
   }
 
 
@@ -106,7 +106,7 @@ var teste = {
     'estado': true,
     'data': "27-05-2015",
     'professorId': "xpto@gmail.com0",
-    'disciplina': 1,
+    'disciplina': "Português",
     'anoEscolar': 1
   };
        if(count >= 8 && count <= 12) {

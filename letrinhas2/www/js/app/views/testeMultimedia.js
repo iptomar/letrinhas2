@@ -267,7 +267,7 @@ define(function(require) {
             'id_Teste': TesteTextArealizarID,
             'id_Aluno': alunoId,
             'id_Prof': profId,
-            'tipoCorrecao': 'multimedia',
+            'tipoCorrecao': 'Multimédia',
             'nota': nota,
             'respostas': [],
             'dataReso': agora,

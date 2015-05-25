@@ -26,6 +26,7 @@ define(function(require) {
       "click #btnSelecMate": "clickbtnSelecMate",
       "click #btnSelecEstuMeio": "clickbtnSelecEstuMeio",
       "click #btnSelecIngles": "clickbtnSelecIngles",
+      "click #btnSelecOutro": "clickbtnSelecOutro",
       "click #btnNavINI": "clickbtnNavINI",
     },
 
@@ -41,7 +42,7 @@ define(function(require) {
 
     clickbtnSelecPortugues: function(e) {
       //e.stopPropagation(); e.preventDefault();
-      window.localStorage.setItem("DiscplinaSelecionada", 1); //enviar variavel 1 -Portugues
+      window.localStorage.setItem("DiscplinaSelecionada", "Português"); //enviar variavel 1 -Portugues
       var self = this;
       if (Backbone.history.fragment != 'menuTipoOpcao') {
         utils.loader(function() {
@@ -56,7 +57,7 @@ define(function(require) {
 
     clickbtnSelecMate: function(e) {
       //e.stopPropagation(); e.preventDefault();
-      window.localStorage.setItem("DiscplinaSelecionada", 2); //enviar variavel 2- Matematica
+      window.localStorage.setItem("DiscplinaSelecionada", "Matemática"); //enviar variavel 2- Matematica
       var self = this;
       if (Backbone.history.fragment != 'menuTipoOpcao') {
         utils.loader(function() {
@@ -71,7 +72,7 @@ define(function(require) {
 
     clickbtnSelecEstuMeio: function(e) {
     //  e.stopPropagation(); e.preventDefault();
-      window.localStorage.setItem("DiscplinaSelecionada", 3); //enviar variavel 3 -EstudoMeio
+      window.localStorage.setItem("DiscplinaSelecionada", "Estudo do Meio"); //enviar variavel 3 -EstudoMeio
       var self = this;
       if (Backbone.history.fragment != 'menuTipoOpcao') {
         utils.loader(function() {
@@ -86,7 +87,7 @@ define(function(require) {
 
     clickbtnSelecIngles: function(e) {
     //  e.stopPropagation(); e.preventDefault();
-      window.localStorage.setItem("DiscplinaSelecionada", 4); //enviar variavel 4- Ingles
+      window.localStorage.setItem("DiscplinaSelecionada", "Inglês"); //enviar variavel 4- Ingles
       var self = this;
       if (Backbone.history.fragment != 'menuTipoOpcao') {
         utils.loader(function() {
@@ -98,6 +99,23 @@ define(function(require) {
         });
       }
     },
+
+    clickbtnSelecOutro: function(e) {
+    //  e.stopPropagation(); e.preventDefault();
+      window.localStorage.setItem("DiscplinaSelecionada", "Outro"); //enviar variavel 4- Ingles
+      var self = this;
+      if (Backbone.history.fragment != 'menuTipoOpcao') {
+        utils.loader(function() {
+          e.preventDefault();
+          self.highlight(e);
+          app.navigate('/menuTipoOpcao', {
+            trigger: true
+          });
+        });
+      }
+    },
+
+
 
     render: function() {
       this.$el.html(template({}));

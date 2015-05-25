@@ -169,33 +169,36 @@ define(function(require) {
               if (err) console.log(" ddds" + err);
               var disciplina = perguntasDoc.disciplina;
               var tipoTeste = perguntasDoc.tipoTeste
-                //imagem da disciplina e tipo de teste
+
               switch (disciplina) {
-                case 1:
+                  case "Português":
                   urlDiscp = "img/portugues.png";
                   break;
-                case 2:
+                  case "Matemática":
                   urlDiscp = "img/mate.png";
                   break;
-                case 3:
+                  case "Estudo do Meio":
                   urlDiscp = "img/estudoMeio.png";
                   break;
-                case 4:
+                  case "Inglês":
                   urlDiscp = "img/ingles.png";
                   break;
+                  case "Outro":
+                  urlDiscp = "img/outro.png";
+                  break;
               }
-              if (tipoTeste == "palavras") {
+              if (tipoTeste == "Lista") {
                 urlTipo = "img/testLista.png";
               } else
-                if (tipoTeste == "texto") {
+                if (tipoTeste == "Texto") {
                   urlTipo = "img/testeTexto.png";
                 }
                else
-               if (tipoTeste == "interpretacao") {
+               if (tipoTeste == "Interpretação") {
                  urlTipo = "img/testInterpretacao.png";
                }
                else
-               if (tipoTeste == "multimedia") {
+               if (tipoTeste == "Multimédia") {
                  urlTipo = "img/testMul.png";
                }
 
@@ -218,7 +221,7 @@ define(function(require) {
                 var $btn = $(this); // O jQuery passa o btn clicado pelo this
                 var self = this;
               window.localStorage.setItem("resultadoID", $btn[0].id + ''); //enviar variavel
-              if($btn.val() == "texto" ){
+              if($btn.val() == "Texto" ){
                 if (Backbone.history.fragment != 'mostraResultadoTexto') {
                   utils.loader(function() {
                     ev.preventDefault();
@@ -226,7 +229,7 @@ define(function(require) {
                   });
                 }
               }else
-                if($btn.val() == "palavras" ){
+                if($btn.val() == "Lista" ){
                   if (Backbone.history.fragment != 'mostraResultadoLista') {
                     utils.loader(function() {
                       ev.preventDefault();
@@ -235,7 +238,7 @@ define(function(require) {
                   }
                 }
               else
-                if($btn.val() == "interpretacao" ){
+                if($btn.val() == "Interpretação" ){
                   if (Backbone.history.fragment != 'mostraResultadoInterpretacao') {
                     utils.loader(function() {
                       ev.preventDefault();
@@ -244,7 +247,7 @@ define(function(require) {
                   }
                 }
                 else
-                if($btn.val() == "multimedia" ){
+                if($btn.val() == "Multimédia" ){
                   if (Backbone.history.fragment != 'mostraResultadoMultimedia') {
                     utils.loader(function() {
                       ev.preventDefault();

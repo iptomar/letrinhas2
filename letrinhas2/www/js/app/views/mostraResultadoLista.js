@@ -199,14 +199,21 @@ define(function(require) {
               //imagem da disciplina e tipo de teste
               var urlDiscp;
               switch (disciplina){
-                case 1:urlDiscp = "img/portugues.png";
-                  break;
-                case 2:urlDiscp = "img/mate.png";
-                  break;
-                case 3:urlDiscp = "img/estudoMeio.png";
-                  break;
-                case 4:urlDiscp = "img/ingles.png";
-                  break;
+                case "Português":
+                urlDiscp = "img/portugues.png";
+                break;
+                case "Matemática":
+                urlDiscp = "img/mate.png";
+                break;
+                case "Estudo do Meio":
+                urlDiscp = "img/estudoMeio.png";
+                break;
+                case "Inglês":
+                urlDiscp = "img/ingles.png";
+                break;
+                case "Outro":
+                urlDiscp = "img/outro.png";
+                break;
               }
               var exatidao = 0;
               var fluidez = 0;

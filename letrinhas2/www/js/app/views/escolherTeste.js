@@ -47,9 +47,10 @@ define(function(require) {
       var self = this;
       var $container2 = $('#outputTestesConteudo');
       $container2.empty();
+
       perguntas_local2.get(perguntaDoc,{attachments: true}).then(function (testeDoc) {
 
-        if (tipoTeste == 'texto') { /////////////////////////////////////////TEXTO
+        if (tipoTeste == 'Texto') { /////////////////////////////////////////TEXTO
           var txtAux = testeDoc.conteudo.texto;
           var $exemp = $(
             '<div class="panel panel-primary">' +
@@ -62,7 +63,7 @@ define(function(require) {
           $container2.empty();
           $exemp.appendTo($container2);
         }
-        if (tipoTeste == 'palavras') { ////////////////////////////////////LISTAS/////
+        if (tipoTeste == 'Lista') { ////////////////////////////////////LISTAS/////
           console.log("sorteados2");
           var colum1 = "";
           var colum2 = "";
@@ -91,7 +92,7 @@ define(function(require) {
           $container2.empty();
           $exemp.appendTo($container2);
         }
-        if (tipoTeste == 'multimedia') { ////////////////////////////////////multimedia/////
+        if (tipoTeste == 'Multimédia') { ////////////////////////////////////multimedia/////
 
           var construirJanela = '<div class="panel panel-primary">' +
             '<div class="panel-heading centerEX">' +
@@ -179,7 +180,7 @@ define(function(require) {
         }
 
         }
-        if (tipoTeste == 'interpretacao') { ////////////////////////////////////multimedia/////
+        if (tipoTeste == 'Interpretação') { ////////////////////////////////////multimedia/////
           var txtAux = testeDoc.conteudo.texto;
           var $exemp = $(
             '<div class="panel panel-primary">' +
@@ -228,13 +229,13 @@ define(function(require) {
           var $container = $('#outputTestes');
           if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
             var img;
-            if (tipoTeste == "texto")
+            if (tipoTeste == "Texto")
               img = "testeTexto"
-            if (tipoTeste == "palavras")
+            if (tipoTeste == "Lista")
               img = "testLista"
-            if (tipoTeste == "multimedia")
+            if (tipoTeste == "Multimédia")
               img = "testMul"
-            if (tipoTeste == "interpretacao")
+            if (tipoTeste == "Interpretação")
               img = "testInterpretacao"
 
             var $btn = $(
@@ -304,13 +305,13 @@ define(function(require) {
 
             var $container = $('#outputTestes');
             var img;
-            if (tipoTeste == "texto")
+            if (tipoTeste == "Texto")
               img = "testeTexto"
-            if (tipoTeste == "palavras")
+            if (tipoTeste == "Lista")
               img = "testLista"
-            if (tipoTeste == "multimedia")
+            if (tipoTeste == "Multimédia")
               img = "testMul"
-            if (tipoTeste == "interpretacao")
+            if (tipoTeste == "Interpretação")
               img = "testInterpretacao"
 
             var $btn = $(
@@ -356,19 +357,19 @@ define(function(require) {
       $('#btnTesteLeituraInterpretacao').removeClass("btn-primary");
       $('#btnTesteLeituraInterpretacao').addClass("activeXF");
 
-      if (tipoTeste == "interpretacao") {
+      if (tipoTeste == "Interpretação") {
         $('#btnTesteLeituraInterpretacao').removeClass("activeXF");
         $('#btnTesteLeituraInterpretacao').addClass("btn-primary");
       }
-      if (tipoTeste == "multimedia") {
+      if (tipoTeste == "Multimédia") {
         $('#btnTesteLeituraMultimedia').removeClass("activeXF");
         $('#btnTesteLeituraMultimedia').addClass("btn-primary");
       }
-      if (tipoTeste == "texto") {
+      if (tipoTeste == "Texto") {
         $('#btnTesteLeituraTextos').removeClass("activeXF");
         $('#btnTesteLeituraTextos').addClass("btn-primary");
       }
-      if (tipoTeste == "palavras") {
+      if (tipoTeste == "Lista") {
         $('#btnTesteLeituraPalav').removeClass("activeXF");
         $('#btnTesteLeituraPalav').addClass("btn-primary");
       }
@@ -498,9 +499,9 @@ define(function(require) {
       self.ponteiro = null;
       $('#outputTestes').empty();
       $('#outputTestesConteudo').empty();
-      self.tipoTesteSelecionado = "palavras";
-      self.selecionarTipoTesteColor("palavras");
-      self.mostrarListaTestes("palavras");
+      self.tipoTesteSelecionado = "Lista";
+      self.selecionarTipoTesteColor("Lista");
+      self.mostrarListaTestes("Lista");
     },
 
     clickbtnTesteLeituraTextos: function(e) {
@@ -508,9 +509,9 @@ define(function(require) {
       self.ponteiro = null;
       $('#outputTestes').empty();
       $('#outputTestesConteudo').empty();
-      self.tipoTesteSelecionado = "texto";
-      self.selecionarTipoTesteColor("texto");
-      self.mostrarListaTestes("texto");
+      self.tipoTesteSelecionado = "Texto";
+      self.selecionarTipoTesteColor("Texto");
+      self.mostrarListaTestes("Texto");
     },
 
     clickbtnTesteLeituraMultimedia: function(e) {
@@ -520,9 +521,9 @@ define(function(require) {
       $('#btnTesteLeituraMultimedia').addClass("btn-primary");
       $('#outputTestes').empty();
       $('#outputTestesConteudo').empty();
-      self.tipoTesteSelecionado = "multimedia";
-      self.selecionarTipoTesteColor("multimedia");
-      self.mostrarListaTestes("multimedia");
+      self.tipoTesteSelecionado = "Multimédia";
+      self.selecionarTipoTesteColor("Multimédia");
+      self.mostrarListaTestes("Multimédia");
     },
 
     clickbtnTesteLeituraInterpretacao: function(e) {
@@ -530,9 +531,9 @@ define(function(require) {
       self.ponteiro = null;
       $('#outputTestes').empty();
       $('#outputTestesConteudo').empty();
-      self.tipoTesteSelecionado = "interpretacao";
-      self.selecionarTipoTesteColor("interpretacao");
-      self.mostrarListaTestes("interpretacao");
+      self.tipoTesteSelecionado = "Interpretação";
+      self.selecionarTipoTesteColor("Interpretação");
+      self.mostrarListaTestes("Interpretação");
     },
 
 
@@ -542,7 +543,7 @@ define(function(require) {
       e.preventDefault();
       console.log(self.tipoTesteSelecionado);
 
-      if (self.tipoTesteSelecionado == 'texto') {
+      if (self.tipoTesteSelecionado == 'Texto') {
         if (Backbone.history.fragment != 'testeTexto') {
           utils.loader(function() {
             e.preventDefault();
@@ -551,7 +552,7 @@ define(function(require) {
             });
           });
         }
-      } else if (self.tipoTesteSelecionado == 'palavras') {
+      } else if (self.tipoTesteSelecionado == 'Lista') {
         if (Backbone.history.fragment != 'testeLista') {
           utils.loader(function() {
             e.preventDefault();
@@ -560,7 +561,7 @@ define(function(require) {
             });
           });
         }
-      } else if (self.tipoTesteSelecionado == 'interpretacao') {
+      } else if (self.tipoTesteSelecionado == 'Interpretação') {
         if (Backbone.history.fragment != 'testeInterpretacao') {
           utils.loader(function() {
             e.preventDefault();
@@ -569,7 +570,7 @@ define(function(require) {
             });
           });
         }
-      } else if (self.tipoTesteSelecionado == 'multimedia') {
+      } else if (self.tipoTesteSelecionado == 'Multimédia') {
         if (Backbone.history.fragment != 'testeMultimedia') {
           utils.loader(function() {
             e.preventDefault();
@@ -603,21 +604,21 @@ define(function(require) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
 
-        if (discplinaSelecionada == '1') {
-          $('#titleBarlb').text("Escolher Teste de: Português");
+        $('#titleBarlb').text("Escolher Teste de: "+discplinaSelecionada);
+        if (discplinaSelecionada == 'Português') {
           $('#imgDisciplinaIcon').attr("src", "img/portugues.png");
         }
-        if (discplinaSelecionada == '2') {
-          $('#titleBarlb').text("Escolher Teste de: Matemática");
+        if (discplinaSelecionada == 'Matemática') {
           $('#imgDisciplinaIcon').attr("src", "img/mate.png");
         }
-        if (discplinaSelecionada == '3') {
-          $('#titleBarlb').text("Escolher Teste de: Estudo do Meio");
+        if (discplinaSelecionada == 'Estudo do Meio') {
           $('#imgDisciplinaIcon').attr("src", "img/estudoMeio.png");
         }
-        if (discplinaSelecionada == '4') {
-          $('#titleBarlb').text("Escolher Teste de: Inglês");
+        if (discplinaSelecionada == 'Inglês') {
           $('#imgDisciplinaIcon').attr("src", "img/ingles.png");
+        }
+        if (discplinaSelecionada == 'Outro') {
+          $('#imgDisciplinaIcon').attr("src", "img/outro.png");
         }
         $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
         $('#imgProf').attr("src", url);
@@ -630,8 +631,6 @@ define(function(require) {
         $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
         $('#imgAluno').attr("src", url);
       });
-
-
 
       return this;
     }

@@ -99,26 +99,29 @@ define(function(require) {
             var urlTipo;
             var urlDiscp;
             //////Buscar Imagem da Tipo
-            if (tipoTeste == "palavras") {
+            if (tipoTeste == "Lista") {
               urlTipo = "img/testLista.png";
             }
-            if (tipoTeste == "texto") {
+            if (tipoTeste == "Texto") {
               urlTipo = "img/testeTexto.png";
             }
 
             //////Buscar Imagem da disciplina
             switch (disciplina) {
-              case 1:
+              case "Português":
                 urlDiscp = "img/portugues.png";
                 break;
-              case 2:
+                case "Matemática":
                 urlDiscp = "img/mate.png";
                 break;
-              case 3:
+                case "Estudo do Meio":
                 urlDiscp = "img/estudoMeio.png";
                 break;
-              case 4:
+                case "Inglês":
                 urlDiscp = "img/ingles.png";
+                break;
+                case "Outro":
+                urlDiscp = "img/outro.png";
                 break;
             }
 
@@ -154,7 +157,7 @@ define(function(require) {
                   var self = this;
                   window.localStorage.setItem("CorrecaoID", $btn[0].id + ''); //enviar variavel
                   window.localStorage.setItem("AlunoNameAux", $btn[0].name + ''); //enviar variavel
-                  if($btn.val() == "texto" ){
+                  if($btn.val() == "Texto" ){
                     if (Backbone.history.fragment != 'corrigirTexto') {
                       utils.loader(function() {
                         ev.preventDefault();
@@ -162,7 +165,7 @@ define(function(require) {
                       });
                     }
                   }else{
-                    if($btn.val() == "palavras" ){
+                    if($btn.val() == "Lista" ){
                       if (Backbone.history.fragment != 'corrigirLista') {
                         utils.loader(function() {
                           ev.preventDefault();

@@ -33,7 +33,7 @@ define(function(require) {
                 'id_Teste': TesteTextArealizarID,
                 'id_Aluno': alunoId,
                 'id_Prof': profId,
-                'tipoCorrecao': 'texto',
+                'tipoCorrecao': 'Texto',
                 'nota': '-1',
                 'respostas': [],
                 'dataReso': agora,

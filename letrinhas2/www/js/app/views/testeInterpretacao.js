@@ -71,7 +71,7 @@ define(function(require) {
           'id_Teste': TesteTextArealizarID,
           'id_Aluno': alunoId,
           'id_Prof': profId,
-          'tipoCorrecao': 'interpretacao',
+          'tipoCorrecao': 'Interpretação',
           'nota': '-1',
           'respostas': [],
           'dataReso': agora,

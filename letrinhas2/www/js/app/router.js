@@ -3,6 +3,7 @@ define(function(require) {
   "use strict";
 
   var $ = require('jquery');
+  require('es6-promise').polyfill();
   var Backbone = require('backbone'),
     BootView = require('app/views/boot'),
     classList = require('classList.min');

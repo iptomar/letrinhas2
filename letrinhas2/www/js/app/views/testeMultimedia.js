@@ -29,19 +29,118 @@ define(function(require) {
 
     initialize: function() {
 
+      var self = this;
+      self.TotalPalavas = 0;
+      self.modelTrue = false;
+      document.addEventListener("backbutton", self.onBackKeyDowns, false); //Adicionar o evento
+      var profId = window.localStorage.getItem("ProfSelecID");
+      var profNome = window.localStorage.getItem("ProfSelecNome");
+      var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
+      var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
+      var alunoId = window.localStorage.getItem("AlunoSelecID");
+      var alunoNome = window.localStorage.getItem("AlunoSelecNome");
+      var turmaId = window.localStorage.getItem("TurmaSelecID");
+      var turmaNome = window.localStorage.getItem("TurmaSelecNome");
+      var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
+      var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
+      var PerguntaMultiNext = window.localStorage.getItem("PerguntaMultiNext");
+
+      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+        if (err2) console.log(err2);
+        var url = URL.createObjectURL(DataImg);
+        $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
+        $('#imgProf').attr("src", url);
+      });
+
+
+      alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
+        if (err2) console.log(err2);
+        var url = URL.createObjectURL(DataImg);
+        $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
+        $('#imgAluno').attr("src", url);
+      });
+
+      testes_local2.get(TesteTextArealizarID, function(err, testeDoc) {
+        if (err) console.log(err);
+
+
+        var $containerIND = $('#IndicatorsCorr');
+        var pum= '<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>';
+        for (var i = 1; i <= testeDoc.perguntas.length; i++) {
+        pum+='<li data-target="#carouselPrincipal" data-slide-to="' + i + '" ></li>';
+      }
+      var $li = $(pum);
+      $li.appendTo($containerIND);
+
+
+        $('#titleTestePagina').text(testeDoc.titulo);
+        $('#carouselPrincipal').carousel('pause');
+        /////////////////FUNCAO PARA O SWIPE SO ISTO xD ////////////////////////////////
+        $("#carouselPrincipal").swipe({
+          //Generic swipe handler for all directions
+          swipeLeft: function(event, direction, distance, duration, fingerCount, fingerData) {
+            $('#carouselPrincipal').carousel('next');
+          },
+          swipeRight: function(event, direction, distance, duration, fingerCount, fingerData) {
+            $('#carouselPrincipal').carousel('prev');
+          },
+        });
+        var instrucoes = [];
+        self.array = [];
+        ////////////////fim ////////////////////////////////
+        for (var i = 0; i < testeDoc.perguntas.length; i++) {
+          var ini = false;
+          if (i == 0)
+          ini = true;
+          self.array[i] = [testeDoc.perguntas[i], 0, 0];
+        var janelaConstru =   self.desenhaJanelas(testeDoc.perguntas[i], ini).then(function(ix) {
+            return ix;
+          });
+          instrucoes.push(janelaConstru)
+        }
+
+        Promise.all(instrucoes).then(function (result) {
+          var $containerCorr = $('#carroselT');
+          for (var i = 0; i < testeDoc.perguntas.length; i++) {
+              var $exemp = $(  result[i]);
+              $exemp.appendTo($containerCorr);
+             if (i == (testeDoc.perguntas.length -1 )){
+               var $exemp = $(self.desenhaJanelaFim());
+               $exemp.appendTo($containerCorr);
+           }
+          }
+
+           $containerCorr.on('click', '.btnOP', function(ev) {
+            var $btn = $(this); // O jQuery passa o btn clicado pelo this
+            $('.btn-opcao-' + $btn[0].name).removeClass("btn-success");
+            $('.btn-opcao-' + $btn[0].name).addClass("btn-info");
+            $(this).removeClass("btn-info");
+            $(this).addClass("btn-success");
+
+            var qwerty = _.findIndex(self.array, function(i) {
+              return i[0] == $btn[0].name
+            });
+            self.array[qwerty] = [$btn[0].name, $btn[0].id, $btn[0].value];
+
+            $('#carouselPrincipal').carousel('next');
+          });
+        });
+
+      });
+
     },
 
 
 
     auxRemoveAll: function() {
       var self = this;
-        for (var i = 0; i < self.filesApagar.length; i++) {
-          self.Removefile(self.filesApagar[i], function() {
-            console.log("APAGADO");
-          }, function(err) {
-            console.log("DEU ERRO APAGAR" + err);
-          });
-        }
+      for (var i = 0; i < self.filesApagar.length; i++) {
+        self.Removefile(self.filesApagar[i], function() {
+          console.log("APAGADO");
+        }, function(err) {
+          console.log("DEU ERRO APAGAR" + err);
+        });
+      }
     },
 
 
@@ -80,61 +179,57 @@ define(function(require) {
     },
 
     desenhaJanelaFim: function() {
-      var $containerCorr = $('#carroselT');
-      var $div = $('<div class="item" style="height:90vh;"></br></br><div class="panel-heading fontEX_XSS centerEX">' +
+
+      var divFinal = '<div class="item" style="height:90vh;"></br></br><div class="panel-heading fontEX_XSS centerEX">' +
         '</br></br></br><span >Finalizar Teste?</span></br>' +
         '<button id="btnFinalizar" style="height:100px;" type="button" class="btn btn-success btn-lg btn-block">' +
         '<span class="glyphicon glyphicon-ok fontEX_XSS" aria-hidden="true"> Finalizar</span></button></br></br>' +
         '<h3 id="avisoLB" style="color: red;"> </h3>' +
-        '</div></div>');
-      $div.appendTo($containerCorr); //Adiciona ao Div
-
-
+        '</div></div>';
+        return divFinal;
     },
 
-    desenhaJanelas: function(idPergunta, inic, fini) {
+    desenhaJanelas: function(idPergunta, inic, i) {
       var self = this;
-      perguntas_local2.get(idPergunta, {
+      return perguntas_local2.get(idPergunta, {
         attachments: true
       }).then(function(perguntaDoc) {
 
 
 
-        console.log("cenas");
 
-        var $containerCorr = $('#carroselT');
-        var $div = "";
+
+        var puty = '';
         if (inic == true)
-          $div = $('<div id="' + idPergunta + '" class="item active"></div>');
-        else
-          $div = $('<div id="' + idPergunta + '" class="item"></div>');
-
-        $div.appendTo($containerCorr); //Adiciona ao Div
-        var $containerPrin = $('#' + idPergunta);
+        puty +='<div id="' + idPergunta + '" class="item active">';
+         else
+         puty += '<div id="' + idPergunta + '" class="item">';
 
 
-        var $divTit = $('</br></br><div class="panel panel-info">' +
+
+
+        puty += '</br></br><div class="panel panel-info">' +
           '<div class="panel-heading fontEX_XSS centerEX">' +
           '<span id="titlePerguntatxt">' + perguntaDoc.pergunta + '</span>' +
-          '</div></div>');
+          '</div></div>';
 
-        $divTit.appendTo($containerPrin); //Adiciona ao Div
 
-        var construirJanelaConteudo = '<div class="panel fontEX_XL centerEX">';
+
+          puty += '<div class="panel fontEX_XL centerEX">';
         if (perguntaDoc.conteudo.tipoDoCorpo == "texto") {
-          construirJanelaConteudo +=
+          puty +=
             ' <div class="panel-heading" style="height:30vh;"> <h2 style="font-size:35px;">' + perguntaDoc.conteudo.corpo +
             '</h2></div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "imagem") {
-          construirJanelaConteudo +=
+          puty +=
             ' <div class="panel-heading" style="height:30vh;"> <img  src="data:image/png;base64,' + perguntaDoc._attachments['corpo.png'].data + '" style="height:190px;" /> ' +
             '</div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "audio") {
-          construirJanelaConteudo +=
-            ' <div class="panel-heading" style="height:30vh;"> </br><audio id="Audio'+ perguntaDoc._id+'" controls="controls"  style="width: 100%"></audio>' +
+          puty +=
+            ' <div class="panel-heading" style="height:30vh;"> </br><audio id="Audio' + perguntaDoc._id + '" controls="controls"  style="width: 100%"></audio>' +
             '</div>';
         }
-        construirJanelaConteudo += '</div></br></br></br></br><div>';
+        puty += '</div></br></br></br><div>';
 
 
         var tamanhoTotalOpc = perguntaDoc.conteudo.opcoes.length;
@@ -163,30 +258,29 @@ define(function(require) {
 
         for (var y = 0; y < tamanhoTotalOpc; y++) {
           if (tamanhoTotalOpc == 3)
-            construirJanelaConteudo += '<div class="col-md-4">';
+          puty += '<div class="col-md-4">';
           else if (tamanhoTotalOpc == 2)
-            construirJanelaConteudo += '<div class="col-md-6">';
+          puty += '<div class="col-md-6">';
           else if (tamanhoTotalOpc == 4)
-            construirJanelaConteudo += '<div class="col-md-3">';
+          puty += '<div class="col-md-3">';
           // style="height:30vh;"
           if (perguntaDoc.conteudo.opcoes[y].tipo == "texto") { ////Se corpo for Texto
-            var idx = parseInt(sorteados[y])+1;
-            construirJanelaConteudo += '<button  value="'+correta+'" id="' + idx + '" name="' + idPergunta + '" type="button" style="height:200px;" class="btn btn-info btn-lg btn-block fontEX_XS btnOP btn-opcao-' + idPergunta + '"> ' +
+            var idx = parseInt(sorteados[y]) + 1;
+            puty += '<button  value="' + correta + '" id="' + idx + '" name="' + idPergunta + '" type="button" style="height:200px;" class="btn btn-info btn-lg btn-block fontEX_XS btnOP btn-opcao-' + idPergunta + '"> ' +
               perguntaDoc.conteudo.opcoes[sorteados[y]].conteudo + '</button></div>';
           } else if (perguntaDoc.conteudo.opcoes[y].tipo == "imagem") { ///Se corpo for Imagem
-            construirJanelaConteudo += '<button value="'+correta+'" id="' + sorteados2[y] + '" name="' + idPergunta + '" type="button" class="btn btn-info btn-lg btn-block btnOP btn-opcao-' + idPergunta + '"> ' +
+            puty += '<button value="' + correta + '" id="' + sorteados2[y] + '" name="' + idPergunta + '" type="button" class="btn btn-info btn-lg btn-block btnOP btn-opcao-' + idPergunta + '"> ' +
               '<img src="data:image/png;base64,' + perguntaDoc._attachments['op' + sorteados2[y] + '.png'].data + '" style="height:180px;" class="pull-center"/></button></div>';
           }
         }
-        var $exemp = $(construirJanelaConteudo);
-        $exemp.appendTo($containerPrin);
+
         if (perguntaDoc.conteudo.tipoDoCorpo == "audio") {
-          self.filesApagar.push(perguntaDoc._id+'.mp3');
+          self.filesApagar.push(perguntaDoc._id + '.mp3');
           perguntas_local2.getAttachment(perguntaDoc._id, 'corpo.mp3', function(err2, mp3Aud) {
             if (err2) console.log(err2);
-            self.GravarSOMfiles(perguntaDoc._id+'.mp3', mp3Aud, function() {
+            self.GravarSOMfiles(perguntaDoc._id + '.mp3', mp3Aud, function() {
               console.log('FUNCIONA');
-              $('#Audio'+ perguntaDoc._id).attr("src", cordova.file.dataDirectory + "/files/"+ perguntaDoc._id+".mp3")
+              $('#Audio' + perguntaDoc._id).attr("src", cordova.file.dataDirectory + "/files/" + perguntaDoc._id + ".mp3")
 
             }, function(err) {
               console.log("DEU ERRO" + err);
@@ -194,23 +288,24 @@ define(function(require) {
           });
         }
 
-        $containerPrin.on('click', '.btnOP', function(ev) {
-          var $btn = $(this); // O jQuery passa o btn clicado pelo this
-          $('.btn-opcao-' + idPergunta).removeClass("btn-success");
-          $('.btn-opcao-' + idPergunta).addClass("btn-info");
-          $(this).removeClass("btn-info");
-          $(this).addClass("btn-success");
+        // $containerCorr.on('click', '.btnOP', function(ev) {
+        //   var $btn = $(this); // O jQuery passa o btn clicado pelo this
+        //   $('.btn-opcao-' + idPergunta).removeClass("btn-success");
+        //   $('.btn-opcao-' + idPergunta).addClass("btn-info");
+        //   $(this).removeClass("btn-info");
+        //   $(this).addClass("btn-success");
+        //
+        //   var qwerty = _.findIndex(self.array, function(i) {
+        //     return i[0] == $btn[0].name
+        //   });
+        //   self.array[qwerty] = [$btn[0].name, $btn[0].id, $btn[0].value];
+        //
+        //   $('#carouselPrincipal').carousel('next');
+        // });
 
-          var qwerty = _.findIndex(self.array, function(i) {
-            return i[0] == $btn[0].name
-          });
-           self.array[qwerty] = [$btn[0].name, $btn[0].id ,$btn[0].value];
+        puty +=  '</div>';
+        return puty;
 
-           $('#carouselPrincipal').carousel('next');
-        });
-
-        if (fini == true)
-          self.desenhaJanelaFim();
       });
     },
 
@@ -245,63 +340,67 @@ define(function(require) {
       var semResposta = false;
       for (var i = 0; i < self.array.length; i++) {
         if (self.array[i][1] == 0)
-        semResposta = true;
+          semResposta = true;
         else
-        if (self.array[i][1] == self.array[i][2]){
+        if (self.array[i][1] == self.array[i][2]) {
           contVENC++;
-          console.log(self.array[i][0]+" -- Venceu");
-        }
-        else
-          console.log(self.array[i][0]+" -- Perdeu");
+          console.log(self.array[i][0] + " -- Venceu");
+        } else
+          console.log(self.array[i][0] + " -- Perdeu");
       }
 
 
-        var agora = new Date();
-        var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
-        var alunoId = window.localStorage.getItem("AlunoSelecID");
-        var profId = window.localStorage.getItem("ProfSelecID");
+      var agora = new Date();
+      var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
+      var alunoId = window.localStorage.getItem("AlunoSelecID");
+      var profId = window.localStorage.getItem("ProfSelecID");
 
-         var nota = ((contVENC * 100)/self.array.length);
+      var nota = ((contVENC * 100) / self.array.length);
 
-          var resolucao = {
-            'id_Teste': TesteTextArealizarID,
-            'id_Aluno': alunoId,
-            'id_Prof': profId,
-            'tipoCorrecao': 'Multimédia',
-            'nota': nota,
-            'respostas': [],
-            'dataReso': agora,
-            'observ': null,
-          };
+      var resolucao = {
+        'id_Teste': TesteTextArealizarID,
+        'id_Aluno': alunoId,
+        'id_Prof': profId,
+        'tipoCorrecao': 'Multimédia',
+        'nota': nota,
+        'respostas': [],
+        'dataReso': agora,
+        'observ': null,
+      };
 
-          for (var i = 0; i < self.array.length; i++) {
-          resolucao.respostas.push({
-            'idPergunta': self.array[i][0],
-            'conteudo': {'escolha': self.array[i][1]},
-            'correcao': {'certa': self.array[i][2]},
-          });
-        }
+      for (var i = 0; i < self.array.length; i++) {
+        resolucao.respostas.push({
+          'idPergunta': self.array[i][0],
+          'conteudo': {
+            'escolha': self.array[i][1]
+          },
+          'correcao': {
+            'certa': self.array[i][2]
+          },
+        });
+      }
 
-         resolucoes_local2.post(resolucao, function(err, response) {
-           if (err) {
-             console.log('Resolucao ' + err + ' erro');
-           } else {
-             console.log('Parabens Inserido Resolucao');
-             self.modelTrue = true;
-             $('#myModalSUB').modal("hide");
-             $('#myModalSUB').on('hidden.bs.modal', function(e) {
-               $("#myModalCont").modal("show");
-               $("#semafro").text("Acertou "+contVENC+" pergunta(s)");
-               $('#myModalCont').on('hidden.bs.modal', function(e) {
-                  self.modelTrue = false;
-                  self.auxRemoveAll();
-                  document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
-                  window.history.back();
-               });
-             });
-
-           }
-         });
+console.log("Acertou " + contVENC + " pergunta(s)");
+      // resolucoes_local2.post(resolucao, function(err, response) {
+      //   if (err) {
+      //     console.log('Resolucao ' + err + ' erro');
+      //   } else {
+      //     console.log('Parabens Inserido Resolucao');
+      //     self.modelTrue = true;
+      //     $('#myModalSUB').modal("hide");
+      //     $('#myModalSUB').on('hidden.bs.modal', function(e) {
+      //       $("#myModalCont").modal("show");
+      //       $("#semafro").text("Acertou " + contVENC + " pergunta(s)");
+      //       $('#myModalCont').on('hidden.bs.modal', function(e) {
+      //         self.modelTrue = false;
+      //         self.auxRemoveAll();
+      //         document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
+      //         window.history.back();
+      //       });
+      //     });
+      //
+      //   }
+      // });
     },
 
     clickbtnFinalizar: function(e) {
@@ -312,98 +411,24 @@ define(function(require) {
       console.log(self.array)
       for (var i = 0; i < self.array.length; i++) {
         if (self.array[i][1] == 0)
-        semResposta = true;
+          semResposta = true;
       }
 
 
-      if(semResposta)
-      {
+      if (semResposta) {
         $('#avisoLB').text("Aviso: Existe perguntas que ainda não respondeu!");
-      }
-      else{
+      } else {
         $('#avisoLB').text(" ");
-      e.stopPropagation();
-      e.preventDefault();
-      self.modelTrue = true;
-      $('#myModalSUB').modal("show");
-    }
+        e.stopPropagation();
+        e.preventDefault();
+        self.modelTrue = true;
+        $('#myModalSUB').modal("show");
+      }
     },
 
     render: function() {
       this.$el.html(template({}));
 
-      var self = this;
-      self.TotalPalavas = 0;
-      self.modelTrue = false;
-      document.addEventListener("backbutton", self.onBackKeyDowns, false); //Adicionar o evento
-      var profId = window.localStorage.getItem("ProfSelecID");
-      var profNome = window.localStorage.getItem("ProfSelecNome");
-      var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
-      var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
-      var alunoId = window.localStorage.getItem("AlunoSelecID");
-      var alunoNome = window.localStorage.getItem("AlunoSelecNome");
-      var turmaId = window.localStorage.getItem("TurmaSelecID");
-      var turmaNome = window.localStorage.getItem("TurmaSelecNome");
-      var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
-      var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
-      var PerguntaMultiNext = window.localStorage.getItem("PerguntaMultiNext");
-
-
-
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
-        if (err2) console.log(err2);
-        var url = URL.createObjectURL(DataImg);
-        $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
-        $('#imgProf').attr("src", url);
-      });
-
-
-      alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
-        if (err2) console.log(err2);
-        var url = URL.createObjectURL(DataImg);
-        $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
-        $('#imgAluno').attr("src", url);
-      });
-
-      testes_local2.get(TesteTextArealizarID, function(err, testeDoc) {
-        if (err) console.log(err);
-        $('#titleTestePagina').text(testeDoc.titulo);
-        $('#carouselPrincipal').carousel('pause');
-        /////////////////FUNCAO PARA O SWIPE SO ISTO xD ////////////////////////////////
-        $("#carouselPrincipal").swipe({
-          //Generic swipe handler for all directions
-          swipeLeft: function(event, direction, distance, duration, fingerCount, fingerData) {
-            $('#carouselPrincipal').carousel('next');
-          },
-          swipeRight: function(event, direction, distance, duration, fingerCount, fingerData) {
-            $('#carouselPrincipal').carousel('prev');
-          },
-        });
-        ////////////////fim ////////////////////////////////
-
-
-
-        for (var i = 0; i < testeDoc.perguntas.length; i++) {
-            self.array[i] = [testeDoc.perguntas[i], 0 , -1];
-          if (i == 0) {
-            var $containerIND = $('#IndicatorsCorr');
-            var $li = $('<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>');
-            $li.appendTo($containerIND);
-            self.desenhaJanelas(testeDoc.perguntas[0], true, false);
-          } else {
-            var $containerIND = $('#IndicatorsCorr');
-            var $li = $('<li data-target="#carouselPrincipal" data-slide-to="' + i + '" ></li>');
-            $li.appendTo($containerIND);
-            if(i == testeDoc.perguntas.length-1)
-            self.desenhaJanelas(testeDoc.perguntas[i], false, true);
-            else
-            self.desenhaJanelas(testeDoc.perguntas[i], false, false);
-          }
-        }
-        var $containerIND = $('#IndicatorsCorr');
-        var $li = $('<li data-target="#carouselPrincipal" data-slide-to="' + testeDoc.perguntas.length + '" ></li>');
-        $li.appendTo($containerIND);
-      });
 
 
       return this;

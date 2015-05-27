@@ -79,7 +79,7 @@ define(function(require) {
         var url = URL.createObjectURL(DataImg);
         $('#imgProf').attr("src", url);
       });
-
+      console.log("Assssssssssssssssssssssssssss");
       /// Vai buscar todas as escolas da base de dados //
       escolas_local2.get(escolaId, function(err, escolaDoc) {
         if (err) console.log(err);
@@ -98,29 +98,56 @@ define(function(require) {
         map: map
       }, {
         include_docs: true,
-        attachments: true
+        attachments: false
       }).then(function(response) {
         var $container = $('#outputAlunos'); //Adiciona ao Div
         if (response.rows.length == 0) {
           var $btn = $('<h3>---SEM ALUNOS NESTA TURMA---<h3>');
           $btn.appendTo($container); //Adiciona ao Div
         } else {
+          console.log("Assssssssssssssssssssssssssss");
+          var instrucoes = [];
 
           for (var i = 0; i < response.rows.length; i++) {
-            var $btn = $(
-              '<div class="col-md-4">' +
-              '<div class="thumbnail" style="height:160px;"  >' +
-              '<div class="caption">' +
-              '<button id="' + response.rows[i].doc._id + '" type="button" class="btn btn-info btn-lg btn-block btn-aluno" >' +
-              '<img style="height:100px;" ' +
-              'src="data:image/png;base64,' + response.rows[i].doc._attachments['aluno.png'].data + '"' +
-              // 'src="data:image/png;base64,' + response.rows[i].key._attachments['aluno.png'].digest + '" '+
-              'class="pull-left"/>' + response.rows[i].doc.nome + '</button>' +
-              '</div>' +
-              '</div></br>' +
-              '</div>');
-            $btn.appendTo($container); //Adiciona ao Div
+              var abc = response.rows[i].id;
+              console.log(abc);
+          var ImaAluno =  alunos_local2.getAttachment(abc, 'aluno.png').then(function (DataImg) {
+            var url = URL.createObjectURL(DataImg);
+              return url;
+            });
+
+
+            instrucoes.push(ImaAluno)
           }
+
+
+          Promise.all(instrucoes).then(function (url) {
+              console.log(url[0]);
+              console.log(url[1]);
+              console.log("gtgggggg");
+
+              for (var i = 0; i < response.rows.length; i++) {
+
+                var $btn = $(
+                  '<div class="col-md-4">' +
+                  '<div class="thumbnail" style="height:160px;"  >' +
+                  '<div class="caption">' +
+                  '<button id="' + response.rows[i].doc._id + '" type="button" class="btn btn-info btn-lg btn-block btn-aluno" >' +
+                  '<img style="height:100px;" ' +
+                  //'src="data:image/png;base64,' + response.rows[i].doc._attachments['aluno.png'].data + '"' +
+                   'src="'+url[i]+'"'+
+                  'class="pull-left"/>' + response.rows[i].doc.nome + '</button>' +
+                  '</div>' +
+                  '</div></br>' +
+                  '</div>');
+                $btn.appendTo($container); //Adiciona ao Div
+              }
+
+
+
+          });
+
+
 
           $container.on('click', '.btn-aluno', function(ev) {
             ev.stopPropagation();

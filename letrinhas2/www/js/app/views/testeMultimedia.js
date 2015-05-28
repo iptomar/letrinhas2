@@ -199,37 +199,30 @@ define(function(require) {
 
 
 
-        var puty = '';
+        var stringTextJanela = '';
         if (inic == true)
-        puty +='<div id="' + idPergunta + '" class="item active">';
+        stringTextJanela +='<div id="' + idPergunta + '" class="item active">';
          else
-         puty += '<div id="' + idPergunta + '" class="item">';
-
-
-
-
-        puty += '</br></br><div class="panel panel-info">' +
+         stringTextJanela += '<div id="' + idPergunta + '" class="item">';
+        stringTextJanela += '</br></br><div class="panel panel-info">' +
           '<div class="panel-heading fontEX_XSS centerEX">' +
           '<span id="titlePerguntatxt">' + perguntaDoc.pergunta + '</span>' +
           '</div></div>';
-
-
-
-          puty += '<div class="panel fontEX_XL centerEX">';
+          stringTextJanela += '<div class="panel fontEX_XL centerEX">';
         if (perguntaDoc.conteudo.tipoDoCorpo == "texto") {
-          puty +=
+          stringTextJanela +=
             ' <div class="panel-heading" style="height:30vh;"> <h2 style="font-size:35px;">' + perguntaDoc.conteudo.corpo +
             '</h2></div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "imagem") {
-          puty +=
+          stringTextJanela +=
             ' <div class="panel-heading" style="height:30vh;"> <img  src="data:image/png;base64,' + perguntaDoc._attachments['corpo.png'].data + '" style="height:190px;" /> ' +
             '</div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "audio") {
-          puty +=
+          stringTextJanela +=
             ' <div class="panel-heading" style="height:30vh;"> </br><audio id="Audio' + perguntaDoc._id + '" controls="controls"  style="width: 100%"></audio>' +
             '</div>';
         }
-        puty += '</div></br></br></br><div>';
+        stringTextJanela += '</div></br></br></br><div>';
 
 
         var tamanhoTotalOpc = perguntaDoc.conteudo.opcoes.length;
@@ -258,18 +251,18 @@ define(function(require) {
 
         for (var y = 0; y < tamanhoTotalOpc; y++) {
           if (tamanhoTotalOpc == 3)
-          puty += '<div class="col-md-4">';
+          stringTextJanela += '<div class="col-md-4">';
           else if (tamanhoTotalOpc == 2)
-          puty += '<div class="col-md-6">';
+          stringTextJanela += '<div class="col-md-6">';
           else if (tamanhoTotalOpc == 4)
-          puty += '<div class="col-md-3">';
+          stringTextJanela += '<div class="col-md-3">';
           // style="height:30vh;"
           if (perguntaDoc.conteudo.opcoes[y].tipo == "texto") { ////Se corpo for Texto
             var idx = parseInt(sorteados[y]) + 1;
-            puty += '<button  value="' + correta + '" id="' + idx + '" name="' + idPergunta + '" type="button" style="height:200px;" class="btn btn-info btn-lg btn-block fontEX_XS btnOP btn-opcao-' + idPergunta + '"> ' +
+            stringTextJanela += '<button  value="' + correta + '" id="' + idx + '" name="' + idPergunta + '" type="button" style="height:200px;" class="btn btn-info btn-lg btn-block fontEX_XS btnOP btn-opcao-' + idPergunta + '"> ' +
               perguntaDoc.conteudo.opcoes[sorteados[y]].conteudo + '</button></div>';
           } else if (perguntaDoc.conteudo.opcoes[y].tipo == "imagem") { ///Se corpo for Imagem
-            puty += '<button value="' + correta + '" id="' + sorteados2[y] + '" name="' + idPergunta + '" type="button" class="btn btn-info btn-lg btn-block btnOP btn-opcao-' + idPergunta + '"> ' +
+            stringTextJanela += '<button value="' + correta + '" id="' + sorteados2[y] + '" name="' + idPergunta + '" type="button" class="btn btn-info btn-lg btn-block btnOP btn-opcao-' + idPergunta + '"> ' +
               '<img src="data:image/png;base64,' + perguntaDoc._attachments['op' + sorteados2[y] + '.png'].data + '" style="height:180px;" class="pull-center"/></button></div>';
           }
         }
@@ -287,25 +280,8 @@ define(function(require) {
             });
           });
         }
-
-        // $containerCorr.on('click', '.btnOP', function(ev) {
-        //   var $btn = $(this); // O jQuery passa o btn clicado pelo this
-        //   $('.btn-opcao-' + idPergunta).removeClass("btn-success");
-        //   $('.btn-opcao-' + idPergunta).addClass("btn-info");
-        //   $(this).removeClass("btn-info");
-        //   $(this).addClass("btn-success");
-        //
-        //   var qwerty = _.findIndex(self.array, function(i) {
-        //     return i[0] == $btn[0].name
-        //   });
-        //   self.array[qwerty] = [$btn[0].name, $btn[0].id, $btn[0].value];
-        //
-        //   $('#carouselPrincipal').carousel('next');
-        // });
-
-        puty +=  '</div>';
-        return puty;
-
+        stringTextJanela +=  '</div>';
+        return stringTextJanela;
       });
     },
 
@@ -380,27 +356,34 @@ define(function(require) {
         });
       }
 
-console.log("Acertou " + contVENC + " pergunta(s)");
-      // resolucoes_local2.post(resolucao, function(err, response) {
-      //   if (err) {
-      //     console.log('Resolucao ' + err + ' erro');
-      //   } else {
-      //     console.log('Parabens Inserido Resolucao');
-      //     self.modelTrue = true;
-      //     $('#myModalSUB').modal("hide");
-      //     $('#myModalSUB').on('hidden.bs.modal', function(e) {
-      //       $("#myModalCont").modal("show");
-      //       $("#semafro").text("Acertou " + contVENC + " pergunta(s)");
-      //       $('#myModalCont').on('hidden.bs.modal', function(e) {
-      //         self.modelTrue = false;
-      //         self.auxRemoveAll();
-      //         document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
-      //         window.history.back();
-      //       });
-      //     });
-      //
-      //   }
-      // });
+      resolucoes_local2.post(resolucao, function(err, response) {
+        if (err) {
+          console.log('Resolucao ' + err + ' erro');
+        } else {
+          console.log('Parabens Inserido Resolucao');
+          self.modelTrue = true;
+          $('#myModalSUB').modal("hide");
+          $('#myModalSUB').on('hidden.bs.modal', function(e) {
+            $("#myModalCont").modal("show");
+            $("#semafro").text("Acertou " + contVENC + " pergunta(s)");
+            $('#myModalCont').on('hidden.bs.modal', function(e) {
+              self.modelTrue = false;
+              self.auxRemoveAll();
+              document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
+              if (Backbone.history.fragment != 'pinJanela') {
+                utils.loader(function() {
+                  e.preventDefault();
+                  self.highlight(e);
+                  app.navigate('/pinJanela', {
+                    trigger: true
+                  });
+                });
+              }
+            });
+          });
+
+        }
+      });
     },
 
     clickbtnFinalizar: function(e) {

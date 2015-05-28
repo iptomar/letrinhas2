@@ -61,6 +61,7 @@ define(function(require) {
       "mostraResultadoInterpretacao": "mostraResultadoInterpretacao",
       "testeMultimedia": "testeMultimedia",
       "mostraResultadoMultimedia": "mostraResultadoMultimedia",
+      "pinJanela": "pinJanela"
 
 
     },
@@ -68,6 +69,14 @@ define(function(require) {
     boot: function() {
       var bootView = new BootView();
       this.showView(bootView);
+    },
+
+    pinJanela: function() {
+      var self = this;
+      require(["app/views/pinJanela"], function(pinJanelaView) {
+        var view = new pinJanelaView();
+        self.showView(view);
+      });
     },
 
     mostraResultadoMultimedia: function() {

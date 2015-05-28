@@ -178,7 +178,15 @@ define(function(require) {
           self.modelTrue = false;
           self.GravarResolucao();
            document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
-           window.history.back();
+           if (Backbone.history.fragment != 'pinJanela') {
+             utils.loader(function() {
+               e.preventDefault();
+               self.highlight(e);
+               app.navigate('/pinJanela', {
+                 trigger: true
+               });
+             });
+           }
         });
       });
     },

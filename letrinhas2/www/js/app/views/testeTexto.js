@@ -216,7 +216,15 @@ define(function(require) {
         self.modelTrue = false;
         document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
         self.LerficheiroGravacaoEins();
-        window.history.back();
+        if (Backbone.history.fragment != 'pinJanela') {
+          utils.loader(function() {
+            e.preventDefault();
+            self.highlight(e);
+            app.navigate('/pinJanela', {
+              trigger: true
+            });
+          });
+        }
       });
     },
 

@@ -291,7 +291,15 @@ define(function(require) {
       $('#myModalSUB').on('hidden.bs.modal', function(e) {
         document.removeEventListener("backbutton", self.onBackKeyDown, false); ///RETIRAR EVENTO DO BOTAO
         self.LerficheiroGravacaoEinserir();
-        window.history.back();
+        if (Backbone.history.fragment != 'pinJanela') {
+          utils.loader(function() {
+            e.preventDefault();
+            self.highlight(e);
+            app.navigate('/pinJanela', {
+              trigger: true
+            });
+          });
+        }
       });
     },
 

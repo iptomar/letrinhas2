@@ -108,7 +108,8 @@ define(function(require) {
               }
             }
 
-            var nota = (certasAluno * 100) / totalCertasSis;
+            var nota = correcaoDoc.nota;
+
             var disciplina = perguntasDoc.disciplina;
             //imagem da disciplina e tipo de teste
             var urlDiscp;
@@ -150,7 +151,7 @@ define(function(require) {
               '          </br>Acertou: ' + certasAluno + ' palavra(s) de ' + totalCertasSis + ' palavra(s) </br>' +
               '          Errou: ' + erradasAluno + ' palavra(s) (vermelho)</br>' +
               '          Palavras corretas não selecionadas: ' + (totalCertasSis - certasAluno) + ' palavra(s)</br>' +
-              '          ---- Nota: ' + nota.toFixed(2) + ' % ---- </br>' +
+              '          ---- Nota: ' + nota + ' % ---- </br>' +
               '      </div>' +
               '    </div>' +
               '    <div class=" col-md-4">' +
@@ -197,14 +198,14 @@ define(function(require) {
       var tipoTesteSelecionado = window.localStorage.getItem("TipoTesteSelecionado");
       var resultadoID = window.localStorage.getItem("resultadoID");
 
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+      professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
         $('#imgProf').attr("src", url);
       });
 
-      alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
+      alunos_local2.getAttachment(alunoId, 'aluno.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
@@ -254,31 +255,13 @@ define(function(require) {
           var erradasAlunoArr = [];
           var arr3 = [];
 
-
           for (var i = 0; i < response.rows.length; i++) {
             var TotalPalav = response.rows[i].value.respostas[0].TotalPalavras;
             var totalCertasSis = response.rows[i].value.respostas[0].correcao.length;
             var totalAlunoResp = response.rows[i].value.respostas[0].conteudo.length;
             var erradasAluno = 0;
             var certasAluno = 0;
-            for (var y = 0; y < response.rows[i].value.respostas[0].conteudo.length; y++) {
-              for (var w = 0; w < response.rows[i].value.respostas[0].correcao.length; w++) {
-                  if(response.rows[i].value.respostas[0].correcao[w].posicao == response.rows[i].value.respostas[0].conteudo[y].posicao)
-                  {
-                    certasAluno++;
-                  }
-              }
-            }
-            erradasAluno =   (totalAlunoResp-certasAluno);
-
-          console.log("totalCertasSis "+ totalCertasSis);
-
-        console.log("certasAluno "+ certasAluno);
-
-        console.log("erradasAluno "+ erradasAluno );
-
-        certasAlunoArr.push(certasAluno);
-        erradasAlunoArr.push(erradasAluno);
+            certasAlunoArr.push(response.rows[i].value.nota);
 
             var data = new Date(response.rows[i].value.dataReso);
             var day = data.getDate().toString();
@@ -304,7 +287,6 @@ define(function(require) {
           {
             arr3.push(arr3[0]);
             certasAlunoArr.push(certasAlunoArr[0]);
-            erradasAlunoArr.push(erradasAlunoArr[0]);
           }
 
 
@@ -312,7 +294,7 @@ define(function(require) {
             labels: arr3,
 
             datasets: [{
-              label: "Certas do Aluno",
+              label: "Nota do Aluno",
               fillColor: "rgba(255,100,100,0.2)",
               strokeColor: "rgba(255,170,170,1)",
               pointColor: "rgba(255,170,170,1)",
@@ -320,15 +302,6 @@ define(function(require) {
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(255,170,170,1)",
               data: certasAlunoArr
-            }, {
-              label: "Errado pelo Aluno",
-              fillColor: "rgba(151,187,205,0.2)",
-              strokeColor: "rgba(151,187,205,1)",
-              pointColor: "rgba(151,187,205,1)",
-              pointStrokeColor: "#fff",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(151,187,205,1)",
-              data: erradasAlunoArr
             }]
           }
           var ctx = document.getElementById("canvasGrafico").getContext("2d");
@@ -344,7 +317,8 @@ define(function(require) {
            // Number - The scale starting value
            scaleStartValue: 0,
            animationEasing: "easeOutBounce",
-           multiTooltipTemplate: "<%= datasetLabel %> - <%= value %> Palavra(s)",
+
+           tooltipTemplate: "<%= datasetLabel %> - <%= value %> %",
 
             legendTemplate: '<% for (var i=0; i<datasets.length; i++){%>' +
               '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt">' +

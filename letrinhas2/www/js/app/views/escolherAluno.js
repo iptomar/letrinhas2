@@ -74,7 +74,7 @@ define(function(require) {
       var turmaNome = window.localStorage.getItem("TurmaSelecNome");
 
 
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+      professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#imgProf').attr("src", url);
@@ -111,7 +111,7 @@ define(function(require) {
           for (var i = 0; i < response.rows.length; i++) {
               var abc = response.rows[i].id;
               console.log(abc);
-          var ImaAluno =  alunos_local2.getAttachment(abc, 'aluno.png').then(function (DataImg) {
+          var ImaAluno =  alunos_local2.getAttachment(abc, 'aluno.jpg').then(function (DataImg) {
             var url = URL.createObjectURL(DataImg);
               return url;
             });
@@ -134,7 +134,7 @@ define(function(require) {
                   '<div class="caption">' +
                   '<button id="' + response.rows[i].doc._id + '" type="button" class="btn btn-info btn-lg btn-block btn-aluno" >' +
                   '<img style="height:100px;" ' +
-                  //'src="data:image/png;base64,' + response.rows[i].doc._attachments['aluno.png'].data + '"' +
+                  //'src="data:image/png;base64,' + response.rows[i].doc._attachments['aluno.jpg'].data + '"' +
                    'src="'+url[i]+'"'+
                   'class="pull-left"/>' + response.rows[i].doc.nome + '</button>' +
                   '</div>' +

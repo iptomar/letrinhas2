@@ -321,7 +321,7 @@ define(function(require) {
       var correcaoID = window.localStorage.getItem("CorrecaoID"); //enviar variavel
       /////////////////  document.addEventListener("backbutton", onBack, false); //Adicionar o evento
 
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+      professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome);
@@ -332,7 +332,7 @@ define(function(require) {
         if (err) console.log(err);
         var data = new Date(correcaoDoc.dataReso);
         ///Alunos dados:
-        alunos_local2.getAttachment(correcaoDoc.id_Aluno, 'aluno.png', function(err2, DataImg) {
+        alunos_local2.getAttachment(correcaoDoc.id_Aluno, 'aluno.jpg', function(err2, DataImg) {
           if (err2) console.log(err2);
           var foto = URL.createObjectURL(DataImg);
           $('#imgAluno').attr("src", foto);

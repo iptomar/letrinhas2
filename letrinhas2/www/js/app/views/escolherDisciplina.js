@@ -122,7 +122,7 @@ define(function(require) {
       ////Carrega dados da janela anterior////
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+      professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2)  console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome);

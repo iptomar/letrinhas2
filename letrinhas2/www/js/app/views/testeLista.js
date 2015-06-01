@@ -388,7 +388,7 @@ define(function(require) {
         TesteArealizarID = window.localStorage.getItem("TesteTextArealizarID");
 
 
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+      professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome + " - [ " +escolaNome+" ]");
@@ -396,7 +396,7 @@ define(function(require) {
       });
 
 
-      alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
+      alunos_local2.getAttachment(alunoId, 'aluno.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);

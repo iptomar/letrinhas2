@@ -62,7 +62,7 @@ define(function(require) {
       var profNome = window.localStorage.getItem("ProfSelecNome");
       //// Vai buscar o doc da escola selecionada ///
 
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+      professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome);
@@ -93,7 +93,7 @@ define(function(require) {
                   '<div class="thumbnail" style="height:170px;">' +
                   '<div class="caption"> ' +
                   '<button id="' + data.rows[i].doc._id +'" type="button" name="' + docsEscolasTurmas[y]._id + '" value="'+docsEscolasTurmas[y].ano + " - " + docsEscolasTurmas[y].nome+'" class="btn btn-info btn-lg btn-block btn-escola" >' +
-                  " <img style='height:60px;' src='data:image/png;base64," + data.rows[i].doc._attachments['escola.png'].data + "'><p>" + data.rows[i].doc.nome + " </br><b>[" + docsEscolasTurmas[y].ano + " - " + docsEscolasTurmas[y].nome + "]</b> </p> " +
+                  " <img style='height:60px;' src='data:image/png;base64," + data.rows[i].doc._attachments['escola.jpg'].data + "'><p>" + data.rows[i].doc.nome + " </br><b>[" + docsEscolasTurmas[y].ano + " - " + docsEscolasTurmas[y].nome + "]</b> </p> " +
                   '</button>' +
                   '</div>' +
                   '</div></br>' +

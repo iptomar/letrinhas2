@@ -48,7 +48,7 @@ define(function(require) {
              /////Anexos de fotos dos professores ///
 
 
-            professores_local2.getAttachment(profDoc._id, 'prof.png', function(err2, DataImg) {
+            professores_local2.getAttachment(profDoc._id, 'prof.jpg', function(err2, DataImg) {
               if (err2) console.log(err2);
               var url = URL.createObjectURL(DataImg);
 

@@ -15,6 +15,10 @@ define(function(require) {
       $(e.target).parent().addClass('is-active');
     },
 
+    onBackKeyDowns: function() {
+
+    },
+
     initialize: function() {
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
@@ -25,7 +29,7 @@ define(function(require) {
       var turmaId = window.localStorage.getItem("TurmaSelecID");
       var turmaNome = window.localStorage.getItem("TurmaSelecNome");
 
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+      professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
@@ -33,7 +37,7 @@ define(function(require) {
       });
 
 
-      alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
+      alunos_local2.getAttachment(alunoId, 'aluno.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
@@ -57,6 +61,7 @@ define(function(require) {
 
       if (pinDigitado != "") {
         if (pinProfAux == pinDigitado) {
+          document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
           $("#popUpAviso").empty();
           $("#proB").css('visibility', 'hidden')
           window.history.go(-2);
@@ -83,16 +88,7 @@ define(function(require) {
 
     render: function() {
       this.$el.html(template({}));
-
-      // var profId = window.localStorage.getItem("ProfSelecID");
-      // var profNome = window.localStorage.getItem("ProfSelecNome");
-      //   professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
-      //   if (err2)  console.log(err2);
-      //   var url = URL.createObjectURL(DataImg);
-      //   $('#lbNomeProf').text(profNome);
-      //   $('#imgProf').attr("src",url);
-      // });
-
+      document.addEventListener("backbutton", this.onBackKeyDowns, false); //Adicionar o evento
       return this;
     }
   });

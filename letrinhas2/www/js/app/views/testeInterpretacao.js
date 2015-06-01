@@ -37,18 +37,31 @@ define(function(require) {
       perguntas_local2.get(self.idPergunta, function(err, perguntasDoc) {
         if (err) console.log(err);
 
+        var respostasDadas = 0;
+        for (var i = 0; i < maxEle; i++) {
+          var color = sapns[i].style.backgroundColor;
+          if (color == 'rgb(0, 204, 0)')
+              respostasDadas++;
+        }
         var certas = 0;
-        var erradas = 0;
+        var errCor = 0;
         for (var i = 0; i < perguntasDoc.conteudo.posicaoResposta.length; i++) {
           var posicaoCerta = perguntasDoc.conteudo.posicaoResposta[i];
           var color = sapns[posicaoCerta].style.backgroundColor;
           if (color == 'rgb(0, 204, 0)') {
             certas++;
           } else {
-            erradas++;
+            errCor++;
           }
         }
-        self.respostasCertas = certas;
+
+
+        var erradas = (respostasDadas - certas)+ errCor;
+        var aux = (certas-erradas);
+          var nota = (aux * 100) / respostasDadas;
+        if (nota < 0)
+        nota = 0;
+        self.respostasCertas = nota.toFixed(2);
       });
     },
 
@@ -98,29 +111,32 @@ define(function(require) {
           }
         }
         var certas = 0;
-        var erradas = 0;
+        var errCor = 0;
         for (var i = 0; i < perguntasDoc.conteudo.posicaoResposta.length; i++) {
           var posicaoCerta = perguntasDoc.conteudo.posicaoResposta[i];
           var color = sapns[posicaoCerta].style.backgroundColor;
           resolucao.respostas[0].correcao.push({
             'posicao': posicaoCerta,
           });
-          if (color == 'rgb(0, 204, 0)') {
+          if (color == 'rgb(0, 204, 0)')
             certas++;
-          } else {
-            erradas++;
-          }
+            else
+            errCor++;
         }
-        // console.log("Errado: " + erradas);
-        // console.log("certo: " + certas);
-        // console.log("RespostasDadass: " + respostasDadas);
 
-        var totalT = erradas + certas;
-        var nota = (certas * 100) / totalT;
+        var  erradas = (respostasDadas - certas)+ errCor;
+
+         console.log("Errado: " + erradas);
+         console.log("certo: " + certas);
+         console.log("RespostasDadass: " + respostasDadas);
+
+       var aux = (certas-erradas);
+
+          var nota = (aux * 100) / respostasDadas;
+        if (nota < 0)
+        nota = 0;
         resolucao.nota = nota.toFixed(2);
         console.log("Nota: " + nota.toFixed(2));
-
-        console.log(resolucao);
 
         resolucoes_local2.post(resolucao, function(err, response) {
           if (err) {
@@ -173,21 +189,15 @@ define(function(require) {
       $('#myModalSUB').modal("hide");
       $('#myModalSUB').on('hidden.bs.modal', function(e) {
         $("#myModalCont").modal("show");
-        $("#semafro").text("Acertou "+self.respostasCertas+" palavra(s)");
+        $("#semafro").text("Nota: "+self.respostasCertas+"%");
         $('#myModalCont').on('hidden.bs.modal', function(e) {
           self.modelTrue = false;
           self.GravarResolucao();
            document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
-           if (Backbone.history.fragment != 'pinJanela') {
-             utils.loader(function() {
-               e.preventDefault();
-               self.highlight(e);
                app.navigate('/pinJanela', {
                  trigger: true
                });
-             });
-           }
-        });
+      });
       });
     },
 
@@ -250,7 +260,7 @@ define(function(require) {
 
 
 
-      professores_local2.getAttachment(profId, 'prof.png', function(err2, DataImg) {
+      professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
@@ -258,7 +268,7 @@ define(function(require) {
       });
 
 
-      alunos_local2.getAttachment(alunoId, 'aluno.png', function(err2, DataImg) {
+      alunos_local2.getAttachment(alunoId, 'aluno.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);

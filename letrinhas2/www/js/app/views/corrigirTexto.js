@@ -179,7 +179,6 @@ define(function(require) {
 
     //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
     GravarSOMfile: function(name, data, success, fail) {
-      console.log(cordova.file.dataDirectory);
       var gotFileSystem = function(fileSystem) {
         fileSystem.root.getFile(name, {
           create: true,

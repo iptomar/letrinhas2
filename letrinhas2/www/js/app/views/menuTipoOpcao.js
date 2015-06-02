@@ -24,6 +24,7 @@ define(function(require) {
       "click #btnRealizarTeste": "clickBtnRealizarTeste",
       "click #btnCorrigirTeste": "clickBtnCorrigirTeste",
       "click #btnConsultarTeste": "clickBtnConsultarTeste",
+      "click #btnConsultarEstatisticas": "clickbtnConsultarEstatisticas",
       "click #btnNavINI": "clickbtnNavINI",
       "click #btnNavDisci": "clickbtnNavDisci",
     },
@@ -84,6 +85,21 @@ define(function(require) {
         });
       }
     },
+
+
+    clickbtnConsultarEstatisticas: function(e) {
+      var self = this;
+      if (Backbone.history.fragment != 'escolherTurma') {
+        utils.loader(function() {
+          e.preventDefault();
+          window.localStorage.setItem("TipoOpaoSelec", 'consultarEstatisticas'); //enviar variave
+          app.navigate('/escolherTurma', {
+            trigger: true
+          });
+        });
+      }
+    },
+
 
     render: function() {
       this.$el.html(template({}));

@@ -1,0 +1,74 @@
+<section>
+
+  <div class="globalcontent">
+    <div class="topcoat-navigation-bar">
+      <div class="topcoat-navigation-bar__item left quarter">
+        <img id="imgProf" src="img/RealizarTestes.png" style='height:44px;'>
+        <label id="lbNomeProf" style="color:#FFFFF;">Professor</label>
+      </div>
+      <div class="topcoat-navigation-bar__item center half">
+        <h1 id="titleTestePagina" class="topcoat-navigation-bar__title">Consultar Resoluções de testes de Textos</h1>
+      </div>
+      <div class="topcoat-navigation-bar__item right quarter">
+        <label id="lbNomeAluno" style="color:#FFFFF;">Aluno</label>
+        <img id="imgAluno" src="img/RealizarTestes.png" style='height:44px;'>
+      </div>
+    </div>
+
+    <div class="loader" style="display:none">
+      <div class="placeholder light">
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <a class="left carousel-control2" href="#carouselPrincipal" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" style="font-size: 25pt"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control2" href="#carouselPrincipal" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" style="font-size: 25pt"></span>
+        <span class="sr-only">Next</span>
+      </a>
+
+      <div id="carouselPrincipal" class="carousel slide" data-ride="carousel">
+        <ol id="IndicatorsCorr" class="carousel-indicators2">
+          <li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>
+          <li data-target="#carouselPrincipal" data-slide-to="1"></li>
+          <li data-target="#carouselPrincipal" data-slide-to="2"></li>
+          <li data-target="#carouselPrincipal" data-slide-to="3"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div id="carroselT" class="carousel-inner" role="listbox">
+          <div class="item active container" >
+          </br>    </br>
+          <div class="panel panel-success centerEX"><div class="panel-heading">Teste Texto</div></div>
+          <canvas id="canvasGrafico1" ></canvas><div id="legendDiv1"></div>
+          </div>
+
+          <div class="item container">
+          </br>    </br>
+          <div class="panel panel-warning centerEX"><div class="panel-heading">Teste Lista</div></div>
+          <canvas id="canvasGrafico2" ></canvas><div id="legendDiv2"></div>
+          </div>
+
+          <div class="item container">
+          </br>    </br>
+          <div class="panel panel-danger centerEX"><div class="panel-heading">Teste Multimedia</div></div>
+          <canvas id="canvasGrafico3" ></canvas><div id="legendDiv3"></div>
+          </div>
+
+          <div class="item container">
+          </br>    </br>
+          <div class="panel panel-info centerEX"><div class="panel-heading">Teste Interpretação</div></div>
+          <canvas id="canvasGrafico4" ></canvas><div id="legendDiv4"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -168,7 +168,7 @@ define(function(require) {
                 });
               }
             }
-            else
+            else if (tipoOpcao == 'consultarResolucao')
             {
               if (Backbone.history.fragment != 'escolherResultados') {
                 utils.loader(function() {
@@ -176,6 +176,19 @@ define(function(require) {
                   window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
                   window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
                   app.navigate('/escolherResultados', {
+                    trigger: true
+                  });
+                });
+              }
+            }
+            else if (tipoOpcao == 'consultarEstatisticas')
+            {
+              if (Backbone.history.fragment != 'escolherResultados') {
+                utils.loader(function() {
+                  ev.preventDefault();
+                  window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
+                  window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
+                  app.navigate('/estatisticas', {
                     trigger: true
                   });
                 });

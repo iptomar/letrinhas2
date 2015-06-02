@@ -5,7 +5,7 @@ define(function(require) {
   var $ = require('jquery');
   require('es6-promise').polyfill();
   var Backbone = require('backbone'),
-    BootView = require('app/views/boot'),
+    // BootView = require('app/views/boot'),
     classList = require('classList.min');
 
   Backbone.View.prototype.close = function() {
@@ -61,15 +61,24 @@ define(function(require) {
       "mostraResultadoInterpretacao": "mostraResultadoInterpretacao",
       "testeMultimedia": "testeMultimedia",
       "mostraResultadoMultimedia": "mostraResultadoMultimedia",
-      "pinJanela": "pinJanela"
+      "pinJanela": "pinJanela",
+      "estatisticas": "estatisticas"
 
 
     },
 
-    boot: function() {
-      var bootView = new BootView();
-      this.showView(bootView);
+    // boot: function() {
+    //   var bootView = new BootView();
+    //   this.showView(bootView);
+    // },
+    estatisticas: function() {
+      var self = this;
+      require(["app/views/estatisticas"], function(estatisticasView) {
+        var view = new estatisticasView();
+        self.showView(view);
+      });
     },
+
 
     pinJanela: function() {
       var self = this;

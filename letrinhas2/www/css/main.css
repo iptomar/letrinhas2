@@ -10,7 +10,6 @@
   font-size: 20px !important;
 }
 
-
 .carousel .carousel-inner .item {
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
@@ -150,7 +149,7 @@
     font-size: 20pt;
     font-family: Arial;
     padding: 15px;
-    height: 494px;
+    height: 480px;
     background-color: white;
     overflow-y: auto;
 }

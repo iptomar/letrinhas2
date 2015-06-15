@@ -528,7 +528,7 @@ define(function(require) {
            scaleStepWidth: 20,
            // Number - The scale starting value
            scaleStartValue: 0,
-            multiTooltipTemplate: "<%= datasetLabel %> - <%= value %> %",
+           tooltipTemplate: "<%= datasetLabel %> - <%= value %> %",
             legendTemplate: '<% for (var i=0; i<datasets.length; i++){%>' +
               '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt">' +
               '</span><span style="font-size: 20pt"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></span>&nbsp&nbsp&nbsp' +

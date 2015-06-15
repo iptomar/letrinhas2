@@ -5,7 +5,7 @@ define(function(require) {
   var $ = require('jquery'),
     _ = require('underscore'),
     Backbone = require('backbone'),
-    janelas = require('text!janelas/escolherTeste.html'),
+    janelas = require('text!janelas/escolherTesteSimples.html'),
     template = _.template(janelas);
 
   return Backbone.View.extend({
@@ -640,6 +640,8 @@ define(function(require) {
         $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
         $('#imgAluno').attr("src", url);
         $("#btnPesquisar").addClass("disabled");
+        $('#btnTesteLeituraMultimedia').click();
+
       });
 
       return this;

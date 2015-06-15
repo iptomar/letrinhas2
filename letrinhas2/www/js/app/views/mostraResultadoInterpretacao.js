@@ -10,6 +10,8 @@ define(function(require) {
     template = _.template(janelas);
 
   return Backbone.View.extend({
+    myLineGra: null,
+    myLineGraData: null,
 
     initialize: function() {
 
@@ -180,6 +182,22 @@ define(function(require) {
       "click #BackButton": "clickBackButton",
       "click #btnNavDisci": "clickbtnNavDisci",
       "click #btnNavMenu": "clickbtnNavMenu",
+      "click #btnZoom": "btnZoom",
+    },
+
+    btnZoom: function(e) {
+        var self = this;
+        if ($('#btnZoom').text() == "Zoom +")
+        {
+          $('#btnZoom').text("Zoom -")
+          self.myLineGra.options.scaleOverride = false;
+
+        }else {
+          $('#btnZoom').text("Zoom +")
+          self.myLineGra.options.scaleOverride = true;
+        }
+        var ctx = document.getElementById("canvasGrafico").getContext("2d");
+        var myLineChart = new Chart(ctx).Line(self.myLineGraData, self.myLineGra.options)
     },
 
     render: function() {
@@ -304,12 +322,13 @@ define(function(require) {
               data: certasAlunoArr
             }]
           }
+          self.myLineGraData = lineChartData;
           var ctx = document.getElementById("canvasGrafico").getContext("2d");
           var myLineChart = new Chart(ctx).Line(lineChartData, {
             responsive: true,
-            showScale: true,
             bezierCurve : false,
-            scaleOverride: false,
+            showScale: true,
+            scaleOverride: true,
             // Number - The number of steps in a hard coded scale
               scaleSteps: 5,
             // Number - The value jump in the hard coded scale
@@ -326,8 +345,11 @@ define(function(require) {
               '&nbsp&nbsp<%}%>'
 
           });
+          self.myLineGra = myLineChart;
           var $containerPrin = $('#legendDiv');
-          var $btn = $(myLineChart.generateLegend());
+          var auxLengda = '<div class="row"><div class="col-md-6">'+myLineChart.generateLegend()+'</div>';
+          auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
+          var $btn = $(auxLengda);
           $btn.appendTo($containerPrin); //Adiciona ao Div
 
         });

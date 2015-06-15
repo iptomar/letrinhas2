@@ -61,6 +61,7 @@ define(function(require) {
       "mostraResultadoInterpretacao": "mostraResultadoInterpretacao",
       "testeMultimedia": "testeMultimedia",
       "mostraResultadoMultimedia": "mostraResultadoMultimedia",
+      "escolherTesteSimples": "escolherTesteSimples",
       "pinJanela": "pinJanela",
       "estatisticas": "estatisticas"
 
@@ -75,6 +76,15 @@ define(function(require) {
       var self = this;
       require(["app/views/estatisticas"], function(estatisticasView) {
         var view = new estatisticasView();
+        self.showView(view);
+      });
+    },
+
+
+    escolherTesteSimples: function() {
+      var self = this;
+      require(["app/views/escolherTesteSimples"], function(escolherTesteSimplesView) {
+        var view = new escolherTesteSimplesView();
         self.showView(view);
       });
     },

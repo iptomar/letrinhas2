@@ -79,13 +79,12 @@ define(function(require) {
         var url = URL.createObjectURL(DataImg);
         $('#imgProf').attr("src", url);
       });
-      console.log("Assssssssssssssssssssssssssss");
       /// Vai buscar todas as escolas da base de dados //
       escolas_local2.get(escolaId, function(err, escolaDoc) {
         if (err) console.log(err);
         window.localStorage.setItem("EscolaSelecionadaNome", escolaDoc.nome + ''); //enviar variavel
         $('#lbNomeProf').text(profNome + " - [ " + escolaDoc.nome + " ]");
-       $('#lbNomeAluno').text("[ "+turmaNome+" ]  ");
+        $('#lbNomeAluno').text("[ " + turmaNome + " ]  ");
       });
 
       function map(doc) {
@@ -105,14 +104,12 @@ define(function(require) {
           var $btn = $('<h3>---SEM ALUNOS NESTA TURMA---<h3>');
           $btn.appendTo($container); //Adiciona ao Div
         } else {
-          console.log("Assssssssssssssssssssssssssss");
           var instrucoes = [];
 
           for (var i = 0; i < response.rows.length; i++) {
-              var abc = response.rows[i].id;
-              console.log(abc);
-          var ImaAluno =  alunos_local2.getAttachment(abc, 'aluno.jpg').then(function (DataImg) {
-            var url = URL.createObjectURL(DataImg);
+            var abc = response.rows[i].id;
+            var ImaAluno = alunos_local2.getAttachment(abc, 'aluno.jpg').then(function(DataImg) {
+              var url = URL.createObjectURL(DataImg);
               return url;
             });
 
@@ -121,27 +118,23 @@ define(function(require) {
           }
 
 
-          Promise.all(instrucoes).then(function (url) {
-              console.log(url[0]);
-              console.log(url[1]);
-              console.log("gtgggggg");
+          Promise.all(instrucoes).then(function(url) {
+            for (var i = 0; i < response.rows.length; i++) {
 
-              for (var i = 0; i < response.rows.length; i++) {
-
-                var $btn = $(
-                  '<div class="col-md-4">' +
-                  '<div class="thumbnail" style="height:160px;"  >' +
-                  '<div class="caption">' +
-                  '<button id="' + response.rows[i].doc._id + '" type="button" class="btn btn-info btn-lg btn-block btn-aluno" >' +
-                  '<img style="height:100px;" ' +
-                  //'src="data:image/png;base64,' + response.rows[i].doc._attachments['aluno.jpg'].data + '"' +
-                   'src="'+url[i]+'"'+
-                  'class="pull-left"/>' + response.rows[i].doc.nome + '</button>' +
-                  '</div>' +
-                  '</div></br>' +
-                  '</div>');
-                $btn.appendTo($container); //Adiciona ao Div
-              }
+              var $btn = $(
+                '<div class="col-md-4">' +
+                '<div class="thumbnail" style="height:160px;"  >' +
+                '<div class="caption">' +
+                '<button id="' + response.rows[i].doc._id + '" type="button" class="btn btn-info btn-lg btn-block btn-aluno" >' +
+                '<img style="height:100px;" ' +
+                //'src="data:image/png;base64,' + response.rows[i].doc._attachments['aluno.jpg'].data + '"' +
+                'src="' + url[i] + '"' +
+                'class="pull-left"/>' + response.rows[i].doc.nome + '</button>' +
+                '</div>' +
+                '</div></br>' +
+                '</div>');
+              $btn.appendTo($container); //Adiciona ao Div
+            }
 
 
 
@@ -155,21 +148,35 @@ define(function(require) {
             var $btn = $(this); // O jQuery passa o btn clicado pelo this
             var self = this;
             var tipoOpcao = window.localStorage.getItem("TipoOpaoSelec");
-            if (tipoOpcao == 'realizarTeste')
-            {
-              if (Backbone.history.fragment != 'escolherTeste') {
-                utils.loader(function() {
-                  ev.preventDefault();
-                  window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
-                  window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
-                  app.navigate('/escolherTeste', {
-                    trigger: true
+            if (tipoOpcao == 'realizarTeste') {
+              var Disciplinax = window.localStorage.getItem("DiscplinaSelecionada");
+
+              if (Disciplinax == "Português" || Disciplinax == "Inglês" || Disciplinax == "Outras Línguas") {
+
+                if (Backbone.history.fragment != 'escolherTeste') {
+                  utils.loader(function() {
+                    ev.preventDefault();
+                    window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
+                    window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
+                    app.navigate('/escolherTeste', {
+                      trigger: true
+                    });
                   });
-                });
+                }
+              } else  if (Disciplinax == "Matemática" || Disciplinax == "Estudo do Meio" || Disciplinax == "Outro")  {
+                if (Backbone.history.fragment != 'escolherTesteSimples') {
+                  utils.loader(function() {
+                    ev.preventDefault();
+                    window.localStorage.setItem("AlunoSelecNome", $btn[0].innerText + ''); //enviar variavel
+                    window.localStorage.setItem("AlunoSelecID", $btn[0].id + ''); //enviar variavel
+                    app.navigate('/escolherTesteSimples', {
+                      trigger: true
+                    });
+                  });
+                }
               }
-            }
-            else if (tipoOpcao == 'consultarResolucao')
-            {
+
+            } else if (tipoOpcao == 'consultarResolucao') {
               if (Backbone.history.fragment != 'escolherResultados') {
                 utils.loader(function() {
                   ev.preventDefault();
@@ -180,9 +187,7 @@ define(function(require) {
                   });
                 });
               }
-            }
-            else if (tipoOpcao == 'consultarEstatisticas')
-            {
+            } else if (tipoOpcao == 'consultarEstatisticas') {
               if (Backbone.history.fragment != 'escolherResultados') {
                 utils.loader(function() {
                   ev.preventDefault();

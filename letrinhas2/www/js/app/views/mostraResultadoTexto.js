@@ -489,7 +489,7 @@ define(function(require) {
            // Number - The scale starting value
            scaleStartValue: 0,
            animationEasing: "easeOutBounce",
-           multiTooltipTemplate: "<%= datasetLabel %> - <%= value %> %",
+           tooltipTemplate: "<%= datasetLabel %> - <%= value %> %",
 
             legendTemplate: '<% for (var i=0; i<datasets.length; i++){%>' +
               '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt">' +

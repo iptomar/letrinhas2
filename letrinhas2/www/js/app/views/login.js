@@ -12,6 +12,7 @@ define(function(require) {
   return Backbone.View.extend({
 
     myVar: setInterval(function() {
+      $('#inputEmail').val("elsaAbrantes@aeagtn.pt");
       if (btnBloqueado == false) {
         $("#progBAR").css('width', perc + '%').attr('aria-valuenow', perc).html(perc + '%');
         $("#btn_login").removeClass("disabled");
@@ -28,13 +29,14 @@ define(function(require) {
     },
 
     initialize: function() {
+
+
     },
 
     //Eventos Click
     events: {
       "click #btn_login": "clickLogin",
     },
-
     clickLogin: function(e) {
      e.stopPropagation();
       e.preventDefault();
@@ -43,7 +45,8 @@ define(function(require) {
       if (pinDigitado != "") {
         professores_local2.query({
           map: function (doc) {
-            if (doc.pin == $('#inputPIN').val() && doc.estado == 1) {
+            console.log(doc);
+            if (doc._id == $('#inputEmail').val() && doc.pin == $('#inputPIN').val() && doc.estado == 1) {
               emit(doc);
             }
           }
@@ -58,7 +61,7 @@ define(function(require) {
               $("#popUpAviso").append(
                 '<div id="qwert" class="alert alert-danger alert-dismissable">' +
                 '<button type="button" class="close" data-dismiss="alert"> <span aria-hidden="true">&times;</span></button>' +
-                '<strong>Aviso!</strong> Não foi encontrado nenhum professor associado ao PIN inserido!' +
+                '<strong>Aviso!</strong> A sua antenticação não é válida!' +
                 '</div>');
             } else {
               $("#popUpAviso").empty();

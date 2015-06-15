@@ -9,6 +9,8 @@ define(function(require) {
     template = _.template(janelas);
 
   return Backbone.View.extend({
+    myLineGra: null,
+    myLineGraData: null,
 
     initialize: function() {
 
@@ -115,9 +117,23 @@ define(function(require) {
     //Eventos Click
     events: {
       "click #BtnVoltar": "clickBtnCancelar",
-      //  "click #controlos": "clickControlos",
+      "click #btnZoom": "btnZoom",
     },
 
+    btnZoom: function(e) {
+        var self = this;
+        if ($('#btnZoom').text() == "Zoom +")
+        {
+          $('#btnZoom').text("Zoom -")
+          self.myLineGra.options.scaleOverride = false;
+
+        }else {
+          $('#btnZoom').text("Zoom +")
+          self.myLineGra.options.scaleOverride = true;
+        }
+        var ctx = document.getElementById("canvasGrafico").getContext("2d");
+        var myLineChart = new Chart(ctx).Line(self.myLineGraData, self.myLineGra.options)
+    },
 
     render: function() {
       this.$el.html(template());
@@ -260,7 +276,7 @@ define(function(require) {
            // Number - The scale starting value
            scaleStartValue: 0,
            animationEasing: "easeOutBounce",
-           multiTooltipTemplate: "<%= datasetLabel %> - <%= value %> %",
+           tooltipTemplate: "<%= datasetLabel %> - <%= value %> %",
 
             legendTemplate: '<% for (var i=0; i<datasets.length; i++){%>' +
               '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt">' +
@@ -270,6 +286,7 @@ define(function(require) {
           self.myLineGra = myLineChart;
           var $containerPrin = $('#legendDiv');
           var auxLengda = '<div class="row"><div class="col-md-6">'+myLineChart.generateLegend()+'</div>';
+          auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
           var $btn = $(auxLengda);
           $btn.appendTo($containerPrin); //Adiciona ao Div
 

@@ -27,6 +27,8 @@ define(function(require) {
       "click #btnSelecEstuMeio": "clickbtnSelecEstuMeio",
       "click #btnSelecIngles": "clickbtnSelecIngles",
       "click #btnSelecOutro": "clickbtnSelecOutro",
+      "click #btnSelecOutroDisc": "clickbtnSelecOutroDisc",
+
       "click #btnNavINI": "clickbtnNavINI",
     },
 
@@ -99,6 +101,25 @@ define(function(require) {
         });
       }
     },
+
+
+    clickbtnSelecOutroDisc: function(e) {
+    //  e.stopPropagation(); e.preventDefault();
+      window.localStorage.setItem("DiscplinaSelecionada", "Outras Línguas"); //enviar variavel 4- Ingles
+      var self = this;
+      if (Backbone.history.fragment != 'menuTipoOpcao') {
+        utils.loader(function() {
+          e.preventDefault();
+          self.highlight(e);
+          app.navigate('/menuTipoOpcao', {
+            trigger: true
+          });
+        });
+      }
+    },
+
+
+
 
     clickbtnSelecOutro: function(e) {
     //  e.stopPropagation(); e.preventDefault();

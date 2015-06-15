@@ -262,6 +262,18 @@ define(function(require) {
     // reproduzir a ultima leitura do teste
     clickPlayMyTestButton: function() {
       $("#playPlayer").attr("src", "file:///sdcard/gravacao.amr")
+      $("#playPlayer").bind("ended", function() {
+        $('#playMyTestButton').val(0);
+        $('#playMyTestButton').attr("style", "background-color: #c065ff");
+        $('#playMyTestButton').html('<span class="glyphicon glyphicon-play"aria-hidden="true"> </span> Ouvir-me </a>');
+        $('#playPlayer').attr("style", "visibility:hidden;");
+        $('#startButton').attr("style", "visibility:initial;background-color: #eeff00");
+        $('#demoButton').attr("style", "visibility:initial;background-color: #ffc060");
+        $('#submitButton').attr("style", "visibility:initial;background-color: #00ee00");
+        audio.pause();
+      });
+
+
       var audio = document.getElementById("playPlayer");
       if ($('#playMyTestButton').val() == 0) {
         $('#playMyTestButton').val(1);
@@ -310,6 +322,19 @@ define(function(require) {
       console.log("\nDemoButon: " + self.Demo);
 
       $('#playPlayer').attr("src", self.Demo);
+      $("#playPlayer").bind("ended", function() {
+        $('#demoButton').val(0);
+        $('#demoButton').attr("style", "background-color: #ffc060");
+        $('#demoButton').html('<span class="glyphicon glyphicon-headphones"aria-hidden="true"> </span> Demonstrar </a>');
+        $('#playPlayer').attr("style", "visibility:hidden;");
+        $('#startButton').attr("style", "visibility:initial;background-color: #60f060");
+        if (self.isFeito) {
+          $('#playMyTestButton').attr("style", "visibility:initial;background-color: #c065ff");
+          $('#submitButton').attr("style", "visibility:initial;background-color: #00ee00");
+        }
+        audio.pause();
+      });
+
       var audio = document.getElementById("playPlayer");
       if ($('#demoButton').val() == 0) {
         $('#demoButton').val(1);
@@ -459,6 +484,9 @@ define(function(require) {
             self.GravarSOMfile('voz.mp3', DataImg, function() {
               self.Demo = cordova.file.dataDirectory + "/files/voz.mp3";
               $("#playPlayer").attr("src", self.Demo);
+              // $("#AudioPlayerProf").bind("ended", function() {
+              //   $('#btnParar1').click();
+              // });
               console.log("\nA carregar demo: " + self.Demo);
 
             }, function(err) {

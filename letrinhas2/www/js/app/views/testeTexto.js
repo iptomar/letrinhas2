@@ -261,6 +261,9 @@ define(function(require) {
         $('#btnFinalizar').show();
         $('#btnOuvirme').show();
         $("#AudioPlayerAluno").attr("src", "file:///sdcard/gravacao1.amr");
+        $("#AudioPlayerAluno").bind("ended", function() {
+          $('#btnParar2').click();
+        });
       }
     },
 
@@ -334,6 +337,10 @@ define(function(require) {
           self.GravarSOMfiles('voz.mp3', mp3Aud, function() {
             console.log('FUNCIONA');
             $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3")
+
+            $("#AudioPlayerProf").bind("ended", function() {
+              $('#btnParar1').click();
+            });
 
           }, function(err) {
             console.log("DEU ERRO" + err);

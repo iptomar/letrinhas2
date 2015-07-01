@@ -32,6 +32,10 @@
   font-size: 12pt;
 }
 
+.myspanStatic{
+   font-size: 25px;
+}
+
 .btn_mineLarge{
   height: 80px;
 }

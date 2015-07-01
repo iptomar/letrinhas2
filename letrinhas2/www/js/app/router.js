@@ -63,6 +63,7 @@ define(function(require) {
       "mostraResultadoMultimedia": "mostraResultadoMultimedia",
       "escolherTesteSimples": "escolherTesteSimples",
       "pinJanela": "pinJanela",
+            "xpto": "xpto",
       "estatisticas": "estatisticas"
 
 
@@ -72,6 +73,15 @@ define(function(require) {
     //   var bootView = new BootView();
     //   this.showView(bootView);
     // },
+
+    xpto: function() {
+      var self = this;
+      require(["app/views/xpto"], function(xptoView) {
+        var view = new xptoView();
+        self.showView(view);
+      });
+    },
+
     estatisticas: function() {
       var self = this;
       require(["app/views/estatisticas"], function(estatisticasView) {

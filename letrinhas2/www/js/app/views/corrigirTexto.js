@@ -374,9 +374,14 @@ define(function(require) {
               console.log('FUNCIONA VOZ PROF');
               $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3");
               $("#AudioPlayerProf").trigger('load');
-              var audioElement = $("#AudioPlayerProf")[0];
-              audioElement.play();
-              audioElement.pause();
+                $("#AudioPlayerProf").trigger('play');
+              setTimeout(function() {
+                $("#AudioPlayerProf").trigger('pause');
+                $("#AudioPlayerProf").prop("currentTime", 0);
+              }, 200);
+
+
+
             }, function(err) {
               console.log("DEU ERRO VOZ PROF" + err);
             });
@@ -387,9 +392,7 @@ define(function(require) {
             $('#titlePerguntaLB').text(perguntaDoc.pergunta);
             $('#DivContentorArea').append(perguntaDoc.conteudo.texto);
             var $container = $('#DivContentorArea'); //Adiciona ao Div
-            var audioElement = $("#AudioPlayerProf")[0];
-            audioElement.play();
-            audioElement.pause();
+
 
             var words = $("#DivContentorArea").text().split(' ');
             $("#DivContentorArea").html("");

@@ -12,7 +12,7 @@ define(function(require) {
   return Backbone.View.extend({
 
     myVar: setInterval(function() {
-      $('#inputEmail').val("elsaAbrantes@aeagtn.pt");
+      // $('#inputEmail').val("elsaAbrantes@aeagtn.pt");
       if (btnBloqueado == false) {
         $("#progBAR").css('width', perc + '%').attr('aria-valuenow', perc).html(perc + '%');
         $("#btn_login").removeClass("disabled");
@@ -38,13 +38,18 @@ define(function(require) {
       "click #btn_login": "clickLogin",
     },
     clickLogin: function(e) {
-     e.stopPropagation();
+
+      // app.navigate('/xpto', {
+      //        trigger: true
+      //      });
+
+      e.stopPropagation();
       e.preventDefault();
       var self = this;
       var pinDigitado = $('#inputPIN').val();
       if (pinDigitado != "") {
         professores_local2.query({
-          map: function (doc) {
+          map: function(doc) {
             console.log(doc);
             if (doc._id == $('#inputEmail').val() && doc.pin == $('#inputPIN').val() && doc.estado == 1) {
               emit(doc);
@@ -67,8 +72,69 @@ define(function(require) {
               $("#popUpAviso").empty();
               window.localStorage.setItem("ProfSelecNome", response.rows[0].key.nome + ''); //enviar variavel
               window.localStorage.setItem("ProfSelecID", response.rows[0].id + ''); //enviar variavel
-              window.localStorage.setItem("ProfSelecPIN", response.rows[0].key.pin+ ''); //enviar variavel
+              window.localStorage.setItem("ProfSelecPIN", response.rows[0].key.pin + ''); //enviar variavel
               clearInterval(self.myVar);
+
+
+
+
+
+              sistema_local2.info().then(function(info1) {
+                if (info1.doc_count == 0) {
+
+                  var sisT = {
+                    '_id': 'ultimoLogin',
+                    'email': response.rows[0].id
+                  };
+
+                  sistema_local2.post(sisT).then(function(response) {
+                    console.log("SUCESSO-" + err);
+                  }).catch(function(err) {
+                    console.log("ERRRO-" + err);
+                  });
+
+                } else {
+
+                  sistema_local2.get('ultimoLogin', function(err, otherDoc) {
+                    if (err) console.log(err);
+                    console.log(otherDoc)
+                    otherDoc.email = response.rows[0].id;
+                    sistema_local2.put(otherDoc, otherDoc._id, otherDoc._rev, function(err, response) {
+                      if (err) {
+                        console.log('Correcao ' + err + ' erro');
+                      } else {
+                        console.log('Parabens InseridoCorrecao');
+                      }
+                    });
+
+
+                  });
+
+
+
+
+                  // sistema_local2.get('ultimoLogin').then(function(doc) {
+                  //
+                  //   return sistema_local2.put(sisT, doc._id, doc._rev);
+                  // }).then(function(response) {
+                  //   // handle response
+                  // }).catch(function(err) {
+                  //   console.log(err);
+                  // });
+
+
+                }
+
+              });
+
+
+
+
+
+
+
+
+
               $("#proB").css('visibility', 'hidden')
               app.navigate('/escolherDisciplina', {
                 trigger: true
@@ -76,9 +142,7 @@ define(function(require) {
             }
           }
         });
-      }
-      else
-      {
+      } else {
         $('#inputPINErr').addClass("has-error");
       }
 
@@ -87,6 +151,15 @@ define(function(require) {
 
     render: function() {
       this.$el.html(template());
+
+      sistema_local2.get('ultimoLogin').then(function(doc) {
+        $('#inputEmail').val(doc.email);
+
+      }).catch(function(err) {
+        console.log(err);
+      });
+
+
       return this;
     }
   });

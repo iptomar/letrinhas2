@@ -10,6 +10,11 @@ define(function(require) {
 
   return Backbone.View.extend({
     myLineChart2: null,
+    gra1: false,
+    gra2: false,
+    gra3: false,
+    gra4: false,
+
 
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
@@ -20,9 +25,96 @@ define(function(require) {
 
     },
 
+    criaResumo: function() {
+      var self = this;
+
+      function map(doc) {
+        if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID")) {
+          emit([doc.dataReso], doc);
+        }
+      }
+      resolucoes_local2.query({
+        map: map
+      }, {
+        reduce: false
+      }, function(errx, response) {
+        if (errx) console.log("Erro: " + errx);
+        if (response.rows.length != 0) {
+          var totalTexto = 0;
+          var totalLista = 0;
+          var totalMultimedia = 0;
+          var totalInterpretacao = 0;
+          var somaTexto = 0;
+          var somaLista = 0;
+          var somaMultimedia = 0;
+          var somaInterpretacao = 0;
+          for (var i = 0; i < response.rows.length; i++) {
+            if (response.rows[i].value.tipoCorrecao == "Texto") {
+              totalTexto++;
+              somaTexto += response.rows[i].value.nota;
+            }
+            if (response.rows[i].value.tipoCorrecao == "Lista") {
+              totalLista++;
+              somaLista += response.rows[i].value.nota;
+            }
+            if (response.rows[i].value.tipoCorrecao == "Multimédia") {
+              totalMultimedia++;
+              somaMultimedia += response.rows[i].value.nota;
+            }
+            if (response.rows[i].value.tipoCorrecao == "Interpretação") {
+              totalInterpretacao++;
+              somaInterpretacao += response.rows[i].value.nota;
+            }
+          }
+          var $container = $('#divResumo'); //Adiciona ao Div
+          var mediaTexto = somaTexto / totalTexto;
+          var mediaLista = somaLista / totalLista;
+          var mediaMultimedia = somaMultimedia / totalMultimedia;
+          var mediaInterpretacao = somaInterpretacao / totalInterpretacao;
+          if (isNaN(mediaTexto)) {
+            mediaTexto = 0;
+          }
+          if (isNaN(mediaLista)) {
+            mediaLista = 0;
+          }
+          if (isNaN(mediaMultimedia)) {
+            mediaMultimedia = 0;
+          }
+          if (isNaN(mediaInterpretacao)) {
+            mediaInterpretacao = 0;
+          }
+          var textoParaDiv = "";
+          textoParaDiv = '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
+            '<span class="badge myspanStatic">Média das Notas: ' + mediaTexto + '</span><h3> <b>Testes do tipo  [Texto]: ' +
+            +totalTexto + '</b></h3></li></ul>';
+          /////// ///// //////
+          textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
+            '<span class="badge myspanStatic">Média das Notas: ' + mediaLista + '</span><h3> <b>Testes do tipo  [Lista]: ' +
+            +totalLista + '</b></h3></li></ul>';
+          /////// ///// //////
+          textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
+            '<span class="badge myspanStatic">Média das Notas: ' + mediaMultimedia + '</span><h3> <b>Testes do tipo  [Multimédia]: ' +
+            +totalMultimedia + '</b></h3></li></ul>';
+          /////// ///// //////
+          textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
+            '<span class="badge myspanStatic">Média das Notas: ' + mediaInterpretacao + '</span><h3> <b>Testes do tipo  [Interpretação]: ' +
+            +totalInterpretacao + '</b></h3></li></ul>';
+
+          textoParaDiv += '<div style="height: 150px;"</div>';
+
+          var $conteudo = $(textoParaDiv);
+          $conteudo.appendTo($container); //Adiciona ao Div
+        }
+      });
+    },
+
+
+
+
     //
     desenhaEstatistica1: function() {
       var self = this;
+
       function map(doc) {
         if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.tipoCorrecao == "Texto") {
           emit([doc.dataReso], doc);
@@ -53,6 +145,13 @@ define(function(require) {
             arrLabel.push(dataFinal);
             arrDados.push(response.rows[i].value.nota);
           }
+
+
+          if (arrLabel.length == 1) {
+            arrLabel.push(arrLabel[0]);
+            arrDados.push(arrDados[0]);
+          }
+
 
           var lineChartData = {
             labels: arrLabel,
@@ -91,11 +190,6 @@ define(function(require) {
           });
 
           self.myLineGra = myLineChart;
-          // var $containerPrin = $('#legendDiv1');
-          // var auxLengda = '<div class="row"><div class="col-md-6">' + myLineChart.generateLegend() + '</div>';
-          // // auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
-          // var $btn = $(auxLengda);
-          // $btn.appendTo($containerPrin); //Adiciona ao Div
         } else {
           var $containerPrin = $('#legendDiv1');
           var auxLengda = '<div style="height: 400px;" class="centerEX"> <h1>Sem resoluções para criar estatisticas!</h1></div>';
@@ -108,6 +202,7 @@ define(function(require) {
 
     desenhaEstatistica2: function() {
       var self = this;
+
       function map(doc) {
         if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.tipoCorrecao == "Lista") {
           emit([doc.dataReso], doc);
@@ -137,6 +232,11 @@ define(function(require) {
             var dataFinal = day + "/" + month + "/" + data.getFullYear() + "-" + hours + ":" + minutes + "h";
             arrLabel.push(dataFinal);
             arrDados.push(response.rows[i].value.nota);
+          }
+
+          if (arrLabel.length == 1) {
+            arrLabel.push(arrLabel[0]);
+            arrDados.push(arrDados[0]);
           }
 
           var lineChartData = {
@@ -186,7 +286,7 @@ define(function(require) {
           var auxLengda = '<div style="height: 400px;" class="centerEX"> <h1>Sem resoluções para criar estatisticas!</h1></div>';
           // auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
           var $btn = $(auxLengda);
-           $btn.appendTo($containerPrin); //Adiciona ao Div
+          $btn.appendTo($containerPrin); //Adiciona ao Div
         }
       });
     },
@@ -194,6 +294,7 @@ define(function(require) {
     desenhaEstatistica3: function() {
       var self = this;
       console.log("dffffffffffffffffff");
+
       function map(doc) {
         if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.tipoCorrecao == "Multimédia") {
           emit([doc.dataReso], doc);
@@ -223,6 +324,10 @@ define(function(require) {
             var dataFinal = day + "/" + month + "/" + data.getFullYear() + "-" + hours + ":" + minutes + "h";
             arrLabel.push(dataFinal);
             arrDados.push(response.rows[i].value.nota);
+          }
+          if (arrLabel.length == 1) {
+            arrLabel.push(arrLabel[0]);
+            arrDados.push(arrDados[0]);
           }
 
           var lineChartData = {
@@ -275,7 +380,7 @@ define(function(require) {
           var auxLengda = '<div style="height: 400px;" class="centerEX"> <h1>Sem resoluções para criar estatisticas!</h1></div>';
           // auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
           var $btn = $(auxLengda);
-           $btn.appendTo($containerPrin); //Adiciona ao Div
+          $btn.appendTo($containerPrin); //Adiciona ao Div
         }
       });
     },
@@ -284,6 +389,7 @@ define(function(require) {
     desenhaEstatistica4: function() {
       var self = this;
       console.log("d");
+
       function map(doc) {
         if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.tipoCorrecao == "Interpretação") {
           emit([doc.dataReso], doc);
@@ -313,6 +419,10 @@ define(function(require) {
             var dataFinal = day + "/" + month + "/" + data.getFullYear() + "-" + hours + ":" + minutes + "h";
             arrLabel.push(dataFinal);
             arrDados.push(response.rows[i].value.nota);
+          }
+          if (arrLabel.length == 1) {
+            arrLabel.push(arrLabel[0]);
+            arrDados.push(arrDados[0]);
           }
 
           var lineChartData = {
@@ -365,7 +475,7 @@ define(function(require) {
           var auxLengda = '<div style="height: 400px;" class="centerEX"> <h1>Sem resoluções para criar estatisticas!</h1></div>';
           // auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
           var $btn = $(auxLengda);
-           $btn.appendTo($containerPrin); //Adiciona ao Div
+          $btn.appendTo($containerPrin); //Adiciona ao Div
         }
       });
     },
@@ -416,25 +526,24 @@ define(function(require) {
           },
         });
 
-
-
-
         ////////////////fim ////////////////////////////////
         $('#carouselPrincipal').on('slid.bs.carousel', function() {
-
-          // .index()
-
-          console.log($('div.active')[0].id);
-
-            if($('div.active')[0].id == "dvi2")
+          if ($('div.active')[0].id == "dvi1" && self.gra1 == false) {
+            self.desenhaEstatistica1();
+            self.gra1 = true
+          }
+          if ($('div.active')[0].id == "dvi2" && self.gra2 == false) {
             self.desenhaEstatistica2();
-
-            if($('div.active')[0].id == "dvi3")
+            self.gra2 = true
+          }
+          if ($('div.active')[0].id == "dvi3" && self.gra3 == false) {
             self.desenhaEstatistica3();
-
-            if($('div.active')[0].id == "dvi4")
+            self.gra3 = true
+          }
+          if ($('div.active')[0].id == "dvi4" && self.gra4 == false) {
             self.desenhaEstatistica4();
-
+            self.gra4 = true
+          }
         });
       });
 
@@ -448,8 +557,8 @@ define(function(require) {
       });
 
 
+      self.criaResumo();
 
-       self.desenhaEstatistica1();
 
 
 

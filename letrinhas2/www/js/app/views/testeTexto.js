@@ -12,11 +12,17 @@ define(function(require) {
     modelTrue: false,
     TotalPalavas: 0,
     idPergunta: null,
+    legendas: null,
+    timeouts: null,
+
 
     /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
 
     },
+
+
+
 
     LerficheiroGravacaoEins: function() {
       var self = this;
@@ -40,10 +46,10 @@ define(function(require) {
                 'observ': null,
               };
               resolucao.respostas.push({
-                     'idPergunta' : self.idPergunta,
-                     'TotalPalavras': self.TotalPalavas,
-                     'correcao': [],
-                   });
+                'idPergunta': self.idPergunta,
+                'TotalPalavras': self.TotalPalavas,
+                'correcao': [],
+              });
 
 
               resolucoes_local2.post(resolucao, function(err, response) {
@@ -145,6 +151,11 @@ define(function(require) {
 
     },
 
+
+
+
+
+
     clickbtnConfirmarSUBGrav: function(e) {
       $('#myModalSUBGravar').modal("hide");
       $('#btnDemonstracao').hide();
@@ -162,18 +173,67 @@ define(function(require) {
     },
 
 
+    mudaPalavra: function(palavra) {
+      return function() {
+        var aux1 = parseInt(palavra) - 1;
+        var aux2 = parseInt(palavra) + 1;
+        $('#sp' + aux1).css("background-color", "#FFCC99");
+        $('#sp' + palavra).css("background-color", "#FFCC99");
+        $('#sp' + aux2).css("background-color", "#FFCC99");
+      }
+    },
+
+
     clickbtnDemonstracao: function(e) {
+      var self = this;
       $('#div1').hide();
       $('#div2').show();
-      $("#AudioPlayerProf").prop("currentTime", 0);
+      //  $("#AudioPlayerProf").attr("src", "/img/voz.mp3");
+      $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3")
+
+      setTimeout(function() {
+        $("#AudioPlayerProf").prop("currentTime", 0);
+        $("#AudioPlayerProf").trigger('play');
+      }, 300);
+
+
+      self.timeouts = [];
+
+      if (self.legendas != null)
+        for (var i = 0; i < self.legendas.length; i++) {
+          self.timeouts.push(setTimeout(self.mudaPalavra(self.legendas[i].palavra), self.legendas[i].tempo));
+        } else {
+          var maxEle = $("#txtAreaConteud > span").length;
+          var temp = 1000;
+          for (var i = 0; i < maxEle; i++) {
+            self.timeouts.push(setTimeout(self.mudaPalavra(i), temp));
+            temp = temp + 1000;
+
+          }
+        }
+
       $("#AudioPlayerProf").trigger('play');
     },
 
 
     clickbtnParar1: function(e) {
+      var self = this;
       $("#AudioPlayerProf").trigger('pause');
       $('#div2').hide();
       $('#div1').show();
+
+      var maxEle = $("#txtAreaConteud > span").length;
+
+      for (var i = 0; i < self.timeouts.length; i++) {
+        clearTimeout(self.timeouts[i]);
+      }
+
+      var sapns = $("#txtAreaConteud > span");
+      for (var i = 0; i < maxEle; i++) {
+        $('#sp' + i).css("background-color", "#FFFFFF");
+      }
+
+
     },
 
     clickbtnParar2: function(e) {
@@ -216,9 +276,9 @@ define(function(require) {
         self.modelTrue = false;
         document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
         self.LerficheiroGravacaoEins();
-            app.navigate('/pinJanela', {
-              trigger: true
-            });
+        app.navigate('/pinJanela', {
+          trigger: true
+        });
       });
     },
 
@@ -303,7 +363,7 @@ define(function(require) {
       professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
-        $('#lbNomeProf').text(profNome + " - [ " +escolaNome+" ]");
+        $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
         $('#imgProf').attr("src", url);
       });
 
@@ -325,9 +385,43 @@ define(function(require) {
           if (err) console.log(err);
           console.log(perguntasDoc);
 
+          self.legendas = perguntasDoc.legendas;
+
           $('#lbTituloTeste').text(perguntasDoc.pergunta);
+          // var textoAux = perguntasDoc.conteudo.texto;
+          // $('#txtAreaConteud').append(textoAux.replace(/\n/g, '</br>'));
+
           var textoAux = perguntasDoc.conteudo.texto;
-          $('#txtAreaConteud').append(textoAux.replace(/\n/g, '</br>'));
+
+          $('#txtAreaConteud').append(textoAux);
+          var $container = $('#txtAreaConteud'); //Adiciona ao Div
+
+
+          var words = $("#txtAreaConteud").text().split(' ');
+
+
+
+
+          $("#txtAreaConteud").html("");
+          $.each(words, function(i, val) {
+            var $span;
+            var $spanVazio;
+            if (val == "\n")
+              $span = $('</br>');
+            else
+              $span = $('<span id="sp' + i + '" data-toggle="collapse" value=" " class="SpansTxt ">' + val + '</span>');
+            // $span.css("color", "#000000");
+            // $span.css("background-color", "#FFFFFF");
+            $spanVazio = $('<span> </span>');
+            $span.appendTo($container); //Adiciona ao Div
+            $spanVazio.appendTo($container); //Adiciona ao Div
+
+          });
+
+
+
+
+
           //  self.countWords(perguntasDoc.conteudo.texto);
         });
 

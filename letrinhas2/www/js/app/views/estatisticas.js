@@ -51,23 +51,25 @@ define(function(require) {
           for (var i = 0; i < response.rows.length; i++) {
             if (response.rows[i].value.tipoCorrecao == "Texto") {
               totalTexto++;
-              somaTexto += response.rows[i].value.nota;
+              somaTexto += parseFloat(response.rows[i].value.nota);
             }
             if (response.rows[i].value.tipoCorrecao == "Lista") {
               totalLista++;
-              somaLista += response.rows[i].value.nota;
+              somaLista += parseFloat(response.rows[i].value.nota);
             }
             if (response.rows[i].value.tipoCorrecao == "Multimédia") {
               totalMultimedia++;
-              somaMultimedia += response.rows[i].value.nota;
+              somaMultimedia += parseFloat(response.rows[i].value.nota);
             }
             if (response.rows[i].value.tipoCorrecao == "Interpretação") {
               totalInterpretacao++;
-              somaInterpretacao += response.rows[i].value.nota;
+              somaInterpretacao += parseFloat(response.rows[i].value.nota);
             }
           }
           var $container = $('#divResumo'); //Adiciona ao Div
           var mediaTexto = somaTexto / totalTexto;
+          console.log(somaTexto);
+                    console.log(totalTexto);
           var mediaLista = somaLista / totalLista;
           var mediaMultimedia = somaMultimedia / totalMultimedia;
           var mediaInterpretacao = somaInterpretacao / totalInterpretacao;
@@ -85,7 +87,7 @@ define(function(require) {
           }
           var textoParaDiv = "";
           textoParaDiv = '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
-            '<span class="badge myspanStatic">Média das Notas: ' + mediaTexto.toFixed(2) + '%</span><h3> <b>Testes do tipo  [Texto]: ' +
+            '<span class="badge myspanStatic">Média das Notas: ' + mediaTexto.toFixed(2)  + '%</span><h3> <b>Testes do tipo  [Texto]: ' +
             +totalTexto + '</b></h3></li></ul>';
           /////// ///// //////
           textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +

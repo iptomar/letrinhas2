@@ -56,13 +56,30 @@
   font-size: 13pt;
 }
 
+.testMedioX{
+  font-size: 14pt;
+}
+.testMedioXs{
+  font-size: 10pt;
+}
+
 .croool {
-  position: absolute;
+      position: absolute;
       top: 175px;
       bottom: 50px;
       left: 30px;
       width: 36%;
       overflow-y: auto;
+}
+
+.tituloTestesGeral {
+style="color:#000000;
+ font-size: 23px;
+}
+
+.notaCorrecao {
+ font-size: 16px;
+ text-align: center;
 }
 
 

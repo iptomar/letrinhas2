@@ -15,8 +15,7 @@ define(function(require) {
     respostasCertas: 0,
 
     /////// Funcao executada no inicio de load da janela ////////////
-    initialize: function() {
-    },
+    initialize: function() {},
 
     onBackKeyDowns: function() {
       if (this.modelTrue == false)
@@ -41,7 +40,7 @@ define(function(require) {
         for (var i = 0; i < maxEle; i++) {
           var color = sapns[i].style.backgroundColor;
           if (color == 'rgb(0, 204, 0)')
-              respostasDadas++;
+            respostasDadas++;
         }
         var certas = 0;
         var errCor = 0;
@@ -56,11 +55,11 @@ define(function(require) {
         }
 
 
-        var erradas = (respostasDadas - certas)+ errCor;
-        var aux = (certas-erradas);
-          var nota = (aux * 100) / respostasDadas;
+        var erradas = (respostasDadas - certas) + errCor;
+        var aux = (certas - erradas);
+        var nota = (aux * 100) / respostasDadas;
         if (nota < 0)
-        nota = 0;
+          nota = 0;
         self.respostasCertas = nota.toFixed(2);
       });
     },
@@ -120,21 +119,21 @@ define(function(require) {
           });
           if (color == 'rgb(0, 204, 0)')
             certas++;
-            else
+          else
             errCor++;
         }
 
-        var  erradas = (respostasDadas - certas)+ errCor;
+        var erradas = (respostasDadas - certas) + errCor;
 
-         console.log("Errado: " + erradas);
-         console.log("certo: " + certas);
-         console.log("RespostasDadass: " + respostasDadas);
+        console.log("Errado: " + erradas);
+        console.log("certo: " + certas);
+        console.log("RespostasDadass: " + respostasDadas);
 
-       var aux = (certas-erradas);
+        var aux = (certas - erradas);
 
-          var nota = (aux * 100) / respostasDadas;
+        var nota = (aux * 100) / respostasDadas;
         if (nota < 0)
-        nota = 0;
+          nota = 0;
         resolucao.nota = nota.toFixed(2);
         console.log("Nota: " + nota.toFixed(2));
 
@@ -179,25 +178,31 @@ define(function(require) {
       "click #btnFinalizar": "clickbtnFinalizar",
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
+      "click #pik": "pik",
 
     },
 
+    pik: function(e) {
+      var self = this;
+      $('#myModalCont').modal("hide");
+      $('#myModalCont').on('hidden.bs.modal', function(e) {
+        self.modelTrue = false;
+        document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
+        app.navigate('/pinJanela', {
+          trigger: true
+        });
+      });
+    },
 
     clickbtnConfirmarSUB: function(e) {
       var self = this;
       self.modelTrue = false;
       $('#myModalSUB').modal("hide");
       $('#myModalSUB').on('hidden.bs.modal', function(e) {
+                self.GravarResolucao();
         $("#myModalCont").modal("show");
-        $("#semafro").text("Nota: "+self.respostasCertas+"%");
-        $('#myModalCont').on('hidden.bs.modal', function(e) {
-          self.modelTrue = false;
-          self.GravarResolucao();
-           document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
-               app.navigate('/pinJanela', {
-                 trigger: true
-               });
-      });
+        $("#semafro").text("Nota: " + self.respostasCertas + "%");
+
       });
     },
 
@@ -301,7 +306,7 @@ define(function(require) {
             if (val == "\n")
               $span = $('</br>');
             else
-            $span = $('<span data-toggle="collapse" value=" " class="SpansTxt ">' + val + '</span>');
+              $span = $('<span data-toggle="collapse" value=" " class="SpansTxt ">' + val + '</span>');
             $span.css("color", "#000000");
             $span.css("background-color", "#FFFFFF");
             $spanVazio = $('<span> </span>');

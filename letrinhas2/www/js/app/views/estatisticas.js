@@ -85,19 +85,19 @@ define(function(require) {
           }
           var textoParaDiv = "";
           textoParaDiv = '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
-            '<span class="badge myspanStatic">Média das Notas: ' + mediaTexto + '</span><h3> <b>Testes do tipo  [Texto]: ' +
+            '<span class="badge myspanStatic">Média das Notas: ' + mediaTexto.toFixed(2) + '%</span><h3> <b>Testes do tipo  [Texto]: ' +
             +totalTexto + '</b></h3></li></ul>';
           /////// ///// //////
           textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
-            '<span class="badge myspanStatic">Média das Notas: ' + mediaLista + '</span><h3> <b>Testes do tipo  [Lista]: ' +
+            '<span class="badge myspanStatic">Média das Notas: ' + mediaLista.toFixed(2) + '%</span><h3> <b>Testes do tipo  [Lista]: ' +
             +totalLista + '</b></h3></li></ul>';
           /////// ///// //////
           textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
-            '<span class="badge myspanStatic">Média das Notas: ' + mediaMultimedia + '</span><h3> <b>Testes do tipo  [Multimédia]: ' +
+            '<span class="badge myspanStatic">Média das Notas: ' + mediaMultimedia.toFixed(2) + '%</span><h3> <b>Testes do tipo  [Multimédia]: ' +
             +totalMultimedia + '</b></h3></li></ul>';
           /////// ///// //////
           textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
-            '<span class="badge myspanStatic">Média das Notas: ' + mediaInterpretacao + '</span><h3> <b>Testes do tipo  [Interpretação]: ' +
+            '<span class="badge myspanStatic">Média das Notas: ' + mediaInterpretacao.toFixed(2) + ' %</span><h3> <b>Testes do tipo  [Interpretação]: ' +
             +totalInterpretacao + '</b></h3></li></ul>';
 
           textoParaDiv += '<div style="height: 150px;"</div>';
@@ -111,7 +111,7 @@ define(function(require) {
 
 
 
-    //
+
     desenhaEstatistica1: function() {
       var self = this;
 
@@ -158,9 +158,9 @@ define(function(require) {
 
             datasets: [{
               label: "Nota",
-              fillColor: "rgba(255,100,100,0.2)",
-              strokeColor: "rgba(255,170,170,1)",
-              pointColor: "rgba(255,170,170,1)",
+              fillColor: "rgba(120,196,140,0.2)",
+              strokeColor: "rgba(127,212,150,1)",
+              pointColor: "rgba(127,212,150,1)",
               pointStrokeColor: "#fff",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(255,170,170,1)",
@@ -244,9 +244,9 @@ define(function(require) {
 
             datasets: [{
               label: "Nota",
-              fillColor: "rgba(255,100,100,0.2)",
-              strokeColor: "rgba(255,170,170,1)",
-              pointColor: "rgba(255,170,170,1)",
+              fillColor: "rgba(216,200,95,0.2)",
+              strokeColor: "rgba(242,200,157,1)",
+              pointColor: "rgba(216,200,95,1)",
               pointStrokeColor: "#fff",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(255,170,170,1)",
@@ -293,7 +293,7 @@ define(function(require) {
 
     desenhaEstatistica3: function() {
       var self = this;
-      console.log("dffffffffffffffffff");
+
 
       function map(doc) {
         if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.tipoCorrecao == "Multimédia") {
@@ -430,9 +430,9 @@ define(function(require) {
 
             datasets: [{
               label: "Nota",
-              fillColor: "rgba(255,100,100,0.2)",
-              strokeColor: "rgba(255,170,170,1)",
-              pointColor: "rgba(255,170,170,1)",
+              fillColor: "rgba(110,192,216,0.2)",
+              strokeColor: "rgba(145,219,242,1)",
+              pointColor: "rgba(106,172,192,1)",
               pointStrokeColor: "#fff",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(255,170,170,1)",
@@ -558,11 +558,6 @@ define(function(require) {
 
 
       self.criaResumo();
-
-
-
-
-
 
       return this;
     }

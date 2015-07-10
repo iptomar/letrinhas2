@@ -10,6 +10,7 @@ define(function(require) {
     array: [],
     filesApagar: [],
     modelTrue: false,
+    Ntentativas: 0,
 
     onBackKeyDowns: function() {
       if (this.modelTrue == false)
@@ -43,7 +44,6 @@ define(function(require) {
       var turmaNome = window.localStorage.getItem("TurmaSelecNome");
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
       var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
-      var PerguntaMultiNext = window.localStorage.getItem("PerguntaMultiNext");
 
       professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
@@ -62,6 +62,18 @@ define(function(require) {
 
       testes_local2.get(TesteTextArealizarID, function(err, testeDoc) {
         if (err) console.log(err);
+
+          var nRepeticoes = window.localStorage.getItem("nRepeticoes");
+            if (nRepeticoes == 0){
+              nRepeticoes = testeDoc.nRepeticoes - 1;
+              window.localStorage.setItem("nRepeticoes", nRepeticoes);
+            }
+            else {
+              nRepeticoes = nRepeticoes - 1;
+              window.localStorage.setItem("nRepeticoes", nRepeticoes);
+            }
+
+
 
 
         var $containerIND = $('#IndicatorsCorr');
@@ -195,10 +207,6 @@ define(function(require) {
         attachments: true
       }).then(function(perguntaDoc) {
 
-
-
-
-
         var stringTextJanela = '';
         if (inic == true)
         stringTextJanela +='<div id="' + idPergunta + '" class="item active">';
@@ -289,7 +297,39 @@ define(function(require) {
       "click #btnFinalizar": "clickbtnFinalizar",
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
+        "click #pik": "pik",
+
     },
+    pik: function(e) {
+      var self = this;
+      $('#myModalCont').modal("hide");
+      $('#myModalCont').on('hidden.bs.modal', function(e) {
+        var nRepeticoes = window.localStorage.getItem("nRepeticoes");
+
+        if (nRepeticoes == 0 )
+        {
+          self.modelTrue = false;
+          self.auxRemoveAll();
+          document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
+          if (Backbone.history.fragment != 'pinJanela') {
+            utils.loader(function() {
+              e.preventDefault();
+              self.highlight(e);
+              app.navigate('/pinJanela', {
+                trigger: true
+              });
+            });
+          }
+
+        }
+        else {
+            self.modelTrue = false;
+                location.reload();
+        }
+
+  });
+
+  },
 
     clickbtnConfirmarPIN: function(e) {
       var self = this;
@@ -324,7 +364,6 @@ define(function(require) {
         } else
           console.log(self.array[i][0] + " -- Perdeu");
       }
-
 
       var agora = new Date();
       var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
@@ -366,20 +405,8 @@ define(function(require) {
           $('#myModalSUB').on('hidden.bs.modal', function(e) {
             $("#myModalCont").modal("show");
             $("#semafro").text("Acertou " + contVENC + " pergunta(s)");
-            $('#myModalCont').on('hidden.bs.modal', function(e) {
-              self.modelTrue = false;
-              self.auxRemoveAll();
-              document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
-              if (Backbone.history.fragment != 'pinJanela') {
-                utils.loader(function() {
-                  e.preventDefault();
-                  self.highlight(e);
-                  app.navigate('/pinJanela', {
-                    trigger: true
-                  });
-                });
-              }
-            });
+            var nRepeticoes = window.localStorage.getItem("nRepeticoes");
+            $("#lbTentativas").text("Falta mais: " + nRepeticoes + " tentativa(s)");
           });
 
         }
@@ -387,6 +414,7 @@ define(function(require) {
     },
 
     clickbtnFinalizar: function(e) {
+
       var self = this;
 
       var semResposta = false;

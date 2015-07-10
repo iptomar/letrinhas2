@@ -13,6 +13,7 @@ define(function(require) {
     btns: null,
     tipoTesteSelecionado: null,
     BtnNavPress: 0,
+    countAuxBtn: 0,
 
     highlight: function(e) {
       $('.side-nav__list__item').removeClass('is-active');
@@ -48,7 +49,9 @@ define(function(require) {
       var $container2 = $('#outputTestesConteudo');
       $container2.empty();
 
-      perguntas_local2.get(perguntaDoc,{attachments: true}).then(function (testeDoc) {
+      perguntas_local2.get(perguntaDoc, {
+        attachments: true
+      }).then(function(testeDoc) {
 
         if (tipoTeste == 'Texto') { /////////////////////////////////////////TEXTO
           var txtAux = testeDoc.conteudo.texto;
@@ -64,7 +67,6 @@ define(function(require) {
           $exemp.appendTo($container2);
         }
         if (tipoTeste == 'Lista') { ////////////////////////////////////LISTAS/////
-          console.log("sorteados2");
           var colum1 = "";
           var colum2 = "";
           var colum3 = "";
@@ -96,7 +98,7 @@ define(function(require) {
 
           var construirJanela = '<div class="panel panel-primary">' +
             '<div class="panel-heading centerEX">' +
-            '<h3 class="panel-title">' + testeDoc.titulo + ' - (Perguntas: '+totalPerguntas+')</h3>' +
+            '<h3 class="panel-title">' + testeDoc.titulo + ' - (Perguntas: ' + totalPerguntas + ')</h3>' +
             '</div><h4 class="centerEX">' + testeDoc.pergunta + '</h4>';
 
           if (testeDoc.conteudo.tipoDoCorpo == "texto") {
@@ -109,55 +111,55 @@ define(function(require) {
               '<div class="panel-body fontEX2"><div class="panel panel-info centerEX">' +
               ' <div class="panel-heading"> <img src="data:image/png;base64,' + testeDoc._attachments['corpo.png'].data + '" style="height:150px;" /> ' +
               '</div></div>';
-        } else if (testeDoc.conteudo.tipoDoCorpo == "audio") {
-          construirJanela +=
-            '<div class="panel-body fontEX2"><div class="panel panel-info centerEX">' +
-            ' <div class="panel-heading">   <audio id="AudioPlayerProf" controls="controls"  style="width: 100%"></audio>' +
-            '</div></div>';
-        }
+          } else if (testeDoc.conteudo.tipoDoCorpo == "audio") {
+            construirJanela +=
+              '<div class="panel-body fontEX2"><div class="panel panel-info centerEX">' +
+              ' <div class="panel-heading">   <audio id="AudioPlayerProf" controls="controls"  style="width: 100%"></audio>' +
+              '</div></div>';
+          }
           construirJanela += '<div class="row centerEX">';
 
           //
-          var  tamanhoTotalOpc = testeDoc.conteudo.opcoes.length;
+          var tamanhoTotalOpc = testeDoc.conteudo.opcoes.length;
 
 
           var sorteados = [];
           var valorMaximo = tamanhoTotalOpc;
-          var valorMaximo2 = valorMaximo-1;
-              while (sorteados.length != valorMaximo) {
-              var sugestao = Math.round(Math.random() * valorMaximo2); // Escolher um numero ao acaso
-              while (sorteados.indexOf(sugestao) >= 0) {  // Enquanto o numero já existir, escolher outro
-                  sugestao = Math.round(Math.random() * valorMaximo2);
-              }
-              sorteados.push(sugestao); // adicionar este numero à array de numeros sorteados para futura referência
+          var valorMaximo2 = valorMaximo - 1;
+          while (sorteados.length != valorMaximo) {
+            var sugestao = Math.round(Math.random() * valorMaximo2); // Escolher um numero ao acaso
+            while (sorteados.indexOf(sugestao) >= 0) { // Enquanto o numero já existir, escolher outro
+              sugestao = Math.round(Math.random() * valorMaximo2);
             }
+            sorteados.push(sugestao); // adicionar este numero à array de numeros sorteados para futura referência
+          }
 
-            var sorteados2 = [];
-            var valorMaximo2 = tamanhoTotalOpc;
-                while (sorteados2.length != valorMaximo2) {
-                var sugestao2 = Math.ceil(Math.random() * valorMaximo2); // Escolher um numero ao acaso
-                while (sorteados2.indexOf(sugestao2) >= 0) {  // Enquanto o numero já existir, escolher outro
-                    sugestao2 = Math.ceil(Math.random() * valorMaximo2);
-                }
-                sorteados2.push(sugestao2); // adicionar este numero à array de numeros sorteados para futura referência
-              }
+          var sorteados2 = [];
+          var valorMaximo2 = tamanhoTotalOpc;
+          while (sorteados2.length != valorMaximo2) {
+            var sugestao2 = Math.ceil(Math.random() * valorMaximo2); // Escolher um numero ao acaso
+            while (sorteados2.indexOf(sugestao2) >= 0) { // Enquanto o numero já existir, escolher outro
+              sugestao2 = Math.ceil(Math.random() * valorMaximo2);
+            }
+            sorteados2.push(sugestao2); // adicionar este numero à array de numeros sorteados para futura referência
+          }
           for (var y = 0; y < tamanhoTotalOpc; y++) {
 
-            if(tamanhoTotalOpc == 3)
-            construirJanela += '<div class="col-md-4">';
-            else  if(tamanhoTotalOpc == 2)
-            construirJanela += '<div class="col-md-6">';
-            else  if(tamanhoTotalOpc == 4)
-            construirJanela += '<div class="col-md-3">';
+            if (tamanhoTotalOpc == 3)
+              construirJanela += '<div class="col-md-4">';
+            else if (tamanhoTotalOpc == 2)
+              construirJanela += '<div class="col-md-6">';
+            else if (tamanhoTotalOpc == 4)
+              construirJanela += '<div class="col-md-3">';
 
             if (testeDoc.conteudo.opcoes[y].tipo == "texto") {
 
-             construirJanela += '<button type="button" class="btn btn-info btn-lg btn-block disabled"> ' +
+              construirJanela += '<button type="button" class="btn btn-info btn-lg btn-block disabled"> ' +
                 testeDoc.conteudo.opcoes[sorteados[y]].conteudo + '</button></div>';
             } else if (testeDoc.conteudo.opcoes[y].tipo == "imagem") {
               var auxY = y + 1;
               construirJanela += '<button type="button" class="btn btn-info btn-lg btn-block disabled"> ' +
-                '<img id="imgOp' + auxY + '" src="data:image/png;base64,' + testeDoc._attachments['op'+sorteados2[y]+'.png'].data + '" style="height:110px;" class="pull-center"/></button></div>';
+                '<img id="imgOp' + auxY + '" src="data:image/png;base64,' + testeDoc._attachments['op' + sorteados2[y] + '.png'].data + '" style="height:110px;" class="pull-center"/></button></div>';
             }
           }
 
@@ -167,17 +169,17 @@ define(function(require) {
           $exemp.appendTo($container2);
 
           if (testeDoc.conteudo.tipoDoCorpo == "audio") {
-          perguntas_local2.getAttachment(testeDoc._id, 'corpo.mp3', function(err2, mp3Aud) {
-            if (err2) console.log(err2);
-            self.GravarSOMfiles('corpo.mp3', mp3Aud, function() {
-              console.log('FUNCIONA');
-              $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/corpo.mp3")
+            perguntas_local2.getAttachment(testeDoc._id, 'corpo.mp3', function(err2, mp3Aud) {
+              if (err2) console.log(err2);
+              self.GravarSOMfiles('corpo.mp3', mp3Aud, function() {
+                console.log('FUNCIONA');
+                $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/corpo.mp3")
 
-            }, function(err) {
-              console.log("DEU ERRO" + err);
+              }, function(err) {
+                console.log("DEU ERRO" + err);
+              });
             });
-          });
-        }
+          }
 
         }
         if (tipoTeste == 'Interpretação') { ////////////////////////////////////multimedia/////
@@ -200,25 +202,37 @@ define(function(require) {
     mostrarListaTestes: function(tipoTeste) {
       var self = this;
       $('#outputTestes').empty();
+      var $container = $('#outputTestes');
+         var $btn = $(
+           '<h2> Sem resultados </h2>');
+         $btn.appendTo($container); //Adiciona ao Div
+         window.localStorage.setItem("TesteTextArealizarID", 'null'); //enviar variavel
+         window.localStorage.setItem("nRepeticoes", 0);
+
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
-
-
+      self.countAuxBtn = 0;
       testes_local2.allDocs({
         include_docs: true,
         attachments: false
       }, function(err, testesDoc) {
         if (err) console.log(err);
         for (var i = 0; i < testesDoc.rows.length; i++) {
-          console.log();
-          if(testesDoc.rows[i].doc.estado == true)
-          {
+          var anoEsc = $("#DropDAno").text();
+          if (anoEsc != "Todos") {
+            if (testesDoc.rows[i].doc.estado == true && testesDoc.rows[i].doc.anoEscolar == anoEsc) {
 
-          var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
-          perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
-         }
-      }
+              var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
+              perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+            }
+          } else {
+            if (testesDoc.rows[i].doc.estado == true) {
+              var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
+              perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+            }
+          }
+        }
 
-    //  $('#' + self.ponteiro).click();
+        //  $('#' + self.ponteiro).click();
       });
 
       function obtemDadosParaRow(disciplinaSelecionada, i, perguntaSelc) {
@@ -228,6 +242,12 @@ define(function(require) {
           }
           var $container = $('#outputTestes');
           if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
+            if  (self.countAuxBtn == 0)
+            {
+               $('#outputTestes').empty();
+               self.countAuxBtn =1;
+            }
+
             var img;
             if (tipoTeste == "Texto")
               img = "testeTexto"
@@ -239,8 +259,8 @@ define(function(require) {
               img = "testInterpretacao"
 
             var $btn = $(
-              '<button id="' + perguntaSelc.id + '"  name="' + perguntaDoc._id + '"  type="button" style="height:62px;"" class="btn btn-lg btn-block btn-teste activeXF " >' +
-              ' <img src="img/' + img + '.png"  style="height:32px;" > ' +
+              '<button id="' + perguntaSelc.id + '"  name="' + perguntaDoc._id + '"  type="button" style="height:62px; text-align: left;" class="btn btn-lg btn-block btn-teste activeXF" >' +
+              ' &nbsp;&nbsp;&nbsp;&nbsp;<img src="img/' + img + '.png"  style="height:32px;" > ' +
               perguntaSelc.doc.titulo + '</button>');
             $btn.appendTo($container); //Adiciona ao Div
 
@@ -255,14 +275,13 @@ define(function(require) {
               $(this).removeClass("activeXF");
               $(this).addClass("btn-primary");
               window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
-              window.localStorage.setItem("PerguntaMultiNext", 0); //enviar variavel
-             self.criarDemostracao(tipoTeste, $btn[0].name, perguntaSelc.doc.perguntas.length);
+              window.localStorage.setItem("nRepeticoes", 0);
+              self.criarDemostracao(tipoTeste, $btn[0].name, perguntaSelc.doc.perguntas.length);
             });
             //Selecionar o 1º Item
-            if (self.ponteiro == null)
-            {
+            if (self.ponteiro == null) {
               console.log(perguntaSelc.id);
-              $('#' +  perguntaSelc.id).click();
+              $('#' + perguntaSelc.id).click();
               self.ponteiro = true;
             }
           }
@@ -275,7 +294,16 @@ define(function(require) {
       var self = this
       $('#outputTestes').empty();
       $('#outputTestesConteudo').empty();
+
+      $('#outputTestes').empty();
+      var $container = $('#outputTestes');
+         var $btn = $(
+           '<h2> Sem resultados </h2>');
+         $btn.appendTo($container); //Adiciona ao Div
+         window.localStorage.setItem("TesteTextArealizarID", 'null'); //enviar variavel
+         window.localStorage.setItem("nRepeticoes", 0);
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
+      self.countAuxBtn = 0;
       var tipoTeste = self.tipoTesteSelecionado;
 
       testes_local2.search({
@@ -285,9 +313,18 @@ define(function(require) {
       }).then(function(testesDoc) {
 
         for (var i = 0; i < testesDoc.rows.length; i++) {
-          var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
-          if(testesDoc.rows[i].doc.estado == true)
-          perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+          var anoEsc = $("#DropDAno").text();
+          if (anoEsc != "Todos") {
+            if (testesDoc.rows[i].doc.estado == true && testesDoc.rows[i].doc.anoEscolar == anoEsc) {
+              var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
+              perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+            }
+          } else {
+            if (testesDoc.rows[i].doc.estado == true) {
+              var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
+              perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+            }
+          }
         }
 
 
@@ -302,6 +339,11 @@ define(function(require) {
             console.log(errx);
           }
           if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
+            if  (self.countAuxBtn == 0)
+            {
+               $('#outputTestes').empty();
+               self.countAuxBtn =1;
+            }
 
             var $container = $('#outputTestes');
             var img;
@@ -315,10 +357,10 @@ define(function(require) {
               img = "testInterpretacao"
 
             var $btn = $(
-              '<button id="' + perguntaSelc.id + '"  name="' + perguntaDoc._id + '"  type="button" style="height:62px;"" class="btn btn-lg btn-block btn-teste activeXF " >' +
-              ' <img src="img/' + img + '.png"  style="height:32px;" > ' +
+              '<button id="' + perguntaSelc.id + '"  name="' + perguntaDoc._id + '"  type="button" style="height:62px; text-align: left;" class="btn btn-lg btn-block btn-teste activeXF " >' +
+              ' &nbsp;&nbsp;&nbsp;&nbsp;<img src="img/' + img + '.png"  style="height:32px;" > ' +
               perguntaSelc.doc.titulo + '</button>');
-              $btn.appendTo($container); //Adiciona ao Div
+            $btn.appendTo($container); //Adiciona ao Div
 
             $("#" + perguntaSelc.id).click(function() {
               var $btn = $(this); // O jQuery passa o btn clicado pelo this
@@ -330,16 +372,15 @@ define(function(require) {
               self.btns = $(this);
               $(this).removeClass("activeXF");
               $(this).addClass("btn-primary");
-              window.localStorage.setItem("PerguntaMultiNext", 0); //enviar variavel
               window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
+              window.localStorage.setItem("nRepeticoes", 0);
               self.criarDemostracao(tipoTeste, $btn[0].name, perguntaSelc.doc.perguntas.length);
             });
             console.log(self.ponteiro);
             //Selecionar o 1º Item
-            if (self.ponteiro == null)
-            {
+            if (self.ponteiro == null) {
               console.log(perguntaSelc.id);
-              $('#' +  perguntaSelc.id).click();
+              $('#' + perguntaSelc.id).click();
               self.ponteiro = true;
             }
           }
@@ -394,13 +435,15 @@ define(function(require) {
       "click #btnNavTurmas": "clickbtnNavTurmas",
       "click #btnNavAlunos": "clickbtnNavAlunos",
       "click #btnPesquisar": "clickbtnPesquisar",
+
+
+
     },
 
     clickbtnPesquisar: function(e) {
       var self = this;
       var pesquisa = $('#txtBoxPesquisa').val();
-      if (pesquisa != "")
-      {
+      if (pesquisa != "") {
         self.ponteiro = null;
         self.pesquisarEcriarBTN(pesquisa);
       }
@@ -550,7 +593,7 @@ define(function(require) {
       e.stopPropagation();
       e.preventDefault();
       console.log(self.tipoTesteSelecionado);
-
+      if (window.localStorage.getItem("TesteTextArealizarID") != "null")
       if (self.tipoTesteSelecionado == 'Texto') {
         if (Backbone.history.fragment != 'testeTexto') {
           utils.loader(function() {
@@ -596,7 +639,7 @@ define(function(require) {
 
     render: function() {
       this.$el.html(template({}));
-
+      var self = this;
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var escolaNome = window.localStorage.getItem("EscolaSelecionadaNome");
@@ -612,7 +655,7 @@ define(function(require) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
 
-        $('#titleBarlb').text("Escolher Teste de: "+discplinaSelecionada);
+        $('#titleBarlb').text("Escolher Teste de: " + discplinaSelecionada);
         if (discplinaSelecionada == 'Português') {
           $('#imgDisciplinaIcon').attr("src", "img/portugues.png");
         }
@@ -640,7 +683,20 @@ define(function(require) {
         $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
         $('#imgAluno').attr("src", url);
         $("#btnPesquisar").addClass("disabled");
+
+        $("#DropDAno").text("Todos");
+        $("#DropDAno").val("Todos");
+        $(".dropdown-menu li a").click(function() {
+          $("#DropDAno").text($(this).text());
+          $("#DropDAno").val($(this).text());
+          self.ponteiro = null;
+          $('#outputTestes').empty();
+          $('#outputTestesConteudo').empty();
+          self.mostrarListaTestes(self.tipoTesteSelecionado);
+        });
       });
+
+
 
       return this;
     }

@@ -14,6 +14,7 @@ define(function(require) {
     idPergunta: null,
     legendas: null,
     timeouts: null,
+    timeoutsX: null,
 
 
     /////// Funcao executada no inicio de load da janela ////////////
@@ -188,31 +189,30 @@ define(function(require) {
       var self = this;
       $('#div1').hide();
       $('#div2').show();
-      //  $("#AudioPlayerProf").attr("src", "/img/voz.mp3");
-      $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3")
+        // $("#AudioPlayerProf").attr("src", "/img/voz.mp3");
+      // $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3")
 
-      setTimeout(function() {
-        $("#AudioPlayerProf").prop("currentTime", 0);
-        $("#AudioPlayerProf").trigger('play');
-      }, 300);
+      // setTimeout(function() {
+      //   $("#AudioPlayerProf").prop("currentTime", 0);
+      //   $("#AudioPlayerProf").trigger('play');
+      // }, 300);
 
 
-      self.timeouts = [];
 
-      if (self.legendas != null)
-        for (var i = 0; i < self.legendas.length; i++) {
-          self.timeouts.push(setTimeout(self.mudaPalavra(self.legendas[i].palavra), self.legendas[i].tempo));
-        } else {
-          var maxEle = $("#txtAreaConteud > span").length;
-          var temp = 1000;
-          for (var i = 0; i < maxEle; i++) {
-            self.timeouts.push(setTimeout(self.mudaPalavra(i), temp));
-            temp = temp + 1000;
-
-          }
-        }
-
-      $("#AudioPlayerProf").trigger('play');
+      // if (self.legendas != null)
+      //   for (var i = 0; i < self.legendas.length; i++) {
+      //     self.timeouts.push(setTimeout(self.mudaPalavra(self.legendas[i].palavra), self.legendas[i].tempo));
+      //   } else {
+      //     var maxEle = $("#txtAreaConteud > span").length;
+      //     var temp = 1000;
+      //     for (var i = 0; i < maxEle; i++) {
+      //       self.timeouts.push(setTimeout(self.mudaPalavra(i), temp));
+      //       temp = temp + 1000;
+      //
+      //     }
+      //   }
+      //
+       $("#AudioPlayerProf").trigger('play');
     },
 
 
@@ -221,17 +221,17 @@ define(function(require) {
       $("#AudioPlayerProf").trigger('pause');
       $('#div2').hide();
       $('#div1').show();
-
-      var maxEle = $("#txtAreaConteud > span").length;
-
-      for (var i = 0; i < self.timeouts.length; i++) {
-        clearTimeout(self.timeouts[i]);
-      }
-
-      var sapns = $("#txtAreaConteud > span");
-      for (var i = 0; i < maxEle; i++) {
-        $('#sp' + i).css("background-color", "#FFFFFF");
-      }
+      //
+      // var maxEle = $("#txtAreaConteud > span").length;
+      //
+      // for (var i = 0; i < self.timeouts.length; i++) {
+      //   clearTimeout(self.timeouts[i]);
+      // }
+      //
+      // var sapns = $("#txtAreaConteud > span");
+      // for (var i = 0; i < maxEle; i++) {
+      //   $('#sp' + i).css("background-color", "#FFFFFF");
+      // }
 
 
     },
@@ -431,6 +431,73 @@ define(function(require) {
           self.GravarSOMfiles('voz.mp3', mp3Aud, function() {
             console.log('FUNCIONA');
             $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3")
+
+  // $("#AudioPlayerProf").attr("src", "/img/voz.mp3");
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //           self.timeoutsX = [];
+  //           var counter = 0;
+  //           var pause = false;
+  //
+  //
+  //           for (var i = 0; i < self.legendas.length; i++) {
+  //             self.timeoutsX.push({
+  //               'call': function(cb) {
+  //
+  //                 var palavra = self.legendas[counter].palavra;
+  //                 // console.log(self.legendas[counter]);
+  //                 // //... trabalho aqui
+  //                 var aux1 = parseInt(palavra) - 1;
+  //                 var aux2 = parseInt(palavra) + 1;
+  //                  $('#sp' + aux1).css("background-color", "#FFCC99");
+  //                 $('#sp' + palavra).css("background-color", "#FFCC99");
+  //                  $('#sp' + aux2).css("background-color", "#FFCC99");
+  //
+  //
+  //                 console.log(self.legendas[counter].palavra);
+  //                 console.log( self.legendas[counter].tempo);
+  //                 console.log("------------------------");
+  //
+  //
+  //                 cb();
+  //               },
+  //
+  //                'time': self.legendas[i].tempo
+  //             //  'time': self.legendas[counter].tempo * (self.legendas.length - i)
+  //             });
+  //           }
+  //
+  //
+  //
+  //           function run() {
+  //             if (counter < self.timeoutsX.length && pause == false) {
+  //               setTimeout(function() {
+  //                 self.timeoutsX[counter].call(function() {
+  //                   counter++;
+  //                   run();
+  //                 });
+  //               }, self.legendas[counter].tempo);
+  //             }
+  //           }
+  //
+  // $("#AudioPlayerProf").bind("play", function() {
+  //   pause = false;
+  //         run();
+  //         console.log("sssss");
+  // });
+  //
+  // $("#AudioPlayerProf").bind("pause", function() {
+  //         pause = true;
+  //         console.log("sssddddss");
+  // });
+
 
             $("#AudioPlayerProf").bind("ended", function() {
               $('#btnParar1').click();

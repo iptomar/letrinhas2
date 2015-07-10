@@ -12,8 +12,7 @@ define(function(require) {
     triggerSelec: false,
     aux: null,
 
-    initialize: function() {
-    },
+    initialize: function() {},
 
 
     convert_n2d: function(n) {
@@ -97,6 +96,20 @@ define(function(require) {
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
       "click #BTOpcPopOver1": "clickBTOpcPopOver1",
       "click #BTOpcPopOver2": "clickBTOpcPopOver2",
+      "click #lessBtn": "lessBtn",
+      "click #moreBtn": "moreBtn"
+
+    },
+
+    lessBtn: function(e) {
+      console.log("asdsadasd");
+      if (parseInt($("#LBCNota").val()) != 0)
+        $("#LBCNota").val((parseFloat($("#LBCNota").val()) - 0.10).toFixed(2));
+    },
+
+    moreBtn: function(e) {
+      if (parseInt($("#LBCNota").val()) != 100)
+        $("#LBCNota").val((parseFloat($("#LBCNota").val()) + 0.10).toFixed(2));
     },
 
     clickBTOpcPopOver1: function(e) {
@@ -105,7 +118,7 @@ define(function(require) {
       var tipo = clickedEl.attr("name");
       self.aux.popover('hide').attr('value', tipo).css('color', '#FF0000');
       self.triggerSelec = false;
-      $("#AudioPlayerAluno").prop("currentTime",$("#AudioPlayerAluno").prop("currentTime")-1);
+      $("#AudioPlayerAluno").prop("currentTime", $("#AudioPlayerAluno").prop("currentTime") - 1);
       $("#AudioPlayerAluno").trigger('play');
       $('body').unbind('touchmove')
     },
@@ -116,7 +129,7 @@ define(function(require) {
       var tipo = clickedEl.attr("name");
       self.aux.popover('hide').attr('value', tipo).css('color', '#3399FF');
       self.triggerSelec = false;
-      $("#AudioPlayerAluno").prop("currentTime",$("#AudioPlayerAluno").prop("currentTime")-1);
+      $("#AudioPlayerAluno").prop("currentTime", $("#AudioPlayerAluno").prop("currentTime") - 1);
       $("#AudioPlayerAluno").trigger('play');
       $('body').unbind('touchmove')
     },
@@ -126,123 +139,124 @@ define(function(require) {
       $('#myModalSUB').modal("hide");
       $('#myModalSUB').on('hidden.bs.modal', function(e) {
 
-          var plvr, categ, erro;
-          //array para receber os items (palavra e erro)
-          var conteudoResultado = new Array();
-          //devolve todas as palavras da classe
-          var todasPalavras = document.getElementsByClassName("picavel");
-          var a = 0;
+        var plvr, categ, erro;
+        //array para receber os items (palavra e erro)
+        var conteudoResultado = new Array();
+        //devolve todas as palavras da classe
+        var todasPalavras = document.getElementsByClassName("picavel");
+        var a = 0;
 
-          for (var i = 0; i < todasPalavras.length; i++) {
-            var valor = $(todasPalavras[i]).attr("value");
+        for (var i = 0; i < todasPalavras.length; i++) {
+          var valor = $(todasPalavras[i]).attr("value");
 
-            if (valor != '') {
-              plvr = $(todasPalavras[i]).text();
-              //selecionar a categoria do erro (Exatidão / fluidez)
-              switch (parseInt((valor).charAt(0))) {
-                case 1:
-                  categ = "Exatidão";
-                  break;
-                case 2:
-                  categ = "Fluidez";
-                  break;
-              }
-              //O erro em si.
-              switch (parseInt($(todasPalavras[i]).attr("value"))) {
-                case 11:
-                  erro = "Substituição de palavras";
-                  break;
-                case 13:
-                  erro = "Adições";
-                  break;
-                case 14:
-                  erro = "Omissões de letras";
-                  break;
-                case 15:
-                  erro = "Omissões de sílabas";
-                  break;
-                case 16:
-                  erro = "Omissões de palavras";
-                  break;
-                case 17:
-                  erro = "Inversões";
-                  break;
-                case 21:
-                  erro = "Vacilação";
-                  break;
-                case 22:
-                  erro = "Repetições";
-                  break;
-                case 23:
-                  erro = "Soletração";
-                  break;
-                case 24:
-                  erro = "Fragmentação de palavras";
-                  break;
-                case 25:
-                  erro = "Retificação espontânea";
-                  break;
-              }
-
-              //mini array de 4 campos
-              var item = {
-                'palavra': plvr,
-                'categoria': categ,
-                'erro': erro,
-                'posicao': $(todasPalavras[i]).attr("id")
-              };
-
-              //colocar o item no array
-              conteudoResultado[a] = item;
-              a++;
+          if (valor != '') {
+            plvr = $(todasPalavras[i]).text();
+            //selecionar a categoria do erro (Exatidão / fluidez)
+            switch (parseInt((valor).charAt(0))) {
+              case 1:
+                categ = "Exatidão";
+                break;
+              case 2:
+                categ = "Fluidez";
+                break;
             }
+            //O erro em si.
+            switch (parseInt($(todasPalavras[i]).attr("value"))) {
+              case 11:
+                erro = "Substituição de palavras";
+                break;
+              case 13:
+                erro = "Adições";
+                break;
+              case 14:
+                erro = "Omissões de letras";
+                break;
+              case 15:
+                erro = "Omissões de sílabas";
+                break;
+              case 16:
+                erro = "Omissões de palavras";
+                break;
+              case 17:
+                erro = "Inversões";
+                break;
+              case 21:
+                erro = "Vacilação";
+                break;
+              case 22:
+                erro = "Repetições";
+                break;
+              case 23:
+                erro = "Soletração";
+                break;
+              case 24:
+                erro = "Fragmentação de palavras";
+                break;
+              case 25:
+                erro = "Retificação espontânea";
+                break;
+            }
+
+            //mini array de 4 campos
+            var item = {
+              'palavra': plvr,
+              'categoria': categ,
+              'erro': erro,
+              'posicao': $(todasPalavras[i]).attr("id")
+            };
+
+            //colocar o item no array
+            conteudoResultado[a] = item;
+            a++;
           }
+        }
 
 
+        //Data da correção
+        var agora = new Date();
+        var tempoSeg = $('#AudioPlayerAluno').prop("duration");
+
+        //retorna o tempo de duração da leitura em segundos,
+        //arredondando ao ineiro mais próximo
+        var tempoSeg = Math.round($("#AudioPlayerAluno").prop("duration"));
+        //(plm) palavras lidas por minuto (não necessário por enquanto)
+        //var plm = Math.roud((totalPalavras*60/tempoSeg));
+        //palavras corretamente lidas (pcl)
+        var pcl = self.totalPalavras - self.totalPalavrasErradas;
+        //Velocidade de leitura (VL)
+        var vl = Math.round((pcl * 60 / tempoSeg));
+
+        //Fazer o update
+        var CorrID = window.localStorage.getItem("CorrecaoID");
+        resolucoes_local2.get(CorrID, function(err, docmnt) {
+          // //total de palavras
+          docmnt.respostas[0].TotalPalavras = self.totalPalavras;
+          // //conteúdo onde estão identificadas as palavras erradas
+          docmnt.respostas[0].correcao = conteudoResultado;
           //Data da correção
-          var agora = new Date();
-          var tempoSeg = $('#AudioPlayerAluno').prop("duration");
+          docmnt.respostas[0].dataCorr = agora;
+          //estado para corrigido!
+          console.log(conteudoResultado);
 
-          //retorna o tempo de duração da leitura em segundos,
-          //arredondando ao ineiro mais próximo
-          var tempoSeg = Math.round($("#AudioPlayerAluno").prop("duration"));
-          //(plm) palavras lidas por minuto (não necessário por enquanto)
-          //var plm = Math.roud((totalPalavras*60/tempoSeg));
-          //palavras corretamente lidas (pcl)
-          var pcl = self.totalPalavras - self.totalPalavrasErradas;
-          //Velocidade de leitura (VL)
-          var vl = Math.round((pcl * 60 / tempoSeg));
+          var calcNota = Math.round((a / self.totalPalavras) * 100);
+          var nota = (100 - calcNota);
+          docmnt.nota = $('#LBCNota').val();
+          // docmnt.nota = nota;
+          //Velocidade da leitura
+          docmnt.respostas[0].velocidade = vl;
 
-          //Fazer o update
-          var CorrID = window.localStorage.getItem("CorrecaoID");
-          resolucoes_local2.get(CorrID, function(err, docmnt) {
-            // //total de palavras
-            docmnt.respostas[0].TotalPalavras = self.totalPalavras;
-            // //conteúdo onde estão identificadas as palavras erradas
-            docmnt.respostas[0].correcao = conteudoResultado;
-            //Data da correção
-            docmnt.respostas[0].dataCorr = agora;
-            //estado para corrigido!
-            console.log(conteudoResultado);
-
-            var calcNota = Math.round((a / self.totalPalavras) * 100);
-            var nota=  (100 - calcNota);
-            docmnt.nota = nota;
-            //Velocidade da leitura
-            docmnt.respostas[0].velocidade = vl;
-
-            //actualizar o documento (correcao)
-            resolucoes_local2.put(docmnt, CorrID, docmnt._rev, function(err, response) {
-              if (err) {
-                console.log('Correcao ' + err + ' erro');
-              } else {
-                console.log('Parabens InseridoCorrecao');
-              }
-            });
-
+          //actualizar o documento (correcao)
+          resolucoes_local2.put(docmnt, CorrID, docmnt._rev, function(err, response) {
+            if (err) {
+              console.log('Correcao ' + err + ' erro');
+            } else {
+              console.log('Parabens InseridoCorrecao');
+            }
           });
 
-       window.history.back();
+        });
+
+        window.history.back();
       });
     },
 
@@ -281,7 +295,7 @@ define(function(require) {
         var tempoSegProf = $('#AudioPlayerProf').prop("duration");
         var totalErrado = exatidaoTotal + fluidezTotal;
         var calcNota = Math.round((totalErrado / self.totalPalavras) * 100);
-        var notaFinal=  (100 - calcNota);
+        var notaFinal = (100 - calcNota);
 
         $('#LBCtempoAluno').html("Tempo do Aluno: </br>" +
           "&nbsp;&nbsp;&nbsp;&nbsp-Duração: " + Math.round(tempoSeg) + " segundos </br>" +
@@ -292,8 +306,7 @@ define(function(require) {
           "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: " + (Math.round(60 * self.totalPalavras / tempoSegProf)) + " plv/min.");
         $('#myModalSUB').modal("show");
 
-
-        $('#LBCNota').html("Nota: "+notaFinal+" %");
+          $('#LBCNota').val(notaFinal.toFixed(2));
       }
     },
 
@@ -444,28 +457,31 @@ define(function(require) {
 
               var color = $(this).css('color');
               if (color == 'rgb(255, 153, 0)' || color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
-              {if (self.triggerSelec == false){
-                $(this).css("color", "#000000");
-                $meuSpan.popover('destroy');
-                $meuSpan.attr("value", " ");
-                self.totalPalavrasErradas--;
-                self.verificaPalavras();
-                self.triggerSelec = false;
-                $('body').unbind('touchmove');
-                self.aux = null;
-              }
+              {
+                if (self.triggerSelec == false) {
+                  $(this).css("color", "#000000");
+                  $meuSpan.popover('destroy');
+                  $meuSpan.attr("value", " ");
+                  self.totalPalavrasErradas--;
+                  self.verificaPalavras();
+                  self.triggerSelec = false;
+                  $('body').unbind('touchmove');
+                  self.aux = null;
+                }
               } else if (self.triggerSelec == false) {
                 $("#AudioPlayerAluno").trigger('pause');
                 $(this).css("color", "#FF9900");
                 $meuSpan.popover('show');
-                $('body').bind('touchmove', function(e){e.preventDefault()});
+                $('body').bind('touchmove', function(e) {
+                  e.preventDefault()
+                });
                 self.totalPalavrasErradas++;
                 self.verificaPalavras();
                 self.triggerSelec = true;
                 self.aux = $meuSpan;
               }
             });
-            self.totalPalavrasErradas=0;
+            self.totalPalavrasErradas = 0;
           });
         });
       });

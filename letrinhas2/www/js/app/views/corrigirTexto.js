@@ -19,8 +19,7 @@ define(function(require) {
       $(e.target).parent().addClass('is-active');
     },
 
-    initialize: function() {
-    },
+    initialize: function() {},
 
 
     AnalisarTexto: function() {
@@ -47,9 +46,9 @@ define(function(require) {
       };
     },
 
-    convert_n2d: function(n){
-        if(n<10) return("0"+n);
-        else return(""+n);
+    convert_n2d: function(n) {
+      if (n < 10) return ("0" + n);
+      else return ("" + n);
     },
 
     readableDuration: function(seconds) {
@@ -78,9 +77,9 @@ define(function(require) {
           var color = sapns[i].style.color;
           if (color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
           {
-             var cenas = sapns[i].getAttribute("value");
-             palavrasErr++;
-             otherDoc.respostas[0].correcao.push({
+            var cenas = sapns[i].getAttribute("value");
+            palavrasErr++;
+            otherDoc.respostas[0].correcao.push({
               'palavra': sapns[i].innerText,
               'categoria': self.converterStingEmTexto(cenas).categoria,
               'erro': self.converterStingEmTexto(cenas).erro,
@@ -89,8 +88,9 @@ define(function(require) {
           }
         }
         var exPer = Math.round((palavrasErr / maxEle) * 100);
-        var nota=  (100 - exPer);
-          otherDoc.nota = nota;
+        var nota = (100 - exPer);
+        otherDoc.nota = $('#LBCNota').val();
+
 
         var pcl = maxEle - palavrasErr;
         otherDoc.respostas[0].TotalPalavras = maxEle;
@@ -200,6 +200,20 @@ define(function(require) {
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
       "click #BTOpcPopOver1": "clickBTOpcPopOver1",
       "click #BTOpcPopOver2": "clickBTOpcPopOver2",
+      "click #lessBtn": "lessBtn",
+      "click #moreBtn": "moreBtn"
+
+    },
+
+    lessBtn: function(e) {
+      console.log("asdsadasd");
+      if (parseInt($("#LBCNota").val()) != 0)
+        $("#LBCNota").val((parseFloat($("#LBCNota").val()) - 0.10).toFixed(2));
+    },
+
+    moreBtn: function(e) {
+      if (parseInt($("#LBCNota").val()) != 100)
+        $("#LBCNota").val((parseFloat($("#LBCNota").val()) + 0.10).toFixed(2));
     },
 
     clickBTOpcPopOver1: function(e) {
@@ -208,7 +222,7 @@ define(function(require) {
       var tipo = clickedEl.attr("name");
       self.aux.popover('hide').attr('value', tipo).css('color', '#FF0000');
       self.triggerSelecionado = false;
-      $("#AudioPlayerAluno").prop("currentTime",$("#AudioPlayerAluno").prop("currentTime")-1);
+      $("#AudioPlayerAluno").prop("currentTime", $("#AudioPlayerAluno").prop("currentTime") - 1);
       $("#AudioPlayerAluno").trigger('play');
       $('body').unbind('touchmove')
     },
@@ -219,7 +233,7 @@ define(function(require) {
       var tipo = clickedEl.attr("name");
       self.aux.popover('hide').attr('value', tipo).css('color', '#3399FF');
       self.triggerSelecionado = false;
-      $("#AudioPlayerAluno").prop("currentTime",$("#AudioPlayerAluno").prop("currentTime")-1);
+      $("#AudioPlayerAluno").prop("currentTime", $("#AudioPlayerAluno").prop("currentTime") - 1);
       $("#AudioPlayerAluno").trigger('play');
       $('body').unbind('touchmove')
     },
@@ -228,7 +242,7 @@ define(function(require) {
     clickbtnConfirmarSUB: function(e) {
       var self = this;
       self.InsertCorrecao(window.localStorage.getItem("CorrecaoID"));
-      ///////////////////    document.removeEventListener("backbutton", onBack, false); ///RETIRAR EVENTO DO BOTAO
+      /////////////////    document.removeEventListener("backbutton", onBack, false); ///RETIRAR EVENTO DO BOTAO
       $('#myModalSUB').modal("hide");
       $('#myModalSUB').on('hidden.bs.modal', function(e) {
       window.history.back();
@@ -278,7 +292,7 @@ define(function(require) {
         var a2 = auxAnalisar.fluidez;
         var totalErrado = a1 + a2;
         var calcNota = Math.round((totalErrado / palavrasTotal) * 100);
-        var notaFinal=  (100 - calcNota);
+        var notaFinal = (100 - calcNota);
 
         $('#LBCtempoAluno').html("Tempo do Aluno: </br>" +
           "&nbsp;&nbsp;&nbsp;&nbsp-Duração: " + self.readableDuration(tempoSeg) + " </br>" +
@@ -288,7 +302,7 @@ define(function(require) {
           "&nbsp;&nbsp;&nbsp;&nbsp-Duração: " + self.readableDuration(tempoSegProf) + " </br>" +
           "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: " + (Math.round(60 * palavrasTotal / tempoSegProf)) + " ");
 
-          $('#LBCNota').html("Nota: "+notaFinal+" %");
+        $('#LBCNota').val(notaFinal.toFixed(2));
 
       }
     },
@@ -342,7 +356,7 @@ define(function(require) {
         alunos_local2.get(correcaoDoc.id_Aluno, function(err, alunoDoc) {
           if (err) console.log(err);
           $('#lbNomeAluno').text("Teste Realizado por: " + alunoDoc.nome);
-          $("#LBrelaAluno").text("Aluno: "+alunoDoc.nome);
+          $("#LBrelaAluno").text("Aluno: " + alunoDoc.nome);
         });
         ////////////////////////////////
         resolucoes_local2.getAttachment(correcaoID, 'gravacao.amr', function(err2, DataAudio) {
@@ -358,14 +372,15 @@ define(function(require) {
 
         testes_local2.get(correcaoDoc.id_Teste, function(err, testeDoc) {
           if (err) console.log(err);
-          $('#titleTestePagina').text(testeDoc.titulo+ " - "+
-                                        self.convert_n2d(data.getDate())+
-                                        "/"+ self.convert_n2d(data.getMonth()+1)+
-                                        "/"+ self.convert_n2d(data.getFullYear())+
-                                        " às "+ self.convert_n2d(data.getHours())+
-                                        ":"+ self.convert_n2d(data.getMinutes())+
-                                        ":"+ self.convert_n2d(data.getSeconds()));
-          $('#LBrelaTitulo').text("Titulo: "+testeDoc.titulo);
+
+          $('#titleTestePagina').text(testeDoc.titulo + " - " +
+            self.convert_n2d(data.getDate()) +
+            "/" + self.convert_n2d(data.getMonth() + 1) +
+            "/" + self.convert_n2d(data.getFullYear()) +
+            " às " + self.convert_n2d(data.getHours()) +
+            ":" + self.convert_n2d(data.getMinutes()) +
+            ":" + self.convert_n2d(data.getSeconds()));
+          $('#LBrelaTitulo').text("Titulo: " + testeDoc.titulo);
 
 
           perguntas_local2.getAttachment(testeDoc.perguntas[0], 'voz.mp3', function(err2, DataImg) {
@@ -374,7 +389,7 @@ define(function(require) {
               console.log('FUNCIONA VOZ PROF');
               $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3");
               $("#AudioPlayerProf").trigger('load');
-                $("#AudioPlayerProf").trigger('play');
+              $("#AudioPlayerProf").trigger('play');
               setTimeout(function() {
                 $("#AudioPlayerProf").trigger('pause');
                 $("#AudioPlayerProf").prop("currentTime", 0);
@@ -401,7 +416,7 @@ define(function(require) {
               if (val == "\n")
                 $span = $('</br>');
               else
-              $span = $('<span data-toggle="collapse" value=" " class="SpansTxt ">' + val + ' </span>');
+                $span = $('<span data-toggle="collapse" value=" " class="SpansTxt ">' + val + ' </span>');
               $span.css("color", "#000000");
               $span.appendTo($container); //Adiciona ao Div
             });
@@ -420,21 +435,24 @@ define(function(require) {
 
               var color = $(this).css('color');
               if (color == 'rgb(255, 153, 0)' || color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
-              {if (self.triggerSelec == false){
-                $(this).css("color", "#000000");
-                $meuSpan.popover('destroy');
-                $meuSpan.attr("value", " ");
-                self.errosTTexto--;
-                $('#ContadorDeErros').text("Erros: " + self.errosTTexto);
-                self.triggerSelecionado = false;
-                $('body').unbind('touchmove');
-                self.aux = null;
-              }
+              {
+                if (self.triggerSelec == false) {
+                  $(this).css("color", "#000000");
+                  $meuSpan.popover('destroy');
+                  $meuSpan.attr("value", " ");
+                  self.errosTTexto--;
+                  $('#ContadorDeErros').text("Erros: " + self.errosTTexto);
+                  self.triggerSelecionado = false;
+                  $('body').unbind('touchmove');
+                  self.aux = null;
+                }
               } else if (self.triggerSelecionado == false) {
                 $("#AudioPlayerAluno").trigger('pause');
                 $(this).css("color", "#FF9900");
                 $meuSpan.popover('show');
-                $('body').bind('touchmove', function(e){e.preventDefault()});
+                $('body').bind('touchmove', function(e) {
+                  e.preventDefault()
+                });
                 self.errosTTexto++;
                 $('#ContadorDeErros').text("Erros: " + self.errosTTexto);
                 self.triggerSelecionado = true;

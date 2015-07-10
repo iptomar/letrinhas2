@@ -103,37 +103,13 @@ define(function(require) {
                       if (err) {
                         console.log('Correcao ' + err + ' erro');
                       } else {
-                        console.log('Parabens InseridoCorrecao');
+                        console.log('Parabens o ultimologin');
                       }
                     });
-
-
                   });
-
-
-
-
-                  // sistema_local2.get('ultimoLogin').then(function(doc) {
-                  //
-                  //   return sistema_local2.put(sisT, doc._id, doc._rev);
-                  // }).then(function(response) {
-                  //   // handle response
-                  // }).catch(function(err) {
-                  //   console.log(err);
-                  // });
-
-
                 }
 
               });
-
-
-
-
-
-
-
-
 
               $("#proB").css('visibility', 'hidden')
               app.navigate('/escolherDisciplina', {

@@ -208,12 +208,12 @@ define(function(require) {
     lessBtn: function(e) {
       console.log("asdsadasd");
       if (parseInt($("#LBCNota").val()) != 0)
-        $("#LBCNota").val((parseFloat($("#LBCNota").val()) - 0.10).toFixed(2));
+        $("#LBCNota").val((parseFloat($("#LBCNota").val()) - 1).toFixed(2));
     },
 
     moreBtn: function(e) {
       if (parseInt($("#LBCNota").val()) != 100)
-        $("#LBCNota").val((parseFloat($("#LBCNota").val()) + 0.10).toFixed(2));
+        $("#LBCNota").val((parseFloat($("#LBCNota").val()) + 1).toFixed(2));
     },
 
     clickBTOpcPopOver1: function(e) {
@@ -320,10 +320,6 @@ define(function(require) {
 
       var self = this;
       this.errosTTexto = 0;
-      self.triggerSelecionado = false;
-
-
-
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
@@ -416,7 +412,7 @@ define(function(require) {
               if (val == "\n")
                 $span = $('</br>');
               else
-                $span = $('<span data-toggle="collapse" value=" " class="SpansTxt ">' + val + ' </span>');
+                $span = $('<span data-toggle="collapse" value=" " class="SpansTxt">' + val + ' </span>');
               $span.css("color", "#000000");
               $span.appendTo($container); //Adiciona ao Div
             });
@@ -436,7 +432,7 @@ define(function(require) {
               var color = $(this).css('color');
               if (color == 'rgb(255, 153, 0)' || color == 'rgb(255, 0, 0)' || color == 'rgb(51, 153, 255)') // =='blue' <- IE hack
               {
-                if (self.triggerSelec == false) {
+                if (self.triggerSelecionado == false) {
                   $(this).css("color", "#000000");
                   $meuSpan.popover('destroy');
                   $meuSpan.attr("value", " ");

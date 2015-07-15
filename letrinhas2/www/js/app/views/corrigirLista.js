@@ -104,12 +104,12 @@ define(function(require) {
     lessBtn: function(e) {
       console.log("asdsadasd");
       if (parseInt($("#LBCNota").val()) != 0)
-        $("#LBCNota").val((parseFloat($("#LBCNota").val()) - 0.10).toFixed(2));
+        $("#LBCNota").val((parseFloat($("#LBCNota").val()) - 1).toFixed(2));
     },
 
     moreBtn: function(e) {
       if (parseInt($("#LBCNota").val()) != 100)
-        $("#LBCNota").val((parseFloat($("#LBCNota").val()) + 0.10).toFixed(2));
+        $("#LBCNota").val((parseFloat($("#LBCNota").val()) + 1).toFixed(2));
     },
 
     clickBTOpcPopOver1: function(e) {

@@ -55,6 +55,7 @@ define(function(require) {
             }
             if (response.rows[i].value.tipoCorrecao == "Lista") {
               totalLista++;
+              console.log(response.rows[i].value);
               somaLista += parseFloat(response.rows[i].value.nota);
             }
             if (response.rows[i].value.tipoCorrecao == "Multimédia") {
@@ -68,11 +69,12 @@ define(function(require) {
           }
           var $container = $('#divResumo'); //Adiciona ao Div
           var mediaTexto = somaTexto / totalTexto;
-          console.log(somaTexto);
-                    console.log(totalTexto);
+
           var mediaLista = somaLista / totalLista;
           var mediaMultimedia = somaMultimedia / totalMultimedia;
           var mediaInterpretacao = somaInterpretacao / totalInterpretacao;
+            console.log(mediaLista);
+
           if (isNaN(mediaTexto)) {
             mediaTexto = 0;
           }
@@ -85,6 +87,7 @@ define(function(require) {
           if (isNaN(mediaInterpretacao)) {
             mediaInterpretacao = 0;
           }
+
           var textoParaDiv = "";
           textoParaDiv = '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
             '<span class="badge myspanStatic">Média das Notas: ' + mediaTexto.toFixed(2)  + '%</span><h3> <b>Testes do tipo  [Texto]: ' +

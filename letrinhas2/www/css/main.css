@@ -10,6 +10,16 @@
   font-size: 20px !important;
 }
 
+#loading-indicator {
+  background-color: rgba(0, 0, 0, 0.25);
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 .carousel .carousel-inner .item {
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
@@ -644,6 +654,18 @@ table.dataTable th:active {
   z-index: 9998;
 }
 .loader {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9998;
+  background-color: #000;
+  opacity: 0.6;
+}
+
+
+.loader2 {
   position: fixed;
   left: 0px;
   top: 0px;

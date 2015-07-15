@@ -36,22 +36,33 @@
               <div class="panel-body">
 
                 <div class="panel panel-info centerEX">
+                   <div class="input-group-addon"> Nota Final (%) : </div>
                   <div class="panel-heading">
-                    <div class="input-group centerEX">
-                      <button id="lessBtn" class="btn btn-default btn-info" data-dir="dwn">
-                        <span class="glyphicon glyphicon-minus"></span>
-                      </button>
-                      <div class="input-group-addon"> Nota: </div>
-                      <fieldset disabled>
-                        <input id="LBCNota" type="number" name="HasAPattern" pattern="[0-9]*" maxlength="3" class="form-control notaCorrecao" title="Three letter country code" placeholder="Nota">
-                      </fieldset>
-                      <div class="input-group-addon"> % </div>
-                      <button id="moreBtn" class="btn btn-default btn-info" data-dir="up">
-                        <span class="glyphicon glyphicon-plus"></span>
-                      </button>
+
+
+                    <div class="row">
+                      <div class="col-md-2">
+
+                        <button id="lessBtn" class="btn btn-default btn-info" data-dir="dwn">
+                          <span class="glyphicon glyphicon-minus"></span>
+                        </button>
+
+                      </div>
+                      <div class="col-md-8">
+                        <fieldset disabled>
+                          <input id="LBCNota" type="number" name="HasAPattern" pattern="[0-9]*" maxlength="3" class="form-control notaCorrecao" title="Three letter country code" placeholder="Nota">
+                        </fieldset>
+
+                      </div>
+                      <div class="col-md-2">
+
+                        <button id="moreBtn" class="btn btn-default btn-info" data-dir="up">
+                          <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+
+                      </div>
                     </div>
                   </div>
-                </div>
               </div>
 
               <label id="LBrelaTitulo" class="textareaParaTestes fontEX" style="color:#000000;">Titulo: </label>

@@ -20,7 +20,7 @@ define(function(require) {
       $('.side-nav__list__item').removeClass('is-active');
       $(e.target).parent().addClass('is-active');
     },
-
+      /////Prepara a janela para receber as estatisticas
     desenhaEstatistica: function(idCorr, inic) {
       var self = this;
       resolucoes_local2.get(idCorr, function(err, correcaoDoc) {
@@ -39,7 +39,7 @@ define(function(require) {
       });
     },
 
-
+      /////Desenhas as diferentes janelas com as resoluçoes dos testes
     desenhaJanelas: function(idCorr, inic) {
       var self = this;
       resolucoes_local2.get(idCorr, function(err, correcaoDoc) {

@@ -22,6 +22,7 @@ define(function(require) {
       $(e.target).parent().addClass('is-active');
     },
 
+      /////Prepara o ambiente oara receber as estatisitcas
     desenhaEstatistica: function(idCorr, inic) {
       var self = this;
       resolucoes_local2.get(idCorr, function(err, correcaoDoc) {
@@ -40,6 +41,7 @@ define(function(require) {
       });
     },
 
+      /////Desenhas as diferentes janelas com as resoluçoes dos testes
     desenhaJanelas: function(idCorr, inic) {
       var self = this;
       resolucoes_local2.get(idCorr, function(err, correcaoDoc) {

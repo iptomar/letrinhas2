@@ -404,30 +404,30 @@ define(function(require) {
             allTable = "<table style='width:100%; '><tr>";
             self.totalPalavras = 0;
             //*id do div com o conteúdo, id="listaAreaConteudo"
-            if (perguntaDoc.conteudo.palavrasCl1.length > 0) {
+            if (perguntaDoc.conteudo.palavrasCL1.length > 0) {
               s1 = "";
-              for (var j = 0; j < perguntaDoc.conteudo.palavrasCl1.length; j++) {
-                s1 += "<p id='" + self.convert_n3d(self.totalPalavras) + " 'class='picavel' value=''" + "style='font-weight:bold; font-size:20px'>" + perguntaDoc.conteudo.palavrasCl1[j] + "</p>";
+              for (var j = 0; j < perguntaDoc.conteudo.palavrasCL1.length; j++) {
+                s1 += "<p id='" + self.convert_n3d(self.totalPalavras) + " 'class='picavel' value=''" + "style='font-weight:bold; font-size:20px'>" + perguntaDoc.conteudo.palavrasCL1[j] + "</p>";
                 self.totalPalavras++;
               }
               allTable += ("<td class='well' align='center' valign='top' style='width:30%'>" + s1 + "</td>");
               empty = false;
             }
 
-            if (perguntaDoc.conteudo.palavrasCl2.length > 0) {
+            if (perguntaDoc.conteudo.palavrasCL2.length > 0) {
               s1 = "";
-              for (var j = 0; j < perguntaDoc.conteudo.palavrasCl2.length; j++) {
-                s1 += "<p id='" + self.convert_n3d(self.totalPalavras) + "'class='picavel' value=''" + "style='font-weight:bold; font-size:20px'>" + perguntaDoc.conteudo.palavrasCl2[j] + "</p>";
+              for (var j = 0; j < perguntaDoc.conteudo.palavrasCL2.length; j++) {
+                s1 += "<p id='" + self.convert_n3d(self.totalPalavras) + "'class='picavel' value=''" + "style='font-weight:bold; font-size:20px'>" + perguntaDoc.conteudo.palavrasCL2[j] + "</p>";
                 self.totalPalavras++;
               }
               allTable += ("<td class='well' align='center' valign='top' style='width:30%'>" + s1 + "</td>");
               empty = false;
             }
 
-            if (perguntaDoc.conteudo.palavrasCl3.length > 0) {
+            if (perguntaDoc.conteudo.palavrasCL3.length > 0) {
               s1 = "";
-              for (var j = 0; j < perguntaDoc.conteudo.palavrasCl3.length; j++) {
-                s1 += "<p id='" + self.convert_n3d(self.totalPalavras) + "'class='picavel' value=''" + "style='font-weight:bold; font-size:20px'>" + perguntaDoc.conteudo.palavrasCl3[j] + "</p>";
+              for (var j = 0; j < perguntaDoc.conteudo.palavrasCL3.length; j++) {
+                s1 += "<p id='" + self.convert_n3d(self.totalPalavras) + "'class='picavel' value=''" + "style='font-weight:bold; font-size:20px'>" + perguntaDoc.conteudo.palavrasCL3[j] + "</p>";
                 self.totalPalavras++;
               }
               allTable += ("<td class='well' align='center' valign='top' style='width:30%'>" + s1 + "</td>");

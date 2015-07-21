@@ -63,21 +63,14 @@ define(function(require) {
       "mostraResultadoMultimedia": "mostraResultadoMultimedia",
       "escolherTesteSimples": "escolherTesteSimples",
       "pinJanela": "pinJanela",
-            "xpto": "xpto",
+      "admin": "admin",
       "estatisticas": "estatisticas"
-
-
     },
 
-    // boot: function() {
-    //   var bootView = new BootView();
-    //   this.showView(bootView);
-    // },
-
-    xpto: function() {
+    admin: function() {
       var self = this;
-      require(["app/views/xpto"], function(xptoView) {
-        var view = new xptoView();
+      require(["app/views/admin"], function(adminView) {
+        var view = new adminView();
         self.showView(view);
       });
     },

@@ -9,22 +9,19 @@ define(function(require) {
     template = _.template(janelas);
 
   return Backbone.View.extend({
-    modelTrue: false,
-    TotalPalavas: 0,
-    idPergunta: null,
+    modelTrue: false,  ///Se algum model esta visivel
+    TotalPalavas: 0,  ///Total de palavras de um teste
+    idPergunta: null, ///id da pergunta do teste em questao
     legendas: null,
     timeouts: null,
     timeoutsX: null,
-
 
     /////// Funcao executada no inicio de load da janela ////////////
     initialize: function() {
 
     },
 
-
-
-
+    /////// Vai ler o ficheiro de audio e Inseire na bd A resolucao do teste////////////
     LerficheiroGravacaoEins: function() {
       var self = this;
       window.resolveLocalFileSystemURL("file:///sdcard/gravacao1.amr",
@@ -51,8 +48,6 @@ define(function(require) {
                 'TotalPalavras': self.TotalPalavas,
                 'correcao': [],
               });
-
-
               resolucoes_local2.post(resolucao, function(err, response) {
                 if (err) {
                   console.log('Resolucao ' + err + ' erro');
@@ -77,16 +72,6 @@ define(function(require) {
         });
     },
 
-
-    countWords: function(stringx) {
-      stringx = stringx.replace(/(^\s*)|(\s*$)/gi, "");
-      stringx = stringx.replace(/[ ]{2,}/gi, " ");
-      stringx = stringx.replace(/\n /, "\n");
-      //  console.log(stringx.split(' ').length);
-      this.TotalPalavas = stringx.split(' ').length;
-    },
-
-
     //////////// GRAVAR SOM VINDO DA BD E PASSAR PARA O PLAYER DE AUDIO /////////////////
     GravarSOMfiles: function(name, data, success, fail) {
       var gotFileSystem = function(fileSystem) {
@@ -95,11 +80,9 @@ define(function(require) {
           exclusive: false
         }, gotFileEntry, fail);
       };
-
       var gotFileEntry = function(fileEntry) {
         fileEntry.createWriter(gotFileWriter, fail);
       };
-
       var gotFileWriter = function(writer) {
         writer.onwrite = success;
         writer.onerror = fail;
@@ -108,6 +91,7 @@ define(function(require) {
       window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
     },
 
+    ////Gravar audio para o sdcard com ajuda do cordova
     recordAudioForSD: function() {
       var src = "gravacao1.amr";
       this.mediaRec = new Media(src,
@@ -121,11 +105,13 @@ define(function(require) {
       this.mediaRec.startRecord();
     },
 
+    ////Para o player de audio
     StopRecorder: function() {
       this.mediaRec.stopRecord();
       this.mediaRec.release();
     },
 
+      ////Evento para o botao fisico retroceder
     onBackKeyDowns: function() {
       if (this.modelTrue == false)
         $('#labelErr').text(""); //limpa campos
@@ -149,14 +135,9 @@ define(function(require) {
       "click #btnParar2": "clickbtnParar2",
       "click #btnOuvirme": "clickbtnOuvirme",
       "click #btnConfirmarSUBGrav": "clickbtnConfirmarSUBGrav",
-
     },
 
-
-
-
-
-
+    ///Evento botao Confirmar submissao
     clickbtnConfirmarSUBGrav: function(e) {
       $('#myModalSUBGravar').modal("hide");
       $('#btnDemonstracao').hide();
@@ -173,7 +154,7 @@ define(function(require) {
       this.recordAudioForSD();
     },
 
-
+  ///legendas
     mudaPalavra: function(palavra) {
       return function() {
         var aux1 = parseInt(palavra) - 1;
@@ -184,7 +165,7 @@ define(function(require) {
       }
     },
 
-
+    ///Evento botao tocar demonstracao
     clickbtnDemonstracao: function(e) {
       var self = this;
       $('#div1').hide();
@@ -215,7 +196,7 @@ define(function(require) {
        $("#AudioPlayerProf").trigger('play');
     },
 
-
+  ///Evento botao parar reprod audio Prof
     clickbtnParar1: function(e) {
       var self = this;
       $("#AudioPlayerProf").trigger('pause');
@@ -236,6 +217,7 @@ define(function(require) {
 
     },
 
+    ///Evento botao parar reprod audio aluno
     clickbtnParar2: function(e) {
       $("#AudioPlayerAluno").trigger('pause');
       $('#div3').hide();
@@ -249,7 +231,7 @@ define(function(require) {
       $("#AudioPlayerAluno").trigger('play');
     },
 
-
+    ///Evento botao confirmar pin do prof
     clickbtnConfirmarPIN: function(e) {
       var self = this;
       var pinDigitado = $('#inputPIN').val();
@@ -267,7 +249,7 @@ define(function(require) {
       }
     },
 
-
+    ///Evento botao confirmar submissao
     clickbtnConfirmarSUB: function(e) {
       var self = this;
       this.modelTrue = false;
@@ -282,6 +264,7 @@ define(function(require) {
       });
     },
 
+    ///Evento botao finalizar
     clickbtnFinalizar: function(e) {
       e.stopPropagation();
       e.preventDefault();
@@ -289,7 +272,7 @@ define(function(require) {
       $('#myModalSUB').modal("show");
     },
 
-
+    ///Evento botao gravar audio do aluno
     clickbtnRec: function(e) {
       ///Se o botao é botao de gravar
       if ($('#btnRec').hasClass("btn-success")) {
@@ -383,25 +366,12 @@ define(function(require) {
 
         perguntas_local2.get(testeDoc.perguntas[0], function(err, perguntasDoc) {
           if (err) console.log(err);
-          console.log(perguntasDoc);
-
           self.legendas = perguntasDoc.legendas;
-
           $('#lbTituloTeste').text(perguntasDoc.pergunta);
-          // var textoAux = perguntasDoc.conteudo.texto;
-          // $('#txtAreaConteud').append(textoAux.replace(/\n/g, '</br>'));
-
           var textoAux = perguntasDoc.conteudo.texto;
-
           $('#txtAreaConteud').append(textoAux);
           var $container = $('#txtAreaConteud'); //Adiciona ao Div
-
-
           var words = $("#txtAreaConteud").text().split(' ');
-
-
-
-
           $("#txtAreaConteud").html("");
           $.each(words, function(i, val) {
             var $span;
@@ -410,19 +380,11 @@ define(function(require) {
               $span = $('</br>');
             else
               $span = $('<span id="sp' + i + '" data-toggle="collapse" value=" " class="SpansTxt ">' + val + '</span>');
-            // $span.css("color", "#000000");
-            // $span.css("background-color", "#FFFFFF");
             $spanVazio = $('<span> </span>');
             $span.appendTo($container); //Adiciona ao Div
             $spanVazio.appendTo($container); //Adiciona ao Div
 
           });
-
-
-
-
-
-          //  self.countWords(perguntasDoc.conteudo.texto);
         });
 
 
@@ -432,74 +394,6 @@ define(function(require) {
             console.log('FUNCIONA');
             $('.loader2').hide();
             $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3")
-
-  // $("#AudioPlayerProf").attr("src", "/img/voz.mp3");
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //           self.timeoutsX = [];
-  //           var counter = 0;
-  //           var pause = false;
-  //
-  //
-  //           for (var i = 0; i < self.legendas.length; i++) {
-  //             self.timeoutsX.push({
-  //               'call': function(cb) {
-  //
-  //                 var palavra = self.legendas[counter].palavra;
-  //                 // console.log(self.legendas[counter]);
-  //                 // //... trabalho aqui
-  //                 var aux1 = parseInt(palavra) - 1;
-  //                 var aux2 = parseInt(palavra) + 1;
-  //                  $('#sp' + aux1).css("background-color", "#FFCC99");
-  //                 $('#sp' + palavra).css("background-color", "#FFCC99");
-  //                  $('#sp' + aux2).css("background-color", "#FFCC99");
-  //
-  //
-  //                 console.log(self.legendas[counter].palavra);
-  //                 console.log( self.legendas[counter].tempo);
-  //                 console.log("------------------------");
-  //
-  //
-  //                 cb();
-  //               },
-  //
-  //                'time': self.legendas[i].tempo
-  //             //  'time': self.legendas[counter].tempo * (self.legendas.length - i)
-  //             });
-  //           }
-  //
-  //
-  //
-  //           function run() {
-  //             if (counter < self.timeoutsX.length && pause == false) {
-  //               setTimeout(function() {
-  //                 self.timeoutsX[counter].call(function() {
-  //                   counter++;
-  //                   run();
-  //                 });
-  //               }, self.legendas[counter].tempo);
-  //             }
-  //           }
-  //
-  // $("#AudioPlayerProf").bind("play", function() {
-  //   pause = false;
-  //         run();
-  //         console.log("sssss");
-  // });
-  //
-  // $("#AudioPlayerProf").bind("pause", function() {
-  //         pause = true;
-  //         console.log("sssddddss");
-  // });
-
-
             $("#AudioPlayerProf").bind("ended", function() {
               $('#btnParar1').click();
             });

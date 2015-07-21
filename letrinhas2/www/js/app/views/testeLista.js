@@ -72,13 +72,11 @@ define(function(require) {
                 'respostas': [],
                 'observ': null,
               };
-
               resolucao.respostas.push({
                      'idPergunta' : self.idPergunta,
                      'TotalPalavras': self.TotalPalavras,
                      'correcao': [],
                    });
-
               resolucoes_local2.post(resolucao, function(err, response) {
                 if (err) {
                   console.log('Resolucao ' + err + ' erro');
@@ -112,11 +110,9 @@ define(function(require) {
           exclusive: false
         }, gotFileEntry, fail);
       };
-
       var gotFileEntry = function(fileEntry) {
         fileEntry.createWriter(gotFileWriter, fail);
       };
-
       var gotFileWriter = function(writer) {
         writer.onwrite = success;
         writer.onerror = fail;
@@ -442,26 +438,26 @@ define(function(require) {
           allTable = "<table style='width:100%; '><tr>";
 
           //*id do div com o conteúdo, id="listaAreaConteudo"
-          if (perguntasDoc.conteudo.palavrasCl1.length > 0) {
+          if (perguntasDoc.conteudo.palavrasCL1.length > 0) {
             s1 = "";
-            for (var j = 0; j < perguntasDoc.conteudo.palavrasCl1.length; j++) {
-              s1 += "<p style='font-weight:bold; font-size:20px'>" + perguntasDoc.conteudo.palavrasCl1[j] + "</p>";
+            for (var j = 0; j < perguntasDoc.conteudo.palavrasCL1.length; j++) {
+              s1 += "<p style='font-weight:bold; font-size:20px'>" + perguntasDoc.conteudo.palavrasCL1[j] + "</p>";
               self.TotalPalavras++;
             }
             allTable += ("<td class='well' align='center' valign='top' style='width:30%'>" + s1 + "</td>");
-            if (perguntasDoc.conteudo.palavrasCl2.length > 0) {
+            if (perguntasDoc.conteudo.palavrasCL2.length > 0) {
               s1 = "";
-              for (var j = 0; j < perguntasDoc.conteudo.palavrasCl2.length; j++) {
-                s1 += "<p style='font-weight:bold; font-size:20px'>" + perguntasDoc.conteudo.palavrasCl2[j] + "</p>";
+              for (var j = 0; j < perguntasDoc.conteudo.palavrasCL2.length; j++) {
+                s1 += "<p style='font-weight:bold; font-size:20px'>" + perguntasDoc.conteudo.palavrasCL2[j] + "</p>";
                 self.TotalPalavras++;
               }
               allTable += ("<td class='well' align='center' valign='top' style='width:30%'>" + s1 + "</td>");
             }
 
-            if (perguntasDoc.conteudo.palavrasCl3.length > 0) {
+            if (perguntasDoc.conteudo.palavrasCL3.length > 0) {
               s1 = "";
-              for (var j = 0; j < perguntasDoc.conteudo.palavrasCl3.length; j++) {
-                s1 += "<p style='font-weight:bold; font-size:20px'>" + perguntasDoc.conteudo.palavrasCl3[j] + "</p>";
+              for (var j = 0; j < perguntasDoc.conteudo.palavrasCL3.length; j++) {
+                s1 += "<p style='font-weight:bold; font-size:20px'>" + perguntasDoc.conteudo.palavrasCL3[j] + "</p>";
                 self.TotalPalavras++;
               }
               allTable += ("<td class='well' align='center' valign='top' style='width:30%'>" + s1 + "</td>");
@@ -495,9 +491,7 @@ define(function(require) {
           });
         });
       });
-
-
-
+      
       return this;
     }
 

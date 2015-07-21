@@ -28,7 +28,7 @@ define(function(require) {
      document.removeEventListener('backbutton', this.boundBKey);
      window.history.back();
     },
-
+      /////Remove todos os ficheiros de audio temporarios
     auxRemoveAll:  function() {
       var self = this;
       resolucoes_local2.query({
@@ -119,6 +119,7 @@ define(function(require) {
       });
     },
 
+      /////Desenhas as diferentes janelas com as resoluçoes dos testes
     desenhaJanelas: function(idCorr, inic) {
       var self = this;
       resolucoes_local2.get(idCorr, function(err, correcaoDoc) {
@@ -155,20 +156,20 @@ define(function(require) {
             var colum2 = "";
             var colum3 = "";
             var erro = " sdfsdfsfa";
-            for (var i = 0; i < perguntasDoc.conteudo.palavrasCl1.length; i++) {
-              var palavra = perguntasDoc.conteudo.palavrasCl1[i];
+            for (var i = 0; i < perguntasDoc.conteudo.palavrasCL1.length; i++) {
+              var palavra = perguntasDoc.conteudo.palavrasCL1[i];
               colum1 += '<p id="' + correcaoDoc._id +'-'+contar +'" class="picavel" >' + palavra + '</p>';
               contar++;
             }
 
-            for (var i = 0; i < perguntasDoc.conteudo.palavrasCl2.length; i++) {
-              var palavra = perguntasDoc.conteudo.palavrasCl2[i];
+            for (var i = 0; i < perguntasDoc.conteudo.palavrasCL2.length; i++) {
+              var palavra = perguntasDoc.conteudo.palavrasCL2[i];
               colum2 += '<p id="' + correcaoDoc._id +'-'+contar +'" class="picavel" >' + palavra + '</p>';
               contar++;
             }
 
-            for (var i = 0; i < perguntasDoc.conteudo.palavrasCl3.length; i++) {
-              var palavra = perguntasDoc.conteudo.palavrasCl3[i];
+            for (var i = 0; i < perguntasDoc.conteudo.palavrasCL3.length; i++) {
+              var palavra = perguntasDoc.conteudo.palavrasCL3[i];
               colum3 += '<p id="' + correcaoDoc._id +'-'+contar +'" class="picavel" >' + palavra + '</p>';
               contar++;
             }
@@ -417,16 +418,8 @@ define(function(require) {
         var $containerIND = $('#IndicatorsCorr');
         var $li = $('<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>');
         $li.appendTo($containerIND);
-
-        // var $containerIND = $('#IndicatorsCorr');
-        // var $li = $('<li data-target="#carouselPrincipal" data-slide-to="1" ></li>');
-        // $li.appendTo($containerIND);
-
-
         var count = 0;
-
         function map(doc) {
-
           if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == window.localStorage.getItem("auxIDtext1")) {
             emit([doc.dataReso], doc);
           }

@@ -68,14 +68,14 @@ define(function(require) {
           var colum1 = "";
           var colum2 = "";
           var colum3 = "";
-          for (var j = 0; j < testeDoc.conteudo.palavrasCl1.length; j++) {
-            colum1 += testeDoc.conteudo.palavrasCl1[j] + "</p>";
+          for (var j = 0; j < testeDoc.conteudo.palavrasCL1.length; j++) {
+            colum1 += testeDoc.conteudo.palavrasCL1[j] + "</p>";
           }
-          for (var j = 0; j < testeDoc.conteudo.palavrasCl2.length; j++) {
-            colum2 += testeDoc.conteudo.palavrasCl2[j] + "</p>";
+          for (var j = 0; j < testeDoc.conteudo.palavrasCL2.length; j++) {
+            colum2 += testeDoc.conteudo.palavrasCL2[j] + "</p>";
           }
-          for (var j = 0; j < testeDoc.conteudo.palavrasCl3.length; j++) {
-            colum3 += testeDoc.conteudo.palavrasCl3[j] + "</p>";
+          for (var j = 0; j < testeDoc.conteudo.palavrasCL3.length; j++) {
+            colum3 += testeDoc.conteudo.palavrasCL3[j] + "</p>";
           }
           var $exemp = $(
             '<div class="panel panel-primary">' +
@@ -107,7 +107,7 @@ define(function(require) {
           } else if (testeDoc.conteudo.tipoDoCorpo == "imagem") {
             construirJanela +=
               '<div class="panel-body fontEX2"><div class="panel panel-info centerEX">' +
-              ' <div class="panel-heading"> <img src="data:image/png;base64,' + testeDoc._attachments['corpo.png'].data + '" style="height:150px;" /> ' +
+              ' <div class="panel-heading"> <img src="data:image/jpg;base64,' + testeDoc._attachments['corpo.jpg'].data + '" style="width:75%;" /> ' +
               '</div></div>';
         } else if (testeDoc.conteudo.tipoDoCorpo == "audio") {
           construirJanela +=
@@ -157,7 +157,7 @@ define(function(require) {
             } else if (testeDoc.conteudo.opcoes[y].tipo == "imagem") {
               var auxY = y + 1;
               construirJanela += '<button type="button" class="btn btn-info btn-lg btn-block disabled"> ' +
-                '<img id="imgOp' + auxY + '" src="data:image/png;base64,' + testeDoc._attachments['op'+sorteados2[y]+'.png'].data + '" style="height:110px;" class="pull-center"/></button></div>';
+                '<img id="imgOp' + auxY + '" src="data:image/jpg;base64,' + testeDoc._attachments['op'+sorteados2[y]+'.jpg'].data + '" style="width:75%;"class="pull-center"/></button></div>';
             }
           }
 

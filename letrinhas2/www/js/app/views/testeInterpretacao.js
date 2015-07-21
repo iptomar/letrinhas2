@@ -28,6 +28,7 @@ define(function(require) {
       });
     },
 
+    //Vai buscar as respostas certas e atribui uma nota
     GetRespostasCertas: function() {
       var self = this;
       var sapns = $("#DivContentorArea > .SpansTxt");
@@ -53,8 +54,6 @@ define(function(require) {
             errCor++;
           }
         }
-
-
         var erradas = (respostasDadas - certas) + errCor;
         var aux = (certas - erradas);
         var nota = (aux * 100) / respostasDadas;
@@ -64,21 +63,17 @@ define(function(require) {
       });
     },
 
+    ///Gravar resolucao na BD
     GravarResolucao: function() {
       var self = this;
-
       var agora = new Date();
       var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
       var alunoId = window.localStorage.getItem("AlunoSelecID");
       var profId = window.localStorage.getItem("ProfSelecID");
-
       var sapns = $("#DivContentorArea > .SpansTxt");
       var maxEle = $("#DivContentorArea > .SpansTxt").length;
-
-
       perguntas_local2.get(self.idPergunta, function(err, perguntasDoc) {
         if (err) console.log(err);
-
         var resolucao = {
           'id_Teste': TesteTextArealizarID,
           'id_Aluno': alunoId,
@@ -124,19 +119,15 @@ define(function(require) {
         }
 
         var erradas = (respostasDadas - certas) + errCor;
-
         console.log("Errado: " + erradas);
         console.log("certo: " + certas);
         console.log("RespostasDadass: " + respostasDadas);
-
         var aux = (certas - erradas);
-
         var nota = (aux * 100) / respostasDadas;
         if (nota < 0)
           nota = 0;
         resolucao.nota = nota.toFixed(2);
         console.log("Nota: " + nota.toFixed(2));
-
         resolucoes_local2.post(resolucao, function(err, response) {
           if (err) {
             console.log('Resolucao ' + err + ' erro');
@@ -156,11 +147,9 @@ define(function(require) {
           exclusive: false
         }, gotFileEntry, fail);
       };
-
       var gotFileEntry = function(fileEntry) {
         fileEntry.createWriter(gotFileWriter, fail);
       };
-
       var gotFileWriter = function(writer) {
         writer.onwrite = success;
         writer.onerror = fail;
@@ -168,7 +157,6 @@ define(function(require) {
       };
       window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
     },
-
 
 
     //Eventos Click
@@ -179,7 +167,6 @@ define(function(require) {
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
       "click #pik": "pik",
-
     },
 
     pik: function(e) {
@@ -263,23 +250,18 @@ define(function(require) {
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
       var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
 
-
-
       professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
         $('#imgProf').attr("src", url);
       });
-
-
       alunos_local2.getAttachment(alunoId, 'aluno.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
         $('#imgAluno').attr("src", url);
       });
-
       testes_local2.get(TesteTextArealizarID, function(err, testeDoc) {
         if (err) console.log(err);
         console.log(testeDoc);
@@ -293,11 +275,8 @@ define(function(require) {
 
           $('#lbTituloTeste').text(perguntasDoc.pergunta);
           var textoAux = perguntasDoc.conteudo.texto;
-
           $('#DivContentorArea').append(textoAux);
           var $container = $('#DivContentorArea'); //Adiciona ao Div
-
-
           var words = $("#DivContentorArea").text().split(' ');
           $("#DivContentorArea").html("");
           $.each(words, function(i, val) {
@@ -312,9 +291,7 @@ define(function(require) {
             $spanVazio = $('<span> </span>');
             $span.appendTo($container); //Adiciona ao Div
             $spanVazio.appendTo($container); //Adiciona ao Div
-
           });
-
           $container.on('click', '.SpansTxt', function(ev) {
             var text = $(this).text();
             var $meuSpan = $(this);

@@ -17,14 +17,14 @@ define(function(require) {
     initialize: function() {
 
     },
-
+    ////vai buscar o audio da leitura do aluno
     getSrcAUDIO: function(obj) {
       var self = this;
       if ($(obj).val() == 0) {
         var aux = obj.id.substring(2);
         resolucoes_local2.getAttachment(aux, 'gravacao.amr', function(err2, DataAudio) {
           if (err2) console.log(err2);
-          self.GravarSOMfiD(aux + '.amr', DataAudio, function() {
+            self.GravarSOMfiD(aux + '.amr', DataAudio, function() {
             obj.src = "" + cordova.file.dataDirectory + "/files/" + aux + ".amr";
             obj.trigger = 'load';
             $(obj).val(1);
@@ -121,7 +121,7 @@ define(function(require) {
     },
 
 
-
+      /////Desenhas as diferentes janelas com as resoluçoes dos testes
     desenhaJanelas: function(idCorr, inic) {
       var self = this;
       resolucoes_local2.get(idCorr, function(err, correcaoDoc) {
@@ -359,15 +359,11 @@ define(function(require) {
       });
 
       self.desenhaEstatistica(resultadoID, true);
-      //  self.desenhaJanelas(resultadoID, false);
-
-
 
       resolucoes_local2.get(resultadoID, function(err, CorrrecaoDoc) {
         if (err) console.log(err);
 
         window.localStorage.setItem("auxIDtext1", CorrrecaoDoc.id_Teste + ''); //enviar variavel
-
         $('#carouselPrincipal').on('slide.bs.carousel', function() {
           $('.SpansTxt').popover('hide');
         });
@@ -386,10 +382,8 @@ define(function(require) {
         var $containerIND = $('#IndicatorsCorr');
         var $li = $('<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>');
         $li.appendTo($containerIND);
-
         var count = 0;
         function map(doc) {
-
           if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.id_Teste == window.localStorage.getItem("auxIDtext1")) {
             emit([doc.dataReso], doc);
           }
@@ -403,7 +397,6 @@ define(function(require) {
           var exatidaoArr = [];
           var fluidezArr = [];
           var arr3 = [];
-
 
           for (var i = 0; i < response.rows.length; i++) {
             var TotalPalav = response.rows[i].value.respostas[0].TotalPalavras;

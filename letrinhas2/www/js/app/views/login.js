@@ -11,8 +11,8 @@ define(function(require) {
 
   return Backbone.View.extend({
 
+    //Rotina para verificar os dados da sincronia
     myVar: setInterval(function() {
-      // $('#inputEmail').val("elsaAbrantes@aeagtn.pt");
       if (btnBloqueado == false) {
         $("#progBAR").css('width', perc + '%').attr('aria-valuenow', perc).html(perc + '%');
         $("#btn_login").removeClass("disabled");
@@ -30,19 +30,25 @@ define(function(require) {
 
     initialize: function() {
 
-
     },
 
     //Eventos Click
     events: {
       "click #btn_login": "clickLogin",
+      "click #secretButton": "secretButton",
     },
+
+    //Botao Secreto para configurar o IP
+    secretButton: function(e) {
+      if ($('#inputEmail').val() =="letras" && $('#inputPIN').val()  == "4321")
+      {
+        app.navigate('/admin', {
+          trigger: true
+        });
+      }
+    },
+
     clickLogin: function(e) {
-
-      // app.navigate('/xpto', {
-      //        trigger: true
-      //      });
-
       e.stopPropagation();
       e.preventDefault();
       var self = this;
@@ -51,7 +57,7 @@ define(function(require) {
         professores_local2.query({
           map: function(doc) {
             console.log(doc);
-            if (doc._id == $('#inputEmail').val() && doc.pin == $('#inputPIN').val() && doc.estado == 1) {
+            if (doc._id == $('#inputEmail').val() && doc.pin == $('#inputPIN').val() && doc.estado == true) {
               emit(doc);
             }
           }
@@ -75,26 +81,19 @@ define(function(require) {
               window.localStorage.setItem("ProfSelecPIN", response.rows[0].key.pin + ''); //enviar variavel
               clearInterval(self.myVar);
 
-
-
-
-
+              //Se nao existir o ultimo login adiciona na BD
               sistema_local2.info().then(function(info1) {
                 if (info1.doc_count == 0) {
-
                   var sisT = {
                     '_id': 'ultimoLogin',
                     'email': response.rows[0].id
                   };
-
                   sistema_local2.post(sisT).then(function(response) {
                     console.log("SUCESSO-" + err);
                   }).catch(function(err) {
                     console.log("ERRRO-" + err);
                   });
-
                 } else {
-
                   sistema_local2.get('ultimoLogin', function(err, otherDoc) {
                     if (err) console.log(err);
                     console.log(otherDoc)
@@ -108,8 +107,8 @@ define(function(require) {
                     });
                   });
                 }
-
               });
+              //fIM do adicionar ultimo login
 
               $("#proB").css('visibility', 'hidden')
               app.navigate('/escolherDisciplina', {
@@ -128,14 +127,14 @@ define(function(require) {
     render: function() {
       this.$el.html(template());
 
+      //Ir buscar o ultimo login se existir
       sistema_local2.get('ultimoLogin').then(function(doc) {
         $('#inputEmail').val(doc.email);
 
       }).catch(function(err) {
         console.log(err);
       });
-
-
+      
       return this;
     }
   });

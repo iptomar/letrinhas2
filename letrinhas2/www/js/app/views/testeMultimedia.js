@@ -7,11 +7,11 @@ define(function(require) {
     template = _.template(janelas);
 
   return Backbone.View.extend({
-    array: [],
-    filesApagar: [],
-    modelTrue: false,
-    Ntentativas: 0,
+    arrayRespostas: [], //Array de respostas do aluno
+    filesApagar: [], //Lista  de ficheiros temporarios a apagar
+    modelTrue: false, // se algum model esta visivel
 
+    //Evento do botao voltar fisico do tablet
     onBackKeyDowns: function() {
       if (this.modelTrue == false)
         $('#labelErr').text(""); //limpa campos
@@ -63,26 +63,22 @@ define(function(require) {
       testes_local2.get(TesteTextArealizarID, function(err, testeDoc) {
         if (err) console.log(err);
 
-          var nRepeticoes = window.localStorage.getItem("nRepeticoes");
-            if (nRepeticoes == 0){
-              nRepeticoes = testeDoc.nRepeticoes - 1;
-              window.localStorage.setItem("nRepeticoes", nRepeticoes);
-            }
-            else {
-              nRepeticoes = nRepeticoes - 1;
-              window.localStorage.setItem("nRepeticoes", nRepeticoes);
-            }
-
-
-
+        var nRepeticoes = window.localStorage.getItem("nRepeticoes");
+        if (nRepeticoes == 0) {
+          nRepeticoes = testeDoc.nRepeticoes - 1;
+          window.localStorage.setItem("nRepeticoes", nRepeticoes);
+        } else {
+          nRepeticoes = nRepeticoes - 1;
+          window.localStorage.setItem("nRepeticoes", nRepeticoes);
+        }
 
         var $containerIND = $('#IndicatorsCorr');
-        var pum= '<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>';
+        var pum = '<li data-target="#carouselPrincipal" data-slide-to="0" class="active"></li>';
         for (var i = 1; i <= testeDoc.perguntas.length; i++) {
-        pum+='<li data-target="#carouselPrincipal" data-slide-to="' + i + '" ></li>';
-      }
-      var $li = $(pum);
-      $li.appendTo($containerIND);
+          pum += '<li data-target="#carouselPrincipal" data-slide-to="' + i + '" ></li>';
+        }
+        var $li = $(pum);
+        $li.appendTo($containerIND);
 
 
         $('#titleTestePagina').text(testeDoc.titulo);
@@ -98,48 +94,46 @@ define(function(require) {
           },
         });
         var instrucoes = [];
-        self.array = [];
+        self.arrayRespostas = [];
         ////////////////fim ////////////////////////////////
         for (var i = 0; i < testeDoc.perguntas.length; i++) {
           var ini = false;
           if (i == 0)
-          ini = true;
-          self.array[i] = [testeDoc.perguntas[i], 0, 0];
-        var janelaConstru =   self.desenhaJanelas(testeDoc.perguntas[i], ini).then(function(ix) {
+            ini = true;
+          self.arrayRespostas[i] = [testeDoc.perguntas[i], 0, 0];
+          var janelaConstru = self.desenhaJanelas(testeDoc.perguntas[i], ini).then(function(ix) {
             return ix;
           });
           instrucoes.push(janelaConstru)
         }
 
-        Promise.all(instrucoes).then(function (result) {
+        Promise.all(instrucoes).then(function(result) {
           var $containerCorr = $('#carroselT');
           for (var i = 0; i < testeDoc.perguntas.length; i++) {
-              var $exemp = $(  result[i]);
+            var $exemp = $(result[i]);
+            $exemp.appendTo($containerCorr);
+            if (i == (testeDoc.perguntas.length - 1)) {
+              var $exemp = $(self.desenhaJanelaFim());
               $exemp.appendTo($containerCorr);
-             if (i == (testeDoc.perguntas.length -1 )){
-               var $exemp = $(self.desenhaJanelaFim());
-               $exemp.appendTo($containerCorr);
-           }
+            }
           }
 
-           $containerCorr.on('click', '.btnOP', function(ev) {
+          $containerCorr.on('click', '.btnOP', function(ev) {
             var $btn = $(this); // O jQuery passa o btn clicado pelo this
             $('.btn-opcao-' + $btn[0].name).removeClass("btn-success");
             $('.btn-opcao-' + $btn[0].name).addClass("btn-info");
             $(this).removeClass("btn-info");
             $(this).addClass("btn-success");
 
-            var qwerty = _.findIndex(self.array, function(i) {
+            var qwerty = _.findIndex(self.arrayRespostas, function(i) {
               return i[0] == $btn[0].name
             });
-            self.array[qwerty] = [$btn[0].name, $btn[0].id, $btn[0].value];
+            self.arrayRespostas[qwerty] = [$btn[0].name, $btn[0].id, $btn[0].value];
 
             $('#carouselPrincipal').carousel('next');
           });
         });
-
       });
-
     },
 
 
@@ -170,6 +164,7 @@ define(function(require) {
       window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, gotFileSystems, fail);
     },
 
+    //Metedo para gravar som
     GravarSOMfiles: function(name, data, success, fail) {
       var gotFileSystem = function(fileSystem) {
         fileSystem.root.getFile(name, {
@@ -177,11 +172,9 @@ define(function(require) {
           exclusive: false
         }, gotFileEntry, fail);
       };
-
       var gotFileEntry = function(fileEntry) {
         fileEntry.createWriter(gotFileWriter, fail);
       };
-
       var gotFileWriter = function(writer) {
         writer.onwrite = success;
         writer.onerror = fail;
@@ -190,40 +183,41 @@ define(function(require) {
       window.requestFileSystem(window.LocalFileSystem.PERSISTENT, data.length || 0, gotFileSystem, fail);
     },
 
+    //Metedo para desenhar a janela de finalizar
     desenhaJanelaFim: function() {
-
       var divFinal = '<div class="item" style="height:90vh;"></br></br><div class="panel-heading fontEX_XSS centerEX">' +
         '</br></br></br><span >Finalizar Teste?</span></br>' +
         '<button id="btnFinalizar" style="height:100px;" type="button" class="btn btn-success btn-lg btn-block">' +
         '<span class="glyphicon glyphicon-ok fontEX_XSS" aria-hidden="true"> Finalizar</span></button></br></br>' +
         '<h3 id="avisoLB" style="color: red;"> </h3>' +
         '</div></div>';
-        return divFinal;
+      return divFinal;
     },
 
+    //Metedo desenhar janelas dos testes multimedia
+    //parametros:( idDAPERGUNGA, SE É A JANELA INICIAL , NUMERO DA JANELA)
     desenhaJanelas: function(idPergunta, inic, i) {
       var self = this;
       return perguntas_local2.get(idPergunta, {
         attachments: true
       }).then(function(perguntaDoc) {
-
         var stringTextJanela = '';
         if (inic == true)
-        stringTextJanela +='<div id="' + idPergunta + '" class="item active">';
-         else
-         stringTextJanela += '<div id="' + idPergunta + '" class="item">';
+          stringTextJanela += '<div id="' + idPergunta + '" class="item active">';
+        else
+          stringTextJanela += '<div id="' + idPergunta + '" class="item">';
         stringTextJanela += '</br></br><div class="panel panel-info">' +
           '<div class="panel-heading fontEX_XSS centerEX">' +
           '<span id="titlePerguntatxt">' + perguntaDoc.pergunta + '</span>' +
           '</div></div>';
-          stringTextJanela += '<div class="panel fontEX_XL centerEX">';
+        stringTextJanela += '<div class="panel fontEX_XL centerEX">';
         if (perguntaDoc.conteudo.tipoDoCorpo == "texto") {
           stringTextJanela +=
             ' <div class="panel-heading" style="height:30vh;"> <h2 style="font-size:35px;">' + perguntaDoc.conteudo.corpo +
             '</h2></div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "imagem") {
           stringTextJanela +=
-            ' <div class="panel-heading" style="height:30vh;"> <img  src="data:image/png;base64,' + perguntaDoc._attachments['corpo.png'].data + '" style="height:190px;" /> ' +
+            ' <div class="panel-heading" style="height:30vh;"> <img  src="data:image/jpg;base64,' + perguntaDoc._attachments['corpo.jpg'].data + '" style="width:85%;" /> ' +
             '</div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "audio") {
           stringTextJanela +=
@@ -231,8 +225,6 @@ define(function(require) {
             '</div>';
         }
         stringTextJanela += '</div></br></br></br><div>';
-
-
         var tamanhoTotalOpc = perguntaDoc.conteudo.opcoes.length;
         var sorteados = [];
         var valorMaximo = tamanhoTotalOpc;
@@ -256,14 +248,13 @@ define(function(require) {
         }
 
         var correta = perguntaDoc.conteudo.opcaoCerta;
-
         for (var y = 0; y < tamanhoTotalOpc; y++) {
           if (tamanhoTotalOpc == 3)
-          stringTextJanela += '<div class="col-md-4">';
+            stringTextJanela += '<div class="col-md-4">';
           else if (tamanhoTotalOpc == 2)
-          stringTextJanela += '<div class="col-md-6">';
+            stringTextJanela += '<div class="col-md-6">';
           else if (tamanhoTotalOpc == 4)
-          stringTextJanela += '<div class="col-md-3">';
+            stringTextJanela += '<div class="col-md-3">';
           // style="height:30vh;"
           if (perguntaDoc.conteudo.opcoes[y].tipo == "texto") { ////Se corpo for Texto
             var idx = parseInt(sorteados[y]) + 1;
@@ -271,7 +262,7 @@ define(function(require) {
               perguntaDoc.conteudo.opcoes[sorteados[y]].conteudo + '</button></div>';
           } else if (perguntaDoc.conteudo.opcoes[y].tipo == "imagem") { ///Se corpo for Imagem
             stringTextJanela += '<button value="' + correta + '" id="' + sorteados2[y] + '" name="' + idPergunta + '" type="button" class="btn btn-info btn-lg btn-block btnOP btn-opcao-' + idPergunta + '"> ' +
-              '<img src="data:image/png;base64,' + perguntaDoc._attachments['op' + sorteados2[y] + '.png'].data + '" style="height:180px;" class="pull-center"/></button></div>';
+              '<img src="data:image/jpg;base64,' + perguntaDoc._attachments['op' + sorteados2[y] + '.jpg'].data + '" style="width:85%;" class="pull-center"/></button></div>';
           }
         }
 
@@ -288,7 +279,7 @@ define(function(require) {
             });
           });
         }
-        stringTextJanela +=  '</div>';
+        stringTextJanela += '</div>';
         return stringTextJanela;
       });
     },
@@ -297,17 +288,15 @@ define(function(require) {
       "click #btnFinalizar": "clickbtnFinalizar",
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
-        "click #pik": "pik",
-
+      "click #pik": "pik",
     },
+
     pik: function(e) {
       var self = this;
       $('#myModalCont').modal("hide");
       $('#myModalCont').on('hidden.bs.modal', function(e) {
         var nRepeticoes = window.localStorage.getItem("nRepeticoes");
-
-        if (nRepeticoes == 0 )
-        {
+        if (nRepeticoes == 0) {
           self.modelTrue = false;
           self.auxRemoveAll();
           document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
@@ -321,16 +310,14 @@ define(function(require) {
             });
           }
 
+        } else {
+          self.modelTrue = false;
+          location.reload();
         }
-        else {
-            self.modelTrue = false;
-                location.reload();
-        }
+      });
+    },
 
-  });
-
-  },
-
+//Btn confimar o pin do prof
     clickbtnConfirmarPIN: function(e) {
       var self = this;
       var pinDigitado = $('#inputPIN').val();
@@ -354,24 +341,22 @@ define(function(require) {
       var self = this;
       var contVENC = 0;
       var semResposta = false;
-      for (var i = 0; i < self.array.length; i++) {
-        if (self.array[i][1] == 0)
+      for (var i = 0; i < self.arrayRespostas.length; i++) {
+        if (self.arrayRespostas[i][1] == 0)
           semResposta = true;
         else
-        if (self.array[i][1] == self.array[i][2]) {
+        if (self.arrayRespostas[i][1] == self.arrayRespostas[i][2]) {
           contVENC++;
-          console.log(self.array[i][0] + " -- Venceu");
+          console.log(self.arrayRespostas[i][0] + " -- Venceu");
         } else
-          console.log(self.array[i][0] + " -- Perdeu");
+          console.log(self.arrayRespostas[i][0] + " -- Perdeu");
       }
 
       var agora = new Date();
       var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
       var alunoId = window.localStorage.getItem("AlunoSelecID");
       var profId = window.localStorage.getItem("ProfSelecID");
-
-      var nota = ((contVENC * 100) / self.array.length);
-
+      var nota = ((contVENC * 100) / self.arrayRespostas.length);
       var resolucao = {
         'id_Teste': TesteTextArealizarID,
         'id_Aluno': alunoId,
@@ -382,15 +367,14 @@ define(function(require) {
         'dataReso': agora,
         'observ': null,
       };
-
-      for (var i = 0; i < self.array.length; i++) {
+      for (var i = 0; i < self.arrayRespostas.length; i++) {
         resolucao.respostas.push({
-          'idPergunta': self.array[i][0],
+          'idPergunta': self.arrayRespostas[i][0],
           'conteudo': {
-            'escolha': self.array[i][1]
+            'escolha': self.arrayRespostas[i][1]
           },
           'correcao': {
-            'certa': self.array[i][2]
+            'certa': self.arrayRespostas[i][2]
           },
         });
       }
@@ -414,17 +398,14 @@ define(function(require) {
     },
 
     clickbtnFinalizar: function(e) {
-
       var self = this;
-
       var semResposta = false;
-      console.log(self.array.length);
-      console.log(self.array)
-      for (var i = 0; i < self.array.length; i++) {
-        if (self.array[i][1] == 0)
+      console.log(self.arrayRespostas.length);
+      console.log(self.arrayRespostas)
+      for (var i = 0; i < self.arrayRespostas.length; i++) {
+        if (self.arrayRespostas[i][1] == 0)
           semResposta = true;
       }
-
 
       if (semResposta) {
         $('#avisoLB').text("Aviso: Existe perguntas que ainda não respondeu!");
@@ -439,8 +420,6 @@ define(function(require) {
 
     render: function() {
       this.$el.html(template({}));
-
-
 
       return this;
     }

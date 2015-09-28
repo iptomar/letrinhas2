@@ -9,19 +9,20 @@ var alunosVar = "dev_alunos";
 var testesVar = "dev_testes";
 var perguntasVar = "dev_perguntas";
 var resolucoesVar = "dev_resolucoes";
-
+var autenticacao = "http://"
+///letrinhas:l3tr1nh4sl3tr4s
 var btnBloqueado = false;
 var IP = "";
 
 //Funcoes para guardar o ip na base de dados local
 sistema2_local2.info().then(function(info1) {
   if (info1.doc_count == 0) {
-
+/////   185.15.22.235
     var sisT = {
       '_id': 'ipServer',
-      'ip': "192.168.1.7"
+      'ip': "127.0.0.1"
     };
-    IP = "192.168.1.7";
+    IP = "127.0.0.1";
     sinEscolas();
     sistema2_local2.post(sisT).then(function(response) {
       console.log("SUCESSO-" + err);
@@ -63,7 +64,11 @@ function myfunction() {
 }
 
 function sinTestesForev() {
-  PouchDB.replicate('http://' + IP + ':5984/' + testesVar, 'testes_local2', {
+  PouchDB.replicate(autenticacao + IP + ':5984/' + testesVar, 'testes_local2', {
+    auth: {
+      username:'letrinhas',
+      password: 'l3tr1nh4sl3tr4s'
+    },
     live: true,
     batch_size: 200,
     retry: true
@@ -75,7 +80,11 @@ function sinTestesForev() {
 }
 
 function sinPerguntasForev() {
-  PouchDB.replicate('http://' + IP + ':5984/' + perguntasVar, 'perguntas_local2', {
+  PouchDB.replicate(autenticacao + IP + ':5984/' + perguntasVar, 'perguntas_local2', {
+    auth: {
+      username:'letrinhas',
+      password: 'l3tr1nh4sl3tr4s'
+    },
     live: true,
     batch_size: 200,
     retry: true
@@ -88,7 +97,11 @@ function sinPerguntasForev() {
 
 
 function sinCorrecoesForev() {
-  var cenas = PouchDB.sync('http://' + IP + ':5984/' + resolucoesVar, 'resolucoes_local2', {
+  var cenas = PouchDB.sync(autenticacao + IP + ':5984/' + resolucoesVar, 'resolucoes_local2', {
+    auth: {
+      username:'letrinhas',
+      password: 'l3tr1nh4sl3tr4s'
+    },
     live: true,
     batch_size: 200,
     retry: true
@@ -113,7 +126,11 @@ escolas_local2.info().then(function(info1) {
     triger1 = true;
     // sinAlunos();
   }
-  PouchDB.replicate('http://' + IP + ':5984/' + escolasVar, 'escolas_local2', {
+  PouchDB.replicate(autenticacao + IP + ':5984/' + escolasVar, 'escolas_local2', {
+    auth: {
+      username:'letrinhas',
+      password: 'l3tr1nh4sl3tr4s'
+    },
     live: false,
     batch_size: 100,
     retry: true
@@ -142,7 +159,11 @@ function sinAlunos() {
       triger2 = true;
       // sinProfs();
     }
-    PouchDB.replicate('http://' + IP + ':5984/' + alunosVar, 'alunos_local2', {
+    PouchDB.replicate(autenticacao + IP + ':5984/' + alunosVar, 'alunos_local2', {
+      auth: {
+        username:'letrinhas',
+        password: 'l3tr1nh4sl3tr4s'
+      },
       live: false,
       batch_size: 300,
       retry: true
@@ -171,7 +192,11 @@ function sinProfs() {
       triger3 = true;
       // sinTestes();
     }
-    PouchDB.replicate('http://' + IP + ':5984/' + professoresVar, 'professores_local2', {
+    PouchDB.replicate(autenticacao + IP + ':5984/' + professoresVar, 'professores_local2', {
+      auth: {
+        username:'letrinhas',
+        password: 'l3tr1nh4sl3tr4s'
+      },
       live: false,
       batch_size: 300,
       retry: true
@@ -197,7 +222,11 @@ function sinTestes() {
   testes_local2.info().then(function(info1) {
     if (info1.doc_count == 0) {
       btnBloqueado = true;
-      PouchDB.replicate('http://' + IP + ':5984/' + testesVar, 'testes_local2', {
+      PouchDB.replicate(autenticacao + IP + ':5984/' + testesVar, 'testes_local2', {
+        auth: {
+          username:'letrinhas',
+          password: 'l3tr1nh4sl3tr4s'
+        },
         live: false,
         batch_size: 200,
         retry: true
@@ -225,7 +254,11 @@ function sinPerguntas() {
   perguntas_local2.info().then(function(info1) {
     if (info1.doc_count == 0) {
       btnBloqueado = true;
-      PouchDB.replicate('http://' + IP + ':5984/' + perguntasVar, 'perguntas_local2', {
+      PouchDB.replicate(autenticacao + IP + ':5984/' + perguntasVar, 'perguntas_local2', {
+        auth: {
+          username:'letrinhas',
+          password: 'l3tr1nh4sl3tr4s'
+        },
         live: false,
         batch_size: 100,
         retry: true

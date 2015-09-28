@@ -282,8 +282,18 @@ define(function(require) {
           $.each(words, function(i, val) {
             var $span;
             var $spanVazio;
-            if (val == "\n")
-              $span = $('</br>');
+
+            if (val.indexOf("\n") != -1)
+            {
+                      console.log(val);
+                $span = $('<span data-toggle="collapse" value=" " class="SpansTxt ">' + val.substring(0, val.indexOf("\n")-1) +
+                '</span></br><span data-toggle="collapse" value=" " class="SpansTxt ">' + val.substring(val.indexOf("\n")) + '</span>');
+            }
+            //  $span = $('</br>');
+            // if (val == "\n")
+
+            //   if (val == "\r\n")
+            //     $span = $('</br>');
             else
               $span = $('<span data-toggle="collapse" value=" " class="SpansTxt ">' + val + '</span>');
             $span.css("color", "#000000");

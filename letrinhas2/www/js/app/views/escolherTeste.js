@@ -231,7 +231,6 @@ define(function(require) {
             }
           }
         }
-
         //  $('#' + self.ponteiro).click();
       });
 
@@ -241,7 +240,10 @@ define(function(require) {
             console.log(errx);
           }
           var $container = $('#outputTestes');
+          console.log(perguntaDoc);
           if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
+
+
             if  (self.countAuxBtn == 0)
             {
                $('#outputTestes').empty();

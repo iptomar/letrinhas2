@@ -1,0 +1,13 @@
+na aplicação 
+
+introduzir o username: letras
+pass: 4321
+
+Configurar o IP
+
+sair da aplicação e reiniciar
+
+  auth: {
+      username:'letrinhas',
+      password: 'l3tr1nh4sl3tr4s'
+    },

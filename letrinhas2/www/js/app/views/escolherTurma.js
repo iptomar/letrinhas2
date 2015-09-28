@@ -82,12 +82,16 @@ define(function(require) {
 
           //   console.log( data.rows[i].doc);
           var docsEscolasTurmas = data.rows[i].doc.turmas;
+
           for (var y = 0; y < docsEscolasTurmas.length; y++) {
 
             for (var z = 0; z < docsEscolasTurmas[y].professores.length; z++) {
               //    console.log(docsEscolasTurmas[y].professores[z].id);
               if (docsEscolasTurmas[y].professores[z].id == profId) {
               //  console.log(data.rows[i].doc.nome + "  --  " + docsEscolasTurmas[y]._id + "  -- ");
+
+        console.log( data.rows[i].doc);
+
                 var $btn = $(
                   '<div class="col-sm-4">' +
                   '<div class="thumbnail" style="height:170px;">' +

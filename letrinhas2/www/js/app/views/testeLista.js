@@ -479,6 +479,7 @@ define(function(require) {
             if (err2) console.log(err2);
             self.GravarSOMfile('voz.mp3', DataImg, function() {
               self.Demo = cordova.file.dataDirectory + "/files/voz.mp3";
+                  $('.loader2').hide();
               $("#playPlayer").attr("src", self.Demo);
               // $("#AudioPlayerProf").bind("ended", function() {
               //   $('#btnParar1').click();
@@ -491,7 +492,7 @@ define(function(require) {
           });
         });
       });
-      
+
       return this;
     }
 

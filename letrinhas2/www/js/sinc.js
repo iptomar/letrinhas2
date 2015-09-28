@@ -20,9 +20,11 @@ sistema2_local2.info().then(function(info1) {
 /////   185.15.22.235
     var sisT = {
       '_id': 'ipServer',
-      'ip': "127.0.0.1"
+      // 'ip': "127.0.0.1"
+      'ip': "192.168.1.65"
     };
-    IP = "127.0.0.1";
+    // IP = "127.0.0.1";
+      IP = "192.168.1.65";
     sinEscolas();
     sistema2_local2.post(sisT).then(function(response) {
       console.log("SUCESSO-" + err);

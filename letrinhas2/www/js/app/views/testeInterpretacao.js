@@ -319,6 +319,7 @@ define(function(require) {
           if (err2) console.log(err2);
           self.GravarSOMfiles('voz.mp3', mp3Aud, function() {
             console.log('FUNCIONA');
+                $('.loader2').hide();
             $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3")
             $("#AudioPlayerProf").bind("ended", function() {
               $('#btnParar1').click();

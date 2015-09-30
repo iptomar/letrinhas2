@@ -88,7 +88,7 @@ function sinPerguntasForev() {
       password: 'l3tr1nh4sl3tr4s'
     },
     live: true,
-    batch_size: 200,
+    batch_size: 50,
     retry: true
   }).on('change', function(info) {
     console.log("Perguntas " + info);
@@ -105,7 +105,7 @@ function sinCorrecoesForev() {
       password: 'l3tr1nh4sl3tr4s'
     },
     live: true,
-    batch_size: 200,
+    batch_size: 50,
     retry: true
   }).on('change', function(info) {
     console.log("Resolucoes " + info);
@@ -167,7 +167,7 @@ function sinAlunos() {
         password: 'l3tr1nh4sl3tr4s'
       },
       live: false,
-      batch_size: 300,
+      batch_size: 50,
       retry: true
     }).on('change', function(info) {
       console.log("Alunos " + info);
@@ -200,7 +200,7 @@ function sinProfs() {
         password: 'l3tr1nh4sl3tr4s'
       },
       live: false,
-      batch_size: 300,
+      batch_size: 100,
       retry: true
     }).on('change', function(info) {
       console.log("Profs " + info);
@@ -230,7 +230,7 @@ function sinTestes() {
           password: 'l3tr1nh4sl3tr4s'
         },
         live: false,
-        batch_size: 200,
+        batch_size: 100,
         retry: true
       }).on('change', function(info) {
         console.log("Testes " + info);
@@ -262,7 +262,7 @@ function sinPerguntas() {
           password: 'l3tr1nh4sl3tr4s'
         },
         live: false,
-        batch_size: 100,
+        batch_size: 50,
         retry: true
       }).on('change', function(info) {
         console.log("perguntas " + info);

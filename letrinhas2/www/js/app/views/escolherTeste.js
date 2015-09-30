@@ -119,10 +119,7 @@ define(function(require) {
           }
           construirJanela += '<div class="row centerEX">';
 
-          //
           var tamanhoTotalOpc = testeDoc.conteudo.opcoes.length;
-
-
           var sorteados = [];
           var valorMaximo = tamanhoTotalOpc;
           var valorMaximo2 = valorMaximo - 1;
@@ -203,193 +200,124 @@ define(function(require) {
       var self = this;
       $('#outputTestes').empty();
       var $container = $('#outputTestes');
-         var $btn = $(
-           '<h2> Sem resultados </h2>');
-         $btn.appendTo($container); //Adiciona ao Div
-         window.localStorage.setItem("TesteTextArealizarID", 'null'); //enviar variavel
-         window.localStorage.setItem("nRepeticoes", 0);
+      var $btn = $('<h2> Sem resultados </h2>');
+      $btn.appendTo($container); //Adiciona ao Div
+      window.localStorage.setItem("TesteTextArealizarID", 'null'); //enviar variavel
+      window.localStorage.setItem("nRepeticoes", 0);
 
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
-      self.countAuxBtn = 0;
+        self.countAuxBtn = 0;
       testes_local2.allDocs({
         include_docs: true,
         attachments: false
       }, function(err, testesDoc) {
         if (err) console.log(err);
         for (var i = 0; i < testesDoc.rows.length; i++) {
+          console.log(testesDoc.rows[i].doc.perguntas[0]);
           var anoEsc = $("#DropDAno").text();
           if (anoEsc != "Todos") {
-            if (testesDoc.rows[i].doc.estado == true && testesDoc.rows[i].doc.anoEscolar == anoEsc) {
-
-              var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
-              perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+            if (testesDoc.rows[i].doc.estado == true &&
+              testesDoc.rows[i].doc.anoEscolar == anoEsc &&
+              testesDoc.rows[i].doc.disciplina == discplinaSelecionada &&
+              testesDoc.rows[i].doc.tipo == tipoTeste) {
+                self.criarBtneClickEventList(tipoTeste, testesDoc.rows[i].doc);
             }
           } else {
-            if (testesDoc.rows[i].doc.estado == true) {
-              var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
-              perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
+            if (testesDoc.rows[i].doc.estado == true &&
+              testesDoc.rows[i].doc.disciplina == discplinaSelecionada &&
+              testesDoc.rows[i].doc.tipo == tipoTeste) {
+                self.criarBtneClickEventList(tipoTeste, testesDoc.rows[i].doc);
             }
           }
         }
-        //  $('#' + self.ponteiro).click();
       });
-
-      function obtemDadosParaRow(disciplinaSelecionada, i, perguntaSelc) {
-        return function(errx, perguntaDoc) {
-          if (errx) {
-            console.log(errx);
-          }
-          var $container = $('#outputTestes');
-          console.log(perguntaDoc);
-          if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
-
-
-            if  (self.countAuxBtn == 0)
-            {
-               $('#outputTestes').empty();
-               self.countAuxBtn =1;
-            }
-
-            var img;
-            if (tipoTeste == "Texto")
-              img = "testeTexto"
-            if (tipoTeste == "Lista")
-              img = "testLista"
-            if (tipoTeste == "Multimédia")
-              img = "testMul"
-            if (tipoTeste == "Interpretação")
-              img = "testInterpretacao"
-
-            var $btn = $(
-              '<button id="' + perguntaSelc.id + '"  name="' + perguntaDoc._id + '"  type="button" style="height:62px; text-align: left;" class="btn btn-lg btn-block btn-teste activeXF" >' +
-              ' &nbsp;&nbsp;&nbsp;&nbsp;<img src="img/' + img + '.png"  style="height:32px;" > ' +
-              perguntaSelc.doc.titulo + '</button>');
-            $btn.appendTo($container); //Adiciona ao Div
-
-            $("#" + perguntaSelc.id).click(function() {
-              var $btn = $(this); // O jQuery passa o btn clicado pelo this
-
-              if (self.btns != null) {
-                self.btns.removeClass("btn-primary");
-                self.btns.addClass("activeXF");
-              }
-              self.btns = $(this);
-              $(this).removeClass("activeXF");
-              $(this).addClass("btn-primary");
-              window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
-              window.localStorage.setItem("nRepeticoes", 0);
-              self.criarDemostracao(tipoTeste, $btn[0].name, perguntaSelc.doc.perguntas.length);
-            });
-            //Selecionar o 1º Item
-            if (self.ponteiro == null) {
-              console.log(perguntaSelc.id);
-              $('#' + perguntaSelc.id).click();
-              self.ponteiro = true;
-            }
-          }
-        };
-      }
     },
 
-
-    pesquisarEcriarBTN: function(pesquisa) {
-      var self = this
-      $('#outputTestes').empty();
-      $('#outputTestesConteudo').empty();
-
-      $('#outputTestes').empty();
+    criarBtneClickEventList: function(tipoTeste, TestDoc) {
+      var self = this;
       var $container = $('#outputTestes');
-         var $btn = $(
-           '<h2> Sem resultados </h2>');
-         $btn.appendTo($container); //Adiciona ao Div
-         window.localStorage.setItem("TesteTextArealizarID", 'null'); //enviar variavel
-         window.localStorage.setItem("nRepeticoes", 0);
-      var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
-      self.countAuxBtn = 0;
-      var tipoTeste = self.tipoTesteSelecionado;
+      if (self.countAuxBtn == 0) {
+        $('#outputTestes').empty();
+        self.countAuxBtn = 1;
+      }
+      var img;
+      if (tipoTeste == "Texto")
+        img = "testeTexto"
+      if (tipoTeste == "Lista")
+        img = "testLista"
+      if (tipoTeste == "Multimédia")
+        img = "testMul"
+      if (tipoTeste == "Interpretação")
+        img = "testInterpretacao"
+      console.log(TestDoc.perguntas[0]);
+      var $btn = $(
+        '<button id="' + TestDoc.perguntas[0] + '"  name="' + TestDoc.perguntas.length + '"  type="button" style="height:62px; text-align: left;" class="btn btn-lg btn-block btn-teste activeXF" >' +
+        ' &nbsp;&nbsp;&nbsp;&nbsp;<img src="img/' + img + '.png"  style="height:32px;" > ' +
+        TestDoc.titulo + '</button>');
+      $btn.appendTo($container); //Adiciona ao Div
+      ///////////////////////click event////////////
+      $("#" + TestDoc.perguntas[0]).click(function() {
+        var $btn = $(this); // O jQuery passa o btn clicado pelo this
 
-      testes_local2.search({
-        query: pesquisa,
-        fields: ['titulo'],
-        include_docs: true
-      }).then(function(testesDoc) {
-
-        for (var i = 0; i < testesDoc.rows.length; i++) {
-          var anoEsc = $("#DropDAno").text();
-          if (anoEsc != "Todos") {
-            if (testesDoc.rows[i].doc.estado == true && testesDoc.rows[i].doc.anoEscolar == anoEsc) {
-              var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
-              perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
-            }
-          } else {
-            if (testesDoc.rows[i].doc.estado == true) {
-              var perguntaSelc = testesDoc.rows[i].doc.perguntas[0];
-              perguntas_local2.get(perguntaSelc, obtemDadosParaRow(discplinaSelecionada, i, testesDoc.rows[i]));
-            }
-          }
+        if (self.btns != null) {
+          self.btns.removeClass("btn-primary");
+          self.btns.addClass("activeXF");
         }
-
-
-      }).catch(function(err) {
-        console.log(err);
-        // handle error
+        self.btns = $(this);
+        $(this).removeClass("activeXF");
+        $(this).addClass("btn-primary");
+        window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
+        window.localStorage.setItem("nRepeticoes", 0);
+        self.criarDemostracao(tipoTeste, $btn[0].id, $btn[0].name);
       });
-
-      function obtemDadosParaRow(disciplinaSelecionada, i, perguntaSelc, totalPerguntas) {
-        return function(errx, perguntaDoc) {
-          if (errx) {
-            console.log(errx);
-          }
-          if (disciplinaSelecionada == perguntaDoc.disciplina && perguntaDoc.tipoTeste == tipoTeste) {
-            if  (self.countAuxBtn == 0)
-            {
-               $('#outputTestes').empty();
-               self.countAuxBtn =1;
-            }
-
-            var $container = $('#outputTestes');
-            var img;
-            if (tipoTeste == "Texto")
-              img = "testeTexto.png"
-            if (tipoTeste == "Lista")
-              img = "testLista.png"
-            if (tipoTeste == "Multimédia")
-              img = "testMul.png"
-            if (tipoTeste == "Interpretação")
-              img = "testInterpretacao.png"
-
-
-            var $btn = $(
-              '<button id="' + perguntaSelc.id + '"  name="' + perguntaDoc._id + '"  type="button" style="height:62px; text-align: left;" class="btn btn-lg btn-block btn-teste activeXF " >' +
-              ' <img src="img/' + img + '" style="height:32px;" > ' +
-              perguntaSelc.doc.titulo + '</button>');
-            $btn.appendTo($container); //Adiciona ao Div
-
-            $("#" + perguntaSelc.id).click(function() {
-              var $btn = $(this); // O jQuery passa o btn clicado pelo this
-
-              if (self.btns != null) {
-                self.btns.removeClass("btn-primary");
-                self.btns.addClass("activeXF");
-              }
-              self.btns = $(this);
-              $(this).removeClass("activeXF");
-              $(this).addClass("btn-primary");
-              window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
-              window.localStorage.setItem("nRepeticoes", 0);
-              self.criarDemostracao(tipoTeste, $btn[0].name, perguntaSelc.doc.perguntas.length);
-            });
-            console.log(self.ponteiro);
-            //Selecionar o 1º Item
-            if (self.ponteiro == null) {
-              console.log(perguntaSelc.id);
-              $('#' + perguntaSelc.id).click();
-              self.ponteiro = true;
-            }
-          }
-        };
+      //Selecionar o 1º Item
+      if (self.ponteiro == null) {
+        console.log(TestDoc.perguntas[0]);
+        $('#' + TestDoc.perguntas[0]).click();
+        self.ponteiro = true;
       }
     },
+
+      pesquisarEcriarBTN: function(pesquisa) {
+        var self = this;
+        $('#outputTestes').empty();
+        var $container = $('#outputTestes');
+        var $btn = $('<h2> Sem resultados </h2>');
+        var tipoTeste = self.tipoTesteSelecionado;
+        $btn.appendTo($container); //Adiciona ao Div
+        window.localStorage.setItem("TesteTextArealizarID", 'null'); //enviar variavel
+        window.localStorage.setItem("nRepeticoes", 0);
+
+        var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
+        self.countAuxBtn = 0;
+          testes_local2.search({
+          query: pesquisa,
+          fields: ['titulo'],
+          include_docs: true,
+        }).then(function(testesDoc) {
+          for (var i = 0; i < testesDoc.rows.length; i++) {
+            console.log(testesDoc.rows[i].doc.perguntas[0]);
+            var anoEsc = $("#DropDAno").text();
+            if (anoEsc != "Todos") {
+              if (testesDoc.rows[i].doc.estado == true &&
+                testesDoc.rows[i].doc.anoEscolar == anoEsc &&
+                testesDoc.rows[i].doc.disciplina == discplinaSelecionada &&
+                testesDoc.rows[i].doc.tipo == tipoTeste) {
+                  self.criarBtneClickEventList(tipoTeste, testesDoc.rows[i].doc);
+              }
+            } else {
+              if (testesDoc.rows[i].doc.estado == true &&
+                testesDoc.rows[i].doc.disciplina == discplinaSelecionada &&
+                testesDoc.rows[i].doc.tipo == tipoTeste) {
+                  self.criarBtneClickEventList(tipoTeste, testesDoc.rows[i].doc);
+              }
+            }
+          }
+        }).catch(function() {
+          // console.log(err);
+          // handle error
+        });
+      },
 
     selecionarTipoTesteColor: function(tipoTeste) {
       $('#btnTesteLeituraMultimedia').removeClass("btn-primary");
@@ -438,9 +366,6 @@ define(function(require) {
       "click #btnNavTurmas": "clickbtnNavTurmas",
       "click #btnNavAlunos": "clickbtnNavAlunos",
       "click #btnPesquisar": "clickbtnPesquisar",
-
-
-
     },
 
     clickbtnPesquisar: function(e) {
@@ -597,16 +522,16 @@ define(function(require) {
       e.preventDefault();
       console.log(self.tipoTesteSelecionado);
       if (window.localStorage.getItem("TesteTextArealizarID") != "null")
-      if (self.tipoTesteSelecionado == 'Texto') {
-        if (Backbone.history.fragment != 'testeTexto') {
-          utils.loader(function() {
-            e.preventDefault();
-            app.navigate('/testeTexto', {
-              trigger: true
+        if (self.tipoTesteSelecionado == 'Texto') {
+          if (Backbone.history.fragment != 'testeTexto') {
+            utils.loader(function() {
+              e.preventDefault();
+              app.navigate('/testeTexto', {
+                trigger: true
+              });
             });
-          });
-        }
-      } else if (self.tipoTesteSelecionado == 'Lista') {
+          }
+        } else if (self.tipoTesteSelecionado == 'Lista') {
         if (Backbone.history.fragment != 'testeLista') {
           utils.loader(function() {
             e.preventDefault();

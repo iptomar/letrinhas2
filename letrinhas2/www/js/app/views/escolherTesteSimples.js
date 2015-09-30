@@ -117,9 +117,7 @@ define(function(require) {
         }
           construirJanela += '<div class="row centerEX">';
 
-          //
           var  tamanhoTotalOpc = testeDoc.conteudo.opcoes.length;
-
 
           var sorteados = [];
           var valorMaximo = tamanhoTotalOpc;

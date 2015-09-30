@@ -213,7 +213,7 @@ define(function(require) {
       }, function(err, testesDoc) {
         if (err) console.log(err);
         for (var i = 0; i < testesDoc.rows.length; i++) {
-          console.log(testesDoc.rows[i].doc.perguntas[0]);
+
           var anoEsc = $("#DropDAno").text();
           if (anoEsc != "Todos") {
             if (testesDoc.rows[i].doc.estado == true &&
@@ -249,14 +249,13 @@ define(function(require) {
         img = "testMul"
       if (tipoTeste == "Interpretação")
         img = "testInterpretacao"
-      console.log(TestDoc.perguntas[0]);
       var $btn = $(
-        '<button id="' + TestDoc.perguntas[0] + '"  name="' + TestDoc.perguntas.length + '"  type="button" style="height:62px; text-align: left;" class="btn btn-lg btn-block btn-teste activeXF" >' +
+        '<button id="' + TestDoc._id + '"  name="' + TestDoc.perguntas[0] + '" value="' + TestDoc.perguntas.length + '" type="button" style="height:62px; text-align: left;" class="btn btn-lg btn-block btn-teste activeXF" >' +
         ' &nbsp;&nbsp;&nbsp;&nbsp;<img src="img/' + img + '.png"  style="height:32px;" > ' +
         TestDoc.titulo + '</button>');
       $btn.appendTo($container); //Adiciona ao Div
       ///////////////////////click event////////////
-      $("#" + TestDoc.perguntas[0]).click(function() {
+      $("#" + TestDoc._id).click(function() {
         var $btn = $(this); // O jQuery passa o btn clicado pelo this
 
         if (self.btns != null) {
@@ -268,12 +267,11 @@ define(function(require) {
         $(this).addClass("btn-primary");
         window.localStorage.setItem("TesteTextArealizarID", $btn[0].id + ''); //enviar variavel
         window.localStorage.setItem("nRepeticoes", 0);
-        self.criarDemostracao(tipoTeste, $btn[0].id, $btn[0].name);
+        self.criarDemostracao(tipoTeste, $btn[0].name, $btn[0].value );
       });
       //Selecionar o 1º Item
       if (self.ponteiro == null) {
-        console.log(TestDoc.perguntas[0]);
-        $('#' + TestDoc.perguntas[0]).click();
+        $('#' + TestDoc._id).click();
         self.ponteiro = true;
       }
     },

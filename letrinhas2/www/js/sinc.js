@@ -1,8 +1,14 @@
 //// Script de Replicacao da Base de dados CouchDb para PouchDb  //////
 //##########################################################################
-
 var sistema_local2 = new PouchDB('sistema');
 var sistema2_local2 = new PouchDB('sistema2');
+var alunos_local2 = new PouchDB('alunos_local2');
+var escolas_local2 = new PouchDB('escolas_local2');
+var professores_local2 = new PouchDB('professores_local2');
+var testes_local2 = new PouchDB('testes_local2');
+var perguntas_local2 = new PouchDB('perguntas_local2');
+var resolucoes_local2 = new PouchDB('resolucoes_local2');
+
 var escolasVar = "dev_escolas";
 var professoresVar = "dev_professores";
 var alunosVar = "dev_alunos";
@@ -18,7 +24,7 @@ var IP = "";
 sistema2_local2.info().then(function(info1) {
   if (info1.doc_count == 0) {
 /////   185.15.22.235
-    var sisT = {
+    var IPxServer = {
       '_id': 'ipServer',
       // 'ip': "127.0.0.1"
       'ip': "192.168.1.65"
@@ -26,10 +32,10 @@ sistema2_local2.info().then(function(info1) {
     // IP = "127.0.0.1";
       IP = "192.168.1.65";
     sinEscolas();
-    sistema2_local2.post(sisT).then(function(response) {
-      console.log("SUCESSO-" + err);
+    sistema2_local2.post(IPxServer).then(function(response) {
+      console.log("SUCESSO-");
     }).catch(function(err) {
-      console.log("ERRRO-" + err);
+      console.log("ERRRO-");
     });
   } else {
     sistema2_local2.get('ipServer').then(function(doc) {
@@ -42,14 +48,6 @@ sistema2_local2.info().then(function(info1) {
   }
 });
 //Fim de funçoes
-
-
-var alunos_local2 = new PouchDB('alunos_local2');
-var escolas_local2 = new PouchDB('escolas_local2');
-var professores_local2 = new PouchDB('professores_local2');
-var testes_local2 = new PouchDB('testes_local2');
-var perguntas_local2 = new PouchDB('perguntas_local2');
-var resolucoes_local2 = new PouchDB('resolucoes_local2');
 
 var triger1 = false;
 var triger2 = false;
@@ -66,7 +64,7 @@ function myfunction() {
 }
 
 function sinTestesForev() {
-  PouchDB.replicate(autenticacao + IP + ':5984/' + testesVar, 'testes_local2', {
+  testes_local2.replicate.from(autenticacao + IP + ':5984/' + testesVar, {
     auth: {
       username:'letrinhas',
       password: 'l3tr1nh4sl3tr4s'
@@ -82,7 +80,7 @@ function sinTestesForev() {
 }
 
 function sinPerguntasForev() {
-  PouchDB.replicate(autenticacao + IP + ':5984/' + perguntasVar, 'perguntas_local2', {
+  perguntas_local2.replicate.from(autenticacao + IP + ':5984/' + perguntasVar,  {
     auth: {
       username:'letrinhas',
       password: 'l3tr1nh4sl3tr4s'
@@ -99,7 +97,7 @@ function sinPerguntasForev() {
 
 
 function sinCorrecoesForev() {
-  var cenas = PouchDB.sync(autenticacao + IP + ':5984/' + resolucoesVar, 'resolucoes_local2', {
+    resolucoes_local2.sync(autenticacao + IP + ':5984/' + resolucoesVar,  {
     auth: {
       username:'letrinhas',
       password: 'l3tr1nh4sl3tr4s'
@@ -128,7 +126,7 @@ escolas_local2.info().then(function(info1) {
     triger1 = true;
     // sinAlunos();
   }
-  PouchDB.replicate(autenticacao + IP + ':5984/' + escolasVar, 'escolas_local2', {
+  escolas_local2.replicate.from(autenticacao + IP + ':5984/' + escolasVar, {
     auth: {
       username:'letrinhas',
       password: 'l3tr1nh4sl3tr4s'
@@ -161,7 +159,7 @@ function sinAlunos() {
       triger2 = true;
       // sinProfs();
     }
-    PouchDB.replicate(autenticacao + IP + ':5984/' + alunosVar, 'alunos_local2', {
+    alunos_local2.replicate.from(autenticacao + IP + ':5984/' + alunosVar,  {
       auth: {
         username:'letrinhas',
         password: 'l3tr1nh4sl3tr4s'
@@ -192,9 +190,8 @@ function sinProfs() {
       btnBloqueado = true;
     } else {
       triger3 = true;
-      // sinTestes();
     }
-    PouchDB.replicate(autenticacao + IP + ':5984/' + professoresVar, 'professores_local2', {
+    professores_local2.replicate.from(autenticacao + IP + ':5984/' + professoresVar, {
       auth: {
         username:'letrinhas',
         password: 'l3tr1nh4sl3tr4s'
@@ -217,14 +214,13 @@ function sinProfs() {
       console.log("ProfsERRO " + err);
     });
   });
-
 }
 //////////////////////////////////////////////////
 function sinTestes() {
   testes_local2.info().then(function(info1) {
     if (info1.doc_count == 0) {
       btnBloqueado = true;
-      PouchDB.replicate(autenticacao + IP + ':5984/' + testesVar, 'testes_local2', {
+      testes_local2.replicate.from(autenticacao + IP + ':5984/' + testesVar,  {
         auth: {
           username:'letrinhas',
           password: 'l3tr1nh4sl3tr4s'
@@ -256,7 +252,7 @@ function sinPerguntas() {
   perguntas_local2.info().then(function(info1) {
     if (info1.doc_count == 0) {
       btnBloqueado = true;
-      PouchDB.replicate(autenticacao + IP + ':5984/' + perguntasVar, 'perguntas_local2', {
+      perguntas_local2.replicate.from(autenticacao + IP + ':5984/' + perguntasVar,  {
         auth: {
           username:'letrinhas',
           password: 'l3tr1nh4sl3tr4s'

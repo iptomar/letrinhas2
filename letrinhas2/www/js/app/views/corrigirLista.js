@@ -385,6 +385,7 @@ define(function(require) {
             if (err2) console.log(err2);
             self.GravarSOMfile('voz.mp3', DataImg, function() {
               console.log('FUNCIONA VOZ PROF');
+              $('.loader2').hide();
               $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3");
               $("#AudioPlayerProf").trigger('load');
               var audioElement = $("#AudioPlayerProf")[0];

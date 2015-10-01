@@ -56,7 +56,7 @@ define(function(require) {
       if (pinDigitado != "") {
         professores_local2.query({
           map: function(doc) {
-            console.log(doc);
+
             if (doc._id == $('#inputEmail').val() && doc.pin == $('#inputPIN').val() && doc.estado == true) {
               emit(doc);
             }
@@ -96,7 +96,6 @@ define(function(require) {
                 } else {
                   sistema_local2.get('ultimoLogin', function(err, otherDoc) {
                     if (err) console.log(err);
-                    console.log(otherDoc)
                     otherDoc.email = response.rows[0].id;
                     sistema_local2.put(otherDoc, otherDoc._id, otherDoc._rev, function(err, response) {
                       if (err) {
@@ -134,7 +133,7 @@ define(function(require) {
       }).catch(function(err) {
         console.log(err);
       });
-      
+
       return this;
     }
   });

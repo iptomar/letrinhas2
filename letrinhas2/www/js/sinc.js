@@ -15,7 +15,6 @@ var alunosVar = "dev_alunos";
 var testesVar = "dev_testes";
 var perguntasVar = "dev_perguntas";
 var resolucoesVar = "dev_resolucoes";
-var autenticacao = "http://"
 ///letrinhas:l3tr1nh4sl3tr4s
 var btnBloqueado = false;
 var IP = "";
@@ -26,11 +25,11 @@ sistema2_local2.info().then(function(info1) {
 /////   185.15.22.235
     var IPxServer = {
       '_id': 'ipServer',
-      // 'ip': "127.0.0.1"
-      'ip': "192.168.1.65"
+      'ip': "185.15.22.235"
+      // 'ip': "192.168.1.65"
     };
-    // IP = "127.0.0.1";
-      IP = "192.168.1.65";
+    IP = "185.15.22.235";
+      // IP = "192.168.1.65";
     sinEscolas();
     sistema2_local2.post(IPxServer).then(function(response) {
       console.log("SUCESSO-");
@@ -64,11 +63,11 @@ function myfunction() {
 }
 
 function sinTestesForev() {
-  testes_local2.replicate.from(autenticacao + IP + ':5984/' + testesVar, {
-    auth: {
-      username:'letrinhas',
-      password: 'l3tr1nh4sl3tr4s'
-    },
+  testes_local2.replicate.from("http://" + IP + ':5984/' + testesVar, {
+    // auth: {
+    //   username:'letrinhas',
+    //   password: 'l3tr1nh4sl3tr4s'
+    // },
     live: true,
     batch_size: 200,
     retry: true
@@ -80,11 +79,11 @@ function sinTestesForev() {
 }
 
 function sinPerguntasForev() {
-  perguntas_local2.replicate.from(autenticacao + IP + ':5984/' + perguntasVar,  {
-    auth: {
-      username:'letrinhas',
-      password: 'l3tr1nh4sl3tr4s'
-    },
+  perguntas_local2.replicate.from("http://"  + IP + ':5984/' + perguntasVar,  {
+    // auth: {
+    //   username:'letrinhas',
+    //   password: 'l3tr1nh4sl3tr4s'
+    // },
     live: true,
     batch_size: 50,
     retry: true
@@ -97,11 +96,11 @@ function sinPerguntasForev() {
 
 
 function sinCorrecoesForev() {
-    resolucoes_local2.sync(autenticacao + IP + ':5984/' + resolucoesVar,  {
-    auth: {
-      username:'letrinhas',
-      password: 'l3tr1nh4sl3tr4s'
-    },
+    resolucoes_local2.sync("http://"  + IP + ':5984/' + resolucoesVar,  {
+    // auth: {
+    //   username:'letrinhas',
+    //   password: 'l3tr1nh4sl3tr4s'
+    // },
     live: true,
     batch_size: 50,
     retry: true
@@ -126,11 +125,11 @@ escolas_local2.info().then(function(info1) {
     triger1 = true;
     // sinAlunos();
   }
-  escolas_local2.replicate.from(autenticacao + IP + ':5984/' + escolasVar, {
-    auth: {
-      username:'letrinhas',
-      password: 'l3tr1nh4sl3tr4s'
-    },
+  escolas_local2.replicate.from("http://"  + IP + ':5984/' + escolasVar, {
+    // auth: {
+    //   username:'letrinhas',
+    //   password: 'l3tr1nh4sl3tr4s'
+    // },
     live: false,
     batch_size: 100,
     retry: true
@@ -157,13 +156,12 @@ function sinAlunos() {
       btnBloqueado = true;
     } else {
       triger2 = true;
-      // sinProfs();
-    }
-    alunos_local2.replicate.from(autenticacao + IP + ':5984/' + alunosVar,  {
-      auth: {
-        username:'letrinhas',
-        password: 'l3tr1nh4sl3tr4s'
-      },
+        }
+    alunos_local2.replicate.from("http://"  + IP + ':5984/' + alunosVar,  {
+      // auth: {
+      //   username:'letrinhas',
+      //   password: 'l3tr1nh4sl3tr4s'
+      // },
       live: false,
       batch_size: 50,
       retry: true
@@ -191,11 +189,11 @@ function sinProfs() {
     } else {
       triger3 = true;
     }
-    professores_local2.replicate.from(autenticacao + IP + ':5984/' + professoresVar, {
-      auth: {
-        username:'letrinhas',
-        password: 'l3tr1nh4sl3tr4s'
-      },
+    professores_local2.replicate.from("http://"  + IP + ':5984/' + professoresVar, {
+      // auth: {
+      //   username:'letrinhas',
+      //   password: 'l3tr1nh4sl3tr4s'
+      // },
       live: false,
       batch_size: 100,
       retry: true
@@ -220,11 +218,11 @@ function sinTestes() {
   testes_local2.info().then(function(info1) {
     if (info1.doc_count == 0) {
       btnBloqueado = true;
-      testes_local2.replicate.from(autenticacao + IP + ':5984/' + testesVar,  {
-        auth: {
-          username:'letrinhas',
-          password: 'l3tr1nh4sl3tr4s'
-        },
+      testes_local2.replicate.from("http://"  + IP + ':5984/' + testesVar,  {
+        // auth: {
+        //   username:'letrinhas',
+        //   password: 'l3tr1nh4sl3tr4s'
+        // },
         live: false,
         batch_size: 100,
         retry: true
@@ -252,11 +250,11 @@ function sinPerguntas() {
   perguntas_local2.info().then(function(info1) {
     if (info1.doc_count == 0) {
       btnBloqueado = true;
-      perguntas_local2.replicate.from(autenticacao + IP + ':5984/' + perguntasVar,  {
-        auth: {
-          username:'letrinhas',
-          password: 'l3tr1nh4sl3tr4s'
-        },
+      perguntas_local2.replicate.from("http://"  + IP + ':5984/' + perguntasVar,  {
+        // auth: {
+        //   username:'letrinhas',
+        //   password: 'l3tr1nh4sl3tr4s'
+        // },
         live: false,
         batch_size: 50,
         retry: true

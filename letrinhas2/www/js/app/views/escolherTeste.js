@@ -109,7 +109,7 @@ define(function(require) {
           } else if (testeDoc.conteudo.tipoDoCorpo == "imagem") {
             construirJanela +=
               '<div class="panel-body fontEX2"><div class="panel panel-info centerEX">' +
-              ' <div class="panel-heading"> <img src="data:image/jpg;base64,' + testeDoc._attachments['corpo.jpg'].data + '" style="width:75%;" /> ' +
+              ' <div class="panel-heading"> <img style="height:150px;" src="data:image/jpg;base64,' + testeDoc._attachments['corpo.jpg'].data + '" style="width:75%;" /> ' +
               '</div></div>';
           } else if (testeDoc.conteudo.tipoDoCorpo == "audio") {
             construirJanela +=
@@ -155,8 +155,8 @@ define(function(require) {
                 testeDoc.conteudo.opcoes[sorteados[y]].conteudo + '</button></div>';
             } else if (testeDoc.conteudo.opcoes[y].tipo == "imagem") {
               var auxY = y + 1;
-              construirJanela += '<button type="button" class="btn btn-info btn-lg btn-block disabled"> ' +
-                '<img id="imgOp' + auxY + '" src="data:image/jpg;base64,' + testeDoc._attachments['op' + sorteados2[y] + '.jpg'].data + '" style="width:75%;" class="pull-center"/></button></div>';
+              construirJanela += '<button type="button" style="height:150px;" class="btn btn-info btn-lg btn-block disabled"> ' +
+                '<img id="imgOp' + auxY + '"  style="max-height:135px; max-width:135px" src="data:image/jpg;base64,' + testeDoc._attachments['op' + sorteados2[y] + '.jpg'].data + '" /></button></div>';
             }
           }
 

@@ -154,8 +154,8 @@ define(function(require) {
                 testeDoc.conteudo.opcoes[sorteados[y]].conteudo + '</button></div>';
             } else if (testeDoc.conteudo.opcoes[y].tipo == "imagem") {
               var auxY = y + 1;
-              construirJanela += '<button type="button" class="btn btn-info btn-lg btn-block disabled"> ' +
-                '<img id="imgOp' + auxY + '" src="data:image/jpg;base64,' + testeDoc._attachments['op'+sorteados2[y]+'.jpg'].data + '" style="width:75%;"class="pull-center"/></button></div>';
+              construirJanela += '<button type="button"  style="height:140px;" class="btn btn-info btn-lg btn-block disabled"> ' +
+                '<img id="imgOp' + auxY + '"  style=" max-height:135px; max-width:135px"src="data:image/jpg;base64,' + testeDoc._attachments['op'+sorteados2[y]+'.jpg'].data + '" /></button></div>';
             }
           }
 

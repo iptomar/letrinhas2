@@ -213,15 +213,15 @@ define(function(require) {
         stringTextJanela += '<div class="panel fontEX_XL centerEX">';
         if (perguntaDoc.conteudo.tipoDoCorpo == "texto") {
           stringTextJanela +=
-            ' <div class="panel-heading" style="height:30vh;"> <h2 style="font-size:35px;">' + perguntaDoc.conteudo.corpo +
+            ' <div class="panel-heading" class="col-md-8" style="height:255px"> <h2 style="font-size:30px;">' + perguntaDoc.conteudo.corpo +
             '</h2></div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "imagem") {
           stringTextJanela +=
-            ' <div class="panel-heading" style="height:30vh;"> <img  src="data:image/jpg;base64,' + perguntaDoc._attachments['corpo.jpg'].data + '" style="width:85%;" /> ' +
+            ' <div class="panel-heading" class="col-md-8" style="height:255px"> <img  style="max-height:240px;" src="data:image/jpg;base64,' + perguntaDoc._attachments['corpo.jpg'].data + '"  /> ' +
             '</div>';
         } else if (perguntaDoc.conteudo.tipoDoCorpo == "audio") {
           stringTextJanela +=
-            ' <div class="panel-heading" style="height:30vh;"> </br><audio id="Audio' + perguntaDoc._id + '" controls="controls"  style="width: 100%"></audio>' +
+            ' <div class="panel-heading" class="col-md-8" style="height:255px"> </br><audio id="Audio' + perguntaDoc._id + '" controls="controls"  style="width: 100%"></audio>' +
             '</div>';
         }
         stringTextJanela += '</div></br></br></br><div>';
@@ -261,8 +261,9 @@ define(function(require) {
             stringTextJanela += '<button  value="' + correta + '" id="' + idx + '" name="' + idPergunta + '" type="button" style="height:200px;" class="btn btn-info btn-lg btn-block fontEX_XS btnOP btn-opcao-' + idPergunta + '"> ' +
               perguntaDoc.conteudo.opcoes[sorteados[y]].conteudo + '</button></div>';
           } else if (perguntaDoc.conteudo.opcoes[y].tipo == "imagem") { ///Se corpo for Imagem
-            stringTextJanela += '<button value="' + correta + '" id="' + sorteados2[y] + '" name="' + idPergunta + '" type="button" class="btn btn-info btn-lg btn-block btnOP btn-opcao-' + idPergunta + '"> ' +
-              '<img src="data:image/jpg;base64,' + perguntaDoc._attachments['op' + sorteados2[y] + '.jpg'].data + '" style="width:85%;" class="pull-center"/></button></div>';
+            stringTextJanela += '<button  value="' + correta + '" id="' + sorteados2[y] + '" name="' + idPergunta + '" style="height:200px;" type="button" class="btn btn-info btn-lg btn-block btnOP btn-opcao-' + idPergunta + '"> ' +
+              '<img src="data:image/jpg;base64,' + perguntaDoc._attachments['op' + sorteados2[y] + '.jpg'].data + '" style="height:150px"  /></button></div>';
+            // '</button></div>';
           }
         }
 
@@ -284,11 +285,36 @@ define(function(require) {
       });
     },
 
+
+
+    FimDeTesteMult: function() {
+      var self = this;
+      $('#myModalCont').modal("hide");
+      $('#myModalCont').on('hidden.bs.modal', function(e) {
+        self.modelTrue = false;
+        self.auxRemoveAll();
+        document.removeEventListener("backbutton", self.onBackKeyDowns, false); ///RETIRAR EVENTO DO BOTAO
+        if (Backbone.history.fragment != 'pinJanela') {
+          utils.loader(function() {
+            e.preventDefault();
+            self.highlight(e);
+            app.navigate('/pinJanela', {
+              trigger: true
+            });
+          });
+        }
+      });
+    },
+
+
+
     events: {
       "click #btnFinalizar": "clickbtnFinalizar",
       "click #btnConfirmarSUB": "clickbtnConfirmarSUB",
       "click #btnConfirmarPIN": "clickbtnConfirmarPIN",
+      "click #btnSairTest": "btnSairTest",
       "click #pik": "pik",
+      "click #pik2": "pik2"
     },
 
     pik: function(e) {
@@ -309,7 +335,6 @@ define(function(require) {
               });
             });
           }
-
         } else {
           self.modelTrue = false;
           location.reload();
@@ -317,7 +342,17 @@ define(function(require) {
       });
     },
 
-//Btn confimar o pin do prof
+    btnSairTest: function(e) {
+      var self = this;
+      self.FimDeTesteMult();
+    },
+
+    pik2: function(e) {
+      var self = this;
+      self.FimDeTesteMult();
+    },
+
+    //Btn confimar o pin do prof
     clickbtnConfirmarPIN: function(e) {
       var self = this;
       var pinDigitado = $('#inputPIN').val();
@@ -387,6 +422,12 @@ define(function(require) {
           self.modelTrue = true;
           $('#myModalSUB').modal("hide");
           $('#myModalSUB').on('hidden.bs.modal', function(e) {
+            var nRepeticoes = window.localStorage.getItem("nRepeticoes");
+            if (nRepeticoes == 0) {
+              $("#divFimTenta").show();
+            } else {
+              $("#divYorN").show();
+            }
             $("#myModalCont").modal("show");
             $("#semafro").text("Acertou " + contVENC + " pergunta(s)");
             var nRepeticoes = window.localStorage.getItem("nRepeticoes");

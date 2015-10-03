@@ -170,29 +170,6 @@ define(function(require) {
       var self = this;
       $('#div1').hide();
       $('#div2').show();
-        // $("#AudioPlayerProf").attr("src", "/img/voz.mp3");
-      // $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3")
-
-      // setTimeout(function() {
-      //   $("#AudioPlayerProf").prop("currentTime", 0);
-      //   $("#AudioPlayerProf").trigger('play');
-      // }, 300);
-
-
-
-      // if (self.legendas != null)
-      //   for (var i = 0; i < self.legendas.length; i++) {
-      //     self.timeouts.push(setTimeout(self.mudaPalavra(self.legendas[i].palavra), self.legendas[i].tempo));
-      //   } else {
-      //     var maxEle = $("#txtAreaConteud > span").length;
-      //     var temp = 1000;
-      //     for (var i = 0; i < maxEle; i++) {
-      //       self.timeouts.push(setTimeout(self.mudaPalavra(i), temp));
-      //       temp = temp + 1000;
-      //
-      //     }
-      //   }
-      //
        $("#AudioPlayerProf").trigger('play');
     },
 
@@ -202,19 +179,6 @@ define(function(require) {
       $("#AudioPlayerProf").trigger('pause');
       $('#div2').hide();
       $('#div1').show();
-      //
-      // var maxEle = $("#txtAreaConteud > span").length;
-      //
-      // for (var i = 0; i < self.timeouts.length; i++) {
-      //   clearTimeout(self.timeouts[i]);
-      // }
-      //
-      // var sapns = $("#txtAreaConteud > span");
-      // for (var i = 0; i < maxEle; i++) {
-      //   $('#sp' + i).css("background-color", "#FFFFFF");
-      // }
-
-
     },
 
     ///Evento botao parar reprod audio aluno
@@ -341,15 +305,12 @@ define(function(require) {
       var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
       var TesteTextArealizarID = window.localStorage.getItem("TesteTextArealizarID");
 
-
-
       professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
         $('#imgProf').attr("src", url);
       });
-
 
       alunos_local2.getAttachment(alunoId, 'aluno.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
@@ -387,7 +348,6 @@ define(function(require) {
           });
         });
 
-
         perguntas_local2.getAttachment(testeDoc.perguntas[0], 'voz.mp3', function(err2, mp3Aud) {
           if (err2) console.log(err2);
           self.GravarSOMfiles('voz.mp3', mp3Aud, function() {
@@ -397,13 +357,11 @@ define(function(require) {
             $("#AudioPlayerProf").bind("ended", function() {
               $('#btnParar1').click();
             });
-
           }, function(err) {
             console.log("DEU ERRO" + err);
           });
         });
       });
-
       return this;
     }
 

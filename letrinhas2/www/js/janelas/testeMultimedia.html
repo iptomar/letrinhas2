@@ -94,15 +94,24 @@
 
       <!-- ##################### Contagem regressiva ################# -->
       <div class="modal fade" data-backdrop="static" data-keyboard="false"  id="myModalCont" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-        <div  id="pik" class="modal-dialog">
+        <div  class="modal-dialog">
           <div align="center" style="background: transparent; color:#ffffff">
               </br>
                 <h1 id="semafro"style="font-size:90px; font-style:bold">Acertou  Palavra(s)</h1>
               </br> <h4 style="font-size:30px;" id="lbTentativas" >Falta: </h4>
-              </br>
-              </br>
+
              </br>
-            </br>  </br>  <h3 style="font-size:35px; font-style:bold">(Toque aqui para continuar/sair)</h3>
+           </br>  </br>
+            <div id="divYorN"class="row" style="display: none;">
+              <h3 style="font-size:30px; font-style:bold">O que deseja fazer?</h3>
+            <div id="btnSairTest" class="col-md-6"><button style="height:120px;" type="button" class="btn btn-primary btn-lg btn-block">Sair</button></div>
+            <div id="pik" class="col-md-6"><button style="height:120px;" type="button" class="btn btn-primary btn-lg btn-block">Continuar</button></div>
+            </div>
+            <div id="divFimTenta" style="display: none;">
+              <h3 style="font-size:30px; font-style:bold">Chegou ao Fim das tentativas!</h3>
+            <button id="pik2" style="height:120px;" type="button" class="btn btn-primary btn-lg btn-block">Terminar</button></div>
+            </div>
+
 
           </div>
         </div>

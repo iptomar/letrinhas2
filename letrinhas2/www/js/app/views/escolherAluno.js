@@ -72,12 +72,31 @@ define(function(require) {
       var escolaId = window.localStorage.getItem("EscolaSelecionadaID");
       var turmaId = window.localStorage.getItem("TurmaSelecID");
       var turmaNome = window.localStorage.getItem("TurmaSelecNome");
-
+      var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
 
       professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#imgProf').attr("src", url);
+
+        if (discplinaSelecionada == 'Português') {
+          $('#imgDisciplina').attr("src", "img/portugues.png");
+        }
+        if (discplinaSelecionada == 'Matemática') {
+          $('#imgDisciplina').attr("src", "img/mate.png");
+        }
+        if (discplinaSelecionada == 'Estudo do Meio') {
+          $('#imgDisciplina').attr("src", "img/estudoMeio.png");
+        }
+        if (discplinaSelecionada == 'Inglês') {
+          $('#imgDisciplina').attr("src", "img/ingles.png");
+        }
+        if (discplinaSelecionada == 'Outras Línguas') {
+          $('#imgDisciplina').attr("src", "img/outrasLinguas.png");
+        }
+        if (discplinaSelecionada == 'Outro') {
+          $('#imgDisciplina').attr("src", "img/outro.png");
+        }
       });
       /// Vai buscar todas as escolas da base de dados //
       escolas_local2.get(escolaId, function(err, escolaDoc) {

@@ -40,6 +40,8 @@ define(function(require) {
       }, function(errx, response) {
         if (errx) console.log("Erro: " + errx);
         if (response.rows.length != 0) {
+
+          console.log(response)
           var totalTexto = 0;
           var totalLista = 0;
           var totalMultimedia = 0;
@@ -48,78 +50,99 @@ define(function(require) {
           var somaLista = 0;
           var somaMultimedia = 0;
           var somaInterpretacao = 0;
-          for (var i = 0; i < response.rows.length; i++) {
-            if (response.rows[i].value.tipoCorrecao == "Texto") {
-              totalTexto++;
-              somaTexto += parseFloat(response.rows[i].value.nota);
-            }
-            if (response.rows[i].value.tipoCorrecao == "Lista") {
-              totalLista++;
-              console.log(response.rows[i].value);
-              somaLista += parseFloat(response.rows[i].value.nota);
-            }
-            if (response.rows[i].value.tipoCorrecao == "Multimédia") {
-              totalMultimedia++;
-              somaMultimedia += parseFloat(response.rows[i].value.nota);
-            }
-            if (response.rows[i].value.tipoCorrecao == "Interpretação") {
-              totalInterpretacao++;
-              somaInterpretacao += parseFloat(response.rows[i].value.nota);
-            }
-          }
-          var $container = $('#divResumo'); //Adiciona ao Div
-          var mediaTexto = somaTexto / totalTexto;
 
-          var mediaLista = somaLista / totalLista;
-          var mediaMultimedia = somaMultimedia / totalMultimedia;
-          var mediaInterpretacao = somaInterpretacao / totalInterpretacao;
-            console.log(mediaLista);
+          var quantosResculcoes = 0;
+     //////////////umh
 
-          if (isNaN(mediaTexto)) {
-            mediaTexto = 0;
-          }
-          if (isNaN(mediaLista)) {
-            mediaLista = 0;
-          }
-          if (isNaN(mediaMultimedia)) {
-            mediaMultimedia = 0;
-          }
-          if (isNaN(mediaInterpretacao)) {
-            mediaInterpretacao = 0;
-          }
+       return Promise.all(
+         response.rows.map(function (row) {
+           var DocResol = row.value;
 
-          var textoParaDiv = "";
-          textoParaDiv = '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
-            '<span class="badge myspanStatic">Média das Notas: ' + mediaTexto.toFixed(2)  + '%</span><h3> <b>Testes do tipo  [Texto]: ' +
-            +totalTexto + '</b></h3></li></ul>';
-          /////// ///// //////
-          textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
-            '<span class="badge myspanStatic">Média das Notas: ' + mediaLista.toFixed(2) + '%</span><h3> <b>Testes do tipo  [Lista]: ' +
-            +totalLista + '</b></h3></li></ul>';
-          /////// ///// //////
-          textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
-            '<span class="badge myspanStatic">Média das Notas: ' + mediaMultimedia.toFixed(2) + '%</span><h3> <b>Testes do tipo  [Multimédia]: ' +
-            +totalMultimedia + '</b></h3></li></ul>';
-          /////// ///// //////
-          textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
-            '<span class="badge myspanStatic">Média das Notas: ' + mediaInterpretacao.toFixed(2) + ' %</span><h3> <b>Testes do tipo  [Interpretação]: ' +
-            +totalInterpretacao + '</b></h3></li></ul>';
+           return testes_local2.get(DocResol.id_Teste)
+             .then(function (doc) {
 
-          textoParaDiv += '<div style="height: 150px;"</div>';
+               if(doc.disciplina == window.localStorage.getItem("DiscplinaSelecionada")) {
+                 if (DocResol.tipoCorrecao == "Texto") {
+                       totalTexto++;
+                       somaTexto += parseFloat(DocResol.nota);
+                     }
+                     if (DocResol.tipoCorrecao == "Lista") {
+                       totalLista++;
+                       somaLista += parseFloat(DocResol.nota);
+                     }
+                     if (DocResol.tipoCorrecao == "Multimédia") {
+                       totalMultimedia++;
+                       somaMultimedia += parseFloat(DocResol.nota);
+                     }
+                     if (DocResol.tipoCorrecao == "Interpretação") {
+                       totalInterpretacao++;
+                       somaInterpretacao += parseFloat(DocResol.nota);
+                     }
+               }
+               // handle doc
+               return doc; //????
+             });
+         })
+       )
+       .then(function (docs) { // Array com o resultado de cada uma das funções anteriores
+        //  console.log(docs);
+         var $container = $('#divResumo'); //Adiciona ao Div
+           var mediaTexto = somaTexto / totalTexto;
 
-          var $conteudo = $(textoParaDiv);
-          $conteudo.appendTo($container); //Adiciona ao Div
+           var mediaLista = somaLista / totalLista;
+           var mediaMultimedia = somaMultimedia / totalMultimedia;
+           var mediaInterpretacao = somaInterpretacao / totalInterpretacao;
+             console.log(mediaLista);
+
+           if (isNaN(mediaTexto)) {
+             mediaTexto = 0;
+           }
+           if (isNaN(mediaLista)) {
+             mediaLista = 0;
+           }
+           if (isNaN(mediaMultimedia)) {
+             mediaMultimedia = 0;
+           }
+           if (isNaN(mediaInterpretacao)) {
+             mediaInterpretacao = 0;
+           }
+
+           var textoParaDiv = "";
+           textoParaDiv = '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
+             '<span class="badge myspanStatic">Média das Notas: ' + mediaTexto.toFixed(2)  + '%</span><h3> <b>Testes do tipo  [Texto]: ' +
+             +totalTexto + '</b></h3></li></ul>';
+           /////// ///// //////
+           textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
+             '<span class="badge myspanStatic">Média das Notas: ' + mediaLista.toFixed(2) + '%</span><h3> <b>Testes do tipo  [Lista]: ' +
+             +totalLista + '</b></h3></li></ul>';
+           /////// ///// //////
+           textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
+             '<span class="badge myspanStatic">Média das Notas: ' + mediaMultimedia.toFixed(2) + '%</span><h3> <b>Testes do tipo  [Multimédia]: ' +
+             +totalMultimedia + '</b></h3></li></ul>';
+           /////// ///// //////
+           textoParaDiv += '<ul class="list-group"><li class="list-group-item list-group-item-success">' +
+             '<span class="badge myspanStatic">Média das Notas: ' + mediaInterpretacao.toFixed(2) + ' %</span><h3> <b>Testes do tipo  [Interpretação]: ' +
+             +totalInterpretacao + '</b></h3></li></ul>';
+
+           textoParaDiv += '<div style="height: 150px;"</div>';
+
+           var $conteudo = $(textoParaDiv);
+           $conteudo.appendTo($container); //Adiciona ao Div
+       })
+       .catch(function (err) {
+         console.log(err);
+       });
         }
       });
     },
 
 
-    desenhaEstatistica1: function(tipoTeste, id) {
+    desenhaEstatistica: function(tipoTeste, id) {
       var self = this;
       window.localStorage.setItem("nRepeticoes", tipoTeste);
       function map(doc) {
             /////////////////////////////////////////// console.log(self.auxVar);
-        if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.tipoCorrecao == window.localStorage.getItem("nRepeticoes")) {
+        if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.tipoCorrecao == window.localStorage.getItem("nRepeticoes" )) {
           emit([doc.dataReso], doc);
         }
       }
@@ -133,88 +156,125 @@ define(function(require) {
         if (errx) console.log("Erro: " + errx);
         var arrDados = [];
         var arrLabel = [];
+        var contDOcsVal = 0;
 
         if (response.rows.length != 0) {
-          for (var i = 0; i < response.rows.length; i++) {
 
-            var data = new Date(response.rows[i].value.dataReso);
-            var day = data.getDate().toString();
-            var month = data.getMonth().toString();
-            var hours = data.getHours().toString();
-            var minutes = data.getMinutes().toString();
-            day = day.length === 2 ? day : '0' + day;
-            month = month.length === 2 ? month : '0' + month;
-            hours = hours.length === 2 ? hours : '0' + hours;
-            minutes = minutes.length === 2 ? minutes : '0' + minutes;
-            var dataFinal = day + "/" + month + "/" + data.getFullYear() + "-" + hours + ":" + minutes + "h";
-            arrLabel.push(dataFinal);
-            arrDados.push(response.rows[i].value.nota);
-          }
 
-          if (arrLabel.length == 1) {
-            arrLabel.push(arrLabel[0]);
-            arrDados.push(arrDados[0]);
-          }
-          var FillColors = "rgba(120,196,140,0.2)"
-          var StrokeColor = "rgba(120,196,140,0.2)"
 
-          if(id == 1)
-          {
-            FillColors = "rgba(120,196,140,0.2)";
-            StrokeColor = "rgba(127,212,150,1)";
-          }
-          if(id == 2)
-          {
-            FillColors = "rgba(216,200,95,0.2)";
-            StrokeColor = "rgba(242,200,157,1)";
-          }
-          if(id == 3)
-          {
-            FillColors = "rgba(255,100,100,0.2)";
-            StrokeColor = "rgba(255,170,170,1)";
-          }
-          if(id == 4)
-          {
-            FillColors = "rgba(110,192,216,0.2)";
-            StrokeColor = "rgba(145,219,242,1)";
-          }
+          var quantosResculcoes = 0;
+            //////////////umh
+              return Promise.all(
+                response.rows.map(function (row) {
+                  var DocResol = row.value;
+                  return testes_local2.get(DocResol.id_Teste)
+                    .then(function (doc) {
 
-          var lineChartData = {
-            labels: arrLabel,
-            datasets: [{
-              label: "Nota",
-              fillColor: FillColors,
-              strokeColor: StrokeColor,
-              pointColor: StrokeColor,
-              pointStrokeColor: "#fff",
-              pointHighlightFill: "#fff",
-              pointHighlightStroke: "rgba(255,170,170,1)",
-              data: arrDados
-            }]
-          }
-          self.myLineGraData = lineChartData;
-          var ctx = document.getElementById("canvasGrafico"+id).getContext("2d");
-          var myLineChart = new Chart(ctx).Line(lineChartData, {
-            responsive: true,
-            bezierCurve: false,
-            showScale: true,
-            scaleOverride: true,
-            // Number - The number of steps in a hard coded scale
-            scaleSteps: 5,
-            // Number - The value jump in the hard coded scale
-            scaleStepWidth: 20,
-            // Number - The scale starting value
-            scaleStartValue: 0,
-            animationEasing: "easeOutBounce",
-            tooltipTemplate: "<%if (label){%> Nota:<%= value %>% - <%=label%><%}%>",
+                      if(doc.disciplina == window.localStorage.getItem("DiscplinaSelecionada")) {
+                        contDOcsVal++;
+                        ///////////RESOLCOES PASSOU A TODAS AS VALIDACOES, O OBJECTIVO
+                        ///// AGORA ERA PODER POR EXEMPLO FAZER UM console.log(DocResol.nota) e algo como
+                        var data = new Date(DocResol.dataReso);
+                        var day = data.getDate().toString();
+                        var month = data.getMonth().toString();
+                        var hours = data.getHours().toString();
+                        var minutes = data.getMinutes().toString();
+                        day = day.length === 2 ? day : '0' + day;
+                        month = month.length === 2 ? month : '0' + month;
+                        hours = hours.length === 2 ? hours : '0' + hours;
+                        minutes = minutes.length === 2 ? minutes : '0' + minutes;
+                        var dataFinal = day + "/" + month + "/" + data.getFullYear() + "-" + hours + ":" + minutes + "h";
+                        arrLabel.push(dataFinal);
+                        arrDados.push(DocResol.nota);
+                      }
+                      // handle doc
 
-            legendTemplate: '<% for (var i=0; i<datasets.length; i++){%>' +
-              '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt">' +
-              '</span><span style="font-size: 20pt"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></span>&nbsp&nbsp&nbsp' +
-              '&nbsp&nbsp<%}%>'
-          });
+                      return doc; //????
+                    });
+                })
+              )
+              .then(function (docs) { // Array com o resultado de cada uma das funções anteriores
 
-          self.myLineGra = myLineChart;
+                if(contDOcsVal == 0)
+                {
+                  var $containerPrin = $('#legendDiv'+id);
+                  var auxLengda = '<div style="height: 400px;" class="centerEX"> <h1>Sem resoluções para criar estatisticas!</h1></div>';
+                  var $btn = $(auxLengda);
+                  $btn.appendTo($containerPrin); //Adiciona ao Div
+                }
+                else {
+
+
+                if (arrLabel.length == 1) {
+                  arrLabel.push(arrLabel[0]);
+                  arrDados.push(arrDados[0]);
+                }
+                var FillColors = "rgba(120,196,140,0.2)"
+                var StrokeColor = "rgba(120,196,140,0.2)"
+
+                if(id == 1)
+                {
+                  FillColors = "rgba(120,196,140,0.2)";
+                  StrokeColor = "rgba(127,212,150,1)";
+                }
+                if(id == 2)
+                {
+                  FillColors = "rgba(216,200,95,0.2)";
+                  StrokeColor = "rgba(242,200,157,1)";
+                }
+                if(id == 3)
+                {
+                  FillColors = "rgba(255,100,100,0.2)";
+                  StrokeColor = "rgba(255,170,170,1)";
+                }
+                if(id == 4)
+                {
+                  FillColors = "rgba(110,192,216,0.2)";
+                  StrokeColor = "rgba(145,219,242,1)";
+                }
+
+                var lineChartData = {
+                  labels: arrLabel,
+                  datasets: [{
+                    label: "Nota",
+                    fillColor: FillColors,
+                    strokeColor: StrokeColor,
+                    pointColor: StrokeColor,
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(255,170,170,1)",
+                    data: arrDados
+                  }]
+                }
+                self.myLineGraData = lineChartData;
+                var ctx = document.getElementById("canvasGrafico"+id).getContext("2d");
+                var myLineChart = new Chart(ctx).Line(lineChartData, {
+                  responsive: true,
+                  bezierCurve: false,
+                  showScale: true,
+                  scaleOverride: true,
+                  // Number - The number of steps in a hard coded scale
+                  scaleSteps: 5,
+                  // Number - The value jump in the hard coded scale
+                  scaleStepWidth: 20,
+                  // Number - The scale starting value
+                  scaleStartValue: 0,
+                  animationEasing: "easeOutBounce",
+                  tooltipTemplate: "<%if (label){%> Nota:<%= value %>% - <%=label%><%}%>",
+
+                  legendTemplate: '<% for (var i=0; i<datasets.length; i++){%>' +
+                    '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt">' +
+                    '</span><span style="font-size: 20pt"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></span>&nbsp&nbsp&nbsp' +
+                    '&nbsp&nbsp<%}%>'
+                });
+
+                self.myLineGra = myLineChart;
+            }  })
+              .catch(function (err) {
+                console.log(err);
+              });
+
+
         } else {
           var $containerPrin = $('#legendDiv'+id);
           var auxLengda = '<div style="height: 400px;" class="centerEX"> <h1>Sem resoluções para criar estatisticas!</h1></div>';
@@ -223,286 +283,6 @@ define(function(require) {
         }
       });
     },
-
-    // desenhaEstatistica2: function() {
-    //   var self = this;
-    //
-    //   function map(doc) {
-    //     if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.tipoCorrecao == "Lista") {
-    //       emit([doc.dataReso], doc);
-    //     }
-    //   }
-    //   resolucoes_local2.query({
-    //     map: map
-    //   }, {
-    //     reduce: false
-    //   }, function(errx, response) {
-    //     if (errx) console.log("Erro: " + errx);
-    //     var arrDados = [];
-    //     var arrLabel = [];
-    //
-    //     if (response.rows.length != 0) {
-    //       for (var i = 0; i < response.rows.length; i++) {
-    //
-    //         var data = new Date(response.rows[i].value.dataReso);
-    //         var day = data.getDate().toString();
-    //         var month = data.getMonth().toString();
-    //         var hours = data.getHours().toString();
-    //         var minutes = data.getMinutes().toString();
-    //         day = day.length === 2 ? day : '0' + day;
-    //         month = month.length === 2 ? month : '0' + month;
-    //         hours = hours.length === 2 ? hours : '0' + hours;
-    //         minutes = minutes.length === 2 ? minutes : '0' + minutes;
-    //         var dataFinal = day + "/" + month + "/" + data.getFullYear() + "-" + hours + ":" + minutes + "h";
-    //         arrLabel.push(dataFinal);
-    //         arrDados.push(response.rows[i].value.nota);
-    //       }
-    //
-    //       if (arrLabel.length == 1) {
-    //         arrLabel.push(arrLabel[0]);
-    //         arrDados.push(arrDados[0]);
-    //       }
-    //
-    //       var lineChartData = {
-    //         labels: arrLabel,
-    //
-    //         datasets: [{
-    //           label: "Nota",
-    //           fillColor: "rgba(216,200,95,0.2)",
-    //           strokeColor: "rgba(242,200,157,1)",
-    //           pointColor: "rgba(216,200,95,1)",
-    //           pointStrokeColor: "#fff",
-    //           pointHighlightFill: "#fff",
-    //           pointHighlightStroke: "rgba(255,170,170,1)",
-    //           data: arrDados
-    //         }]
-    //       }
-    //       self.myLineGraData = lineChartData;
-    //       var ctx = document.getElementById("canvasGrafico2").getContext("2d");
-    //       var myLineChart = new Chart(ctx).Line(lineChartData, {
-    //         responsive: true,
-    //         bezierCurve: false,
-    //         showScale: true,
-    //         scaleOverride: true,
-    //         // Number - The number of steps in a hard coded scale
-    //         scaleSteps: 5,
-    //         // Number - The value jump in the hard coded scale
-    //         scaleStepWidth: 20,
-    //         // Number - The scale starting value
-    //         scaleStartValue: 0,
-    //         animationEasing: "easeOutBounce",
-    //         tooltipTemplate: "<%if (label){%> Nota:<%= value %>% - <%=label%><%}%>",
-    //
-    //         legendTemplate: '<% for (var i=0; i<datasets.length; i++){%>' +
-    //           '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt">' +
-    //           '</span><span style="font-size: 20pt"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></span>&nbsp&nbsp&nbsp' +
-    //           '&nbsp&nbsp<%}%>'
-    //       });
-    //
-    //       self.myLineGra = myLineChart;
-    //       // var $containerPrin = $('#legendDiv2');
-    //       // var auxLengda = '<div class="row"><div class="col-md-6">' + myLineChart.generateLegend() + '</div>';
-    //       // // auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
-    //       // var $btn = $(auxLengda);
-    //       // $btn.appendTo($containerPrin); //Adiciona ao Div
-    //     } else {
-    //       var $containerPrin = $('#legendDiv2').empty();
-    //       var auxLengda = '<div style="height: 400px;" class="centerEX"> <h1>Sem resoluções para criar estatisticas!</h1></div>';
-    //       // auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
-    //       var $btn = $(auxLengda);
-    //       $btn.appendTo($containerPrin); //Adiciona ao Div
-    //     }
-    //   });
-    // },
-
-    // desenhaEstatistica3: function() {
-    //   var self = this;
-    //
-    //
-    //   function map(doc) {
-    //     if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.tipoCorrecao == "Multimédia") {
-    //       emit([doc.dataReso], doc);
-    //     }
-    //   }
-    //   resolucoes_local2.query({
-    //     map: map
-    //   }, {
-    //     reduce: false
-    //   }, function(errx, response) {
-    //     if (errx) console.log("Erro: " + errx);
-    //     var arrDados = [];
-    //     var arrLabel = [];
-    //
-    //     if (response.rows.length != 0) {
-    //       for (var i = 0; i < response.rows.length; i++) {
-    //
-    //         var data = new Date(response.rows[i].value.dataReso);
-    //         var day = data.getDate().toString();
-    //         var month = data.getMonth().toString();
-    //         var hours = data.getHours().toString();
-    //         var minutes = data.getMinutes().toString();
-    //         day = day.length === 2 ? day : '0' + day;
-    //         month = month.length === 2 ? month : '0' + month;
-    //         hours = hours.length === 2 ? hours : '0' + hours;
-    //         minutes = minutes.length === 2 ? minutes : '0' + minutes;
-    //         var dataFinal = day + "/" + month + "/" + data.getFullYear() + "-" + hours + ":" + minutes + "h";
-    //         arrLabel.push(dataFinal);
-    //         arrDados.push(response.rows[i].value.nota);
-    //       }
-    //       if (arrLabel.length == 1) {
-    //         arrLabel.push(arrLabel[0]);
-    //         arrDados.push(arrDados[0]);
-    //       }
-    //
-    //       var lineChartData = {
-    //         labels: arrLabel,
-    //
-    //         datasets: [{
-    //           label: "Nota",
-    //           fillColor: "rgba(255,100,100,0.2)",
-    //           strokeColor: "rgba(255,170,170,1)",
-    //           pointColor: "rgba(255,170,170,1)",
-    //           pointStrokeColor: "#fff",
-    //           pointHighlightFill: "#fff",
-    //           pointHighlightStroke: "rgba(255,170,170,1)",
-    //           data: arrDados
-    //         }]
-    //       }
-    //       self.myLineGraData = lineChartData;
-    //
-    //       var ctx = document.getElementById("canvasGrafico3").getContext("2d");
-    //       console.log(ctx);
-    //
-    //       var myLineChart = new Chart(ctx).Line(lineChartData, {
-    //         responsive: true,
-    //         bezierCurve: false,
-    //         showScale: true,
-    //         scaleOverride: true,
-    //         // Number - The number of steps in a hard coded scale
-    //         scaleSteps: 5,
-    //         // Number - The value jump in the hard coded scale
-    //         scaleStepWidth: 20,
-    //         // Number - The scale starting value
-    //         scaleStartValue: 0,
-    //         animationEasing: "easeOutBounce",
-    //         tooltipTemplate: "<%if (label){%> Nota:<%= value %>% - <%=label%><%}%>",
-    //
-    //         legendTemplate: '<% for (var i=0; i<datasets.length; i++){%>' +
-    //           '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt">' +
-    //           '</span><span style="font-size: 20pt"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></span>&nbsp&nbsp&nbsp' +
-    //           '&nbsp&nbsp<%}%>'
-    //       });
-    //
-    //       self.myLineGra = myLineChart;
-    //       // var $containerPrin = $('#legendDiv3');
-    //       // var auxLengda = '<div class="row"><div class="col-md-6">' + myLineChart.generateLegend() + '</div>';
-    //       // // auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
-    //       // var $btn = $(auxLengda);
-    //       // $btn.appendTo($containerPrin); //Adiciona ao Div
-    //     } else {
-    //       var $containerPrin = $('#legendDiv3');
-    //       var auxLengda = '<div style="height: 400px;" class="centerEX"> <h1>Sem resoluções para criar estatisticas!</h1></div>';
-    //       // auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
-    //       var $btn = $(auxLengda);
-    //       $btn.appendTo($containerPrin); //Adiciona ao Div
-    //     }
-    //   });
-    // },
-
-
-    // desenhaEstatistica4: function() {
-    //   var self = this;
-    //   console.log("d");
-    //
-    //   function map(doc) {
-    //     if (doc.nota != -1 && doc.id_Aluno == window.localStorage.getItem("AlunoSelecID") && doc.tipoCorrecao == "Interpretação") {
-    //       emit([doc.dataReso], doc);
-    //     }
-    //   }
-    //   resolucoes_local2.query({
-    //     map: map
-    //   }, {
-    //     reduce: false
-    //   }, function(errx, response) {
-    //     if (errx) console.log("Erro: " + errx);
-    //     var arrDados = [];
-    //     var arrLabel = [];
-    //
-    //     if (response.rows.length != 0) {
-    //       for (var i = 0; i < response.rows.length; i++) {
-    //
-    //         var data = new Date(response.rows[i].value.dataReso);
-    //         var day = data.getDate().toString();
-    //         var month = data.getMonth().toString();
-    //         var hours = data.getHours().toString();
-    //         var minutes = data.getMinutes().toString();
-    //         day = day.length === 2 ? day : '0' + day;
-    //         month = month.length === 2 ? month : '0' + month;
-    //         hours = hours.length === 2 ? hours : '0' + hours;
-    //         minutes = minutes.length === 2 ? minutes : '0' + minutes;
-    //         var dataFinal = day + "/" + month + "/" + data.getFullYear() + "-" + hours + ":" + minutes + "h";
-    //         arrLabel.push(dataFinal);
-    //         arrDados.push(response.rows[i].value.nota);
-    //       }
-    //       if (arrLabel.length == 1) {
-    //         arrLabel.push(arrLabel[0]);
-    //         arrDados.push(arrDados[0]);
-    //       }
-    //
-    //       var lineChartData = {
-    //         labels: arrLabel,
-    //
-    //         datasets: [{
-    //           label: "Nota",
-    //           fillColor: "rgba(110,192,216,0.2)",
-    //           strokeColor: "rgba(145,219,242,1)",
-    //           pointColor: "rgba(106,172,192,1)",
-    //           pointStrokeColor: "#fff",
-    //           pointHighlightFill: "#fff",
-    //           pointHighlightStroke: "rgba(255,170,170,1)",
-    //           data: arrDados
-    //         }]
-    //       }
-    //       self.myLineGraData = lineChartData;
-    //
-    //       var ctx = document.getElementById("canvasGrafico4").getContext("2d");
-    //       console.log(ctx);
-    //
-    //       var myLineChart = new Chart(ctx).Line(lineChartData, {
-    //         responsive: true,
-    //         bezierCurve: false,
-    //         showScale: true,
-    //         scaleOverride: true,
-    //         // Number - The number of steps in a hard coded scale
-    //         scaleSteps: 5,
-    //         // Number - The value jump in the hard coded scale
-    //         scaleStepWidth: 20,
-    //         // Number - The scale starting value
-    //         scaleStartValue: 0,
-    //         animationEasing: "easeOutBounce",
-    //         tooltipTemplate: "<%if (label){%> Nota:<%= value %>% - <%=label%><%}%>",
-    //
-    //         legendTemplate: '<% for (var i=0; i<datasets.length; i++){%>' +
-    //           '<span class="glyphicon glyphicon-stop" style=" color: <%=datasets[i].strokeColor%>; font-size: 24pt">' +
-    //           '</span><span style="font-size: 20pt"> <%if(datasets[i].label){%><%=datasets[i].label%><%}%></span>&nbsp&nbsp&nbsp' +
-    //           '&nbsp&nbsp<%}%>'
-    //       });
-    //
-    //       self.myLineGra = myLineChart;
-    //       // var $containerPrin = $('#legendDiv4');
-    //       // var auxLengda = '<div class="row"><div class="col-md-6">' + myLineChart.generateLegend() + '</div>';
-    //       // // auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
-    //       // var $btn = $(auxLengda);
-    //       // $btn.appendTo($containerPrin); //Adiciona ao Div
-    //     } else {
-    //       var $containerPrin = $('#legendDiv4');
-    //       var auxLengda = '<div style="height: 400px;" class="centerEX"> <h1>Sem resoluções para criar estatisticas!</h1></div>';
-    //       // auxLengda += '<div class="col-md-6" style="text-align:right;"><button  type="button" id="btnZoom"  class="btn btn-primary btn-lg">Zoom +</button></div></div>';
-    //       var $btn = $(auxLengda);
-    //       $btn.appendTo($containerPrin); //Adiciona ao Div
-    //     }
-    //   });
-    // },
 
     events: {
       "click #BackButtonMO": "clickBackButtonMO",
@@ -539,6 +319,24 @@ define(function(require) {
         $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
         $('#imgProf').attr("src", url);
 
+        if (discplinaSelecionada == 'Português') {
+          $('#imgDisciplina').attr("src", "img/portugues.png");
+        }
+        if (discplinaSelecionada == 'Matemática') {
+          $('#imgDisciplina').attr("src", "img/mate.png");
+        }
+        if (discplinaSelecionada == 'Estudo do Meio') {
+          $('#imgDisciplina').attr("src", "img/estudoMeio.png");
+        }
+        if (discplinaSelecionada == 'Inglês') {
+          $('#imgDisciplina').attr("src", "img/ingles.png");
+        }
+        if (discplinaSelecionada == 'Outras Línguas') {
+          $('#imgDisciplina').attr("src", "img/outrasLinguas.png");
+        }
+        if (discplinaSelecionada == 'Outro') {
+          $('#imgDisciplina').attr("src", "img/outro.png");
+        }
         /////////////////FUNCAO PARA O SWIPE SO ISTO xD ////////////////////////////////
         $("#carouselPrincipal").swipe({
           //Generic swipe handler for all directions
@@ -553,24 +351,23 @@ define(function(require) {
         ////////////////fim ////////////////////////////////
         $('#carouselPrincipal').on('slid.bs.carousel', function() {
           if ($('div.active')[0].id == "dvi1" && self.gra1 == false) {
-            self.desenhaEstatistica1("Texto", 1);
+            self.desenhaEstatistica("Texto", 1);
             self.gra1 = true
           }
           if ($('div.active')[0].id == "dvi2" && self.gra2 == false) {
-            self.desenhaEstatistica1("Lista", 2);
+            self.desenhaEstatistica("Lista", 2);
             self.gra2 = true
           }
           if ($('div.active')[0].id == "dvi3" && self.gra3 == false) {
-            self.desenhaEstatistica1("Multimédia", 3);
+            self.desenhaEstatistica("Multimédia", 3);
             self.gra3 = true
           }
           if ($('div.active')[0].id == "dvi4" && self.gra4 == false) {
-            self.desenhaEstatistica1("Interpretação", 4);
+            self.desenhaEstatistica("Interpretação", 4);
             self.gra4 = true
           }
         });
       });
-
 
 
       alunos_local2.getAttachment(alunoId, 'aluno.jpg', function(err2, DataImg) {

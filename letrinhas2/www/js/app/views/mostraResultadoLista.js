@@ -250,7 +250,7 @@ define(function(require) {
               '        </div>' +
               '          Erros de Exatidão: ' + exatidao + '  - acertou: ' + (100 - exPer) + '% </br>' +
               '          Erros de Fluidez: ' + fluidez + '  - acertou: ' + (100 - exFlu) + '% </br>' +
-              '          ---- Total:' + (100 - (exPer + exFlu)) + '% certo ----</br>' +
+              '          ---- Nota:' + correcaoDoc.nota + '%  ----</br>' +
               '          Palavras corretamente lidas: '+(correcaoDoc.respostas[0].TotalPalavras - exatidao - fluidez)+' </br>' +
               '          Velocidade da leitura: '+correcaoDoc.respostas[0].velocidade+' plv/min </br>' +
               '      </div>' +

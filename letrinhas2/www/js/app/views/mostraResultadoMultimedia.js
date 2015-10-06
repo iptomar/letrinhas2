@@ -70,7 +70,7 @@ define(function(require) {
           minutes = minutes.length === 2 ? minutes : '0' + minutes;
           var dataFinal = day + "/" + month + "/" + data.getFullYear() + " - " + hours + ":" + minutes;
           var $btn = $('<h3> ' + testeDoc.titulo + ' - (' + dataFinal + ') </h3></br></br></br>'+
-          '<div class="panel panel-info"><div class="panel-heading centerEX"><h4>Nota: '+correcaoDoc.nota+'%</h4></div></div>'
+          '<div class="panel panel-info"><div class="panel-heading centerEX"><h4>Nota: '+correcaoDoc.nota.toFixed(0)+'%</h4></div></div>'
           );
 
           $btn.appendTo($containerPrin); //Adiciona ao Div
@@ -217,7 +217,7 @@ define(function(require) {
           for (var i = 0; i < response.rows.length; i++) {
             console.log(response);
             // append new value to the array
-            notax.push(response.rows[i].value.nota);
+            notax.push(response.rows[i].value.nota.toFixed(0));
 
 
             var data = new Date(response.rows[i].value.dataReso);

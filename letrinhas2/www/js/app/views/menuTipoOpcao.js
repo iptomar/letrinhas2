@@ -106,11 +106,31 @@ define(function(require) {
 
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
+      var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
         professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
         if (err2)  console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome);
         $('#imgProf').attr("src",url);
+
+        if (discplinaSelecionada == 'Português') {
+          $('#imgDisciplina').attr("src", "img/portugues.png");
+        }
+        if (discplinaSelecionada == 'Matemática') {
+          $('#imgDisciplina').attr("src", "img/mate.png");
+        }
+        if (discplinaSelecionada == 'Estudo do Meio') {
+          $('#imgDisciplina').attr("src", "img/estudoMeio.png");
+        }
+        if (discplinaSelecionada == 'Inglês') {
+          $('#imgDisciplina').attr("src", "img/ingles.png");
+        }
+        if (discplinaSelecionada == 'Outras Línguas') {
+          $('#imgDisciplina').attr("src", "img/outrasLinguas.png");
+        }
+        if (discplinaSelecionada == 'Outro') {
+          $('#imgDisciplina').attr("src", "img/outro.png");
+        }
       });
 
       return this;

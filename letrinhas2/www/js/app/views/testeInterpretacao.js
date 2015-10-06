@@ -255,12 +255,14 @@ define(function(require) {
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
         $('#imgProf').attr("src", url);
+            $('.loader2').hide();
       });
       alunos_local2.getAttachment(alunoId, 'aluno.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeAluno').text("[" + turmaNome + " ] -- " + alunoNome);
         $('#imgAluno').attr("src", url);
+
       });
       testes_local2.get(TesteTextArealizarID, function(err, testeDoc) {
         if (err) console.log(err);

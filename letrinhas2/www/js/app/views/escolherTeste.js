@@ -594,6 +594,9 @@ define(function(require) {
         if (discplinaSelecionada == 'Inglês') {
           $('#imgDisciplinaIcon').attr("src", "img/ingles.png");
         }
+        if (discplinaSelecionada == 'Outras Línguas') {
+          $('#imgDisciplinaIcon').attr("src", "img/outrasLinguas.png");
+        }
         if (discplinaSelecionada == 'Outro') {
           $('#imgDisciplinaIcon').attr("src", "img/outro.png");
         }

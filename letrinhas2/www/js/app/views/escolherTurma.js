@@ -60,6 +60,8 @@ define(function(require) {
       /// Vai buscar todas as escolas da base de dados //
       var profId = window.localStorage.getItem("ProfSelecID");
       var profNome = window.localStorage.getItem("ProfSelecNome");
+      var discplinaSelecionada = window.localStorage.getItem("DiscplinaSelecionada");
+
       //// Vai buscar o doc da escola selecionada ///
 
       professores_local2.getAttachment(profId, 'prof.jpg', function(err2, DataImg) {
@@ -67,6 +69,25 @@ define(function(require) {
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome);
         $('#imgProf').attr("src", url);
+
+        if (discplinaSelecionada == 'Português') {
+          $('#imgDisciplina').attr("src", "img/portugues.png");
+        }
+        if (discplinaSelecionada == 'Matemática') {
+          $('#imgDisciplina').attr("src", "img/mate.png");
+        }
+        if (discplinaSelecionada == 'Estudo do Meio') {
+          $('#imgDisciplina').attr("src", "img/estudoMeio.png");
+        }
+        if (discplinaSelecionada == 'Inglês') {
+          $('#imgDisciplina').attr("src", "img/ingles.png");
+        }
+        if (discplinaSelecionada == 'Outras Línguas') {
+          $('#imgDisciplina').attr("src", "img/outrasLinguas.png");
+        }
+        if (discplinaSelecionada == 'Outro') {
+          $('#imgDisciplina').attr("src", "img/outro.png");
+        }
       });
 
 

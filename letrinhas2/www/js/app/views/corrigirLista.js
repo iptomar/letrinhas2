@@ -104,12 +104,12 @@ define(function(require) {
     lessBtn: function(e) {
       console.log("asdsadasd");
       if (parseInt($("#LBCNota").val()) != 0)
-        $("#LBCNota").val((parseFloat($("#LBCNota").val()) - 1).toFixed(2));
+        $("#LBCNota").val((parseFloat($("#LBCNota").val()) - 1).toFixed(0));
     },
 
     moreBtn: function(e) {
       if (parseInt($("#LBCNota").val()) != 100)
-        $("#LBCNota").val((parseFloat($("#LBCNota").val()) + 1).toFixed(2));
+        $("#LBCNota").val((parseFloat($("#LBCNota").val()) + 1).toFixed(0));
     },
 
     clickBTOpcPopOver1: function(e) {
@@ -306,7 +306,7 @@ define(function(require) {
           "&nbsp;&nbsp;&nbsp;&nbsp-Velocidade: " + (Math.round(60 * self.totalPalavras / tempoSegProf)) + " plv/min.");
         $('#myModalSUB').modal("show");
 
-          $('#LBCNota').val(notaFinal.toFixed(2));
+          $('#LBCNota').val(notaFinal.toFixed(0));
       }
     },
 

@@ -89,7 +89,7 @@ define(function(require) {
                     'email': response.rows[0].id
                   };
                   sistema_local2.post(sisT).then(function(response) {
-                    console.log("SUCESSO-" + err);
+                    console.log("Inserido inserido Ultimo login");
                   }).catch(function(err) {
                     console.log("ERRRO-" + err);
                   });

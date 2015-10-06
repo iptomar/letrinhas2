@@ -86,7 +86,6 @@ define(function(require) {
 
           var dataCompleta;
           var titulo = testeDoc.titulo;
-          console.log("aaaa "+ resolucoes.key._id );
           var data = new Date(resolucoes.key.dataReso);
           dataCompleta = titulo + " - Executado às " +
             convert_n2d(data.getHours()) + ":" + convert_n2d(data.getMinutes()) + ":" + convert_n2d(data.getSeconds()) + " do dia " + convert_n2d(data.getDate()) + " do " + (convert_n2d(data.getMonth() + 1)) + " de" + data.getFullYear();

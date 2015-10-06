@@ -397,7 +397,7 @@ define(function(require) {
         'id_Aluno': alunoId,
         'id_Prof': profId,
         'tipoCorrecao': 'Multimédia',
-        'nota': nota,
+        'nota': nota.toFixed(2),
         'respostas': [],
         'dataReso': agora,
         'observ': null,
@@ -429,7 +429,9 @@ define(function(require) {
               $("#divYorN").show();
             }
             $("#myModalCont").modal("show");
-            $("#semafro").text("Acertou " + contVENC + " pergunta(s)");
+            $("#txtAcertou").text("Acertou " + contVENC + " pergunta(s)");
+            $("#txtPercentagemCerta").text("(Nota: " + nota.toFixed(2) + "%)");
+
             var nRepeticoes = window.localStorage.getItem("nRepeticoes");
             $("#lbTentativas").text("Falta mais: " + nRepeticoes + " tentativa(s)");
           });

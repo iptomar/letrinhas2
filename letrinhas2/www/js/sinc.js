@@ -15,6 +15,7 @@ var alunosVar = "dev_alunos";
 var testesVar = "dev_testes";
 var perguntasVar = "dev_perguntas";
 var resolucoesVar = "dev_resolucoes";
+var autenticacao = "http://"
 ///letrinhas:l3tr1nh4sl3tr4s
 var btnBloqueado = false;
 var IP = "";
@@ -63,7 +64,7 @@ function myfunction() {
 }
 
 function sinTestesForev() {
-  testes_local2.replicate.from("http://" + IP + ':5984/' + testesVar, {
+  testes_local2.replicate.from(autenticacao + IP + ':5984/' + testesVar, {
     // auth: {
     //   username:'letrinhas',
     //   password: 'l3tr1nh4sl3tr4s'
@@ -79,7 +80,7 @@ function sinTestesForev() {
 }
 
 function sinPerguntasForev() {
-  perguntas_local2.replicate.from("http://"  + IP + ':5984/' + perguntasVar,  {
+  perguntas_local2.replicate.from(autenticacao + IP + ':5984/' + perguntasVar,  {
     // auth: {
     //   username:'letrinhas',
     //   password: 'l3tr1nh4sl3tr4s'
@@ -96,7 +97,7 @@ function sinPerguntasForev() {
 
 
 function sinCorrecoesForev() {
-    resolucoes_local2.sync("http://"  + IP + ':5984/' + resolucoesVar,  {
+    resolucoes_local2.sync(autenticacao + IP + ':5984/' + resolucoesVar,  {
     // auth: {
     //   username:'letrinhas',
     //   password: 'l3tr1nh4sl3tr4s'
@@ -125,7 +126,7 @@ escolas_local2.info().then(function(info1) {
     triger1 = true;
     // sinAlunos();
   }
-  escolas_local2.replicate.from("http://"  + IP + ':5984/' + escolasVar, {
+  escolas_local2.replicate.from(autenticacao + IP + ':5984/' + escolasVar, {
     // auth: {
     //   username:'letrinhas',
     //   password: 'l3tr1nh4sl3tr4s'
@@ -157,7 +158,7 @@ function sinAlunos() {
     } else {
       triger2 = true;
         }
-    alunos_local2.replicate.from("http://"  + IP + ':5984/' + alunosVar,  {
+    alunos_local2.replicate.from(autenticacao + IP + ':5984/' + alunosVar,  {
       // auth: {
       //   username:'letrinhas',
       //   password: 'l3tr1nh4sl3tr4s'
@@ -189,7 +190,7 @@ function sinProfs() {
     } else {
       triger3 = true;
     }
-    professores_local2.replicate.from("http://"  + IP + ':5984/' + professoresVar, {
+    professores_local2.replicate.from(autenticacao + IP + ':5984/' + professoresVar, {
       // auth: {
       //   username:'letrinhas',
       //   password: 'l3tr1nh4sl3tr4s'
@@ -218,7 +219,7 @@ function sinTestes() {
   testes_local2.info().then(function(info1) {
     if (info1.doc_count == 0) {
       btnBloqueado = true;
-      testes_local2.replicate.from("http://"  + IP + ':5984/' + testesVar,  {
+      testes_local2.replicate.from(autenticacao + IP + ':5984/' + testesVar,  {
         // auth: {
         //   username:'letrinhas',
         //   password: 'l3tr1nh4sl3tr4s'
@@ -250,7 +251,7 @@ function sinPerguntas() {
   perguntas_local2.info().then(function(info1) {
     if (info1.doc_count == 0) {
       btnBloqueado = true;
-      perguntas_local2.replicate.from("http://"  + IP + ':5984/' + perguntasVar,  {
+      perguntas_local2.replicate.from(autenticacao + IP + ':5984/' + perguntasVar,  {
         // auth: {
         //   username:'letrinhas',
         //   password: 'l3tr1nh4sl3tr4s'

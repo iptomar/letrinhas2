@@ -409,13 +409,24 @@ define(function(require) {
             var words = $("#DivContentorArea").text().split(' ');
             $("#DivContentorArea").html("");
             $.each(words, function(i, val) {
+
+
               var $span;
-              if (val == "\n")
-                $span = $('</br>');
-              else
-                $span = $('<span data-toggle="collapse" value=" " class="SpansTxt">' + val + ' </span>');
-              $span.css("color", "#000000");
-              $span.appendTo($container); //Adiciona ao Div
+              var $spanVazio;
+              if (val.indexOf("\n") != -1) {
+                $span = $('<span data-toggle="collapse" value=" " class="SpansTxt">' + val.substring(0, val.indexOf("\n") - 1) +
+                  '</span></br><span data-toggle="collapse" value=" " class="SpansTxt">' + val.substring(val.indexOf("\n")) + '</span>');
+                $span.css("color", "#000000");
+                $span.appendTo($container); //Adiciona ao Div
+                $spanVazio = $('<span> </span>');
+                $spanVazio.appendTo($container);
+              } else {
+                $span = $('<span data-toggle="collapse" value=" " class="SpansTxt">' + val + '</span>');
+                $spanVazio = $('<span> </span>');
+                $span.css("color", "#000000");
+                $span.appendTo($container); //Adiciona ao Div
+                $spanVazio.appendTo($container);
+              }
             });
             $container.on('click', '.SpansTxt', function(ev) {
               var text = $(this).text();

@@ -337,14 +337,18 @@ define(function(require) {
           $.each(words, function(i, val) {
             var $span;
             var $spanVazio;
-            if (val == "\n")
-              $span = $('</br>');
-            else
-              $span = $('<span id="sp' + i + '" data-toggle="collapse" value=" " class="SpansTxt ">' + val + '</span>');
-            $spanVazio = $('<span> </span>');
-            $span.appendTo($container); //Adiciona ao Div
-            $spanVazio.appendTo($container); //Adiciona ao Div
-
+            if (val.indexOf("\n") != -1) {
+              $span = $('<span data-toggle="collapse" value=" " class="SpansTxt">' + val.substring(0, val.indexOf("\n") - 1) +
+                '</span></br><span data-toggle="collapse" value=" " class="SpansTxt">' + val.substring(val.indexOf("\n")) + '</span>');
+              $span.appendTo($container); //Adiciona ao Div
+              $spanVazio = $('<span> </span>');
+              $spanVazio.appendTo($container);
+            } else {
+              $span = $('<span data-toggle="collapse" value=" " class="SpansTxt">' + val + '</span>');
+              $spanVazio = $('<span> </span>');
+              $span.appendTo($container); //Adiciona ao Div
+              $spanVazio.appendTo($container);
+            }
           });
         });
 

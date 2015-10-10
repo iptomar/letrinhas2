@@ -82,22 +82,35 @@ define(function(require) {
             $('#Div' + idCorr).html("");
             $.each(words, function(i, val) {
               var $span;
-              if (val == "\n")
-                $span = $('</br>');
-              else
-                $span = $('<span  data-toggle="collapse" class="SpansTxt" value=" " id="c' + i + '" >' + val + '</span><span> </span>');
-              $span.css("color", "#000000");
-              $span.appendTo($container); //Adiciona ao Div
+              var $spanVazio;
+
+              if (val.indexOf("\n") != -1) {
+                $span = $('<span data-toggle="collapse" value=" " id="c' + i + '" class="SpansTxt">' + val.substring(0, val.indexOf("\n") - 1) +
+                  '</span></br><span data-toggle="collapse" value=" " id="c' + i + '" class="SpansTxt">' + val.substring(val.indexOf("\n")) + '</span>');
+                // console.log($span );
+                $span.css("color", "#000000");
+                $span.appendTo($container); //Adiciona ao Div
+                $spanVazio = $('<span> </span>');
+                $spanVazio.appendTo($container);
+              } else {
+                $span = $('<span data-toggle="collapse" value=" " id="c' + i + '" class="SpansTxt">' + val + '</span>');
+                $spanVazio = $('<span> </span>');
+                $span.css("color", "#000000");
+                $span.appendTo($container); //Adiciona ao Div
+                $spanVazio.appendTo($container);
+              }
             });
 
             var sapns = $('#Div' + idCorr + ' > .SpansTxt');
             var maxEle = $('#Div' + idCorr + ' > .SpansTxt').length;
+            console.log(maxEle);
             var totalCertasSis = 0;
             var erradasAluno = 0;
             var certasAluno = 0;
             var errosList = correcaoDoc.respostas[0].correcao;
             var respostasAluno = correcaoDoc.respostas[0].conteudo;
             for (var i = 0; i < errosList.length; i++) {
+
               sapns[errosList[i].posicao].style.color = 'rgb(0, 0, 255)';
               sapns[errosList[i].posicao].style.fontWeight = '700';
               totalCertasSis++;

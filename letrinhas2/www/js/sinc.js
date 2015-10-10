@@ -9,6 +9,9 @@ var testes_local2 = new PouchDB('testes_local2');
 var perguntas_local2 = new PouchDB('perguntas_local2');
 var resolucoes_local2 = new PouchDB('resolucoes_local2');
 
+var autenUser = "letrinhas";
+var autenPass = "l3tr1nh4sl3tr4s";
+
 var escolasVar = "dev_escolas";
 var professoresVar = "dev_professores";
 var alunosVar = "dev_alunos";
@@ -23,14 +26,11 @@ var IP = "";
 //Funcoes para guardar o ip na base de dados local
 sistema2_local2.info().then(function(info1) {
   if (info1.doc_count == 0) {
-/////   185.15.22.235
     var IPxServer = {
       '_id': 'ipServer',
       'ip': "185.15.22.235"
-      // 'ip': "192.168.1.65"
     };
     IP = "185.15.22.235";
-      // IP = "192.168.1.65";
     sinEscolas();
     sistema2_local2.post(IPxServer).then(function(response) {
       console.log("SUCESSO-");
@@ -65,10 +65,10 @@ function myfunction() {
 
 function sinTestesForev() {
   testes_local2.replicate.from(autenticacao + IP + ':5984/' + testesVar, {
-    // auth: {
-    //   username:'letrinhas',
-    //   password: 'l3tr1nh4sl3tr4s'
-    // },
+    auth: {
+      username: autenUser,
+      password: autenPass
+    },
     live: true,
     batch_size: 200,
     retry: true
@@ -81,10 +81,10 @@ function sinTestesForev() {
 
 function sinPerguntasForev() {
   perguntas_local2.replicate.from(autenticacao + IP + ':5984/' + perguntasVar,  {
-    // auth: {
-    //   username:'letrinhas',
-    //   password: 'l3tr1nh4sl3tr4s'
-    // },
+    auth: {
+      username: autenUser,
+      password: autenPass
+    },
     live: true,
     batch_size: 50,
     retry: true
@@ -98,10 +98,10 @@ function sinPerguntasForev() {
 
 function sinCorrecoesForev() {
     resolucoes_local2.sync(autenticacao + IP + ':5984/' + resolucoesVar,  {
-    // auth: {
-    //   username:'letrinhas',
-    //   password: 'l3tr1nh4sl3tr4s'
-    // },
+      auth: {
+        username: autenUser,
+        password: autenPass
+      },
     live: true,
     batch_size: 50,
     retry: true
@@ -127,10 +127,10 @@ escolas_local2.info().then(function(info1) {
     // sinAlunos();
   }
   escolas_local2.replicate.from(autenticacao + IP + ':5984/' + escolasVar, {
-    // auth: {
-    //   username:'letrinhas',
-    //   password: 'l3tr1nh4sl3tr4s'
-    // },
+    auth: {
+      username: autenUser,
+      password: autenPass
+    },
     live: false,
     batch_size: 100,
     retry: true
@@ -159,10 +159,10 @@ function sinAlunos() {
       triger2 = true;
         }
     alunos_local2.replicate.from(autenticacao + IP + ':5984/' + alunosVar,  {
-      // auth: {
-      //   username:'letrinhas',
-      //   password: 'l3tr1nh4sl3tr4s'
-      // },
+      auth: {
+        username: autenUser,
+        password: autenPass
+      },
       live: false,
       batch_size: 50,
       retry: true
@@ -191,10 +191,10 @@ function sinProfs() {
       triger3 = true;
     }
     professores_local2.replicate.from(autenticacao + IP + ':5984/' + professoresVar, {
-      // auth: {
-      //   username:'letrinhas',
-      //   password: 'l3tr1nh4sl3tr4s'
-      // },
+      auth: {
+        username: autenUser,
+        password: autenPass
+      },
       live: false,
       batch_size: 100,
       retry: true
@@ -220,10 +220,10 @@ function sinTestes() {
     if (info1.doc_count == 0) {
       btnBloqueado = true;
       testes_local2.replicate.from(autenticacao + IP + ':5984/' + testesVar,  {
-        // auth: {
-        //   username:'letrinhas',
-        //   password: 'l3tr1nh4sl3tr4s'
-        // },
+        auth: {
+          username: autenUser,
+          password: autenPass
+        },
         live: false,
         batch_size: 100,
         retry: true
@@ -252,10 +252,10 @@ function sinPerguntas() {
     if (info1.doc_count == 0) {
       btnBloqueado = true;
       perguntas_local2.replicate.from(autenticacao + IP + ':5984/' + perguntasVar,  {
-        // auth: {
-        //   username:'letrinhas',
-        //   password: 'l3tr1nh4sl3tr4s'
-        // },
+        auth: {
+          username: autenUser,
+          password: autenPass
+        },
         live: false,
         batch_size: 50,
         retry: true

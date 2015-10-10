@@ -14,7 +14,6 @@ define(function(require) {
 
     initialize: function() {},
 
-
     convert_n2d: function(n) {
       if (n < 10) return ("0" + n);
       else return ("" + n);
@@ -253,7 +252,6 @@ define(function(require) {
               console.log('Parabens InseridoCorrecao');
             }
           });
-
         });
 
         window.history.back();
@@ -347,7 +345,6 @@ define(function(require) {
           if (err2) console.log(err2);
           var foto = URL.createObjectURL(DataImg);
           $('#imgAluno').attr("src", foto);
-
           $('#imgAlunoTitleRela').attr("src", foto);
         });
 

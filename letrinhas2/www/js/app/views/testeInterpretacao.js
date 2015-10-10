@@ -186,7 +186,7 @@ define(function(require) {
       self.modelTrue = false;
       $('#myModalSUB').modal("hide");
       $('#myModalSUB').on('hidden.bs.modal', function(e) {
-                self.GravarResolucao();
+        self.GravarResolucao();
         $("#myModalCont").modal("show");
         $("#semafro").text("Nota: " + self.respostasCertas + "%");
 
@@ -255,7 +255,6 @@ define(function(require) {
         var url = URL.createObjectURL(DataImg);
         $('#lbNomeProf').text(profNome + " - [ " + escolaNome + " ]");
         $('#imgProf').attr("src", url);
-            $('.loader2').hide();
       });
       alunos_local2.getAttachment(alunoId, 'aluno.jpg', function(err2, DataImg) {
         if (err2) console.log(err2);
@@ -285,24 +284,23 @@ define(function(require) {
             var $span;
             var $spanVazio;
 
-            if (val.indexOf("\n") != -1)
-            {
-                      console.log(val);
-                $span = $('<span data-toggle="collapse" value=" " class="SpansTxt ">' + val.substring(0, val.indexOf("\n")-1) +
-                '</span></br><span data-toggle="collapse" value=" " class="SpansTxt ">' + val.substring(val.indexOf("\n")) + '</span>');
+            if (val.indexOf("\n") != -1) {
+              $span = $('<span data-toggle="collapse" value=" " class="SpansTxt">' + val.substring(0, val.indexOf("\n") - 1) +
+                '</span></br><span data-toggle="collapse" value=" " class="SpansTxt">' + val.substring(val.indexOf("\n")) + '</span>');
+              // console.log($span );
+              $span.css("color", "#000000");
+              $span.css("background-color", "#FFFFFF");
+              $span.appendTo($container); //Adiciona ao Div
+              $spanVazio = $('<span> </span>');
+              $spanVazio.appendTo($container);
+            } else {
+              $span = $('<span data-toggle="collapse" value=" " class="SpansTxt">' + val + '</span>');
+              $spanVazio = $('<span> </span>');
+              $span.css("color", "#000000");
+              $span.css("background-color", "#FFFFFF");
+              $span.appendTo($container); //Adiciona ao Div
+              $spanVazio.appendTo($container);
             }
-            //  $span = $('</br>');
-            // if (val == "\n")
-
-            //   if (val == "\r\n")
-            //     $span = $('</br>');
-            else
-              $span = $('<span data-toggle="collapse" value=" " class="SpansTxt ">' + val + '</span>');
-            $span.css("color", "#000000");
-            $span.css("background-color", "#FFFFFF");
-            $spanVazio = $('<span> </span>');
-            $span.appendTo($container); //Adiciona ao Div
-            $spanVazio.appendTo($container); //Adiciona ao Div
           });
           $container.on('click', '.SpansTxt', function(ev) {
             var text = $(this).text();
@@ -321,7 +319,7 @@ define(function(require) {
           if (err2) console.log(err2);
           self.GravarSOMfiles('voz.mp3', mp3Aud, function() {
             console.log('FUNCIONA');
-                $('.loader2').hide();
+            $('.loader2').hide();
             $("#AudioPlayerProf").attr("src", cordova.file.dataDirectory + "/files/voz.mp3")
             $("#AudioPlayerProf").bind("ended", function() {
               $('#btnParar1').click();
